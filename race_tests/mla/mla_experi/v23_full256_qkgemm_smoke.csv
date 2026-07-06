@@ -1,0 +1,3 @@
+case_id,batch,heads,kv_heads,kv_ctx,dim,pe_dim,pv_block_col_warps,pv_k_pack,mapping_desc,repeat,latency_ms,median_latency_ms,tflops,num_split,status
+21,8,16,1,65536,512,64,4,1,列方向4组warp，每组约128个输出列；k_pack=1，K=32 拆成2轮MMA，单轮寄存器压力较小但循环更多,0,-1,,-1,-1,FAIL: Check failed: pb->value != 0 (0 vs. 0) : Divide by zero
+21,8,16,1,65536,512,64,4,2,列方向4组warp，每组约128个输出列；k_pack=2，K=32 一轮完成，循环更少但单轮打包更重,0,-1,,-1,-1,FAIL: Check failed: pb->value != 0 (0 vs. 0) : Divide by zero
