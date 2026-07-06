@@ -1,0 +1,91 @@
+case_id,batch,heads,kv_heads,kv_ctx,dim,pe_dim,config,qk_row_warps,qk_col_warps,qk_k_pack,variant,variant_desc,repeat,latency_ms,median_latency_ms,tflops,num_split,status
+21,8,16,1,65536,512,64,1x1x1,1,1,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.818331,1.817028,10.0387,64,PASS
+21,8,16,1,65536,512,64,1x1x1,1,1,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.815726,1.817028,10.0531,64,PASS
+21,8,16,1,65536,512,64,1x1x1,1,1,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,1.293888,1.294147,14.1076,64,PASS
+21,8,16,1,65536,512,64,1x1x1,1,1,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,1.294406,1.294147,14.1019,64,PASS
+21,8,16,1,65536,512,64,1x1x1,1,1,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,1.435243,1.435342,12.7181,64,PASS
+21,8,16,1,65536,512,64,1x1x1,1,1,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,1.435442,1.435342,12.7164,64,PASS
+21,8,16,1,65536,512,64,1x1x2,1,1,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.204613,1.205262,15.1531,64,PASS
+21,8,16,1,65536,512,64,1x1x2,1,1,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.205911,1.205262,15.1368,64,PASS
+21,8,16,1,65536,512,64,1x1x2,1,1,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,0.888587,0.888901,20.5423,64,PASS
+21,8,16,1,65536,512,64,1x1x2,1,1,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,0.889215,0.888901,20.5278,64,PASS
+21,8,16,1,65536,512,64,1x1x2,1,1,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,1.025743,1.026718,17.7955,64,PASS
+21,8,16,1,65536,512,64,1x1x2,1,1,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,1.027694,1.026718,17.7617,64,PASS
+21,8,16,1,65536,512,64,1x2x1,1,2,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.312297,1.313485,13.9097,64,PASS
+21,8,16,1,65536,512,64,1x2x1,1,2,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.314673,1.313485,13.8845,64,PASS
+21,8,16,1,65536,512,64,1x2x1,1,2,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,1.01039,1.009018,18.0659,64,PASS
+21,8,16,1,65536,512,64,1x2x1,1,2,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,1.007646,1.009018,18.1151,64,PASS
+21,8,16,1,65536,512,64,1x2x1,1,2,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,1.136464,1.135478,16.0618,64,PASS
+21,8,16,1,65536,512,64,1x2x1,1,2,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,1.134492,1.135478,16.0897,64,PASS
+21,8,16,1,65536,512,64,1x2x2,1,2,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.131825,1.113673,16.1276,64,PASS
+21,8,16,1,65536,512,64,1x2x2,1,2,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.095521,1.113673,16.662,64,PASS
+21,8,16,1,65536,512,64,1x2x2,1,2,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,0.807461,0.807152,22.6062,64,PASS
+21,8,16,1,65536,512,64,1x2x2,1,2,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,0.806842,0.807152,22.6235,64,PASS
+21,8,16,1,65536,512,64,1x2x2,1,2,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,0.927826,0.927473,19.6735,64,PASS
+21,8,16,1,65536,512,64,1x2x2,1,2,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,0.927121,0.927473,19.6885,64,PASS
+21,8,16,1,65536,512,64,1x2x4,1,2,4,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+21,8,16,1,65536,512,64,1x2x4,1,2,4,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+21,8,16,1,65536,512,64,1x2x4,1,2,4,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+21,8,16,1,65536,512,64,1x2x4,1,2,4,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+21,8,16,1,65536,512,64,1x2x4,1,2,4,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+21,8,16,1,65536,512,64,1x2x4,1,2,4,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+29,32,16,1,16384,512,64,1x1x1,1,1,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.78291,1.784144,10.2381,16,PASS
+29,32,16,1,16384,512,64,1x1x1,1,1,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.785379,1.784144,10.2239,16,PASS
+29,32,16,1,16384,512,64,1x1x1,1,1,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,1.289357,1.288309,14.1571,16,PASS
+29,32,16,1,16384,512,64,1x1x1,1,1,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,1.287261,1.288309,14.1802,16,PASS
+29,32,16,1,16384,512,64,1x1x1,1,1,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,1.427497,1.426863,12.7871,16,PASS
+29,32,16,1,16384,512,64,1x1x1,1,1,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,1.426229,1.426863,12.7985,16,PASS
+29,32,16,1,16384,512,64,1x1x2,1,1,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.197158,1.199051,15.2475,16,PASS
+29,32,16,1,16384,512,64,1x1x2,1,1,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.200945,1.199051,15.1994,16,PASS
+29,32,16,1,16384,512,64,1x1x2,1,1,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,0.882344,0.882109,20.6876,16,PASS
+29,32,16,1,16384,512,64,1x1x2,1,1,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,0.881875,0.882109,20.6986,16,PASS
+29,32,16,1,16384,512,64,1x1x2,1,1,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,1.018069,1.016994,17.9296,16,PASS
+29,32,16,1,16384,512,64,1x1x2,1,1,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,1.015919,1.016994,17.9676,16,PASS
+29,32,16,1,16384,512,64,1x2x1,1,2,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.305875,1.305112,13.9781,16,PASS
+29,32,16,1,16384,512,64,1x2x1,1,2,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.30435,1.305112,13.9944,16,PASS
+29,32,16,1,16384,512,64,1x2x1,1,2,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,1.003365,1.002301,18.1924,16,PASS
+29,32,16,1,16384,512,64,1x2x1,1,2,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,1.001237,1.002301,18.2311,16,PASS
+29,32,16,1,16384,512,64,1x2x1,1,2,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,1.124621,1.123724,16.2309,16,PASS
+29,32,16,1,16384,512,64,1x2x1,1,2,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,1.122826,1.123724,16.2568,16,PASS
+29,32,16,1,16384,512,64,1x2x2,1,2,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.092248,1.092377,16.712,16,PASS
+29,32,16,1,16384,512,64,1x2x2,1,2,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.092506,1.092377,16.708,16,PASS
+29,32,16,1,16384,512,64,1x2x2,1,2,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,0.79825,0.797577,22.867,16,PASS
+29,32,16,1,16384,512,64,1x2x2,1,2,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,0.796904,0.797577,22.9057,16,PASS
+29,32,16,1,16384,512,64,1x2x2,1,2,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,0.919199,0.918851,19.8582,16,PASS
+29,32,16,1,16384,512,64,1x2x2,1,2,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,0.918503,0.918851,19.8732,16,PASS
+29,32,16,1,16384,512,64,1x2x4,1,2,4,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+29,32,16,1,16384,512,64,1x2x4,1,2,4,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+29,32,16,1,16384,512,64,1x2x4,1,2,4,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+29,32,16,1,16384,512,64,1x2x4,1,2,4,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+29,32,16,1,16384,512,64,1x2x4,1,2,4,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+29,32,16,1,16384,512,64,1x2x4,1,2,4,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+31,32,16,1,65536,512,64,1x1x1,1,1,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,6.766665,6.765248,10.7903,16,PASS
+31,32,16,1,65536,512,64,1x1x1,1,1,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,6.763831,6.765248,10.7948,16,PASS
+31,32,16,1,65536,512,64,1x1x1,1,1,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,4.965376,4.965632,14.7047,16,PASS
+31,32,16,1,65536,512,64,1x1x1,1,1,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,4.965888,4.965632,14.7032,16,PASS
+31,32,16,1,65536,512,64,1x1x1,1,1,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,5.506018,5.502389,13.2608,16,PASS
+31,32,16,1,65536,512,64,1x1x1,1,1,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,5.49876,5.502389,13.2783,16,PASS
+31,32,16,1,65536,512,64,1x1x2,1,1,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,4.587093,4.592427,15.9174,16,PASS
+31,32,16,1,65536,512,64,1x1x2,1,1,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,4.59776,4.592427,15.8804,16,PASS
+31,32,16,1,65536,512,64,1x1x2,1,1,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,3.341321,3.339255,21.852,16,PASS
+31,32,16,1,65536,512,64,1x1x2,1,1,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,3.337188,3.339255,21.879,16,PASS
+31,32,16,1,65536,512,64,1x1x2,1,1,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,3.88544,3.882314,18.7918,16,PASS
+31,32,16,1,65536,512,64,1x1x2,1,1,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,3.879189,3.882314,18.8221,16,PASS
+31,32,16,1,65536,512,64,1x2x1,1,2,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,5.018798,5.017465,14.5482,16,PASS
+31,32,16,1,65536,512,64,1x2x1,1,2,1,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,5.016131,5.017465,14.5559,16,PASS
+31,32,16,1,65536,512,64,1x2x1,1,2,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,3.81696,3.816438,19.129,16,PASS
+31,32,16,1,65536,512,64,1x2x1,1,2,1,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,3.815916,3.816438,19.1342,16,PASS
+31,32,16,1,65536,512,64,1x2x1,1,2,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,4.297436,4.295517,16.9902,16,PASS
+31,32,16,1,65536,512,64,1x2x1,1,2,1,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,4.293597,4.295517,17.0054,16,PASS
+31,32,16,1,65536,512,64,1x2x2,1,2,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,4.181637,4.179489,17.4607,16,PASS
+31,32,16,1,65536,512,64,1x2x2,1,2,2,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,4.177341,4.179489,17.4787,16,PASS
+31,32,16,1,65536,512,64,1x2x2,1,2,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,3.003673,3.005518,24.3084,16,PASS
+31,32,16,1,65536,512,64,1x2x2,1,2,2,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,3.007364,3.005518,24.2786,16,PASS
+31,32,16,1,65536,512,64,1x2x2,1,2,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,3.483553,3.502189,20.9598,16,PASS
+31,32,16,1,65536,512,64,1x2x2,1,2,2,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,3.520825,3.502189,20.7379,16,PASS
+31,32,16,1,65536,512,64,1x2x4,1,2,4,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+31,32,16,1,65536,512,64,1x2x4,1,2,4,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+31,32,16,1,65536,512,64,1x2x4,1,2,4,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+31,32,16,1,65536,512,64,1x2x4,1,2,4,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+31,32,16,1,65536,512,64,1x2x4,1,2,4,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
+31,32,16,1,65536,512,64,1x2x4,1,2,4,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,-1,,-1,-1,FAIL: k_dim must be 16 currently but got 64
