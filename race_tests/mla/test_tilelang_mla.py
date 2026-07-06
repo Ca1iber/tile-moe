@@ -42,10 +42,23 @@ def flashattn(batch, heads, kv_head_num, seqlen_kv, dim, pe_dim, block_N, block_
         chunk=dim,
         k_pack=qk_k_pack,
     )
+    qk_pe_mma = TensorCoreIntrinEmitter(
+        a_dtype=dtype,
+        b_dtype=dtype,
+        accum_dtype=accum_dtype,
+        a_transposed=False,
+        b_transposed=True,
+        block_row_warps=qk_block_row_warps,
+        block_col_warps=qk_block_col_warps,
+        warp_row_tiles=qk_warp_row_tiles,
+        warp_col_tiles=qk_warp_col_tiles,
+        chunk=pe_dim,
+        k_pack=qk_k_pack,
+    )
     pv_k_pack = 2
     pv_micro_size_k = 16
     pv_block_row_warps = 1
-    pv_block_col_warps = 2
+    pv_block_col_warps = 4
     pv_warp_row_tiles = block_H // pv_block_row_warps
     pv_warp_col_tiles = dim // pv_block_col_warps
     pv_warp_cols = pv_warp_col_tiles // 16
@@ -78,7 +91,7 @@ def flashattn(batch, heads, kv_head_num, seqlen_kv, dim, pe_dim, block_N, block_
         # flash_attn_split: grid 里的 bz 是 split id，不是 batch id。
         # 这个 kernel 的每个 CTA 负责一个 (batch, head_block, split)。
         # num_split = 沿 KV sequence 维度切成多少个并行 split。
-        with T.Kernel(batch, heads // min(block_H, kv_group_num), num_split, threads=128) as (bid, hid, bz):
+        with T.Kernel(batch, heads // min(block_H, kv_group_num), num_split, threads=256) as (bid, hid, bz):
             Q_shared = T.alloc_shared([block_H, dim], dtype)
             S_shared = T.alloc_shared([block_H, block_N], dtype)
             Q_pe_shared = T.alloc_shared([block_H, pe_dim], dtype)
@@ -90,6 +103,8 @@ def flashattn(batch, heads, kv_head_num, seqlen_kv, dim, pe_dim, block_N, block_
             acc_o = T.alloc_fragment([block_H, dim], accum_dtype)                               # PV 累加的 Output
             qk_a_local = T.alloc_local((qk_warp_rows * qk_k_pack * qk_local_size_a), dtype)
             qk_b_local = T.alloc_local((qk_warp_cols * qk_k_pack * qk_local_size_b), dtype)
+            qk_pe_a_local = T.alloc_local((qk_warp_rows * qk_k_pack * qk_local_size_a), dtype)
+            qk_pe_b_local = T.alloc_local((qk_warp_cols * qk_k_pack * qk_local_size_b), dtype)
             pv_b_local = T.alloc_local((pv_warp_cols * pv_k_pack * pv_local_size_b), dtype)
             scores_max = T.alloc_fragment([block_H], accum_dtype)                               # 处理完当前 KV tile 之后的历史最大值
             scores_max_prev = T.alloc_fragment([block_H], accum_dtype)                          # 是进当前 KV tile 之前的历史最大值
@@ -101,7 +116,9 @@ def flashattn(batch, heads, kv_head_num, seqlen_kv, dim, pe_dim, block_N, block_
                 {
                     Q_shared: make_swizzled_layout(Q_shared),
                     KV_shared: make_swizzled_layout(KV_shared),
-                    acc_s: qk_mma.make_mma_store_layout(acc_s),
+                    # split kernel 现在是 256 threads；QK score fragment 原本是 128-thread layout，
+                    # replicate(2) 让 layout inference 显式覆盖完整 CTA，避免后 128 线程破坏 acc_s。
+                    acc_s: qk_mma.make_mma_store_layout(acc_s).replicate(2),
                     acc_s_cast: pv_mma.make_mma_load_layout(acc_s_cast, matrix="A"),
                     acc_o: pv_mma.make_mma_store_layout(acc_o),
                 }
@@ -129,7 +146,10 @@ def flashattn(batch, heads, kv_head_num, seqlen_kv, dim, pe_dim, block_N, block_
                     qk_mma.ldmatrix_a(qk_a_local, Q_shared, ki)
                     qk_mma.ldmatrix_b(qk_b_local, KV_shared, ki)
                     qk_mma.mma(qk_a_local, qk_b_local, acc_s, ki)
-                T.gemm(Q_pe_shared, K_pe_shared, acc_s, transpose_B=True, policy=T.GemmWarpPolicy.FullCol)
+                for ki in T.serial(0, pe_dim // (qk_micro_size_k * qk_k_pack)):
+                    qk_pe_mma.ldmatrix_a(qk_pe_a_local, Q_pe_shared, ki)
+                    qk_pe_mma.ldmatrix_b(qk_pe_b_local, K_pe_shared, ki)
+                    qk_pe_mma.mma(qk_pe_a_local, qk_pe_b_local, acc_s, ki)
 
                 # 3. 保存旧 max 并计算新 max
                 T.copy(scores_max, scores_max_prev)     # src -> dst
@@ -149,6 +169,7 @@ def flashattn(batch, heads, kv_head_num, seqlen_kv, dim, pe_dim, block_N, block_
                 # 6. 当前 tile 的 softmax 分母贡献 -> scores_sum[i] = sum_j exp(scores_ij - m_new)
                 T.reduce_sum(acc_s, scores_sum, dim=1)
                 T.copy(acc_s, S_shared)
+                T.sync_threads()
                 # 将 softmax 后的 probability 从 fp32 accumulator 转成 dtype fragment，作为 P @ V 的输入。
                 T.copy(S_shared, acc_s_cast)
 
