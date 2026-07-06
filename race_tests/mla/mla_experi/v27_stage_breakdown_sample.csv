@@ -1,0 +1,82 @@
+case_id,batch,heads,kv_heads,kv_ctx,dim,pe_dim,variant,variant_desc,repeat,latency_ms,median_latency_ms,tflops,num_split,status
+21,8,16,1,65536,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.098691,1.098551,16.614,64,PASS
+21,8,16,1,65536,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.098551,1.098551,16.6161,64,PASS
+21,8,16,1,65536,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,2,1.096522,1.098551,16.6468,64,PASS
+21,8,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,0,0.446981,0.445705,40.8376,64,PASS
+21,8,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,1,0.445705,0.445705,40.9544,64,PASS
+21,8,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,2,0.445193,0.445705,41.0015,64,PASS
+21,8,16,1,65536,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,0.819481,0.8175,22.2746,64,PASS
+21,8,16,1,65536,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,0.8175,0.8175,22.3286,64,PASS
+21,8,16,1,65536,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,2,0.811269,0.8175,22.5001,64,PASS
+21,8,16,1,65536,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,0.934912,0.930449,19.5244,64,PASS
+21,8,16,1,65536,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,0.930449,0.930449,19.6181,64,PASS
+21,8,16,1,65536,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,2,0.92889,0.930449,19.651,64,PASS
+21,8,16,1,65536,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,0,0.92977,0.929185,19.6324,64,PASS
+21,8,16,1,65536,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,1,0.929185,0.929185,19.6447,64,PASS
+21,8,16,1,65536,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,2,0.927961,0.929185,19.6707,64,PASS
+21,8,16,1,65536,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,0,0.535582,0.534839,34.0818,64,PASS
+21,8,16,1,65536,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,1,0.534839,0.534839,34.1292,64,PASS
+21,8,16,1,65536,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,2,0.534597,0.534839,34.1446,64,PASS
+21,8,16,1,65536,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,0,0.448281,0.447241,40.7191,64,PASS
+21,8,16,1,65536,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,1,0.446624,0.447241,40.8702,64,PASS
+21,8,16,1,65536,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,2,0.447241,0.447241,40.8138,64,PASS
+21,8,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,0,0.442333,0.442333,41.2666,64,PASS
+21,8,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,1,0.442088,0.442333,41.2895,64,PASS
+21,8,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,2,0.442599,0.442333,41.2419,64,PASS
+21,8,16,1,65536,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,0,0.520532,0.520182,35.0672,64,PASS
+21,8,16,1,65536,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,1,0.520182,0.520182,35.0908,64,PASS
+21,8,16,1,65536,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,2,0.519287,0.520182,35.1513,64,PASS
+29,32,16,1,16384,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,1.096269,1.096269,16.6507,16,PASS
+29,32,16,1,16384,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,1.128797,1.096269,16.1709,16,PASS
+29,32,16,1,16384,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,2,1.094166,1.096269,16.6827,16,PASS
+29,32,16,1,16384,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,0,0.461824,0.461426,39.525,16,PASS
+29,32,16,1,16384,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,1,0.461016,0.461426,39.5943,16,PASS
+29,32,16,1,16384,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,2,0.461426,0.461426,39.5592,16,PASS
+29,32,16,1,16384,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,0.800783,0.800783,22.7947,16,PASS
+29,32,16,1,16384,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,0.801426,0.800783,22.7764,16,PASS
+29,32,16,1,16384,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,2,0.800063,0.800783,22.8152,16,PASS
+29,32,16,1,16384,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,0.922357,0.92111,19.7902,16,PASS
+29,32,16,1,16384,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,0.92111,0.92111,19.817,16,PASS
+29,32,16,1,16384,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,2,0.92086,0.92111,19.8224,16,PASS
+29,32,16,1,16384,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,0,0.921146,0.919894,19.8162,16,PASS
+29,32,16,1,16384,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,1,0.919894,0.919894,19.8432,16,PASS
+29,32,16,1,16384,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,2,0.919742,0.919894,19.8464,16,PASS
+29,32,16,1,16384,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,0,0.533668,0.533509,34.2041,16,PASS
+29,32,16,1,16384,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,1,0.533509,0.533509,34.2142,16,PASS
+29,32,16,1,16384,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,2,0.532874,0.533509,34.255,16,PASS
+29,32,16,1,16384,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,0,0.462407,0.461462,39.4752,16,PASS
+29,32,16,1,16384,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,1,0.460953,0.461462,39.5997,16,PASS
+29,32,16,1,16384,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,2,0.461462,0.461462,39.556,16,PASS
+29,32,16,1,16384,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,0,0.455978,0.455244,40.0318,16,PASS
+29,32,16,1,16384,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,1,0.454421,0.455244,40.169,16,PASS
+29,32,16,1,16384,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,2,0.455244,0.455244,40.0963,16,PASS
+29,32,16,1,16384,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,0,0.527948,0.526797,34.5746,16,PASS
+29,32,16,1,16384,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,1,0.526797,0.526797,34.6502,16,PASS
+29,32,16,1,16384,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,2,0.526638,0.526797,34.6607,16,PASS
+31,32,16,1,65536,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,0,4.184754,4.182895,17.4477,16,PASS
+31,32,16,1,65536,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,1,4.182895,4.182895,17.4555,16,PASS
+31,32,16,1,65536,512,64,full,完整 v26 实现，只有这个 variant 做 correctness 校验,2,4.179433,4.182895,17.4699,16,PASS
+31,32,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,0,1.602537,1.602071,45.5618,16,PASS
+31,32,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,1,1.602071,1.602071,45.575,16,PASS
+31,32,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，估计基础 copy 下限,2,1.599424,1.602071,45.6505,16,PASS
+31,32,16,1,65536,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,0,3.010667,3.00819,24.2519,16,PASS
+31,32,16,1,65536,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,1,3.00819,3.00819,24.2719,16,PASS
+31,32,16,1,65536,512,64,qk_only,只做 QK content + QK RoPE，并消费 score 防止 DCE,2,3.006753,3.00819,24.2835,16,PASS
+31,32,16,1,65536,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,0,3.493499,3.491281,20.9001,16,PASS
+31,32,16,1,65536,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,1,3.490304,3.491281,20.9192,16,PASS
+31,32,16,1,65536,512,64,qk_softmax,做 QK + online softmax + S bridge，不做 PV,2,3.491281,3.491281,20.9134,16,PASS
+31,32,16,1,65536,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,0,3.492627,3.490759,20.9053,16,PASS
+31,32,16,1,65536,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,1,3.490759,3.490759,20.9165,16,PASS
+31,32,16,1,65536,512,64,no_pv,做 QK + online softmax + partial/combine 框架，不做 PV,2,3.488503,3.490759,20.93,16,PASS
+31,32,16,1,65536,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,0,1.933274,1.93048,37.7673,16,PASS
+31,32,16,1,65536,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,1,1.929036,1.93048,37.8502,16,PASS
+31,32,16,1,65536,512,64,pv_dummyS,不做 QK/softmax，用常数 S 做 PV4 MMA，估计 PV 路径,2,1.93048,1.93048,37.8219,16,PASS
+31,32,16,1,65536,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,0,1.598784,1.599296,45.6687,16,PASS
+31,32,16,1,65536,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,1,1.599296,1.599296,45.6541,16,PASS
+31,32,16,1,65536,512,64,pv_load_only,不做 PV MMA，只做 PV ldmatrix_b 并消费 fragment,2,1.599744,1.599296,45.6413,16,PASS
+31,32,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,0,1.575415,1.575415,46.3462,16,PASS
+31,32,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,1,1.5748,1.575415,46.3643,16,PASS
+31,32,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，估计写出/combine,2,1.578766,1.575415,46.2478,16,PASS
+31,32,16,1,65536,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,0,1.926313,1.926313,37.9037,16,PASS
+31,32,16,1,65536,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,1,1.925221,1.926313,37.9252,16,PASS
+31,32,16,1,65536,512,64,pv_no_combine,做 dummyS + PV4 MMA + partial 写出，但跳过 combine reduce,2,1.927413,1.926313,37.8821,16,PASS
