@@ -1,0 +1,7 @@
+case_id,batch,heads,kv_heads,kv_ctx,dim,pe_dim,pv_block_col_warps,pv_k_pack,mapping_desc,repeat,latency_ms,median_latency_ms,tflops,num_split,status
+21,8,16,1,65536,512,64,1,1,列方向1组warp，每组约512个输出列；k_pack=1，K=32 拆成2轮MMA，单轮寄存器压力较小但循环更多,0,11.212289,11.212289,1.628,64,PASS
+21,8,16,1,65536,512,64,1,2,列方向1组warp，每组约512个输出列；k_pack=2，K=32 一轮完成，循环更少但单轮打包更重,0,11.084064,11.084064,1.6468,64,PASS
+21,8,16,1,65536,512,64,2,1,列方向2组warp，每组约256个输出列；k_pack=1，K=32 拆成2轮MMA，单轮寄存器压力较小但循环更多,0,2.731422,2.731422,6.6828,64,PASS
+21,8,16,1,65536,512,64,2,2,当前baseline：列方向2组warp，每组约256个输出列；k_pack=2，K=32 一轮完成，循环更少但单轮打包更重,0,2.621739,2.621739,6.9624,64,PASS
+21,8,16,1,65536,512,64,4,1,列方向4组warp，每组约128个输出列；k_pack=1，K=32 拆成2轮MMA，单轮寄存器压力较小但循环更多,0,-1,,-1,-1,"FAIL: Too many mismatched elements: 32767 > 655 (1.00% allowed, but get 50.00%)."
+21,8,16,1,65536,512,64,4,2,列方向4组warp，每组约128个输出列；k_pack=2，K=32 一轮完成，循环更少但单轮打包更重,0,-1,,-1,-1,"FAIL: Too many mismatched elements: 32766 > 655 (1.00% allowed, but get 50.00%)."

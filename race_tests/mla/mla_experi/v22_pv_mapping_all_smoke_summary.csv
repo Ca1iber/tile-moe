@@ -1,0 +1,5 @@
+case_id,batch,kv_ctx,pv_block_col_warps,pv_k_pack,mapping_desc,median_latency_ms,baseline_2x2_latency_ms,speedup_vs_2x2,speedup_pct_vs_2x2,num_split,status
+21,8,65536,1,1,列方向1组warp，每组约512个输出列；k_pack=1，K=32 拆成2轮MMA，单轮寄存器压力较小但循环更多,11.212289,2.621739,0.233827,-76.617,64,PASS
+21,8,65536,1,2,列方向1组warp，每组约512个输出列；k_pack=2，K=32 一轮完成，循环更少但单轮打包更重,11.084064,2.621739,0.236532,-76.347,64,PASS
+21,8,65536,2,1,列方向2组warp，每组约256个输出列；k_pack=1，K=32 拆成2轮MMA，单轮寄存器压力较小但循环更多,2.731422,2.621739,0.959844,-4.016,64,PASS
+21,8,65536,2,2,当前baseline：列方向2组warp，每组约256个输出列；k_pack=2，K=32 一轮完成，循环更少但单轮打包更重,2.621739,2.621739,1.0,0.0,64,PASS
