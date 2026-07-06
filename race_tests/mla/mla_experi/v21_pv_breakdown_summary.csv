@@ -1,0 +1,19 @@
+case_id,batch,kv_ctx,num_split,variant,variant_desc,median_latency_ms,ratio_to_full,delta_vs_copy_ms,delta_vs_pv_dummy_ms
+21,8,65536,64,full,完整当前实现，只有这个 variant 做正确性校验,2.620455,1.0,2.166414,0.860317
+21,8,65536,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,0.454041,0.1733,0.0,-1.306097
+21,8,65536,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,1.760138,0.6717,1.306097,0.0
+21,8,65536,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,0.453875,0.1732,-0.000166,-1.306263
+21,8,65536,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,0.45369,0.1731,-0.000351,-1.306448
+21,8,65536,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,1.745026,0.6659,1.290985,-0.015112
+29,32,16384,16,full,完整当前实现，只有这个 variant 做正确性校验,2.626638,1.0,2.155744,0.919748
+29,32,16384,16,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,0.470894,0.1793,0.0,-1.235996
+29,32,16384,16,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,1.70689,0.6498,1.235996,0.0
+29,32,16384,16,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,0.470559,0.1791,-0.000335,-1.236331
+29,32,16384,16,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,0.469873,0.1789,-0.001021,-1.237017
+29,32,16384,16,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,1.704062,0.6488,1.233168,-0.002828
+31,32,65536,16,full,完整当前实现，只有这个 variant 做正确性校验,10.210844,1.0,8.600293,3.591579
+31,32,65536,16,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,1.610551,0.1577,0.0,-5.008714
+31,32,65536,16,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,6.619265,0.6483,5.008714,0.0
+31,32,65536,16,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,1.610949,0.1578,0.000398,-5.008316
+31,32,65536,16,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,1.605865,0.1573,-0.004686,-5.0134
+31,32,65536,16,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,6.605824,0.6469,4.995273,-0.013441

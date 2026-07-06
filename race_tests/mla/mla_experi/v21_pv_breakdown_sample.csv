@@ -1,0 +1,55 @@
+case_id,batch,heads,kv_heads,kv_ctx,dim,pe_dim,variant,variant_desc,repeat,latency_ms,median_latency_ms,tflops,num_split,status
+21,8,16,1,65536,512,64,full,完整当前实现，只有这个 variant 做正确性校验,0,2.620455,2.620455,6.9658,64,PASS
+21,8,16,1,65536,512,64,full,完整当前实现，只有这个 variant 做正确性校验,1,2.621789,2.620455,6.9623,64,PASS
+21,8,16,1,65536,512,64,full,完整当前实现，只有这个 variant 做正确性校验,2,2.619961,2.620455,6.9671,64,PASS
+21,8,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,0,0.453715,0.454041,40.2314,64,PASS
+21,8,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,1,0.454308,0.454041,40.179,64,PASS
+21,8,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,2,0.454041,0.454041,40.2025,64,PASS
+21,8,16,1,65536,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,0,1.761457,1.760138,10.3628,64,PASS
+21,8,16,1,65536,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,1,1.760138,1.760138,10.3706,64,PASS
+21,8,16,1,65536,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,2,1.759513,1.760138,10.3742,64,PASS
+21,8,16,1,65536,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,0,0.453875,0.453875,40.2172,64,PASS
+21,8,16,1,65536,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,1,0.453594,0.453875,40.2422,64,PASS
+21,8,16,1,65536,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,2,0.453965,0.453875,40.2093,64,PASS
+21,8,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,0,0.46727,0.45369,39.0643,64,PASS
+21,8,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,1,0.45369,0.45369,40.2336,64,PASS
+21,8,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,2,0.453499,0.45369,40.2506,64,PASS
+21,8,16,1,65536,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,0,1.745012,1.745026,10.4605,64,PASS
+21,8,16,1,65536,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,1,1.74534,1.745026,10.4585,64,PASS
+21,8,16,1,65536,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,2,1.745026,1.745026,10.4604,64,PASS
+29,32,16,1,16384,512,64,full,完整当前实现，只有这个 variant 做正确性校验,0,2.626638,2.626638,6.9494,16,PASS
+29,32,16,1,16384,512,64,full,完整当前实现，只有这个 variant 做正确性校验,1,2.628637,2.626638,6.9441,16,PASS
+29,32,16,1,16384,512,64,full,完整当前实现，只有这个 variant 做正确性校验,2,2.625365,2.626638,6.9528,16,PASS
+29,32,16,1,16384,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,0,0.470894,0.470894,38.7637,16,PASS
+29,32,16,1,16384,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,1,0.469669,0.470894,38.8648,16,PASS
+29,32,16,1,16384,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,2,0.476525,0.470894,38.3057,16,PASS
+29,32,16,1,16384,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,0,1.708728,1.70689,10.6826,16,PASS
+29,32,16,1,16384,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,1,1.70689,1.70689,10.6941,16,PASS
+29,32,16,1,16384,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,2,1.688216,1.70689,10.8124,16,PASS
+29,32,16,1,16384,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,0,0.470698,0.470559,38.7799,16,PASS
+29,32,16,1,16384,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,1,0.470559,0.470559,38.7914,16,PASS
+29,32,16,1,16384,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,2,0.470398,0.470559,38.8046,16,PASS
+29,32,16,1,16384,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,0,0.470735,0.469873,38.7768,16,PASS
+29,32,16,1,16384,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,1,0.469829,0.469873,38.8516,16,PASS
+29,32,16,1,16384,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,2,0.469873,0.469873,38.8479,16,PASS
+29,32,16,1,16384,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,0,1.704062,1.704062,10.7118,16,PASS
+29,32,16,1,16384,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,1,1.701556,1.704062,10.7276,16,PASS
+29,32,16,1,16384,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,2,1.707259,1.704062,10.6918,16,PASS
+31,32,16,1,65536,512,64,full,完整当前实现，只有这个 variant 做正确性校验,0,10.210844,10.210844,7.1507,16,PASS
+31,32,16,1,65536,512,64,full,完整当前实现，只有这个 variant 做正确性校验,1,10.212153,10.210844,7.1498,16,PASS
+31,32,16,1,65536,512,64,full,完整当前实现，只有这个 variant 做正确性校验,2,10.205667,10.210844,7.1543,16,PASS
+31,32,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,0,1.610551,1.610551,45.3351,16,PASS
+31,32,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,1,1.610514,1.610551,45.3361,16,PASS
+31,32,16,1,65536,512,64,copy_only,只搬运 KV/K_pe 并消费 KV_shared，作为基础搬运下限,2,1.610967,1.610551,45.3234,16,PASS
+31,32,16,1,65536,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,0,6.619629,6.619265,11.03,16,PASS
+31,32,16,1,65536,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,1,6.619265,6.619265,11.0306,16,PASS
+31,32,16,1,65536,512,64,pv_dummyS,不算 QK/softmax，用常数 S 做 PV MMA，衡量 PV 路径总成本,2,6.618295,6.619265,11.0322,16,PASS
+31,32,16,1,65536,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,0,1.610789,1.610949,45.3284,16,PASS
+31,32,16,1,65536,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,1,1.610949,1.610949,45.3239,16,PASS
+31,32,16,1,65536,512,64,pv_load_only,不做 PV MMA，只执行 PV 的 ldmatrix_b 读取并消费 fragment,2,1.611479,1.610949,45.309,16,PASS
+31,32,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,0,1.605865,1.605865,45.4674,16,PASS
+31,32,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,1,1.606816,1.605865,45.4405,16,PASS
+31,32,16,1,65536,512,64,pv_no_mma_output,不做 PV MMA，只写 dummy Output_partial，用来估计 partial output 写出与 combine 成本,2,1.604805,1.605865,45.4974,16,PASS
+31,32,16,1,65536,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,0,6.605824,6.605824,11.053,16,PASS
+31,32,16,1,65536,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,1,6.606007,6.605824,11.0527,16,PASS
+31,32,16,1,65536,512,64,pv_no_combine,执行 dummyS + PV MMA 并写 Output_partial，但 combine kernel 只写零，用来估计 combine 成本,2,6.604635,6.605824,11.055,16,PASS
