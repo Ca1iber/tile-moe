@@ -1,0 +1,421 @@
+import torch
+import tilelang
+import tilelang.language as T
+from tilelang.layout import make_swizzled_layout
+
+
+_KERNEL_CACHE = {}
+_WORKSPACE_CACHE = {}
+
+
+def _workspace(stacked_expert_tokens, intermediate):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(stacked_expert_tokens.shape[0]),
+        int(intermediate),
+        str(stacked_expert_tokens.dtype),
+    )
+    buf = _WORKSPACE_CACHE.get(key)
+    if buf is None:
+        buf = torch.empty(
+            (int(stacked_expert_tokens.shape[0]), int(intermediate)),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def run_kernel(
+    stacked_expert_tokens,
+    gate_w,
+    up_w,
+    down_w,
+    routed_expert_weights,
+    group_sizes,
+    group_offsets,
+    group_padded_offsets,
+    group_idx_for_bx,
+    out,
+):
+    hidden = int(stacked_expert_tokens.shape[1])
+    intermediate = int(gate_w.shape[1])
+    num_experts = int(gate_w.shape[0])
+    total_padded = int(stacked_expert_tokens.shape[0])
+    total_valid = int(routed_expert_weights.shape[0])
+    group_offsets_len = int(group_offsets.shape[0])
+    group_padded_offsets_len = int(group_padded_offsets.shape[0])
+    group_idx_len = int(group_idx_for_bx.shape[0])
+    block_token = 128
+    num_blocks_m = (total_padded + block_token - 1) // block_token
+
+    block_dhidden_step1 = 64
+    block_dexpert_step1 = 128
+    block_dhidden_step2 = 256
+    block_dexpert_step2 = 64
+    use_grid_transpose = not (hidden == 7168 and intermediate == 2048)
+
+    key = (
+        hidden,
+        intermediate,
+        num_experts,
+        total_padded,
+        total_valid,
+        num_blocks_m,
+        group_offsets_len,
+        group_padded_offsets_len,
+        group_idx_len,
+        block_dhidden_step1,
+        block_dexpert_step1,
+        block_dhidden_step2,
+        block_dexpert_step2,
+        bool(use_grid_transpose),
+    )
+    kernel = _KERNEL_CACHE.get(key)
+
+    if kernel is None:
+        __metaclass__ = type
+
+        def shared_16x32_to_local_64x8_layout_a(i, j):
+            thread_id = i + 16 * (j // 8)
+            local_id = j % 8
+            return thread_id, local_id
+
+        def thread_id_shared_access_64x8_to_16x32_layout_a(thread_id, local_id):
+            i = thread_id % 16
+            j = (thread_id // 16) * 8 + local_id
+            return i, j
+
+        class MinimalMacaMMA:
+            WARP_SIZE = 64
+
+            def __init__(
+                self,
+                block_row_warps=4,
+                block_col_warps=1,
+                warp_row_tiles=32,
+                warp_col_tiles=128,
+                chunk=64,
+                k_pack=2,
+                is_m_first=False,
+                thread_var=None,
+            ):
+                self.block_row_warps = block_row_warps
+                self.block_col_warps = block_col_warps
+                self.warp_row_tiles = warp_row_tiles
+                self.warp_col_tiles = warp_col_tiles
+                self.chunk = chunk
+                self.k_pack = k_pack
+                self.is_m_first = is_m_first
+                self.thread_var = thread_var
+                self.micro_size_x = 16
+                self.micro_size_y = 16
+                self.micro_size_k = 16
+                self.local_size_a = 4
+                self.local_size_b = 4
+                self.local_size_out = 4
+                self.mma_suffix = "16x16x16f16"
+                self.warp_rows = warp_row_tiles // self.micro_size_x
+                self.warp_cols = warp_col_tiles // self.micro_size_y
+
+            def get_thread_binding(self):
+                if self.thread_var is None:
+                    current_frame = T.KernelLaunchFrame.Current()
+                    assert current_frame is not None
+                    return current_frame.get_thread_binding()
+                return self.thread_var
+
+            def extract_thread_binding(self, thread_id, is_m_first=None):
+                if is_m_first is None:
+                    is_m_first = self.is_m_first
+                if is_m_first:
+                    lane_id = thread_id % self.WARP_SIZE
+                    warp_n = (thread_id // self.WARP_SIZE) % self.block_col_warps
+                    warp_m = (thread_id // (self.WARP_SIZE * self.block_col_warps)) % self.block_row_warps
+                    return lane_id, warp_n, warp_m
+                lane_id = thread_id % self.WARP_SIZE
+                warp_m = (thread_id // self.WARP_SIZE) % self.block_row_warps
+                warp_n = (thread_id // (self.WARP_SIZE * self.block_row_warps)) % self.block_col_warps
+                return lane_id, warp_n, warp_m
+
+            def get_ldmatrix_b_index_map(self):
+                return thread_id_shared_access_64x8_to_16x32_layout_a
+
+            def ldmatrix_b(self, b_local_buf, b_shared_buf, ki, rk=0):
+                warp_col_tiles = self.warp_col_tiles
+                warp_cols = self.warp_cols
+                chunk = self.chunk
+                micro_size_y = self.micro_size_y
+                micro_size_k = self.micro_size_k
+                local_size_b = self.local_size_b
+                k_pack = self.k_pack
+                thread_binding = self.get_thread_binding()
+                reverse_index_map = self.get_ldmatrix_b_index_map()
+
+                @T.macro
+                def warp_ldmatrix_b(b_local_buf, b_shared_buf, ki, thread_binding, rk=0):
+                    tx, warp_n, _ = self.extract_thread_binding(thread_binding)
+                    for j in T.serial(warp_cols):
+                        for local_id in T.vectorized(k_pack * local_size_b):
+                            row, col = T.meta_var(reverse_index_map(tx, local_id))
+                            l = warp_n * warp_col_tiles + j * micro_size_y
+                            r = rk * chunk + ki * (k_pack * micro_size_k)
+                            b_local_buf[j * k_pack * local_size_b + local_id] = b_shared_buf[l + row, r + col]
+
+                return warp_ldmatrix_b(b_local_buf, b_shared_buf, ki, thread_binding, rk)
+
+            def mma(self, a_local_buf, b_local_buf, c_local_buf, k_inner=0):
+                warp_rows = self.warp_rows
+                warp_cols = self.warp_cols
+                local_size_a = self.local_size_a
+                local_size_b = self.local_size_b
+                local_size_out = self.local_size_out
+                k_pack = self.k_pack
+                a_local_stride = k_inner * warp_rows * k_pack * local_size_a
+                b_local_stride = 0
+
+                @T.macro
+                def warp_mma(a_local_buf, b_local_buf, c_local_buf):
+                    for kp, i, j in T.grid(k_pack, warp_rows, warp_cols):
+                        T.tvm_mfma(
+                            self.mma_suffix,
+                            "row",
+                            "row",
+                            "float16x4",
+                            "float16x4",
+                            "float32x4",
+                            b_local_buf.data,
+                            (b_local_stride + (j * k_pack + kp) * local_size_b) // local_size_b,
+                            a_local_buf.data,
+                            (a_local_stride + (i * k_pack + kp) * local_size_a) // local_size_a,
+                            c_local_buf.data,
+                            (i * warp_cols * local_size_out + j * local_size_out) // local_size_out,
+                            dtype="float32x4",
+                        )
+
+                return warp_mma(a_local_buf, b_local_buf, c_local_buf)
+
+            def make_mma_load_layout(self, local_buf, matrix="A"):
+                def forward_thread(i, j):
+                    lane_id, _ = shared_16x32_to_local_64x8_layout_a(i, j)
+                    return lane_id
+
+                def forward_index(i, j):
+                    _, local_id = shared_16x32_to_local_64x8_layout_a(i, j)
+                    return local_id
+
+                base_fragment = T.Fragment(
+                    [self.micro_size_x, self.micro_size_k * self.k_pack],
+                    forward_thread_fn=forward_thread,
+                    forward_index_fn=forward_index,
+                )
+                warp_fragment = base_fragment.repeat(
+                    [self.warp_rows, self.chunk // (self.micro_size_k * self.k_pack)],
+                    repeat_on_thread=False,
+                    lower_dim_first=False,
+                )
+                return warp_fragment.repeat(
+                    [self.block_row_warps, 1],
+                    repeat_on_thread=True,
+                    lower_dim_first=True,
+                ).replicate(self.block_col_warps)
+
+            def make_mma_store_layout(self, local_buf):
+                def forward_thread(i, j):
+                    block_i = (i // self.micro_size_x) // self.warp_rows
+                    block_j = (j // self.micro_size_y) // self.warp_cols
+                    mma_i = i % self.micro_size_x
+                    mma_j = j % self.micro_size_y
+                    lane_id = mma_i + (mma_j // 4) * 16
+                    if self.is_m_first:
+                        return block_i * (self.block_col_warps * self.WARP_SIZE) + block_j * self.WARP_SIZE + lane_id
+                    return block_j * (self.block_row_warps * self.WARP_SIZE) + block_i * self.WARP_SIZE + lane_id
+
+                def forward_index(i, j):
+                    warp_i = (i // self.micro_size_x) % self.warp_rows
+                    warp_j = (j // self.micro_size_y) % self.warp_cols
+                    mma_j = j % self.micro_size_y
+                    local_id = mma_j % 4
+                    return warp_i * (self.warp_cols * self.local_size_out) + warp_j * self.local_size_out + local_id
+
+                return T.Fragment(
+                    local_buf.shape,
+                    forward_thread_fn=forward_thread,
+                    forward_index_fn=forward_index,
+                )
+
+        @tilelang.jit(pass_configs={tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True})
+        def make_kernel(
+            hidden,
+            intermediate,
+            num_experts,
+            total_padded,
+            total_valid,
+            num_blocks_m,
+            group_offsets_len,
+            group_padded_offsets_len,
+            group_idx_len,
+            block_dhidden_step1,
+            block_dexpert_step1,
+            block_dhidden_step2,
+            block_dexpert_step2,
+            use_grid_transpose,
+        ):
+            scale = 1.44269504
+            dtype = T.float16
+            accum_dtype = T.float32
+            threads = 256
+            num_stages = 1
+            block_token = 128
+
+            step1_mma = MinimalMacaMMA(
+                block_row_warps=4,
+                block_col_warps=1,
+                warp_row_tiles=block_token // 4,
+                warp_col_tiles=block_dexpert_step1,
+                chunk=block_dhidden_step1,
+                k_pack=2,
+            )
+            step2_mma = MinimalMacaMMA(
+                block_row_warps=4,
+                block_col_warps=1,
+                warp_row_tiles=block_token // 4,
+                warp_col_tiles=block_dhidden_step2,
+                chunk=block_dexpert_step2,
+                k_pack=2,
+            )
+
+            input_shape = (total_padded, hidden)
+            intermediate_shape = (total_padded, intermediate)
+            gate_shape = (num_experts, intermediate, hidden)
+            up_shape = (num_experts, intermediate, hidden)
+            down_shape = (num_experts, hidden, intermediate)
+            step1_col_tiles = (intermediate + block_dexpert_step1 - 1) // block_dexpert_step1
+            step2_col_tiles = (hidden + block_dhidden_step2 - 1) // block_dhidden_step2
+            step1_grid_x = step1_col_tiles if use_grid_transpose else num_blocks_m
+            step1_grid_y = num_blocks_m if use_grid_transpose else step1_col_tiles
+            step2_grid_x = step2_col_tiles if use_grid_transpose else num_blocks_m
+            step2_grid_y = num_blocks_m if use_grid_transpose else step2_col_tiles
+
+            @T.prim_func
+            def kernel(
+                input: T.Tensor(input_shape, dtype),
+                gate: T.Tensor(gate_shape, dtype),
+                up: T.Tensor(up_shape, dtype),
+                down: T.Tensor(down_shape, dtype),
+                routed_weights: T.Tensor((total_valid,), T.float32),
+                group_sizes: T.Tensor((num_experts,), T.int32),
+                group_offsets: T.Tensor((group_offsets_len,), T.int32),
+                group_padded_offsets: T.Tensor((group_padded_offsets_len,), T.int32),
+                group_idx_for_bx: T.Tensor((group_idx_len,), T.int32),
+                up_logits: T.Tensor(intermediate_shape, dtype),
+                output: T.Tensor(input_shape, dtype),
+            ):
+                with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
+                    bx = pid1 if use_grid_transpose else pid0
+                    by = pid0 if use_grid_transpose else pid1
+                    input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+                    gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+                    up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+                    gate_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                    up_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                    weight_local = T.alloc_local((step1_mma.warp_cols * step1_mma.k_pack * step1_mma.local_size_b), dtype=dtype)
+
+                    T.annotate_layout(
+                        {
+                            input_shared: step1_mma.make_mma_load_layout(input_shared, matrix="A"),
+                            gate_shared: make_swizzled_layout(gate_shared),
+                            up_shared: make_swizzled_layout(up_shared),
+                            gate_local: step1_mma.make_mma_store_layout(gate_local),
+                            up_local: step1_mma.make_mma_store_layout(up_local),
+                        }
+                    )
+                    T.use_swizzle(10, enable=False)
+
+                    expert_id = group_idx_for_bx[bx]
+                    T.assume(0 <= expert_id)
+                    T.assume(expert_id < num_experts)
+                    block_start = bx * block_token
+                    group_size = group_sizes[expert_id]
+                    padded_start = group_padded_offsets[expert_id]
+                    token_offset = block_start - padded_start
+                    actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
+
+                    T.clear(gate_local)
+                    T.clear(up_local)
+                    for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
+                        T.copy(input[block_start:block_start + block_token, k * block_dhidden_step1:(k + 1) * block_dhidden_step1], input_shared)
+                        T.copy(gate[expert_id, by * block_dexpert_step1:(by + 1) * block_dexpert_step1, k * block_dhidden_step1:(k + 1) * block_dhidden_step1], gate_shared)
+                        T.copy(up[expert_id, by * block_dexpert_step1:(by + 1) * block_dexpert_step1, k * block_dhidden_step1:(k + 1) * block_dhidden_step1], up_shared)
+                        for ki in T.serial(0, block_dhidden_step1 // 32):
+                            step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                            step1_mma.mma(input_shared, weight_local, gate_local, ki)
+                            step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                            step1_mma.mma(input_shared, weight_local, up_local, ki)
+
+                    for i, j in T.Parallel(block_token, block_dexpert_step1):
+                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                        if i < actual_rows:
+                            up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+
+                with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
+                    bx = pid1 if use_grid_transpose else pid0
+                    by = pid0 if use_grid_transpose else pid1
+                    up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+                    down_shared = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
+                    out_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+                    down_local = T.alloc_local((step2_mma.warp_cols * step2_mma.k_pack * step2_mma.local_size_b), dtype=dtype)
+
+                    T.annotate_layout(
+                        {
+                            up_logits_shared: step2_mma.make_mma_load_layout(up_logits_shared, matrix="A"),
+                            down_shared: make_swizzled_layout(down_shared),
+                            out_local: step2_mma.make_mma_store_layout(out_local),
+                        }
+                    )
+                    T.use_swizzle(10, enable=False)
+
+                    expert_id = group_idx_for_bx[bx]
+                    T.assume(0 <= expert_id)
+                    T.assume(expert_id < num_experts)
+                    block_start = bx * block_token
+                    group_size = group_sizes[expert_id]
+                    raw_start = group_offsets[expert_id]
+                    padded_start = group_padded_offsets[expert_id]
+                    token_offset = block_start - padded_start
+                    actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
+
+                    T.clear(out_local)
+                    for k in T.Pipelined(T.ceildiv(intermediate, block_dexpert_step2), num_stages=num_stages):
+                        T.copy(up_logits[block_start:block_start + block_token, k * block_dexpert_step2:(k + 1) * block_dexpert_step2], up_logits_shared)
+                        T.copy(down[expert_id, by * block_dhidden_step2:(by + 1) * block_dhidden_step2, k * block_dexpert_step2:(k + 1) * block_dexpert_step2], down_shared)
+                        for ki in T.serial(0, block_dexpert_step2 // 32):
+                            step2_mma.ldmatrix_b(down_local, down_shared, ki)
+                            step2_mma.mma(up_logits_shared, down_local, out_local, ki)
+
+                    for i, j in T.Parallel(block_token, block_dhidden_step2):
+                        if i < actual_rows:
+                            output[block_start + i, by * block_dhidden_step2 + j] = out_local[i, j] * routed_weights[raw_start + token_offset + i]
+                        else:
+                            output[block_start + i, by * block_dhidden_step2 + j] = 0.0
+
+            return kernel
+
+        kernel = make_kernel(*key)
+        _KERNEL_CACHE[key] = kernel
+
+    up_logits = _workspace(stacked_expert_tokens, intermediate)
+    kernel(
+        stacked_expert_tokens,
+        gate_w,
+        up_w,
+        down_w,
+        routed_expert_weights,
+        group_sizes,
+        group_offsets,
+        group_padded_offsets,
+        group_idx_for_bx,
+        up_logits,
+        out,
+    )
