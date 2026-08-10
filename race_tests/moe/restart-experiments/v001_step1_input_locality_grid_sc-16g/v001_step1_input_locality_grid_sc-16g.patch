@@ -1,0 +1,110 @@
+diff --git a/race_tests/moe/custom_fusedmoe.py b/race_tests/moe/custom_fusedmoe.py
+index c0a3a15a..007fa7bd 100644
+--- a/race_tests/moe/custom_fusedmoe.py
++++ b/race_tests/moe/custom_fusedmoe.py
+@@ -23,7 +23,8 @@ def moe_forward_tilelang_routed(
+     block_dexpert_step2=64,
+     threads=256,
+     num_stages=1,
+-    use_grid_transpose=False,
++    use_grid_transpose_step1=False,
++    use_grid_transpose_step2=False,
+ ):
+     scale = 1.44269504  # log2(e)
+     dtype = T.float16
+@@ -91,10 +92,10 @@ def moe_forward_tilelang_routed(
+     group_sizes_shape = n_routed_experts  # 每个 expert 对应一个 token 数量。
+     step1_col_tiles = math.ceil(dexpert / block_dexpert_step1)
+     step2_col_tiles = math.ceil(dhidden / block_dhidden_step2)
+-    step1_grid_x = step1_col_tiles if use_grid_transpose else M
+-    step1_grid_y = M if use_grid_transpose else step1_col_tiles
+-    step2_grid_x = step2_col_tiles if use_grid_transpose else M
+-    step2_grid_y = M if use_grid_transpose else step2_col_tiles
++    step1_grid_x = step1_col_tiles if use_grid_transpose_step1 else M
++    step1_grid_y = M if use_grid_transpose_step1 else step1_col_tiles
++    step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else M
++    step2_grid_y = M if use_grid_transpose_step2 else step2_col_tiles
+ 
+     @T.prim_func
+     def kernel(
+@@ -112,8 +113,8 @@ def moe_forward_tilelang_routed(
+     ):
+         # Step 1: Compute gate and up logits
+         with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
+-            bx = pid1 if use_grid_transpose else pid0
+-            by = pid0 if use_grid_transpose else pid1
++            bx = pid1 if use_grid_transpose_step1 else pid0
++            by = pid0 if use_grid_transpose_step1 else pid1
+             input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+             routed_expert_gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_gate tile 的 shared memory 缓存。
+             routed_expert_up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_up tile 的 shared memory 缓存。
+@@ -179,8 +180,8 @@ def moe_forward_tilelang_routed(
+ 
+         # Step 2: Compute down logits
+         with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
+-            bx = pid1 if use_grid_transpose else pid0
+-            by = pid0 if use_grid_transpose else pid1
++            bx = pid1 if use_grid_transpose_step2 else pid0
++            by = pid0 if use_grid_transpose_step2 else pid1
+             up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+             routed_expert_down_shared = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
+             output_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+@@ -252,7 +253,8 @@ class RoutedMoEKernel:
+             "block_dexpert_step1": block_dexpert,
+             "block_dhidden_step2": block_dhidden_step2,
+             "block_dexpert_step2": block_dexpert_step2,
+-            "use_grid_transpose": False,
++            "use_grid_transpose_step1": False,
++            "use_grid_transpose_step2": False,
+         }
+ 
+         using_default_tiles = (
+@@ -262,17 +264,23 @@ class RoutedMoEKernel:
+             and block_dexpert_step2 == RoutedMoEKernel._DEFAULT_BLOCK_DEXPERT_STEP2
+         )
+         if not using_default_tiles:
+-            schedule["use_grid_transpose"] = d_hidden == 3584 and d_expert == 1024
++            use_grid_transpose = d_hidden == 3584 and d_expert == 1024
++            schedule["use_grid_transpose_step1"] = use_grid_transpose
++            schedule["use_grid_transpose_step2"] = use_grid_transpose
+             return schedule
+ 
+         if d_hidden == 3584 and d_expert == 1024:
+-            schedule["use_grid_transpose"] = True
+-        elif d_hidden == 7168 and d_expert == 2048:
+-            schedule["use_grid_transpose"] = False
++            schedule["use_grid_transpose_step1"] = True
++            schedule["use_grid_transpose_step2"] = True
++        elif d_hidden == 2048 and d_expert == 8192 and n_routed_experts == 16:
++            schedule["use_grid_transpose_step1"] = True
++        elif d_hidden == 7168 and d_expert == 2048 and n_routed_experts >= 32:
++            schedule["use_grid_transpose_step1"] = True
+         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:
+             # Conservative fallback for smaller hidden shapes: keep proven tile sizes,
+             # but use transposed grid to expose column tiles first, matching 3584/1024.
+-            schedule["use_grid_transpose"] = True
++            schedule["use_grid_transpose_step1"] = True
++            schedule["use_grid_transpose_step2"] = True
+ 
+         return schedule
+ 
+@@ -314,7 +322,8 @@ class RoutedMoEKernel:
+             block_dhidden_step2,
+             block_dexpert_step2,
+         )
+-        self.use_grid_transpose = bool(schedule["use_grid_transpose"])
++        self.use_grid_transpose_step1 = bool(schedule["use_grid_transpose_step1"])
++        self.use_grid_transpose_step2 = bool(schedule["use_grid_transpose_step2"])
+ 
+         self.impl = moe_forward_tilelang_routed(
+             d_hidden=d_hidden,
+@@ -329,7 +338,8 @@ class RoutedMoEKernel:
+             block_dexpert_step2=int(schedule["block_dexpert_step2"]),
+             threads=threads,
+             num_stages=num_stages,
+-            use_grid_transpose=self.use_grid_transpose,
++            use_grid_transpose_step1=self.use_grid_transpose_step1,
++            use_grid_transpose_step2=self.use_grid_transpose_step2,
+         )
+ 
+     def __call__(

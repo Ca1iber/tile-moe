@@ -1,0 +1,87 @@
+{
+  "baseline": "v000_minibs_baseline_sc-16g",
+  "candidate": "v001_step1_input_locality_grid_sc-16g",
+  "benchmark": {
+    "official": {
+      "h7168_i2048_e8_top4_bs2_seq8192": {
+        "v000_median_ms": 80.9514209,
+        "v001_median_ms": 80.95386719,
+        "latency_reduction_pct": -0.0030219234854689248
+      },
+      "h3584_i1024_e4_top2_bs8_seq4096": {
+        "v000_median_ms": 26.05688232,
+        "v001_median_ms": 25.99963135,
+        "latency_reduction_pct": 0.21971534927667236
+      }
+    },
+    "oj": {
+      "case1": {
+        "v000_median_ms": 3.121773986816406,
+        "v001_median_ms": 3.061634521484375,
+        "latency_reduction_pct": 1.9264516132816323
+      },
+      "case2": {
+        "v000_median_ms": 5.738880004882812,
+        "v001_median_ms": 5.605153198242188,
+        "latency_reduction_pct": 2.3301899765606815
+      },
+      "case3": {
+        "v000_median_ms": 11.211986083984375,
+        "v001_median_ms": 10.986158447265625,
+        "latency_reduction_pct": 2.0141626561714143
+      }
+    }
+  },
+  "mctracer": {
+    "case1": {
+      "step1": {
+        "v000_ms": 2.029312,
+        "v001_ms": 1.96736,
+        "latency_reduction_pct": 3.052857323073044
+      },
+      "step2": {
+        "v000_ms": 1.078016,
+        "v001_ms": 1.103872,
+        "latency_reduction_pct": -2.3984801709807435
+      }
+    },
+    "case2": {
+      "step1": {
+        "v000_ms": 3.677696,
+        "v001_ms": 3.552768,
+        "latency_reduction_pct": 3.396909369344292
+      },
+      "step2": {
+        "v000_ms": 2.057216,
+        "v001_ms": 2.079232,
+        "latency_reduction_pct": -1.0701841712294824
+      }
+    },
+    "case3": {
+      "step1": {
+        "v000_ms": 7.145216,
+        "v001_ms": 6.932736,
+        "latency_reduction_pct": 2.9737379527784658
+      },
+      "step2": {
+        "v000_ms": 4.06016,
+        "v001_ms": 4.050176,
+        "latency_reduction_pct": 0.24590163934424814
+      }
+    }
+  },
+  "mcprofiler_case3_step1": {
+    "all_memacs_v000": 7267684576.0,
+    "all_memacs_v001": 5713961056.0,
+    "all_memacs_reduction_pct": 21.37852164265418,
+    "native_ai_increase_pct": 27.191706502243274,
+    "during_reduction_pct": 1.6828078885988806
+  },
+  "mxsmi_case3_long_load": {
+    "hbm_median_v000_gbps": 1024.212,
+    "hbm_median_v001_gbps": 900.027,
+    "hbm_throughput_reduction_pct": 12.124931166594411,
+    "median_active_ap_count_v000": 104.0,
+    "median_active_ap_count_v001": 104.0
+  }
+}
