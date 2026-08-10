@@ -1,0 +1,12 @@
+diff --git a/race_tests/moe/custom_fusedmoe.py b/race_tests/moe/custom_fusedmoe.py
+index 9281fd93..e97461cd 100644
+--- a/race_tests/moe/custom_fusedmoe.py
++++ b/race_tests/moe/custom_fusedmoe.py
+@@ -276,6 +276,7 @@ class RoutedMoEKernel:
+             schedule["use_grid_transpose_step1"] = True
+             schedule["use_grid_transpose_step2"] = True
+         elif d_hidden == 7168 and d_expert == 2048 and n_routed_experts >= 32:
++            schedule["block_dexpert_step1"] = 64
+             schedule["use_grid_transpose_step1"] = True
+             schedule["use_grid_transpose_step2"] = True
+         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:
