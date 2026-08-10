@@ -36,3 +36,6 @@ bash run.sh
 torch \
 tilelang \
 apache-tvm-ffi
+
+ cd /root/tilelang-metax/race_tests/moe
+  PYTHONPATH=/root/tilelang-metax python3 fusedmoe_benchmark.py
