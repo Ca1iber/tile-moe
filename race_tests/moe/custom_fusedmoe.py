@@ -120,7 +120,6 @@ def moe_forward_tilelang_routed(
 
             gate_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_gate.T 的局部累加器。
             up_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_up.T 的局部累加器。
-            row_weight_local = T.alloc_fragment((block_token,), dtype=dtype)
             expert_weight_local = T.alloc_local((step1_warp_cols * step1_k_pack * step1_local_size_b), dtype=dtype)
 
             T.annotate_layout(
@@ -172,15 +171,11 @@ def moe_forward_tilelang_routed(
                     step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
                     step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
 
-            for i in T.Parallel(block_token):
-                if i < actual_rows:
-                    row_weight_local[i] = routed_expert_weights[m_start + i]
-
             # element-wise activation
             for i, j in T.Parallel(block_token, block_dexpert_step1):
                 gate_logits_local[i, j] = gate_logits_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_logits_local[i, j] * scale)))
                 if i < actual_rows:
-                    up_logits[m_start + i, by * block_dexpert_step1 + j] = up_logits_local[i, j] * gate_logits_local[i, j] * row_weight_local[i]
+                    up_logits[m_start + i, by * block_dexpert_step1 + j] = up_logits_local[i, j] * gate_logits_local[i, j]
 
         # Step 2: Compute down logits
         with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
@@ -231,7 +226,7 @@ def moe_forward_tilelang_routed(
 
             for i, j in T.Parallel(block_token, block_dhidden_step2):
                 if i < actual_rows:
-                    output[m_start + i, by * block_dhidden_step2 + j] = output_local[i, j]
+                    output[m_start + i, by * block_dhidden_step2 + j] = output_local[i, j] * routed_expert_weights[m_start + i]
 
     return kernel
 
