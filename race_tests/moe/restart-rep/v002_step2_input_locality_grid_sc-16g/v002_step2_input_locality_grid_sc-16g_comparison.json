@@ -1,0 +1,148 @@
+{
+  "iteration_id": "v002_step2_input_locality_grid_sc-16g",
+  "parent_id": "v001_step1_input_locality_grid_sc-16g",
+  "benchmark": [
+    {
+      "suite": "official",
+      "case": "h7168_i2048_e8_top4_bs2_seq8192",
+      "v001_ms": 80.95386719,
+      "v002_ms": 80.9438916,
+      "latency_reduction_pct": 0.012322561412147728
+    },
+    {
+      "suite": "official",
+      "case": "h3584_i1024_e4_top2_bs8_seq4096",
+      "v001_ms": 25.99963135,
+      "v002_ms": 25.97459717,
+      "latency_reduction_pct": 0.09628667292623838
+    },
+    {
+      "suite": "oj",
+      "case": "case1",
+      "v001_ms": 3.061634521484375,
+      "v002_ms": 3.06387451171875,
+      "latency_reduction_pct": -0.07316321457235223
+    },
+    {
+      "suite": "oj",
+      "case": "case2",
+      "v001_ms": 5.605153198242188,
+      "v002_ms": 5.509846801757813,
+      "latency_reduction_pct": 1.700335264953395
+    },
+    {
+      "suite": "oj",
+      "case": "case3",
+      "v001_ms": 10.986158447265625,
+      "v002_ms": 10.79346435546875,
+      "latency_reduction_pct": 1.753971533560355
+    }
+  ],
+  "mctracer": [
+    {
+      "case": 1,
+      "step1_reduction_pct": 0.416395575797006,
+      "step2_reduction_pct": 2.6669758812615876,
+      "v002_step1_ms": 1.959168,
+      "v002_step2_ms": 1.074432,
+      "v002_step2_grid": {
+        "x": 8,
+        "y": 24,
+        "z": 1
+      }
+    },
+    {
+      "case": 2,
+      "step1_reduction_pct": 1.023202190517364,
+      "step2_reduction_pct": 5.208076828367404,
+      "v002_step1_ms": 3.516416,
+      "v002_step2_ms": 1.970944,
+      "v002_step2_grid": {
+        "x": 28,
+        "y": 48,
+        "z": 1
+      }
+    },
+    {
+      "case": 3,
+      "step1_reduction_pct": -0.180938665485028,
+      "step2_reduction_pct": 4.4497819354023225,
+      "v002_step1_ms": 6.94528,
+      "v002_step2_ms": 3.869952,
+      "v002_step2_grid": {
+        "x": 28,
+        "y": 96,
+        "z": 1
+      }
+    }
+  ],
+  "mcprofiler_case3_step2": {
+    "v000": {
+      "processed_data": {
+        "all_ops": 362261071872.0,
+        "all_memacs": 4095324288.0,
+        "during": 4600612.0,
+        "block_num": 104,
+        "vl1_memacs": 1196195840.0,
+        "l2c_memacs": 5665587200.0
+      },
+      "data": {
+        "all_ops": 362261071872.0,
+        "all_memacs": 4095324288.0,
+        "block_num": 104,
+        "during": 4600612.0,
+        "core_clk": 1.125,
+        "MAX_Flops_base": 1,
+        "case_flops": 757.1339502724353,
+        "MAX_Bandwith": 1843.2,
+        "MAX_I": 260.0,
+        "case_I": 756.0447622209061,
+        "case_bandwith": 1001.4406396366396,
+        "case_VL1_I": 2588.412677926101,
+        "case_L2C_I": 546.500895359701,
+        "mc_clk": 0.9
+      },
+      "filename": "/opt/mcProfiler-ubuntu18.04/output20260810165015/RoofLine20260810165232704.png"
+    },
+    "v002": {
+      "processed_data": {
+        "all_ops": 362261071872.0,
+        "all_memacs": 2780030912.0,
+        "during": 4374948.0,
+        "block_num": 104,
+        "vl1_memacs": 1196195840.0,
+        "l2c_memacs": 5665587200.0
+      },
+      "data": {
+        "all_ops": 362261071872.0,
+        "all_memacs": 2780030912.0,
+        "block_num": 104,
+        "during": 4374948.0,
+        "core_clk": 1.125,
+        "MAX_Flops_base": 1,
+        "case_flops": 796.1876431973063,
+        "MAX_Bandwith": 1843.2,
+        "MAX_I": 260.0,
+        "case_I": 1113.746060942527,
+        "case_bandwith": 714.8735884403654,
+        "case_VL1_I": 2588.412677926101,
+        "case_L2C_I": 546.500895359701,
+        "mc_clk": 0.9
+      },
+      "filename": "/opt/mcProfiler-ubuntu18.04/output20260810175234/RoofLine20260810175445924.png"
+    },
+    "delta_pct": {
+      "all_memacs_reduction": 32.116952981087096,
+      "during_reduction": 4.905086540660243,
+      "native_ai_increase": 47.31218528263614,
+      "native_bandwidth_change": -28.615480524162816
+    },
+    "baseline_note": "v001 Step2 code and launch grid are identical to v000; v000 supplies the archived Step2 counter baseline."
+  },
+  "mxsmi": {
+    "v001_hbm_median_gbps": 900.027,
+    "v002_hbm_median_gbps": 794.714,
+    "hbm_throughput_reduction_pct": 11.701093411642095,
+    "v002_median_active_ap_count": 104
+  }
+}
