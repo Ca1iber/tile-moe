@@ -19,7 +19,7 @@ def moe_forward_tilelang_routed(
     block_token=128,
     block_dhidden_step1=128,
     block_dexpert_step1=64,
-    block_dhidden_step2=256,
+    block_dhidden_step2=128,
     block_dexpert_step2=64,
     threads=256,
     num_stages=1,
@@ -376,8 +376,8 @@ def moe_forward_tilelang_routed(
 
 class RoutedMoEKernel:
     _DEFAULT_BLOCK_DHIDDEN_STEP1 = 64
-    _DEFAULT_BLOCK_DEXPERT_STEP1 = 128
-    _DEFAULT_BLOCK_DHIDDEN_STEP2 = 256
+    _DEFAULT_BLOCK_DEXPERT_STEP1 = 64
+    _DEFAULT_BLOCK_DHIDDEN_STEP2 = 128
     _DEFAULT_BLOCK_DEXPERT_STEP2 = 64
 
     @staticmethod
@@ -437,8 +437,8 @@ class RoutedMoEKernel:
         group_count: int,
         block_token: int = 128,
         block_dhidden: int = 64,
-        block_dexpert: int = 128,
-        block_dhidden_step2: int = 256,
+        block_dexpert: int = 64,
+        block_dhidden_step2: int = 128,
         block_dexpert_step2: int = 64,
         threads: int = 256,
         num_stages: int = 1,
