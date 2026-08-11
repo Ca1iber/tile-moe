@@ -1,0 +1,113 @@
+--- restart-experiments/v004_step2_router_weight_register_reuse_sc-16g/v004_step2_router_weight_register_reuse_sc-16g_custom_fusedmoe.py	2026-08-11 05:38:55.165607424 +0000
++++ restart-experiments/v013_step2_split_accumulator_sc-16g/v013_step2_split_accumulator_sc-16g_custom_fusedmoe.py	2026-08-11 12:15:10.077895736 +0000
+@@ -19,7 +19,7 @@
+     block_token=128,
+     block_dhidden_step1=128,
+     block_dexpert_step1=64,
+-    block_dhidden_step2=256,
++    block_dhidden_step2=128,
+     block_dexpert_step2=64,
+     threads=256,
+     num_stages=1,
+@@ -91,7 +91,8 @@
+     routed_expert_weights_shape = group_sum  # 每个 routed token-expert pair 对应一个 router 权重。
+     group_sizes_shape = n_routed_experts  # 每个 expert 对应一个 token 数量。
+     step1_col_tiles = math.ceil(dexpert / block_dexpert_step1)
+-    step2_col_tiles = math.ceil(dhidden / block_dhidden_step2)
++    step2_output_tile = 2 * block_dhidden_step2
++    step2_col_tiles = math.ceil(dhidden / step2_output_tile)
+     step1_grid_x = step1_col_tiles if use_grid_transpose_step1 else M
+     step1_grid_y = M if use_grid_transpose_step1 else step1_col_tiles
+     step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else M
+@@ -183,8 +184,9 @@
+             bx = pid1 if use_grid_transpose_step2 else pid0
+             by = pid0 if use_grid_transpose_step2 else pid1
+             up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+-            routed_expert_down_shared = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
+-            output_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
++            routed_expert_down_shared = T.alloc_shared((step2_output_tile, block_dexpert_step2), dtype=dtype)
++            output_local_0 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
++            output_local_1 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+             down_weight_local = T.alloc_local((step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype)
+             routed_weight_local = T.alloc_local((2,), dtype=dtype)
+ 
+@@ -192,7 +194,8 @@
+                 {
+                     up_logits_shared: step2_mma.make_mma_load_layout(up_logits_shared, matrix="A"),
+                     routed_expert_down_shared: make_swizzled_layout(routed_expert_down_shared),
+-                    output_local: step2_mma.make_mma_store_layout(output_local),
++                    output_local_0: step2_mma.make_mma_store_layout(output_local_0),
++                    output_local_1: step2_mma.make_mma_store_layout(output_local_1),
+                 }
+             )
+ 
+@@ -209,7 +212,8 @@
+             m_start = m_start_padded - group_padded_offsets[cur_group_idx] + group_offsets[cur_group_idx]
+             actual_rows = T.max(0, T.min(block_token, cur_group_size - (m_start_padded - group_padded_offsets[cur_group_idx])))
+ 
+-            T.clear(output_local)
++            T.clear(output_local_0)
++            T.clear(output_local_1)
+ 
+             for k in T.Pipelined(T.ceildiv(dexpert, block_dexpert_step2), num_stages=num_stages):
+                 T.copy(
+@@ -218,13 +222,26 @@
+                 )
+                 T.copy(
+                     routed_expert_down[
+-                        cur_group_idx, by * block_dhidden_step2 : (by + 1) * block_dhidden_step2, k * block_dexpert_step2 : (k + 1) * block_dexpert_step2
++                        cur_group_idx, by * step2_output_tile : (by + 1) * step2_output_tile, k * block_dexpert_step2 : (k + 1) * block_dexpert_step2
+                     ],
+                     routed_expert_down_shared,
+                 )
+                 for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
+-                    step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_shared, ki)
+-                    step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
++                    step2_mma.ldmatrix_b(
++                        down_weight_local,
++                        routed_expert_down_shared[0:block_dhidden_step2, 0:block_dexpert_step2],
++                        ki,
++                    )
++                    step2_mma.mma(up_logits_shared, down_weight_local, output_local_0, ki)
++                    step2_mma.ldmatrix_b(
++                        down_weight_local,
++                        routed_expert_down_shared[
++                            block_dhidden_step2:step2_output_tile,
++                            0:block_dexpert_step2,
++                        ],
++                        ki,
++                    )
++                    step2_mma.mma(up_logits_shared, down_weight_local, output_local_1, ki)
+ 
+             # `output_local` 的 MMA store layout 让每个线程负责两个 routed row：
+             # row = (tx // 64) * 32 + {0, 16} + tx % 16。
+@@ -238,7 +255,10 @@
+ 
+             for i, j in T.Parallel(block_token, block_dhidden_step2):
+                 if i < actual_rows:
+-                    output[m_start + i, by * block_dhidden_step2 + j] = output_local[i, j] * routed_weight_local[(i // 16) % 2]
++                    output[m_start + i, by * step2_output_tile + j] = output_local_0[i, j] * routed_weight_local[(i // 16) % 2]
++            for i, j in T.Parallel(block_token, block_dhidden_step2):
++                if i < actual_rows:
++                    output[m_start + i, by * step2_output_tile + block_dhidden_step2 + j] = output_local_1[i, j] * routed_weight_local[(i // 16) % 2]
+ 
+     return kernel
+ 
+@@ -246,7 +266,7 @@
+ class RoutedMoEKernel:
+     _DEFAULT_BLOCK_DHIDDEN_STEP1 = 64
+     _DEFAULT_BLOCK_DEXPERT_STEP1 = 128
+-    _DEFAULT_BLOCK_DHIDDEN_STEP2 = 256
++    _DEFAULT_BLOCK_DHIDDEN_STEP2 = 128
+     _DEFAULT_BLOCK_DEXPERT_STEP2 = 64
+ 
+     @staticmethod
+@@ -307,7 +327,7 @@
+         block_token: int = 128,
+         block_dhidden: int = 64,
+         block_dexpert: int = 128,
+-        block_dhidden_step2: int = 256,
++        block_dhidden_step2: int = 128,
+         block_dexpert_step2: int = 64,
+         threads: int = 256,
+         num_stages: int = 1,
