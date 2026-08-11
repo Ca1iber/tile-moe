@@ -209,7 +209,6 @@ def moe_forward_tilelang_routed(
                     step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
                     step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_compute, ki)
                     step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
-                T.sync_threads()
 
             # element-wise activation
             for i, j in T.Parallel(block_token, block_dexpert_step1):
@@ -281,7 +280,6 @@ def moe_forward_tilelang_routed(
                 for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
                     step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_compute, ki)
                     step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
-                T.sync_threads()
 
             # `output_local` 的 MMA store layout 让每个线程负责两个 routed row：
             # row = (tx // 64) * 32 + {0, 16} + tx % 16。

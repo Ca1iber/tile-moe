@@ -1,0 +1,31 @@
+{
+  "iteration_id": "v009_async_consumer_fence_sc-16g",
+  "baseline": "v008_async_stage_to_swizzle_sc-16g",
+  "case": 3,
+  "protocol": {
+    "order": ["v008", "v009", "v008", "v009"],
+    "warmup": 20,
+    "repeat": 100,
+    "fresh_process_per_sample": true,
+    "current_kernel_restored_after_run": true
+  },
+  "pairs": [
+    {
+      "pair": 1,
+      "v008_ms": 15.74330078125,
+      "v009_ms": 14.126717529296876,
+      "v009_delta_pct": -10.268388277752061
+    },
+    {
+      "pair": 2,
+      "v008_ms": 16.6451025390625,
+      "v009_ms": 14.086507568359375,
+      "v009_delta_pct": -15.371458149318384
+    }
+  ],
+  "mean": {
+    "v008_ms": 16.19420166015625,
+    "v009_ms": 14.106612548828124,
+    "v009_delta_pct": -12.89096650231527
+  }
+}
