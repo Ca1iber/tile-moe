@@ -1,0 +1,19 @@
+--- v009_async_consumer_fence_sc-16g_custom_fusedmoe.py
++++ v010_async_wait_fence_dedup_sc-16g_custom_fusedmoe.py
+@@ -185,7 +185,6 @@
+                 )
+                 T.maca_barrier_arrive_and_wait(step1_gate_barrier)
+                 T.maca_barrier_arrive_and_wait(step1_up_barrier)
+-                T.sync_threads()
+                 T.copy(routed_expert_gate_staging, routed_expert_gate_compute)
+                 T.copy(routed_expert_up_staging, routed_expert_up_compute)
+                 T.sync_threads()
+@@ -266,7 +265,6 @@
+                     up_logits_shared,
+                 )
+                 T.maca_barrier_arrive_and_wait(step2_weight_barrier)
+-                T.sync_threads()
+                 T.copy(routed_expert_down_staging, routed_expert_down_compute)
+                 T.sync_threads()
+                 if k + 1 < step2_k_tiles:
+
