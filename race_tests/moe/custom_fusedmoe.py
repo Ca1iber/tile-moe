@@ -186,6 +186,7 @@ def moe_forward_tilelang_routed(
             routed_expert_down_shared = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
             output_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
             down_weight_local = T.alloc_local((step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype)
+            routed_weight_local = T.alloc_local((2,), dtype=dtype)
 
             T.annotate_layout(
                 {
@@ -225,9 +226,19 @@ def moe_forward_tilelang_routed(
                     step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_shared, ki)
                     step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
 
+            # `output_local` 的 MMA store layout 让每个线程负责两个 routed row：
+            # row = (tx // 64) * 32 + {0, 16} + tx % 16。
+            # 显式预取这两个 router weight，避免展开输出循环重复发出 32 次标量 load。
+            tx = T.get_thread_binding()
+            for row_slot in T.serial(2):
+                routed_row = (tx // 64) * 32 + row_slot * 16 + tx % 16
+                routed_weight_local[row_slot] = 0.0
+                if routed_row < actual_rows:
+                    routed_weight_local[row_slot] = routed_expert_weights[m_start + routed_row]
+
             for i, j in T.Parallel(block_token, block_dhidden_step2):
                 if i < actual_rows:
-                    output[m_start + i, by * block_dhidden_step2 + j] = output_local[i, j] * routed_expert_weights[m_start + i]
+                    output[m_start + i, by * block_dhidden_step2 + j] = output_local[i, j] * routed_weight_local[(i // 16) % 2]
 
     return kernel
 
