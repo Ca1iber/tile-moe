@@ -1,0 +1,18 @@
+{
+  "iteration_id": "v010_async_wait_fence_dedup_sc-16g",
+  "verdict": "rejected_with_followup_solution",
+  "oj_case1_elements": 4653056,
+  "subprobes": [
+    {"name": "v010a_auto_sync_reinserted", "correct": true, "binary_identical_to_v009": true},
+    {"name": "v010b_no_wait_fence", "correct": false, "mismatched": 17269, "max_abs": 0.271728515625},
+    {"name": "v010c_step1_wait_sync_only", "correct": false, "mismatched": 234, "max_abs": 0.215911865234375},
+    {"name": "v010d_step2_wait_sync_only", "correct": false, "mismatched": 12956, "max_abs": 0.077667236328125},
+    {"name": "v010e_wait_threadfence_block", "correct": false, "mismatched": 16266, "max_abs": 0.0791015625},
+    {"name": "v010f_syncthreadshared", "correct": false, "mismatched": 10125, "max_abs": 0.06103515625}
+  ],
+  "inverse_swizzle_probe": [
+    {"rows": 32, "cols": 64, "tileop_mismatched": 1792, "tileop_max_abs": 56.0, "inverse_mismatched": 0, "inverse_max_abs": 0.0},
+    {"rows": 64, "cols": 64, "tileop_mismatched": 3584, "tileop_max_abs": 56.0, "inverse_mismatched": 0, "inverse_max_abs": 0.0},
+    {"rows": 128, "cols": 64, "tileop_mismatched": 7168, "tileop_max_abs": 56.0, "inverse_mismatched": 0, "inverse_max_abs": 0.0}
+  ]
+}
