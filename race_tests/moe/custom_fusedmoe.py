@@ -22,7 +22,7 @@ def moe_forward_tilelang_routed(
     block_dhidden_step2=256,
     block_dexpert_step2=64,
     threads=256,
-    num_stages=1,
+    num_stages=2,
     use_grid_transpose_step1=False,
     use_grid_transpose_step2=False,
 ):
@@ -310,7 +310,7 @@ class RoutedMoEKernel:
         block_dhidden_step2: int = 256,
         block_dexpert_step2: int = 64,
         threads: int = 256,
-        num_stages: int = 1,
+        num_stages: int = 2,
         backend: str = "tilelang",
     ):
         self.d_hidden = d_hidden

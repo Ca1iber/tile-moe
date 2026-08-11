@@ -1,0 +1,926 @@
+{
+  "iteration_id": "v005_numstage2_materialization_sc-16g",
+  "baseline": "v004_step2_router_weight_register_reuse_sc-16g",
+  "verdict": "rejected",
+  "benchmark": {
+    "official": {
+      "h7168_i2048_e8_top4_bs2_seq8192": {
+        "v004_median_ms": 80.22523926,
+        "v005_median_ms": 107.28536133,
+        "delta_pct": 33.73018556205426
+      },
+      "h3584_i1024_e4_top2_bs8_seq4096": {
+        "v004_median_ms": 25.38244629,
+        "v005_median_ms": 33.35095215,
+        "delta_pct": 31.393766262550404
+      }
+    },
+    "oj": {
+      "case1": {
+        "v004_median_ms": 3.0582785034179687,
+        "v005_median_ms": 4.524190673828125,
+        "delta_pct": 47.93259242975534
+      },
+      "case2": {
+        "v004_median_ms": 5.44521240234375,
+        "v005_median_ms": 7.9542474365234375,
+        "delta_pct": 46.077817517269644
+      },
+      "case3": {
+        "v004_median_ms": 10.650980224609375,
+        "v005_median_ms": 15.435386962890625,
+        "delta_pct": 44.91987251301763
+      }
+    }
+  },
+  "mctracer": {
+    "case1": {
+      "step1": {
+        "v004_ms": 1.961728,
+        "v005_ms": 2.963456,
+        "delta_pct": 51.06355213362913
+      },
+      "step2": {
+        "v004_ms": 1.082368,
+        "v005_ms": 1.522432,
+        "delta_pct": 40.657521286660355
+      },
+      "device_span": {
+        "v004_ms": 3.071744,
+        "v005_ms": 4.512256,
+        "delta_pct": 46.895574631219276
+      },
+      "step1_memory": {
+        "v004": {
+          "dynamic_shared": 32768,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 196,
+          "static_shared": 0
+        },
+        "v005": {
+          "dynamic_shared": 65536,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 194,
+          "static_shared": 0
+        }
+      },
+      "step2_memory": {
+        "v004": {
+          "dynamic_shared": 32768,
+          "private_per_thread": 0,
+          "private_total": 16,
+          "registers_per_thread": 256,
+          "static_shared": 0
+        },
+        "v005": {
+          "dynamic_shared": 65536,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 200,
+          "static_shared": 0
+        }
+      }
+    },
+    "case2": {
+      "step1": {
+        "v004_ms": 3.519744,
+        "v005_ms": 5.268224,
+        "delta_pct": 49.676340097461626
+      },
+      "step2": {
+        "v004_ms": 1.89056,
+        "v005_ms": 2.61888,
+        "delta_pct": 38.524035206499654
+      },
+      "device_span": {
+        "v004_ms": 5.441792,
+        "v005_ms": 7.91808,
+        "delta_pct": 45.50501011431527
+      },
+      "step1_memory": {
+        "v004": {
+          "dynamic_shared": 32768,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 198,
+          "static_shared": 0
+        },
+        "v005": {
+          "dynamic_shared": 65536,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 196,
+          "static_shared": 0
+        }
+      },
+      "step2_memory": {
+        "v004": {
+          "dynamic_shared": 32768,
+          "private_per_thread": 0,
+          "private_total": 12,
+          "registers_per_thread": 256,
+          "static_shared": 0
+        },
+        "v005": {
+          "dynamic_shared": 65536,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 202,
+          "static_shared": 0
+        }
+      }
+    },
+    "case3": {
+      "step1": {
+        "v004_ms": 6.946304,
+        "v005_ms": 10.284288,
+        "delta_pct": 48.05410186481905
+      },
+      "step2": {
+        "v004_ms": 3.720448,
+        "v005_ms": 5.370368,
+        "delta_pct": 44.34734741622513
+      },
+      "device_span": {
+        "v004_ms": 10.69312,
+        "v005_ms": 15.657472,
+        "delta_pct": 46.42566435240603
+      },
+      "step1_memory": {
+        "v004": {
+          "dynamic_shared": 32768,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 198,
+          "static_shared": 0
+        },
+        "v005": {
+          "dynamic_shared": 65536,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 196,
+          "static_shared": 0
+        }
+      },
+      "step2_memory": {
+        "v004": {
+          "dynamic_shared": 32768,
+          "private_per_thread": 0,
+          "private_total": 12,
+          "registers_per_thread": 256,
+          "static_shared": 0
+        },
+        "v005": {
+          "dynamic_shared": 65536,
+          "private_per_thread": 0,
+          "private_total": 0,
+          "registers_per_thread": 202,
+          "static_shared": 0
+        }
+      }
+    }
+  },
+  "mcprofiler_case3": {
+    "step1": {
+      "Total Cycles": {
+        "v004": 15172.25,
+        "v005": 18607.7,
+        "delta_pct": 22.64298307765823
+      },
+      "Average Wave life cycles": {
+        "v004": 245399.8,
+        "v005": 192217.23,
+        "delta_pct": -21.67180657848946
+      },
+      "Private Read Instructions": {
+        "v004": 0.0,
+        "v005": 0.0,
+        "delta_pct": null
+      },
+      "Private Write Instructions": {
+        "v004": 0.0,
+        "v005": 0.0,
+        "delta_pct": null
+      },
+      "Global Memory Read bytes": {
+        "v004": 5771595872.0,
+        "v005": 5630075296.0,
+        "delta_pct": -2.4520181096976157
+      },
+      "Global Memory Write bytes": {
+        "v004": 37225312.0,
+        "v005": 37224768.0,
+        "delta_pct": -0.001461371230414402
+      },
+      "average latency of all stages per instruction": {
+        "v004": 69.34,
+        "v005": 59.1,
+        "delta_pct": -14.767810787424288
+      },
+      "Achieved waves": {
+        "v004": 6144.0,
+        "v005": 6144.0,
+        "delta_pct": 0.0
+      },
+      "Dispatched waves": {
+        "v004": 6144.0,
+        "v005": 6144.0,
+        "delta_pct": 0.0
+      },
+      "AP active cycles": {
+        "v004": 778315256.0,
+        "v005": 1186723930.0,
+        "delta_pct": 52.47342524145512
+      },
+      "AP MTE Duty ratio": {
+        "v004": 5.97,
+        "v005": 8.63,
+        "delta_pct": 44.556113902847585
+      },
+      "AP MMA Duty ratio": {
+        "v004": 45.27,
+        "v005": 29.69,
+        "delta_pct": -34.415727855091674
+      },
+      "VLS Duty ratio": {
+        "v004": 0.0,
+        "v005": 0.0,
+        "delta_pct": null
+      },
+      "L2C Duty ratio": {
+        "v004": 23.88,
+        "v005": 14.74,
+        "delta_pct": -38.27470686767169
+      },
+      "ISU stall cycles layout": {
+        "valu_stall": {
+          "v004": 0.0,
+          "v005": 0.0,
+          "delta_pct": null
+        },
+        "vls_pipeline_stall": {
+          "v004": 382091966.0,
+          "v005": 169042269.0,
+          "delta_pct": -55.75874814389581
+        },
+        "vls_wdata_stall": {
+          "v004": 622592.0,
+          "v005": 622592.0,
+          "delta_pct": 0.0
+        },
+        "wsm_stall": {
+          "v004": 48038254.0,
+          "v005": 39690080.0,
+          "delta_pct": -17.378179481710553
+        }
+      },
+      "VL1 partition stall cycles layout": {
+        "pt0": {
+          "v004": 64085234.0,
+          "v005": 55657600.0,
+          "delta_pct": -13.15066431683779
+        },
+        "pt1": {
+          "v004": 65307204.0,
+          "v005": 56546810.0,
+          "delta_pct": -13.414131157720362
+        },
+        "pt2": {
+          "v004": 63894436.0,
+          "v005": 55473426.0,
+          "delta_pct": -13.179566997038677
+        },
+        "pt3": {
+          "v004": 65320058.0,
+          "v005": 56399324.0,
+          "delta_pct": -13.65695970447546
+        }
+      }
+    },
+    "step2": {
+      "Total Cycles": {
+        "v004": 12118.42,
+        "v005": 13382.34,
+        "delta_pct": 10.429742491182845
+      },
+      "Average Wave life cycles": {
+        "v004": 78193.02,
+        "v005": 56822.41,
+        "delta_pct": -27.330585261958163
+      },
+      "Private Read Instructions": {
+        "v004": 21504.0,
+        "v005": 0.0,
+        "delta_pct": -100.0
+      },
+      "Private Write Instructions": {
+        "v004": 21504.0,
+        "v005": 0.0,
+        "delta_pct": -100.0
+      },
+      "Global Memory Read bytes": {
+        "v004": 2710120608.0,
+        "v005": 2519018080.0,
+        "delta_pct": -7.0514399778328976
+      },
+      "Global Memory Write bytes": {
+        "v004": 135749280.0,
+        "v005": 130286464.0,
+        "delta_pct": -4.024195192784816
+      },
+      "average latency of all stages per instruction": {
+        "v004": 99.19,
+        "v005": 60.87,
+        "delta_pct": -38.6329267063212
+      },
+      "Achieved waves": {
+        "v004": 10752.0,
+        "v005": 10752.0,
+        "delta_pct": 0.0
+      },
+      "Dispatched waves": {
+        "v004": 10752.0,
+        "v005": 10752.0,
+        "delta_pct": 0.0
+      },
+      "AP active cycles": {
+        "v004": 430394066.0,
+        "v005": 620153551.0,
+        "delta_pct": 44.08970754722255
+      },
+      "AP MTE Duty ratio": {
+        "v004": 5.03,
+        "v005": 9.74,
+        "delta_pct": 93.63817097415506
+      },
+      "AP MMA Duty ratio": {
+        "v004": 40.93,
+        "v005": 28.41,
+        "delta_pct": -30.588810163694113
+      },
+      "VLS Duty ratio": {
+        "v004": 0.0,
+        "v005": 0.0,
+        "delta_pct": null
+      },
+      "L2C Duty ratio": {
+        "v004": 18.86,
+        "v005": 11.18,
+        "delta_pct": -40.721102863202546
+      },
+      "ISU stall cycles layout": {
+        "valu_stall": {
+          "v004": 0.0,
+          "v005": 0.0,
+          "delta_pct": null
+        },
+        "vls_pipeline_stall": {
+          "v004": 213891949.0,
+          "v005": 88897070.0,
+          "delta_pct": -58.438328129872716
+        },
+        "vls_wdata_stall": {
+          "v004": 2265088.0,
+          "v005": 2179072.0,
+          "delta_pct": -3.79746835443038
+        },
+        "wsm_stall": {
+          "v004": 39381885.0,
+          "v005": 23664060.0,
+          "delta_pct": -39.911306937186986
+        }
+      },
+      "VL1 partition stall cycles layout": {
+        "pt0": {
+          "v004": 29019208.0,
+          "v005": 23843621.0,
+          "delta_pct": -17.835038778453224
+        },
+        "pt1": {
+          "v004": 29360765.0,
+          "v005": 23746169.0,
+          "delta_pct": -19.12278511816705
+        },
+        "pt2": {
+          "v004": 28747518.0,
+          "v005": 23321611.0,
+          "delta_pct": -18.8743494307926
+        },
+        "pt3": {
+          "v004": 29003276.0,
+          "v005": 23408451.0,
+          "delta_pct": -19.290320858926417
+        }
+      }
+    }
+  },
+  "isa_case3": {
+    "kernel_kernel": {
+      "v004": {
+        "name": "kernel_kernel",
+        "resources": {
+          "code_bytes": 24472,
+          "st_registers": 28,
+          "mt_registers": 198,
+          "private_bytes": null,
+          "max_warps_per_peu": 2
+        },
+        "instructions": {
+          "total_static": 3059,
+          "mma": 256,
+          "global_load": 30,
+          "global_store": 16,
+          "shared_load": 64,
+          "shared_store": 16,
+          "private_load": 0,
+          "private_store": 0,
+          "barrier": 3,
+          "arrive": 89
+        },
+        "top_mnemonics": [
+          [
+            "snop",
+            354
+          ],
+          [
+            "mma_16x16x16f16",
+            256
+          ],
+          [
+            "mul_f32",
+            256
+          ],
+          [
+            "fmac_f32",
+            208
+          ],
+          [
+            "csel_b32",
+            128
+          ],
+          [
+            "div_scale_f32",
+            128
+          ],
+          [
+            "set_hwreg",
+            128
+          ],
+          [
+            "fma_f32",
+            112
+          ],
+          [
+            "shl_b64",
+            100
+          ],
+          [
+            "arrive",
+            89
+          ],
+          [
+            "mov_b32",
+            67
+          ],
+          [
+            "lds_b128",
+            64
+          ],
+          [
+            "cmp_gt_f32",
+            64
+          ],
+          [
+            "fmka_f32",
+            64
+          ],
+          [
+            "exp_f32",
+            64
+          ],
+          [
+            "fmak_f32",
+            64
+          ],
+          [
+            "rcp_f32",
+            64
+          ],
+          [
+            "div_fmas_f32",
+            64
+          ],
+          [
+            "div_fixup_f32",
+            64
+          ],
+          [
+            "get_hwreg",
+            64
+          ],
+          [
+            "cvt_f32tof16",
+            64
+          ],
+          [
+            "or_b32",
+            56
+          ],
+          [
+            "add_co_u32",
+            42
+          ],
+          [
+            "addc_co_u32",
+            42
+          ]
+        ],
+        "spill_annotations": {
+          "stores": 0,
+          "reloads": 0
+        }
+      },
+      "v005": {
+        "name": "kernel_kernel",
+        "resources": {
+          "code_bytes": 25232,
+          "st_registers": 52,
+          "mt_registers": 196,
+          "private_bytes": null,
+          "max_warps_per_peu": 2
+        },
+        "instructions": {
+          "total_static": 3154,
+          "mma": 256,
+          "global_load": 30,
+          "global_store": 16,
+          "shared_load": 64,
+          "shared_store": 16,
+          "private_load": 0,
+          "private_store": 0,
+          "barrier": 2,
+          "arrive": 87
+        },
+        "top_mnemonics": [
+          [
+            "snop",
+            353
+          ],
+          [
+            "mma_16x16x16f16",
+            256
+          ],
+          [
+            "mul_f32",
+            256
+          ],
+          [
+            "fmac_f32",
+            208
+          ],
+          [
+            "csel_b32",
+            128
+          ],
+          [
+            "div_scale_f32",
+            128
+          ],
+          [
+            "set_hwreg",
+            128
+          ],
+          [
+            "fma_f32",
+            112
+          ],
+          [
+            "shl_b64",
+            100
+          ],
+          [
+            "arrive",
+            87
+          ],
+          [
+            "or_b32",
+            86
+          ],
+          [
+            "mov_b32",
+            70
+          ],
+          [
+            "lds_b128",
+            64
+          ],
+          [
+            "cmp_gt_f32",
+            64
+          ],
+          [
+            "fmka_f32",
+            64
+          ],
+          [
+            "exp_f32",
+            64
+          ],
+          [
+            "fmak_f32",
+            64
+          ],
+          [
+            "rcp_f32",
+            64
+          ],
+          [
+            "div_fmas_f32",
+            64
+          ],
+          [
+            "div_fixup_f32",
+            64
+          ],
+          [
+            "get_hwreg",
+            64
+          ],
+          [
+            "cvt_f32tof16",
+            64
+          ],
+          [
+            "shl_b32",
+            57
+          ],
+          [
+            "add_u32",
+            52
+          ]
+        ],
+        "spill_annotations": {
+          "stores": 0,
+          "reloads": 0
+        }
+      }
+    },
+    "kernel_kernel_1": {
+      "v004": {
+        "name": "kernel_kernel_1",
+        "resources": {
+          "code_bytes": 20760,
+          "st_registers": 38,
+          "mt_registers": 256,
+          "private_bytes": null,
+          "max_warps_per_peu": 2
+        },
+        "instructions": {
+          "total_static": 2595,
+          "mma": 256,
+          "global_load": 32,
+          "global_store": 32,
+          "shared_load": 64,
+          "shared_store": 16,
+          "private_load": 2,
+          "private_store": 2,
+          "barrier": 3,
+          "arrive": 92
+        },
+        "top_mnemonics": [
+          [
+            "snop",
+            408
+          ],
+          [
+            "mma_16x16x16f16",
+            256
+          ],
+          [
+            "set_hwreg",
+            256
+          ],
+          [
+            "get_hwreg",
+            128
+          ],
+          [
+            "mul_f32",
+            128
+          ],
+          [
+            "cvt_f32tof16",
+            128
+          ],
+          [
+            "shl_b64",
+            117
+          ],
+          [
+            "or_b32",
+            106
+          ],
+          [
+            "and_xmsk",
+            106
+          ],
+          [
+            "sor_b64",
+            104
+          ],
+          [
+            "arrive",
+            92
+          ],
+          [
+            "shl_b32",
+            74
+          ],
+          [
+            "bra_xmskz",
+            74
+          ],
+          [
+            "add_co_u32",
+            71
+          ],
+          [
+            "addc_co_u32",
+            71
+          ],
+          [
+            "lds_b128",
+            64
+          ],
+          [
+            "and_b32",
+            48
+          ],
+          [
+            "add_u16",
+            36
+          ],
+          [
+            "shl_add_u32",
+            34
+          ],
+          [
+            "bra_xmsks",
+            32
+          ],
+          [
+            "cvt_f16tof32",
+            32
+          ],
+          [
+            "stg_b64",
+            32
+          ],
+          [
+            "ldg_b128",
+            24
+          ],
+          [
+            "add_u32",
+            23
+          ]
+        ],
+        "spill_annotations": {
+          "stores": 2,
+          "reloads": 2
+        }
+      },
+      "v005": {
+        "name": "kernel_kernel_1",
+        "resources": {
+          "code_bytes": 22192,
+          "st_registers": 30,
+          "mt_registers": 202,
+          "private_bytes": null,
+          "max_warps_per_peu": 2
+        },
+        "instructions": {
+          "total_static": 2774,
+          "mma": 256,
+          "global_load": 32,
+          "global_store": 32,
+          "shared_load": 64,
+          "shared_store": 16,
+          "private_load": 0,
+          "private_store": 0,
+          "barrier": 2,
+          "arrive": 119
+        },
+        "top_mnemonics": [
+          [
+            "snop",
+            409
+          ],
+          [
+            "mma_16x16x16f16",
+            256
+          ],
+          [
+            "set_hwreg",
+            256
+          ],
+          [
+            "or_b32",
+            163
+          ],
+          [
+            "get_hwreg",
+            128
+          ],
+          [
+            "mul_f32",
+            128
+          ],
+          [
+            "cvt_f32tof16",
+            128
+          ],
+          [
+            "arrive",
+            119
+          ],
+          [
+            "shl_b64",
+            117
+          ],
+          [
+            "and_xmsk",
+            106
+          ],
+          [
+            "sor_b64",
+            104
+          ],
+          [
+            "shl_b32",
+            74
+          ],
+          [
+            "shl_add_u32",
+            74
+          ],
+          [
+            "bra_xmskz",
+            74
+          ],
+          [
+            "add_co_u32",
+            71
+          ],
+          [
+            "addc_co_u32",
+            71
+          ],
+          [
+            "lds_b128",
+            64
+          ],
+          [
+            "and_b32",
+            49
+          ],
+          [
+            "or3_b32",
+            40
+          ],
+          [
+            "add_i32",
+            39
+          ],
+          [
+            "add_u16",
+            36
+          ],
+          [
+            "bra_xmsks",
+            32
+          ],
+          [
+            "cvt_f16tof32",
+            32
+          ],
+          [
+            "stg_b64",
+            32
+          ]
+        ],
+        "spill_annotations": {
+          "stores": 0,
+          "reloads": 0
+        }
+      }
+    }
+  },
+  "verified_lowering_fact": {
+    "fact": "PipelinePlanning explicitly forces use_async_copy=false for MACA; ordinary T.copy remains synchronous even when software-pipelined.",
+    "source": "src/transform/pipeline_planning.cc",
+    "evidence": "v005 generated C++/ISA contain ping-pong shared addressing and ordinary global/shared loads/stores, but no MACA memcpy_async builtin."
+  }
+}
