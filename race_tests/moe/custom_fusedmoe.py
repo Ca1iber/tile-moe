@@ -4,9 +4,25 @@ import torch.nn as nn
 from typing import Dict, Tuple, Optional
 import tilelang
 import tilelang.language as T
+from tvm import tir
 from tilelang.autotuner import *
 from tilelang.layout import make_swizzled_layout
 from tilelang.intrinsics.maca_mma_macro_generator import TensorCoreIntrinEmitter
+
+
+def maca_memcpy_async_16(dst, src, barrier):
+    """Issue one 16-byte BSM transfer with explicit layout-lowered addresses."""
+    return T.evaluate(
+        tir.call_intrin(
+            "handle",
+            tir.op.Op.get("tl.maca_memcpy_async"),
+            T.access_ptr(dst, "w", extent=8),
+            T.access_ptr(src, "r", extent=8),
+            16,
+            barrier[0],
+            annotations={"barrier_type": tir.StringImm("b128vectype")},
+        )
+    )
 
 
 @tilelang.jit(pass_configs={tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True})
@@ -124,12 +140,12 @@ def moe_forward_tilelang_routed(
             bx = pid1 if use_grid_transpose_step1 else pid0
             by = pid0 if use_grid_transpose_step1 else pid1
             input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
-            routed_expert_gate_staging = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
-            routed_expert_gate_compute = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
-            routed_expert_up_staging = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
-            routed_expert_up_compute = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
-            step1_gate_barrier = T.alloc_maca_barrier()
-            step1_up_barrier = T.alloc_maca_barrier()
+            routed_expert_gate_compute_0 = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+            routed_expert_gate_compute_1 = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+            routed_expert_up_compute_0 = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+            routed_expert_up_compute_1 = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+            step1_gate_barrier_0 = T.alloc_maca_barrier()
+            step1_gate_barrier_1 = T.alloc_maca_barrier()
 
             gate_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_gate.T 的局部累加器。
             up_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_up.T 的局部累加器。
@@ -138,10 +154,10 @@ def moe_forward_tilelang_routed(
             T.annotate_layout(
                 {
                     input_shared: step1_mma.make_mma_load_layout(input_shared, matrix="A"),
-                    routed_expert_gate_staging: step1_weight_identity_layout,
-                    routed_expert_up_staging: step1_weight_identity_layout,
-                    routed_expert_gate_compute: make_swizzled_layout(routed_expert_gate_compute),
-                    routed_expert_up_compute: make_swizzled_layout(routed_expert_up_compute),
+                    routed_expert_gate_compute_0: make_swizzled_layout(routed_expert_gate_compute_0),
+                    routed_expert_gate_compute_1: make_swizzled_layout(routed_expert_gate_compute_1),
+                    routed_expert_up_compute_0: make_swizzled_layout(routed_expert_up_compute_0),
+                    routed_expert_up_compute_1: make_swizzled_layout(routed_expert_up_compute_1),
                     gate_logits_local: step1_mma.make_mma_store_layout(gate_logits_local),
                     up_logits_local: step1_mma.make_mma_store_layout(up_logits_local),
                 }
@@ -163,52 +179,117 @@ def moe_forward_tilelang_routed(
             T.clear(gate_logits_local)
             T.clear(up_logits_local)
 
-            T.maca_async_copy(
-                routed_expert_gate[
-                    cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, 0:block_dhidden_step1
-                ],
-                routed_expert_gate_staging,
-                barrier=step1_gate_barrier,
-            )
-            T.maca_async_copy(
-                routed_expert_up[
-                    cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, 0:block_dhidden_step1
-                ],
-                routed_expert_up_staging,
-                barrier=step1_up_barrier,
-            )
+            copy_tx = T.get_thread_binding()
+            for chunk in T.serial(block_dexpert_step1 * block_dhidden_step1 // (threads * 8)):
+                linear = chunk * threads * 8 + copy_tx * 8
+                weight_row = linear // block_dhidden_step1
+                physical_col = linear % block_dhidden_step1
+                source_col = ((physical_col // 8) ^ (weight_row % 8)) * 8
+                maca_memcpy_async_16(
+                    routed_expert_gate_compute_0[weight_row, physical_col],
+                    routed_expert_gate[cur_group_idx, by * block_dexpert_step1 + weight_row, source_col],
+                    step1_gate_barrier_0,
+                )
+                maca_memcpy_async_16(
+                    routed_expert_up_compute_0[weight_row, physical_col],
+                    routed_expert_up[cur_group_idx, by * block_dexpert_step1 + weight_row, source_col],
+                    step1_gate_barrier_0,
+                )
+                maca_memcpy_async_16(
+                    routed_expert_gate_compute_1[weight_row, physical_col],
+                    routed_expert_gate[
+                        cur_group_idx,
+                        by * block_dexpert_step1 + weight_row,
+                        block_dhidden_step1 + source_col,
+                    ],
+                    step1_gate_barrier_1,
+                )
+                maca_memcpy_async_16(
+                    routed_expert_up_compute_1[weight_row, physical_col],
+                    routed_expert_up[
+                        cur_group_idx,
+                        by * block_dexpert_step1 + weight_row,
+                        block_dhidden_step1 + source_col,
+                    ],
+                    step1_gate_barrier_1,
+                )
 
-            for k in T.serial(step1_k_tiles):
+            for k_pair in T.serial(step1_k_tiles // 2):
+                k_even = 2 * k_pair
+                k_odd = k_even + 1
                 T.copy(
-                    input[m_start : m_start + block_token, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1],
+                    input[m_start : m_start + block_token, k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1],
                     input_shared,
                 )
-                T.maca_barrier_arrive_and_wait(step1_gate_barrier)
-                T.maca_barrier_arrive_and_wait(step1_up_barrier)
+                T.maca_barrier_arrive_and_wait(step1_gate_barrier_0)
                 T.sync_threads()
-                T.copy(routed_expert_gate_staging, routed_expert_gate_compute)
-                T.copy(routed_expert_up_staging, routed_expert_up_compute)
-                T.sync_threads()
-                if k + 1 < step1_k_tiles:
-                    T.maca_async_copy(
-                        routed_expert_gate[
-                            cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, (k + 1) * block_dhidden_step1 : (k + 2) * block_dhidden_step1
-                        ],
-                        routed_expert_gate_staging,
-                        barrier=step1_gate_barrier,
-                    )
-                    T.maca_async_copy(
-                        routed_expert_up[
-                            cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, (k + 1) * block_dhidden_step1 : (k + 2) * block_dhidden_step1
-                        ],
-                        routed_expert_up_staging,
-                        barrier=step1_up_barrier,
-                    )
                 for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_compute, ki)
+                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_compute_0, ki)
                     step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_compute, ki)
+                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_compute_0, ki)
                     step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
+                T.sync_threads()
+                if k_pair + 1 < step1_k_tiles // 2:
+                    for chunk in T.serial(block_dexpert_step1 * block_dhidden_step1 // (threads * 8)):
+                        linear = chunk * threads * 8 + copy_tx * 8
+                        weight_row = linear // block_dhidden_step1
+                        physical_col = linear % block_dhidden_step1
+                        source_col = ((physical_col // 8) ^ (weight_row % 8)) * 8
+                        maca_memcpy_async_16(
+                            routed_expert_gate_compute_0[weight_row, physical_col],
+                            routed_expert_gate[
+                                cur_group_idx,
+                                by * block_dexpert_step1 + weight_row,
+                                (k_even + 2) * block_dhidden_step1 + source_col,
+                            ],
+                            step1_gate_barrier_0,
+                        )
+                        maca_memcpy_async_16(
+                            routed_expert_up_compute_0[weight_row, physical_col],
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 + weight_row,
+                                (k_even + 2) * block_dhidden_step1 + source_col,
+                            ],
+                            step1_gate_barrier_0,
+                        )
+
+                T.copy(
+                    input[m_start : m_start + block_token, k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1],
+                    input_shared,
+                )
+                T.maca_barrier_arrive_and_wait(step1_gate_barrier_1)
+                T.sync_threads()
+                for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
+                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_compute_1, ki)
+                    step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
+                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_compute_1, ki)
+                    step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
+                T.sync_threads()
+                if k_pair + 1 < step1_k_tiles // 2:
+                    for chunk in T.serial(block_dexpert_step1 * block_dhidden_step1 // (threads * 8)):
+                        linear = chunk * threads * 8 + copy_tx * 8
+                        weight_row = linear // block_dhidden_step1
+                        physical_col = linear % block_dhidden_step1
+                        source_col = ((physical_col // 8) ^ (weight_row % 8)) * 8
+                        maca_memcpy_async_16(
+                            routed_expert_gate_compute_1[weight_row, physical_col],
+                            routed_expert_gate[
+                                cur_group_idx,
+                                by * block_dexpert_step1 + weight_row,
+                                (k_odd + 2) * block_dhidden_step1 + source_col,
+                            ],
+                            step1_gate_barrier_1,
+                        )
+                        maca_memcpy_async_16(
+                            routed_expert_up_compute_1[weight_row, physical_col],
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 + weight_row,
+                                (k_odd + 2) * block_dhidden_step1 + source_col,
+                            ],
+                            step1_gate_barrier_1,
+                        )
 
             # element-wise activation
             for i, j in T.Parallel(block_token, block_dexpert_step1):
@@ -221,9 +302,10 @@ def moe_forward_tilelang_routed(
             bx = pid1 if use_grid_transpose_step2 else pid0
             by = pid0 if use_grid_transpose_step2 else pid1
             up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
-            routed_expert_down_staging = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
-            routed_expert_down_compute = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
-            step2_weight_barrier = T.alloc_maca_barrier()
+            routed_expert_down_compute_0 = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
+            routed_expert_down_compute_1 = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
+            step2_weight_barrier_0 = T.alloc_maca_barrier()
+            step2_weight_barrier_1 = T.alloc_maca_barrier()
             output_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
             down_weight_local = T.alloc_local((step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype)
             routed_weight_local = T.alloc_local((2,), dtype=dtype)
@@ -231,8 +313,8 @@ def moe_forward_tilelang_routed(
             T.annotate_layout(
                 {
                     up_logits_shared: step2_mma.make_mma_load_layout(up_logits_shared, matrix="A"),
-                    routed_expert_down_staging: step2_weight_identity_layout,
-                    routed_expert_down_compute: make_swizzled_layout(routed_expert_down_compute),
+                    routed_expert_down_compute_0: make_swizzled_layout(routed_expert_down_compute_0),
+                    routed_expert_down_compute_1: make_swizzled_layout(routed_expert_down_compute_1),
                     output_local: step2_mma.make_mma_store_layout(output_local),
                 }
             )
@@ -252,34 +334,81 @@ def moe_forward_tilelang_routed(
 
             T.clear(output_local)
 
-            T.maca_async_copy(
-                routed_expert_down[
-                    cur_group_idx, by * block_dhidden_step2 : (by + 1) * block_dhidden_step2, 0:block_dexpert_step2
-                ],
-                routed_expert_down_staging,
-                barrier=step2_weight_barrier,
-            )
+            copy_tx = T.get_thread_binding()
+            for chunk in T.serial(block_dhidden_step2 * block_dexpert_step2 // (threads * 8)):
+                linear = chunk * threads * 8 + copy_tx * 8
+                weight_row = linear // block_dexpert_step2
+                physical_col = linear % block_dexpert_step2
+                source_col = ((physical_col // 8) ^ (weight_row % 8)) * 8
+                maca_memcpy_async_16(
+                    routed_expert_down_compute_0[weight_row, physical_col],
+                    routed_expert_down[cur_group_idx, by * block_dhidden_step2 + weight_row, source_col],
+                    step2_weight_barrier_0,
+                )
+                maca_memcpy_async_16(
+                    routed_expert_down_compute_1[weight_row, physical_col],
+                    routed_expert_down[
+                        cur_group_idx,
+                        by * block_dhidden_step2 + weight_row,
+                        block_dexpert_step2 + source_col,
+                    ],
+                    step2_weight_barrier_1,
+                )
 
-            for k in T.serial(step2_k_tiles):
+            for k_pair in T.serial(step2_k_tiles // 2):
+                k_even = 2 * k_pair
+                k_odd = k_even + 1
                 T.copy(
-                    up_logits[m_start : m_start + block_token, k * block_dexpert_step2 : (k + 1) * block_dexpert_step2],
+                    up_logits[m_start : m_start + block_token, k_even * block_dexpert_step2 : (k_even + 1) * block_dexpert_step2],
                     up_logits_shared,
                 )
-                T.maca_barrier_arrive_and_wait(step2_weight_barrier)
+                T.maca_barrier_arrive_and_wait(step2_weight_barrier_0)
                 T.sync_threads()
-                T.copy(routed_expert_down_staging, routed_expert_down_compute)
-                T.sync_threads()
-                if k + 1 < step2_k_tiles:
-                    T.maca_async_copy(
-                        routed_expert_down[
-                            cur_group_idx, by * block_dhidden_step2 : (by + 1) * block_dhidden_step2, (k + 1) * block_dexpert_step2 : (k + 2) * block_dexpert_step2
-                        ],
-                        routed_expert_down_staging,
-                        barrier=step2_weight_barrier,
-                    )
                 for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
-                    step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_compute, ki)
+                    step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_compute_0, ki)
                     step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
+                T.sync_threads()
+                if k_pair + 1 < step2_k_tiles // 2:
+                    for chunk in T.serial(block_dhidden_step2 * block_dexpert_step2 // (threads * 8)):
+                        linear = chunk * threads * 8 + copy_tx * 8
+                        weight_row = linear // block_dexpert_step2
+                        physical_col = linear % block_dexpert_step2
+                        source_col = ((physical_col // 8) ^ (weight_row % 8)) * 8
+                        maca_memcpy_async_16(
+                            routed_expert_down_compute_0[weight_row, physical_col],
+                            routed_expert_down[
+                                cur_group_idx,
+                                by * block_dhidden_step2 + weight_row,
+                                (k_even + 2) * block_dexpert_step2 + source_col,
+                            ],
+                            step2_weight_barrier_0,
+                        )
+
+                T.copy(
+                    up_logits[m_start : m_start + block_token, k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2],
+                    up_logits_shared,
+                )
+                T.maca_barrier_arrive_and_wait(step2_weight_barrier_1)
+                T.sync_threads()
+                for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
+                    step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_compute_1, ki)
+                    step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
+                T.sync_threads()
+                if k_pair + 1 < step2_k_tiles // 2:
+                    for chunk in T.serial(block_dhidden_step2 * block_dexpert_step2 // (threads * 8)):
+                        linear = chunk * threads * 8 + copy_tx * 8
+                        weight_row = linear // block_dexpert_step2
+                        physical_col = linear % block_dexpert_step2
+                        source_col = ((physical_col // 8) ^ (weight_row % 8)) * 8
+                        maca_memcpy_async_16(
+                            routed_expert_down_compute_1[weight_row, physical_col],
+                            routed_expert_down[
+                                cur_group_idx,
+                                by * block_dhidden_step2 + weight_row,
+                                (k_odd + 2) * block_dexpert_step2 + source_col,
+                            ],
+                            step2_weight_barrier_1,
+                        )
 
             # `output_local` 的 MMA store layout 让每个线程负责两个 routed row：
             # row = (tx // 64) * 32 + {0, 16} + tx % 16。
