@@ -1,0 +1,195 @@
+{
+  "iteration_id": "v013_step2_split_accumulator_sc-16g",
+  "scope": "sc-16g Case3 Step2; same campaign, source-bound snapshots, per-kernel counts=1",
+  "toolchain": {
+    "maca": "3.7.1",
+    "mcprofiler": "3.8.1.4",
+    "xcore_clock_ghz": 1.125
+  },
+  "targeted": {
+    "v004": {
+      "source_sha256": "2722b8b1db2ff18d40af055943705f70cb7b3b75712cd5d653f3ddb541ac09ff",
+      "total_cycles_kcycles": 7528712.45,
+      "average_wave_life_cycles": 5027.87,
+      "private_read_instructions": 86016.0,
+      "private_write_instructions": 86016.0,
+      "global_read_bytes": 39685737856.0,
+      "global_write_bytes": 12226879648.0,
+      "isu_stall_cycles": {
+        "wsm_stall": 348558218.0,
+        "vls_pipeline_stall": 2713456527.0,
+        "vls_wdata_stall": 191783480.0,
+        "valu_stall": 0.0
+      },
+      "vl1_partition_stall_cycles": {
+        "pt0": 398166162.0,
+        "pt1": 404535455.0,
+        "pt2": 394951400.0,
+        "pt3": 403991554.0
+      },
+      "vl1_partition_stall_cycles_sum": 1601644571.0,
+      "shared_average_latency_cycles": 79.16,
+      "shared_non_conflict_efficiency_pct": 100.0,
+      "achieved_waves": 5713296.0,
+      "dispatched_waves": 5713296.0,
+      "ap_active_cycles": 8606258500.0,
+      "ap_mte_duty_pct": 37.47,
+      "ap_mma_duty_pct": 24.56,
+      "vls_duty_pct": 0.0,
+      "l2c_duty_pct": 0.32
+    },
+    "v013": {
+      "source_sha256": "7e72737a3ac33d662d2d2b8771cedfd85e6a4ce32d9b2a492f027580d3aacbc3",
+      "total_cycles_kcycles": 7367083.59,
+      "average_wave_life_cycles": 4989.55,
+      "private_read_instructions": 0.0,
+      "private_write_instructions": 0.0,
+      "global_read_bytes": 39684940128.0,
+      "global_write_bytes": 12205139648.0,
+      "isu_stall_cycles": {
+        "wsm_stall": 545359189.0,
+        "vls_pipeline_stall": 2553132282.0,
+        "vls_wdata_stall": 439291060.0,
+        "valu_stall": 0.0
+      },
+      "vl1_partition_stall_cycles": {
+        "pt0": 388885653.0,
+        "pt1": 398662326.0,
+        "pt2": 385300971.0,
+        "pt3": 397809709.0
+      },
+      "vl1_partition_stall_cycles_sum": 1570658659.0,
+      "shared_average_latency_cycles": 109.5,
+      "shared_non_conflict_efficiency_pct": 100.0,
+      "achieved_waves": 18291396.0,
+      "dispatched_waves": 0.0,
+      "ap_active_cycles": 15912366908.0,
+      "ap_mte_duty_pct": 20.39,
+      "ap_mma_duty_pct": 13.28,
+      "vls_duty_pct": 0.0,
+      "l2c_duty_pct": 0.32
+    }
+  },
+  "targeted_delta_pct_v013_vs_v004": {
+    "total_cycles": -2.146832689831318,
+    "average_wave_life": -0.762151766055998,
+    "global_read_bytes": -0.0020101125570464685,
+    "global_write_bytes": -0.17780497253488628,
+    "vl1_partition_stall_sum": -1.9346309762504728
+  },
+  "roofline": {
+    "v004": {
+      "source_sha256": "2722b8b1db2ff18d40af055943705f70cb7b3b75712cd5d653f3ddb541ac09ff",
+      "processed_data": {
+        "all_ops": 362162898944.0,
+        "all_memacs": 2857055616.0,
+        "during": 4314358.0,
+        "block_num": 104,
+        "vl1_memacs": 1135124480.0,
+        "l2c_memacs": 5628600320.0
+      },
+      "data": {
+        "all_ops": 362162898944.0,
+        "all_memacs": 2857055616.0,
+        "block_num": 104,
+        "during": 4314358.0,
+        "core_clk": 1.125,
+        "MAX_Flops_base": 1,
+        "case_flops": 807.1503493148299,
+        "MAX_Bandwith": 1843.2,
+        "MAX_I": 260.0,
+        "case_I": 1083.4263692134443,
+        "case_bandwith": 744.9978810288808,
+        "case_VL1_I": 2726.9338713263946,
+        "case_L2C_I": 549.9430083328,
+        "mc_clk": 0.9
+      },
+      "classifications": {
+        "physical_theoretical": {
+          "bandwidth_gbps": 1843.2,
+          "ridge_flop_per_byte": 1040.0,
+          "region": "compute",
+          "attainable_tflops": 1916.928,
+          "roof_efficiency_pct": 42.10645101510489
+        },
+        "sc16_measured_conservative": {
+          "bandwidth_gbps": 1400.0,
+          "ridge_flop_per_byte": 1369.2342857142858,
+          "region": "memory",
+          "attainable_tflops": 1516.7969168988222,
+          "roof_efficiency_pct": 53.214134359205765
+        }
+      },
+      "native_image": "moe-roofline/v013_step2_split_accumulator_sc-16g/native/v013_step2_split_accumulator_sc-16g_v004_case3_step2_mcprofiler_native.png"
+    },
+    "v013": {
+      "source_sha256": "7e72737a3ac33d662d2d2b8771cedfd85e6a4ce32d9b2a492f027580d3aacbc3",
+      "processed_data": {
+        "all_ops": 362786557760.0,
+        "all_memacs": 2993037792.0,
+        "during": 4000670.0,
+        "block_num": 104,
+        "vl1_memacs": 1124114432.0,
+        "l2c_memacs": 5623095296.0
+      },
+      "data": {
+        "all_ops": 362786557760.0,
+        "all_memacs": 2993037792.0,
+        "block_num": 104,
+        "during": 4000670.0,
+        "core_clk": 1.125,
+        "MAX_Flops_base": 1,
+        "case_flops": 871.9370220872619,
+        "MAX_Bandwith": 1843.2,
+        "MAX_I": 260.0,
+        "case_I": 1035.9841824257626,
+        "case_bandwith": 841.6509024738357,
+        "case_VL1_I": 2758.384486175274,
+        "case_L2C_I": 551.4293545976799,
+        "mc_clk": 0.9
+      },
+      "classifications": {
+        "physical_theoretical": {
+          "bandwidth_gbps": 1843.2,
+          "ridge_flop_per_byte": 1040.0,
+          "region": "memory",
+          "attainable_tflops": 1909.5260450471656,
+          "roof_efficiency_pct": 45.66248385817251
+        },
+        "sc16_measured_conservative": {
+          "bandwidth_gbps": 1400.0,
+          "ridge_flop_per_byte": 1369.2342857142858,
+          "region": "memory",
+          "attainable_tflops": 1450.3778553960676,
+          "roof_efficiency_pct": 60.11792160527397
+        }
+      },
+      "native_image": "moe-roofline/v013_step2_split_accumulator_sc-16g/native/v013_step2_split_accumulator_sc-16g_v013_case3_step2_mcprofiler_native.png"
+    }
+  },
+  "roofline_delta_pct_v013_vs_v004": {
+    "all_ops": 0.17220394960899466,
+    "all_memacs_raw_proxy": 4.759521489132958,
+    "during": -7.270792085404132,
+    "native_tflops": 8.026592917593085,
+    "native_ai": -4.378902723414814,
+    "native_bandwidth": 12.973596825734868,
+    "vl1_memacs_raw_proxy": -0.9699419045213438,
+    "l2c_memacs_raw_proxy": -0.09780449289389231
+  },
+  "counter_validity": {
+    "valid_for_same_campaign_comparison": [
+      "Total Cycles",
+      "Average Wave life cycles",
+      "Private Read/Write Instructions",
+      "Global Memory Read/Write bytes",
+      "VL1 partition stall cycles layout",
+      "per-kernel RoofLine processed/data fields"
+    ],
+    "invalid_or_not_cross_comparable": [
+      "v013 Dispatched waves is zero while work executed",
+      "AP active cycles denominators differ by 84.9%, so MTE/MMA duty deltas are not used causally",
+      "all_memacs, vl1_memacs, and l2c_memacs are raw proxies rather than documented bytes"
+    ]
+  }
+}

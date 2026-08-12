@@ -31,4 +31,8 @@
 ## 结果
 
 - 结论：accepted_current_best。两轮全 case 交替配对相对 v004：Case1 -0.80%、Case2 -2.54%、Case3 -2.11%；全部 PASS。
+- 节点恢复后的 Case3 mcTracer 三次确认 Step2 中位 3.545344 ms、占纯 kernel 时间 33.44%，Step2 范围 3.537664–3.549952 ms。
+- 同 campaign targeted mcProfiler 把 v004 的 86,016/86,016 private read/write 复现为 v013 的 0/0，Total Cycles -2.1468%，VL1 partition stall sum -1.9346%；global read 基本不变。
+- 原生 Roofline 显示 v013 Case3 Step2 AI 1035.984 FLOP/B、871.937 TFLOP/s、841.651 GB/s proxy，处在物理 ridge 附近；同步 mx-smi 的用户 kernel steady-state HBM 中位 1060.849 GB/s，104 AP 全活跃。
+- 第一轮恢复后 mx-smi 脚本因采样过快，在 2.36 秒内结束、只覆盖编译阶段；失败原始数据保留。重试改为持续到 workload 退出并按 harness 阶段拆分，未用混合平台中位数替代用户 kernel steady-state。
 - 证据报告：`../../restart-rep/v013_step2_split_accumulator_sc-16g/v013_step2_split_accumulator_sc-16g_report.md`
