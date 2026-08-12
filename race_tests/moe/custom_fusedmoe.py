@@ -157,9 +157,9 @@ def moe_forward_tilelang_routed(
 
             if use_step1_input_prefetch:
                 # Keep BN128 and ping-pong only the register A fragments. Tile 0 is
-                # primed here. The 32-expert shape interleaves gate and A half-tiles
-                # to cap each global-load burst at half a tile; 64 experts retain
-                # the unsplit v019 weight-copy path.
+                # primed here. The 32-expert shape interleaves gate, A, and up
+                # half-tiles to cap every Step1 global-load burst at half a tile;
+                # 64 experts retain the unsplit v019 weight-copy path.
                 T.copy(
                     input[m_start : m_start + block_token, 0:block_dhidden_step1],
                     input_shared,
@@ -184,6 +184,14 @@ def moe_forward_tilelang_routed(
                             input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
                         )
                         T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                        )
+                        T.copy(
                             routed_expert_gate[
                                 cur_group_idx,
                                 by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
@@ -198,6 +206,14 @@ def moe_forward_tilelang_routed(
                             ],
                             input_prefetch[block_token // 2 : block_token, 0:block_dhidden_step1],
                         )
+                        T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                        )
                     else:
                         T.copy(
                             routed_expert_gate[
@@ -207,14 +223,14 @@ def moe_forward_tilelang_routed(
                             ],
                             routed_expert_gate_shared,
                         )
-                    T.copy(
-                        routed_expert_up[
-                            cur_group_idx,
-                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
-                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
-                        ],
-                        routed_expert_up_shared,
-                    )
+                        T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared,
+                        )
                     T.sync_threads()
                     if not use_step1_prefetch_before_barrier:
                         T.copy(
@@ -249,6 +265,14 @@ def moe_forward_tilelang_routed(
                                 input_shared[0 : block_token // 2, 0:block_dhidden_step1],
                             )
                         T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                        )
+                        T.copy(
                             routed_expert_gate[
                                 cur_group_idx,
                                 by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
@@ -264,6 +288,14 @@ def moe_forward_tilelang_routed(
                                 ],
                                 input_shared[block_token // 2 : block_token, 0:block_dhidden_step1],
                             )
+                        T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                        )
                     else:
                         T.copy(
                             routed_expert_gate[
@@ -273,14 +305,14 @@ def moe_forward_tilelang_routed(
                             ],
                             routed_expert_gate_shared,
                         )
-                    T.copy(
-                        routed_expert_up[
-                            cur_group_idx,
-                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
-                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
-                        ],
-                        routed_expert_up_shared,
-                    )
+                        T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared,
+                        )
                     T.sync_threads()
                     if not use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
                         k_next_even = k_odd + 1
