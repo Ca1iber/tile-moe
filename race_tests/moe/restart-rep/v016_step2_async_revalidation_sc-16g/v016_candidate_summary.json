@@ -1,0 +1,419 @@
+{
+  "iteration_id": "v016_step2_async_revalidation_sc-16g",
+  "parent_id": "v013_step2_split_accumulator_sc-16g",
+  "decision": "rejected_revalidated",
+  "main_kernel_unchanged": true,
+  "source_sha256": {
+    "parent": "7e72737a3ac33d662d2d2b8771cedfd85e6a4ce32d9b2a492f027580d3aacbc3",
+    "historical_v012d": "36567e970732917eade4352ece2f91da3d83a673eb320834eea4c862c5ebb226"
+  },
+  "paired_oj": {
+    "protocol": {
+      "pairs": 3,
+      "orders": "AB, BA, AB ...",
+      "warmup": 10,
+      "repeat": 100,
+      "cases": [
+        2,
+        3
+      ],
+      "fresh_process_per_variant_sample": true
+    },
+    "case2_median_change_percent": 0.5032169420767785,
+    "case2_mean_change_percent": 0.4295914717910909,
+    "case3_median_change_percent": 1.0533671723214955,
+    "case3_mean_change_percent": 1.0366908232148624
+  },
+  "mctracer_case3": {
+    "pairs": [
+      {
+        "pair": 1,
+        "step1_change_percent": 0.5103156666909747,
+        "step2_change_percent": 2.566860256686021,
+        "device_span_change_percent": 1.2484635222096419
+      },
+      {
+        "pair": 2,
+        "step1_change_percent": 0.4414447282013789,
+        "step2_change_percent": 3.2267399797424323,
+        "device_span_change_percent": 1.1246825492804424
+      },
+      {
+        "pair": 3,
+        "step1_change_percent": 1.7388451443569597,
+        "step2_change_percent": 3.1718569780853523,
+        "device_span_change_percent": 2.1983590733590574
+      }
+    ],
+    "step1_median_change_percent": 0.5103156666909747,
+    "step1_mean_change_percent": 0.8968685130831044,
+    "step2_median_change_percent": 3.1718569780853523,
+    "step2_mean_change_percent": 2.9884857381712684,
+    "device_span_median_change_percent": 1.2484635222096419
+  },
+  "codegen_step2": {
+    "parent_resources": {
+      "name": "kernel_kernel_1",
+      "mt_registers": 196,
+      "st_registers": 28,
+      "reported_static_shared_bytes": 0,
+      "static_max_warps_per_peu": 2
+    },
+    "async_resources": {
+      "name": "kernel_kernel_1",
+      "mt_registers": 190,
+      "st_registers": 28,
+      "reported_static_shared_bytes": 0,
+      "static_max_warps_per_peu": 2
+    },
+    "parent_sites": {
+      "source_bytes": 26451,
+      "mfma_sites": 8,
+      "memcpy_async_sites": 0,
+      "maca_wait_sites": 0,
+      "syncthreads_sites": 6,
+      "for_sites": 56,
+      "generated_device": "/root/tilelang-metax/race_tests/moe/restart-rep/v016_step2_async_revalidation_sc-16g/codegen/v013_parent/v013_parent_case3_generated_device.cpp",
+      "compiler_log": "/root/tilelang-metax/race_tests/moe/restart-rep/v016_step2_async_revalidation_sc-16g/codegen/v013_parent/v013_parent_case3_compiler.log"
+    },
+    "async_sites": {
+      "source_bytes": 26566,
+      "mfma_sites": 6,
+      "memcpy_async_sites": 4,
+      "maca_wait_sites": 3,
+      "syncthreads_sites": 6,
+      "for_sites": 49,
+      "generated_device": "/root/tilelang-metax/race_tests/moe/restart-rep/v016_step2_async_revalidation_sc-16g/codegen/v012d_async_step2/v012d_async_step2_case3_generated_device.cpp",
+      "compiler_log": "/root/tilelang-metax/race_tests/moe/restart-rep/v016_step2_async_revalidation_sc-16g/codegen/v012d_async_step2/v012d_async_step2_case3_compiler.log"
+    }
+  },
+  "isa_step2": {
+    "parent": {
+      "name": "kernel_kernel_1",
+      "resources": {
+        "code_bytes": 20856,
+        "st_registers": 28,
+        "mt_registers": 196,
+        "private_bytes": null,
+        "max_warps_per_peu": 2
+      },
+      "instructions": {
+        "total_static": 2607,
+        "mma": 256,
+        "global_load": 32,
+        "global_store": 32,
+        "shared_load": 64,
+        "shared_store": 16,
+        "private_load": 0,
+        "private_store": 0,
+        "barrier": 3,
+        "arrive": 121
+      },
+      "top_mnemonics": [
+        [
+          "snop",
+          407
+        ],
+        [
+          "mma_16x16x16f16",
+          256
+        ],
+        [
+          "set_hwreg",
+          256
+        ],
+        [
+          "get_hwreg",
+          128
+        ],
+        [
+          "mul_f32",
+          128
+        ],
+        [
+          "cvt_f32tof16",
+          128
+        ],
+        [
+          "arrive",
+          121
+        ],
+        [
+          "shl_b64",
+          117
+        ],
+        [
+          "and_xmsk",
+          105
+        ],
+        [
+          "sor_b64",
+          103
+        ],
+        [
+          "or_b32",
+          90
+        ],
+        [
+          "shl_b32",
+          74
+        ],
+        [
+          "bra_xmskz",
+          73
+        ],
+        [
+          "add_co_u32",
+          72
+        ],
+        [
+          "addc_co_u32",
+          72
+        ],
+        [
+          "lds_b128",
+          64
+        ],
+        [
+          "and_b32",
+          48
+        ],
+        [
+          "add_i32",
+          39
+        ],
+        [
+          "add_u16",
+          36
+        ],
+        [
+          "bra_xmsks",
+          32
+        ],
+        [
+          "cvt_f16tof32",
+          32
+        ],
+        [
+          "stg_b64",
+          32
+        ],
+        [
+          "ldg_b128",
+          24
+        ],
+        [
+          "add_u32",
+          23
+        ]
+      ],
+      "spill_annotations": {
+        "stores": 0,
+        "reloads": 0
+      }
+    },
+    "async": {
+      "name": "kernel_kernel_1",
+      "resources": {
+        "code_bytes": 19408,
+        "st_registers": 28,
+        "mt_registers": 190,
+        "private_bytes": null,
+        "max_warps_per_peu": 2
+      },
+      "instructions": {
+        "total_static": 2426,
+        "mma": 128,
+        "global_load": 32,
+        "global_store": 32,
+        "shared_load": 32,
+        "shared_store": 0,
+        "private_load": 0,
+        "private_store": 0,
+        "barrier": 6,
+        "arrive": 75
+      },
+      "top_mnemonics": [
+        [
+          "snop",
+          420
+        ],
+        [
+          "set_hwreg",
+          256
+        ],
+        [
+          "mma_16x16x16f16",
+          128
+        ],
+        [
+          "get_hwreg",
+          128
+        ],
+        [
+          "mul_f32",
+          128
+        ],
+        [
+          "cvt_f32tof16",
+          128
+        ],
+        [
+          "shl_b64",
+          117
+        ],
+        [
+          "and_xmsk",
+          105
+        ],
+        [
+          "sor_b64",
+          103
+        ],
+        [
+          "or_b32",
+          88
+        ],
+        [
+          "arrive",
+          75
+        ],
+        [
+          "add_co_u32",
+          75
+        ],
+        [
+          "addc_co_u32",
+          75
+        ],
+        [
+          "shl_b32",
+          74
+        ],
+        [
+          "bra_xmskz",
+          73
+        ],
+        [
+          "and_b32",
+          50
+        ],
+        [
+          "add_u16",
+          36
+        ],
+        [
+          "lds_b128",
+          32
+        ],
+        [
+          "bra_xmsks",
+          32
+        ],
+        [
+          "cvt_f16tof32",
+          32
+        ],
+        [
+          "stg_b64",
+          32
+        ],
+        [
+          "shl_add_u32",
+          24
+        ],
+        [
+          "ldg_b128",
+          24
+        ],
+        [
+          "mov_b32",
+          21
+        ]
+      ],
+      "spill_annotations": {
+        "stores": 0,
+        "reloads": 0
+      }
+    },
+    "static_barrier_change_percent": 100.0
+  },
+  "mcprofiler_step2": {
+    "parent": {
+      "Total Cycles": "7,658,351.19(Kcycles)",
+      "Average Wave life cycles": "4,936.03",
+      "ISU stall cycles layout": {
+        "data": {
+          "wsm_stall": 286951557.0,
+          "vls_pipeline_stall": 2556535978.0,
+          "vls_wdata_stall": 191439416.0,
+          "valu_stall": 0.0
+        },
+        "filename": "/opt/mcProfiler-ubuntu18.04/output20260812022653/ISU_stall_cycles_layout20260812022945653.png"
+      },
+      "Private Read Instructions": 0,
+      "Private Write Instructions": 0,
+      "Global Memory Read bytes": "39,696,017,472.0byte",
+      "Global Memory Write bytes": "12,285,590,208.0byte",
+      "VL1 partition stall cycles layout": {
+        "data": {
+          "pt0": 390500467.0,
+          "pt1": 400921052.0,
+          "pt2": 387685796.0,
+          "pt3": 399632609.0
+        },
+        "filename": "/opt/mcProfiler-ubuntu18.04/output20260812022653/VL1_partition_stall_cycles_layout20260812022945809.png"
+      },
+      "average latency of all stages per instruction": 69.15,
+      "shared memory access efficiency": "100.0%",
+      "Achieved waves": "5,786,428.0",
+      "Dispatched waves": "5,786,428.0",
+      "AP active cycles": "8,517,893,576.0",
+      "AP MTE Duty ratio": "38.10%",
+      "AP MMA Duty ratio": "24.82%",
+      "VLS Duty ratio": "0.0%",
+      "L2C Duty ratio": "0.31%"
+    },
+    "async": {
+      "Total Cycles": "7,633,335.70(Kcycles)",
+      "Average Wave life cycles": "35,956.32",
+      "ISU stall cycles layout": {
+        "data": {
+          "wsm_stall": 213996930.0,
+          "vls_pipeline_stall": 2777748967.0,
+          "vls_wdata_stall": 2296603220.0,
+          "valu_stall": 0.0
+        },
+        "filename": "/opt/mcProfiler-ubuntu18.04/output20260812023012/ISU_stall_cycles_layout20260812023305737.png"
+      },
+      "Private Read Instructions": 0,
+      "Private Write Instructions": 16,
+      "Global Memory Read bytes": "364,893,230,752.0byte",
+      "Global Memory Write bytes": "12,329,377,472.0byte",
+      "VL1 partition stall cycles layout": {
+        "data": {
+          "pt0": 385242576.0,
+          "pt1": 387206781.0,
+          "pt2": 379113699.0,
+          "pt3": 387539465.0
+        },
+        "filename": "/opt/mcProfiler-ubuntu18.04/output20260812023012/VL1_partition_stall_cycles_layout20260812023305895.png"
+      },
+      "average latency of all stages per instruction": 5.39,
+      "shared memory access efficiency": "100.0%",
+      "Achieved waves": "5,713,296.0",
+      "Dispatched waves": "163,764,312.0",
+      "AP active cycles": "8,547,641,650.0",
+      "AP MTE Duty ratio": "215.91%",
+      "AP MMA Duty ratio": "24.73%",
+      "VLS Duty ratio": "0.0%",
+      "L2C Duty ratio": "3.80%"
+    },
+    "directional_observations": {
+      "average_wave_life_change_percent": 628.4461399140605,
+      "vls_pipeline_stall_change_percent": 8.652840832424236,
+      "vls_wdata_stall_change_percent": 1099.6501389243685
+    },
+    "validity_warning": "The async replay reports MTE duty above 100% and dispatched waves far above achieved waves; absolute throughput/traffic ratios are internally inconsistent and are not used as utilization claims."
+  }
+}
