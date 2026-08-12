@@ -1,0 +1,149 @@
+{
+  "scope": "two order-balanced targeted mcProfiler campaigns; Case3 Step2; explicit source snapshots",
+  "orders": [
+    "v013_parent -> v014_candidate",
+    "v014_candidate -> v013_parent"
+  ],
+  "source_sha256": {
+    "v013_parent": "7e72737a3ac33d662d2d2b8771cedfd85e6a4ce32d9b2a492f027580d3aacbc3",
+    "v014_candidate": "82cbd989d0630736512990966384266896a9d73baacd5712bc34466a8b65e9a1"
+  },
+  "per_campaign_delta_percent": {
+    "total_cycles_kcycles": [
+      -12.24262449716097,
+      -9.74778833466383
+    ],
+    "average_wave_life_cycles": [
+      0.5689457946175924,
+      0.3183295222048521
+    ],
+    "private_read_instructions": [
+      null,
+      null
+    ],
+    "private_write_instructions": [
+      null,
+      null
+    ],
+    "global_read_bytes": [
+      0.45141081656114856,
+      0.4302068972228845
+    ],
+    "global_write_bytes": [
+      -0.0002488124495103605,
+      -0.00012847025726570038
+    ],
+    "isu_stall_cycles_sum": [
+      0.01414432188104886,
+      -0.2065996886524868
+    ],
+    "vl1_partition_stall_cycles_sum": [
+      0.11917365408478098,
+      0.3301106384647756
+    ],
+    "shared_average_latency_cycles": [
+      0.5494505494505697,
+      0.5929997107318341
+    ],
+    "shared_non_conflict_efficiency_pct": [
+      0.0,
+      0.0
+    ]
+  },
+  "aggregate_delta_percent": {
+    "total_cycles_kcycles": {
+      "samples_percent": [
+        -12.24262449716097,
+        -9.74778833466383
+      ],
+      "mean_percent": -10.9952064159124,
+      "median_percent": -10.9952064159124
+    },
+    "average_wave_life_cycles": {
+      "samples_percent": [
+        0.5689457946175924,
+        0.3183295222048521
+      ],
+      "mean_percent": 0.44363765841122227,
+      "median_percent": 0.44363765841122227
+    },
+    "private_read_instructions": {
+      "samples_percent": [
+        null,
+        null
+      ],
+      "mean_percent": null,
+      "median_percent": null
+    },
+    "private_write_instructions": {
+      "samples_percent": [
+        null,
+        null
+      ],
+      "mean_percent": null,
+      "median_percent": null
+    },
+    "global_read_bytes": {
+      "samples_percent": [
+        0.45141081656114856,
+        0.4302068972228845
+      ],
+      "mean_percent": 0.44080885689201654,
+      "median_percent": 0.44080885689201654
+    },
+    "global_write_bytes": {
+      "samples_percent": [
+        -0.0002488124495103605,
+        -0.00012847025726570038
+      ],
+      "mean_percent": -0.00018864135338803045,
+      "median_percent": -0.00018864135338803045
+    },
+    "isu_stall_cycles_sum": {
+      "samples_percent": [
+        0.01414432188104886,
+        -0.2065996886524868
+      ],
+      "mean_percent": -0.09622768338571897,
+      "median_percent": -0.09622768338571897
+    },
+    "vl1_partition_stall_cycles_sum": {
+      "samples_percent": [
+        0.11917365408478098,
+        0.3301106384647756
+      ],
+      "mean_percent": 0.2246421462747783,
+      "median_percent": 0.2246421462747783
+    },
+    "shared_average_latency_cycles": {
+      "samples_percent": [
+        0.5494505494505697,
+        0.5929997107318341
+      ],
+      "mean_percent": 0.5712251300912019,
+      "median_percent": 0.5712251300912019
+    },
+    "shared_non_conflict_efficiency_pct": {
+      "samples_percent": [
+        0.0,
+        0.0
+      ],
+      "mean_percent": 0.0,
+      "median_percent": 0.0
+    }
+  },
+  "stable_observations": {
+    "total_cycles": "lower by 12.24% and 9.75%, but this is multi-pass aggregate Kcycles, not single-invocation latency",
+    "average_wave_life": "higher by 0.57% and 0.32%",
+    "private_traffic": "zero in both variants and both campaigns",
+    "global_read": "higher by 0.45% and 0.43%",
+    "vl1_stall_sum": "higher by 0.12% and 0.33%",
+    "shared_latency": "higher by 0.55% and 0.59%",
+    "occupancy": "achieved/dispatched wave totals equal within each paired campaign; compiler static maximum remains 2 waves/PEU"
+  },
+  "interpretation": {
+    "accepted_signal": "v014 reduces MT registers from 196 to 188 and reduces aggregate CE Total Cycles",
+    "falsified_latency_mechanism": "the register reduction does not cross an occupancy tier and does not reduce wave life, stalls, mcTracer Step2 time, or clean OJ latency outside noise",
+    "counter_precedence": "clean device-event benchmark and mcTracer stage duration outrank multi-pass aggregate Total Cycles for latency claims"
+  }
+}

@@ -1,0 +1,109 @@
+--- a/race_tests/moe/custom_fusedmoe.py
++++ b/race_tests/moe/custom_fusedmoe.py
+@@ -65,8 +65,12 @@
+     step2_micro_size_k = 16
+     step2_block_row_warps = 4
+     step2_block_col_warps = 1
++    # Keep the proven 256-column CTA output tile, but shorten the live B operand
++    # and accumulator fragment width from 128 to 64 columns. Four fragments
++    # still cover exactly the same output columns and execute the same MMA work.
++    step2_fragment_dhidden = block_dhidden_step2 // 2
+     step2_warp_row_tiles = block_token // step2_block_row_warps
+-    step2_warp_col_tiles = block_dhidden_step2 // step2_block_col_warps
++    step2_warp_col_tiles = step2_fragment_dhidden // step2_block_col_warps
+     step2_warp_cols = step2_warp_col_tiles // step2_micro_size_y
+     step2_local_size_b = (step2_micro_size_y * step2_micro_size_k) // 64
+     step2_mma = TensorCoreIntrinEmitter(
+@@ -185,8 +189,10 @@
+             by = pid0 if use_grid_transpose_step2 else pid1
+             up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+             routed_expert_down_shared = T.alloc_shared((step2_output_tile, block_dexpert_step2), dtype=dtype)
+-            output_local_0 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+-            output_local_1 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
++            output_local_0 = T.alloc_fragment((block_token, step2_fragment_dhidden), dtype=accum_dtype)
++            output_local_1 = T.alloc_fragment((block_token, step2_fragment_dhidden), dtype=accum_dtype)
++            output_local_2 = T.alloc_fragment((block_token, step2_fragment_dhidden), dtype=accum_dtype)
++            output_local_3 = T.alloc_fragment((block_token, step2_fragment_dhidden), dtype=accum_dtype)
+             down_weight_local = T.alloc_local((step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype)
+             routed_weight_local = T.alloc_local((2,), dtype=dtype)
+ 
+@@ -196,6 +202,8 @@
+                     routed_expert_down_shared: make_swizzled_layout(routed_expert_down_shared),
+                     output_local_0: step2_mma.make_mma_store_layout(output_local_0),
+                     output_local_1: step2_mma.make_mma_store_layout(output_local_1),
++                    output_local_2: step2_mma.make_mma_store_layout(output_local_2),
++                    output_local_3: step2_mma.make_mma_store_layout(output_local_3),
+                 }
+             )
+ 
+@@ -214,6 +222,8 @@
+ 
+             T.clear(output_local_0)
+             T.clear(output_local_1)
++            T.clear(output_local_2)
++            T.clear(output_local_3)
+ 
+             for k in T.Pipelined(T.ceildiv(dexpert, block_dexpert_step2), num_stages=num_stages):
+                 T.copy(
+@@ -229,19 +239,37 @@
+                 for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
+                     step2_mma.ldmatrix_b(
+                         down_weight_local,
+-                        routed_expert_down_shared[0:block_dhidden_step2, 0:block_dexpert_step2],
++                        routed_expert_down_shared[0:step2_fragment_dhidden, 0:block_dexpert_step2],
+                         ki,
+                     )
+                     step2_mma.mma(up_logits_shared, down_weight_local, output_local_0, ki)
+                     step2_mma.ldmatrix_b(
+                         down_weight_local,
+                         routed_expert_down_shared[
+-                            block_dhidden_step2:step2_output_tile,
++                            step2_fragment_dhidden : 2 * step2_fragment_dhidden,
+                             0:block_dexpert_step2,
+                         ],
+                         ki,
+                     )
+                     step2_mma.mma(up_logits_shared, down_weight_local, output_local_1, ki)
++                    step2_mma.ldmatrix_b(
++                        down_weight_local,
++                        routed_expert_down_shared[
++                            2 * step2_fragment_dhidden : 3 * step2_fragment_dhidden,
++                            0:block_dexpert_step2,
++                        ],
++                        ki,
++                    )
++                    step2_mma.mma(up_logits_shared, down_weight_local, output_local_2, ki)
++                    step2_mma.ldmatrix_b(
++                        down_weight_local,
++                        routed_expert_down_shared[
++                            3 * step2_fragment_dhidden : step2_output_tile,
++                            0:block_dexpert_step2,
++                        ],
++                        ki,
++                    )
++                    step2_mma.mma(up_logits_shared, down_weight_local, output_local_3, ki)
+ 
+             # `output_local` 的 MMA store layout 让每个线程负责两个 routed row：
+             # row = (tx // 64) * 32 + {0, 16} + tx % 16。
+@@ -253,12 +281,18 @@
+                 if routed_row < actual_rows:
+                     routed_weight_local[row_slot] = routed_expert_weights[m_start + routed_row]
+ 
+-            for i, j in T.Parallel(block_token, block_dhidden_step2):
++            for i, j in T.Parallel(block_token, step2_fragment_dhidden):
+                 if i < actual_rows:
+                     output[m_start + i, by * step2_output_tile + j] = output_local_0[i, j] * routed_weight_local[(i // 16) % 2]
+-            for i, j in T.Parallel(block_token, block_dhidden_step2):
++            for i, j in T.Parallel(block_token, step2_fragment_dhidden):
++                if i < actual_rows:
++                    output[m_start + i, by * step2_output_tile + step2_fragment_dhidden + j] = output_local_1[i, j] * routed_weight_local[(i // 16) % 2]
++            for i, j in T.Parallel(block_token, step2_fragment_dhidden):
++                if i < actual_rows:
++                    output[m_start + i, by * step2_output_tile + 2 * step2_fragment_dhidden + j] = output_local_2[i, j] * routed_weight_local[(i // 16) % 2]
++            for i, j in T.Parallel(block_token, step2_fragment_dhidden):
+                 if i < actual_rows:
+-                    output[m_start + i, by * step2_output_tile + block_dhidden_step2 + j] = output_local_1[i, j] * routed_weight_local[(i // 16) % 2]
++                    output[m_start + i, by * step2_output_tile + 3 * step2_fragment_dhidden + j] = output_local_3[i, j] * routed_weight_local[(i // 16) % 2]
+ 
+     return kernel
+ 
