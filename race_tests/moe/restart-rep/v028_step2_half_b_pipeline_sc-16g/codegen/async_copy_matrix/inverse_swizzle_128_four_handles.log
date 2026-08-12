@@ -1,0 +1,96 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+2026-08-12 13:20:25  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:133): TileLang begins to compile kernel `main` with `out_idx=[1]`
+2026-08-12 13:20:25  [TileLang:tilelang:WARNING] (phase.py:274): Should support PDL for maca target
+2026-08-12 13:20:26  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:141): TileLang completes to compile kernel `main`
+#include <tl_templates/maca/gemm.h>
+#include <tl_templates/maca/copy.h>
+#include <tl_templates/maca/reduce.h>
+#include <tl_templates/maca/intrin.h>
+#include <tl_templates/maca/atomic.h>
+#include <tl_templates/maca/threadblock_swizzle.h>
+#include <tl_templates/maca/debug.h>
+
+extern "C" __global__ void main_kernel(const half_t* __restrict__ A, half_t* __restrict__ O);
+extern "C" __global__ void __launch_bounds__(256, 1) main_kernel(const half_t* __restrict__ A, half_t* __restrict__ O) {
+  extern __shared__ __align__(1024) half_t S[];
+  b128vectype b0[1];
+  b128vectype b1[1];
+  b128vectype b2[1];
+  b128vectype b3[1];
+  for (int batch = 0; batch < 4; ++batch) {
+    if (batch == 0) {
+      b0[0] = memcpy_async<16>((void* __restrict__)(&(S[(((((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (void* __restrict__)(&(A[(((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8))])));
+    } else {
+      if (batch == 1) {
+        b1[0] = memcpy_async<16>((void* __restrict__)(&(S[(((((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (void* __restrict__)(&(A[(((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8))])));
+      } else {
+        if (batch == 2) {
+          b2[0] = memcpy_async<16>((void* __restrict__)(&(S[(((((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (void* __restrict__)(&(A[(((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8))])));
+        } else {
+          b3[0] = memcpy_async<16>((void* __restrict__)(&(S[(((((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (void* __restrict__)(&(A[(((batch * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8))])));
+        }
+      }
+    }
+  }
+  barrier_arrive_and_wait(b0[0]);
+  barrier_arrive_and_wait(b1[0]);
+  barrier_arrive_and_wait(b2[0]);
+  barrier_arrive_and_wait(b3[0]);
+  __syncthreads();
+  #pragma unroll
+  for (int i = 0; i < 4; ++i) {
+    *(uint4*)(O + ((i * 2048) + (((int)threadIdx.x) * 8))) = *(uint4*)(S + (((((i * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+  }
+}
+
+
+rep 0 equal True max_abs 0.0
+rep 1 equal True max_abs 0.0
+rep 2 equal True max_abs 0.0
+rep 3 equal True max_abs 0.0
+rep 4 equal True max_abs 0.0
+rep 5 equal True max_abs 0.0
+rep 6 equal True max_abs 0.0
+rep 7 equal True max_abs 0.0
+rep 8 equal True max_abs 0.0
+rep 9 equal True max_abs 0.0
+rep 10 equal True max_abs 0.0
+rep 11 equal True max_abs 0.0
+rep 12 equal True max_abs 0.0
+rep 13 equal True max_abs 0.0
+rep 14 equal True max_abs 0.0
+rep 15 equal True max_abs 0.0
+rep 16 equal True max_abs 0.0
+rep 17 equal True max_abs 0.0
+rep 18 equal True max_abs 0.0
+rep 19 equal True max_abs 0.0
