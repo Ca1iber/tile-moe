@@ -1,0 +1,69 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+{
+  "source_tag": "v015_candidate_a",
+  "source_snapshot": "/root/tilelang-metax/race_tests/moe/restart-experiments/v015_step1_serial_gate_up_sc-16g/v015_step1_serial_gate_up_sc-16g_custom_fusedmoe.py",
+  "case": 3,
+  "shape": {
+    "experts": 64,
+    "hidden": 7168,
+    "intermediate": 2048,
+    "valid_tokens": 9088,
+    "num_blocks": 96
+  },
+  "resources": [
+    {
+      "name": "kernel_kernel",
+      "mt_registers": 256,
+      "st_registers": 38,
+      "reported_static_shared_bytes": 0,
+      "static_max_warps_per_peu": 2
+    },
+    {
+      "name": "kernel_kernel_1",
+      "mt_registers": 196,
+      "st_registers": 28,
+      "reported_static_shared_bytes": 0,
+      "static_max_warps_per_peu": 2
+    }
+  ],
+  "codegen": {
+    "source_bytes": 29297,
+    "mfma_sites": 8,
+    "memcpy_async_sites": 0,
+    "maca_wait_sites": 0,
+    "syncthreads_sites": 10,
+    "for_sites": 62,
+    "generated_device": "/root/tilelang-metax/race_tests/moe/restart-rep/v015_step1_serial_gate_up_sc-16g/codegen/candidate_a/v015_candidate_a_case3_generated_device.cpp",
+    "compiler_log": "/root/tilelang-metax/race_tests/moe/restart-rep/v015_step1_serial_gate_up_sc-16g/codegen/candidate_a/v015_candidate_a_case3_compiler.log"
+  }
+}

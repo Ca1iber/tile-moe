@@ -1,0 +1,107 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+{"event": "SOURCE_IDENTITY", "kernel_sha256": "1958eb911e3e2858dbd3ae33284708682bc269be675dabb136579593a0e171dd", "kernel_source": "/root/tilelang-metax/race_tests/moe/restart-experiments/v015_step1_serial_gate_up_sc-16g/v015_step1_serial_gate_up_sc-16g_custom_fusedmoe.py", "source_tag": "v015_candidate_d"}
+[01:59:16] /root/tilelang-metax/src/op/parallel.cc:186: Fatal: InternalError: Check failed: (StructuralEqual()(it->second.indices, indices)) is false: logits_local: [i, j + 1] and [i, j]
+2026-08-12 01:59:16  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:133): TileLang begins to compile kernel `kernel` with `out_idx=None`
+Traceback (most recent call last):
+  File "/root/tilelang-metax/race_tests/moe/restart-scripts/v014_step2_split_accumulator_64x4_sc-16g/run_source_oj_v014.py", line 61, in <module>
+    main()
+  File "/root/tilelang-metax/race_tests/moe/restart-scripts/v014_step2_split_accumulator_64x4_sc-16g/run_source_oj_v014.py", line 56, in main
+    results = [run_case(case_id, args.warmup, args.repeat) for case_id in case_ids]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/race_tests/moe/oj_benchmark.py", line 141, in run_case
+    metadata, kernel, args = build_case(case_id)
+                             ^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/race_tests/moe/oj_benchmark.py", line 79, in build_case
+    routed_kernel = RoutedMoEKernel(
+                    ^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/race_tests/moe/restart-experiments/v015_step1_serial_gate_up_sc-16g/v015_step1_serial_gate_up_sc-16g_custom_fusedmoe.py", line 394, in __init__
+    self.impl = moe_forward_tilelang_routed(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/__init__.py", line 465, in __call__
+    kernel = self.compile(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/__init__.py", line 395, in compile
+    kernel_result = compile(
+                    ^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/__init__.py", line 115, in compile
+    return cached(
+           ^^^^^^^
+  File "/root/tilelang-metax/tilelang/cache/__init__.py", line 74, in cached
+    return _dispatch_map[execution_backend].cached(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/cache/kernel_cache.py", line 345, in cached
+    kernel = JITKernel(
+             ^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/kernel.py", line 136, in __init__
+    adapter = self._compile_and_create_adapter(func, out_idx)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/kernel.py", line 247, in _compile_and_create_adapter
+    artifact = tilelang.lower(
+               ^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/engine/lower.py", line 362, in lower
+    mod = LowerAndLegalize(mod, target)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/engine/phase.py", line 192, in LowerAndLegalize
+    mod = tilelang.transform.LayoutInference()(mod)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/3rdparty/tvm/python/tvm/ir/transform.py", line 167, in __call__
+    return _ffi_transform_api.RunPass(self, mod)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule) const
+  File "<unknown>", line 0, in tvm::transform::Pass::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
+  File "<unknown>", line 0, in tvm::tir::transform::PrimFuncPassNode::operator()(tvm::IRModule, tvm::transform::PassContext const&) const
+  File "<unknown>", line 0, in std::_Function_handler<tvm::tir::PrimFunc (tvm::tir::PrimFunc, tvm::IRModule, tvm::transform::PassContext), tvm::tl::LayoutInference()::{lambda(tvm::tir::PrimFunc, tvm::IRModule const&, tvm::transform::PassContext const&)#1}>::_M_invoke(std::_Any_data const&, tvm::tir::PrimFunc&&, tvm::IRModule&&, tvm::transform::PassContext&&)
+  File "<unknown>", line 0, in tvm::tl::LayoutInferencer::Substitute(tvm::tir::PrimFunc, bool)
+  File "<unknown>", line 0, in tvm::tl::BufferUseDefCollector::VisitStmt_(tvm::tir::BlockNode const*)
+  File "<unknown>", line 0, in tvm::tir::StmtVisitor::VisitStmt_(tvm::tir::SeqStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRVisitorWithAnalyzer::VisitStmt_(tvm::tir::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRVisitorWithAnalyzer::VisitStmt_(tvm::tir::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRVisitorWithAnalyzer::VisitStmt_(tvm::tir::AttrStmtNode const*)
+  [Previous line repeated 2 more times]
+  File "<unknown>", line 0, in tvm::tl::BufferUseDefCollector::VisitStmt_(tvm::tir::BlockNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRVisitorWithAnalyzer::VisitStmt_(tvm::tir::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::arith::IRVisitorWithAnalyzer::VisitStmt_(tvm::tir::AttrStmtNode const*)
+  File "<unknown>", line 0, in tvm::tir::StmtVisitor::VisitStmt_(tvm::tir::SeqStmtNode const*)
+  File "<unknown>", line 0, in tvm::tl::BufferUseDefCollector::VisitStmt_(tvm::tir::ForNode const*)
+  File "<unknown>", line 0, in tvm::tl::ParallelOpNode::ParallelOpNode(tvm::tir::For)
+  File "<unknown>", line 0, in tvm::tl::ParallelLoopNestVisitor::VisitStmt_(tvm::tir::ForNode const*)
+  File "<unknown>", line 0, in tvm::tl::ParallelLoopNestVisitor::VisitStmt_(tvm::tir::ForNode const*)
+  File "<unknown>", line 0, in tvm::tir::StmtVisitor::VisitStmt_(tvm::tir::IfThenElseNode const*)
+  File "<unknown>", line 0, in tvm::tir::StmtVisitor::VisitStmt_(tvm::tir::LetStmtNode const*)
+  File "<unknown>", line 0, in tvm::tir::ExprVisitor::VisitExpr_(tvm::tir::FloorDivNode const*)
+  File "<unknown>", line 0, in non-virtual thunk to tvm::tl::ParallelLoopNestVisitor::VisitExpr_(tvm::tir::BufferLoadNode const*)
+  File "<unknown>", line 0, in tvm::tl::ParallelOpNode::RecordBufferAccess(tvm::tir::Buffer const&, tvm::ffi::Array<tvm::PrimExpr, void> const&, bool)
+  File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
+  File "<unknown>", line 0, in tvm::runtime::detail::LogFatalImpl(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+tvm.error.InternalError: Check failed: (StructuralEqual()(it->second.indices, indices)) is false: logits_local: [i, j + 1] and [i, j]

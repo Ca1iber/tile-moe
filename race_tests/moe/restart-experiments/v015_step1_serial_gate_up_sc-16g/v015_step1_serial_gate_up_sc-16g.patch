@@ -1,0 +1,119 @@
+--- v015_step1_serial_gate_up_sc-16g_parent_custom_fusedmoe.py
++++ v015_step1_serial_gate_up_sc-16g_custom_fusedmoe.py
+@@ -117,20 +117,23 @@
+             bx = pid1 if use_grid_transpose_step1 else pid0
+             by = pid0 if use_grid_transpose_step1 else pid1
+             input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+-            routed_expert_gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_gate tile 的 shared memory 缓存。
+-            routed_expert_up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_up tile 的 shared memory 缓存。
+-
+-            gate_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_gate.T 的局部累加器。
+-            up_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_up.T 的局部累加器。
++            # Gate and up are evaluated in two phases so they can reuse one
++            # 16 KiB weight tile instead of keeping two weight tiles live.
++            routed_expert_weight_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
++
++            # Reuse one FP32 MMA accumulator for both phases.  Candidate A's
++            # addressable half[64] fragment became private memory.  Pack each
++            # pair of activated FP16 values explicitly into 32-bit locals so
++            # MXCC can keep the long-lived gate payload in native MT registers.
++            logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
++            gate_activated_packed = T.alloc_local((32,), dtype=T.uint32)
+             expert_weight_local = T.alloc_local((step1_warp_cols * step1_k_pack * step1_local_size_b), dtype=dtype)
+ 
+             T.annotate_layout(
+                 {
+                     input_shared: step1_mma.make_mma_load_layout(input_shared, matrix="A"),
+-                    routed_expert_gate_shared: make_swizzled_layout(routed_expert_gate_shared),
+-                    routed_expert_up_shared: make_swizzled_layout(routed_expert_up_shared),
+-                    gate_logits_local: step1_mma.make_mma_store_layout(gate_logits_local),
+-                    up_logits_local: step1_mma.make_mma_store_layout(up_logits_local),
++                    routed_expert_weight_shared: make_swizzled_layout(routed_expert_weight_shared),
++                    logits_local: step1_mma.make_mma_store_layout(logits_local),
+                 }
+             )
+ 
+@@ -147,8 +150,8 @@
+             m_start = m_start_padded - group_padded_offsets[cur_group_idx] + group_offsets[cur_group_idx]                       # 算出它在真实 compact input 里的行起点 m_start
+             actual_rows = T.max(0, T.min(block_token, cur_group_size - (m_start_padded - group_padded_offsets[cur_group_idx]))) # 算出这个 tile 里有多少真实行 actual_rows
+ 
+-            T.clear(gate_logits_local)
+-            T.clear(up_logits_local)
++            # Phase 1: gate GEMM followed by SiLU into packed MT registers.
++            T.clear(logits_local)
+ 
+             for k in T.Pipelined(T.ceildiv(dhidden, block_dhidden_step1), num_stages=num_stages):
+                 T.copy(
+@@ -159,25 +162,62 @@
+                     routed_expert_gate[
+                         cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
+                     ],
+-                    routed_expert_gate_shared,
++                    routed_expert_weight_shared,
++                )
++                for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
++                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_weight_shared, ki)
++                    step1_mma.mma(input_shared, expert_weight_local, logits_local, ki)
++
++            # TileLang requires every fragment access in one T.Parallel body
++            # to use the same structural indices.  Split the low/high halves
++            # into two passes so each body reads exactly one logits element.
++            for i, j_pair in T.Parallel(block_token, block_dexpert_step1 // 2):
++                j = 2 * j_pair
++                gate_0 = T.cast(
++                    logits_local[i, j] * (1.0 / (1.0 + T.exp2(-logits_local[i, j] * scale))),
++                    T.float16,
++                )
++                packed_idx = ((i // 16) % 2) * 16 + (j // 16) * 2 + ((j % 4) // 2)
++                gate_activated_packed[packed_idx] = T.cast(T.reinterpret(gate_0, T.uint16), T.uint32)
++
++            for i, j_pair in T.Parallel(block_token, block_dexpert_step1 // 2):
++                j = 2 * j_pair + 1
++                gate_1 = T.cast(
++                    logits_local[i, j] * (1.0 / (1.0 + T.exp2(-logits_local[i, j] * scale))),
++                    T.float16,
++                )
++                packed_idx = ((i // 16) % 2) * 16 + (j // 16) * 2 + ((j % 4) // 2)
++                gate_activated_packed[packed_idx] = gate_activated_packed[packed_idx] | (
++                    T.cast(T.reinterpret(gate_1, T.uint16), T.uint32) << 16
++                )
++
++            # Phase 2: clear and reuse the FP32 accumulator for the up GEMM.
++            # The input tile is read a second time, while the CTA/grid shape,
++            # weight traffic and total MMA work remain unchanged.
++            T.clear(logits_local)
++
++            for k in T.Pipelined(T.ceildiv(dhidden, block_dhidden_step1), num_stages=num_stages):
++                T.copy(
++                    input[m_start : m_start + block_token, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1],
++                    input_shared,
+                 )
+                 T.copy(
+                     routed_expert_up[
+                         cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
+                     ],
+-                    routed_expert_up_shared,
++                    routed_expert_weight_shared,
+                 )
+                 for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
+-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
+-                    step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
+-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
+-                    step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
+-
+-            # element-wise activation
++                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_weight_shared, ki)
++                    step1_mma.mma(input_shared, expert_weight_local, logits_local, ki)
++
+             for i, j in T.Parallel(block_token, block_dexpert_step1):
+-                gate_logits_local[i, j] = gate_logits_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_logits_local[i, j] * scale)))
+                 if i < actual_rows:
+-                    up_logits[m_start + i, by * block_dexpert_step1 + j] = up_logits_local[i, j] * gate_logits_local[i, j]
++                    packed_idx = ((i // 16) % 2) * 16 + (j // 16) * 2 + ((j % 4) // 2)
++                    packed_gate = gate_activated_packed[packed_idx]
++                    gate_bits = T.cast((packed_gate >> ((j % 2) * 16)) & 65535, T.uint16)
++                    gate_value = T.reinterpret(gate_bits, T.float16)
++                    up_logits[m_start + i, by * block_dexpert_step1 + j] = logits_local[i, j] * gate_value
+ 
+         # Step 2: Compute down logits
+         with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
