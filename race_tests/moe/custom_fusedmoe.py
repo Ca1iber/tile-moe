@@ -157,8 +157,8 @@ def moe_forward_tilelang_routed(
 
             if use_step1_input_prefetch:
                 # Keep BN128 and ping-pong only the register A fragments. Tile 0 is
-                # primed here. The 32-expert shape issues later A tiles before the
-                # weight barrier; the saturated 64-expert shape retains v019 order.
+                # primed here. The 32-expert shape issues gate, then the next A tile,
+                # then up before the weight barrier; 64 experts retain v019 order.
                 T.copy(
                     input[m_start : m_start + block_token, 0:block_dhidden_step1],
                     input_shared,
@@ -174,14 +174,6 @@ def moe_forward_tilelang_routed(
                         ],
                         routed_expert_gate_shared,
                     )
-                    T.copy(
-                        routed_expert_up[
-                            cur_group_idx,
-                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
-                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
-                        ],
-                        routed_expert_up_shared,
-                    )
                     if use_step1_prefetch_before_barrier:
                         T.copy(
                             input[
@@ -190,6 +182,14 @@ def moe_forward_tilelang_routed(
                             ],
                             input_prefetch,
                         )
+                    T.copy(
+                        routed_expert_up[
+                            cur_group_idx,
+                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                        ],
+                        routed_expert_up_shared,
+                    )
                     T.sync_threads()
                     if not use_step1_prefetch_before_barrier:
                         T.copy(
@@ -213,14 +213,6 @@ def moe_forward_tilelang_routed(
                         ],
                         routed_expert_gate_shared,
                     )
-                    T.copy(
-                        routed_expert_up[
-                            cur_group_idx,
-                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
-                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
-                        ],
-                        routed_expert_up_shared,
-                    )
                     if use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
                         k_next_even = k_odd + 1
                         T.copy(
@@ -230,6 +222,14 @@ def moe_forward_tilelang_routed(
                             ],
                             input_shared,
                         )
+                    T.copy(
+                        routed_expert_up[
+                            cur_group_idx,
+                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                        ],
+                        routed_expert_up_shared,
+                    )
                     T.sync_threads()
                     if not use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
                         k_next_even = k_odd + 1

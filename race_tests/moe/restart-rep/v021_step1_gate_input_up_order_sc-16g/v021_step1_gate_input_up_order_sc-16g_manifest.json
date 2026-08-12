@@ -1,0 +1,955 @@
+{
+  "iteration_id": "v021_step1_gate_input_up_order_sc-16g",
+  "version": "v021",
+  "slug": "step1_gate_input_up_order",
+  "machine": "sc-16g",
+  "status": "accepted",
+  "created_at_utc": "2026-08-12T05:30:29.578832+00:00",
+  "baseline_id": "v004_step2_router_weight_register_reuse_sc-16g",
+  "parent_id": "v020_step1_prefetch_before_barrier_sc-16g",
+  "current_best_id": "v021_step1_gate_input_up_order_sc-16g",
+  "kind": "evidence",
+  "decision": "accepted_selective_32_experts",
+  "source_sha256": {
+    "parent": "0e6a080873b314f16e4e009ea39e9834bdb30efb49552b533097253c626018ad",
+    "candidate_and_main": "fe5dbc61802e3777e7305163fb4f3d2251c78102b1f2b97eba450dbbb78e2e45"
+  },
+  "benchmark_sha256": {
+    "official": "adfe36d8e042adc3369813b7bd367bd865e560207c811d0e8514235fc33ec67f",
+    "oj": "1165d1481f8932b6b2341f53e83e5ce5d871c62835259c22dc8d770c232585c8"
+  },
+  "verdict_metrics": {
+    "case2_oj_paired_median_change_percent": -2.9090531550770846,
+    "case2_mctracer_step1_median_change_percent": -3.1971709006928473,
+    "case2_mctracer_device_span_median_change_percent": -2.0510374433579948,
+    "step1_mt_registers_parent": 226,
+    "step1_mt_registers_candidate": 214,
+    "isa_step1_snop_change": 4
+  },
+  "mcprofiler_status": "internally_consistent_but_mixed_direction_directional_only",
+  "roofline_model": {
+    "arithmetic_intensity_flop_per_byte": 84.82840236686391,
+    "sensitivity_bandwidth_gb_per_s": 1400,
+    "compute_roof_tflops": 160,
+    "region": "HBM"
+  },
+  "summarized_at_utc": "2026-08-12T06:10:33.079226+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "c0e631a9e846a5bdeaae9aa8fa86207d8c3f9d5f",
+    "status_short": "m 3rdparty/tvm\n M race_tests/moe/custom_fusedmoe.py\n?? .20260810032650.db\n?? .20260810032800.db\n?? .20260810162423.db\n?? .20260810162850.db\n?? .20260810162933.db\n?? .20260811052801.db\n?? .20260811235118.db\n?? .20260812020543.db\n?? .20260812030602.db\n?? .20260812052202.db\n?? .20260812052300.db\n?? .20260812060609.db\n?? .20260812060711.db\n?? race_tests/moe/moe-roofline/v021_step1_gate_input_up_order_sc-16g/\n?? race_tests/moe/restart-experiments/v021_step1_gate_input_up_order_sc-16g/\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step2/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/v011c_case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_codegen_summary.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case1/\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case3/\n?? race_tests/moe/restart-rep/v021_step1_gate_input_up_order_sc-16g/\n?? race_tests/moe/restart-scripts/v021_step1_gate_input_up_order_sc-16g/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v021_step1_gate_input_up_order_sc-16g/.gitattributes",
+      "bytes": 26,
+      "sha256": "51128227786dc90b993a5faa8b108f8c2f0ae5b38894b228d71860dc94293dac"
+    },
+    {
+      "path": "moe-roofline/v021_step1_gate_input_up_order_sc-16g/README.md",
+      "bytes": 763,
+      "sha256": "b88d44b5cae0f581806552010f6f7062f4240d05029ffe735c3b24e8c95c158a"
+    },
+    {
+      "path": "moe-roofline/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_case2_step1_paired_roofline.svg",
+      "bytes": 5519,
+      "sha256": "691753ca6fb35ac88c0c8fe6fbd3b9820d8bf29bcb5476590f6bf1569c6650bd"
+    },
+    {
+      "path": "moe-roofline/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_case2_step1_paired_roofline_render.json",
+      "bytes": 884,
+      "sha256": "aab4377f8b95f4bc083b99c798089297eddd19f10f0d8718ed6b8d977106cbf1"
+    },
+    {
+      "path": "moe-roofline/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_case2_step1_points.csv",
+      "bytes": 351,
+      "sha256": "2ca787e00553ec2bd4b697f6de4dd8ba33fbf37b5e95cfd0bbd0c6fc752a9c10"
+    },
+    {
+      "path": "moe-roofline/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_manifest.json",
+      "bytes": 1495,
+      "sha256": "792397fdc6ffa0aa1c681f858be83dafe2e100974c576f5d848f00b2a09db716"
+    },
+    {
+      "path": "restart-experiments/v021_step1_gate_input_up_order_sc-16g/.gitattributes",
+      "bytes": 20,
+      "sha256": "fb25a78a6381f5646d71aacea4486f6aeeeb03c4d71740227011024be0d20a8f"
+    },
+    {
+      "path": "restart-experiments/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g.patch",
+      "bytes": 3690,
+      "sha256": "62ff6efbb5b0248f241781d8e7b473dec93968312e000dde3b19ff8e225dcdf3"
+    },
+    {
+      "path": "restart-experiments/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_custom_fusedmoe.py",
+      "bytes": 25216,
+      "sha256": "fe5dbc61802e3777e7305163fb4f3d2251c78102b1f2b97eba450dbbb78e2e45"
+    },
+    {
+      "path": "restart-experiments/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_experiment.md",
+      "bytes": 3273,
+      "sha256": "1246430ae158b0b40571f1cc27f29b1889fe9be6eeae497be55503471f18d87e"
+    },
+    {
+      "path": "restart-experiments/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_parent_v020.py",
+      "bytes": 25214,
+      "sha256": "0e6a080873b314f16e4e009ea39e9834bdb30efb49552b533097253c626018ad"
+    },
+    {
+      "path": "restart-experiments/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_source_artifacts.sha256",
+      "bytes": 388,
+      "sha256": "8c08c7b960577e1d9665fffa601eac69f861099ba9c439dc58e37b2ec0ababb7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/.gitattributes",
+      "bytes": 278,
+      "sha256": "e5736b09335fdb574ac86e29184f75cf62171b3de8b3e0c28be9e2ac93a062fe"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/case2_screen.log",
+      "bytes": 5650,
+      "sha256": "e65422aa7165dd5951b199189f78cc7c4e9969a6dd5d908885eb13e10dbc77d4"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/installed_oj/case1.log",
+      "bytes": 5632,
+      "sha256": "5eb4de31f84a2742e203966855c4a76f409c8209b926c0f179c2613f4a069421"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/installed_oj/case2.log",
+      "bytes": 5630,
+      "sha256": "bf530c5d4db40baea9dac6756cd421e96dc7a83b7add118a9820e0e52e077854"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/installed_oj/case3.log",
+      "bytes": 5636,
+      "sha256": "4aaee962ecb2ae69f9364d2f1f90760a7738f0bb54679bb5ee040524cd994e46"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair1_1_v020_parent.log",
+      "bytes": 5638,
+      "sha256": "8f6c0508356c18004a21ca5c5202654eed9b3f06d5ba329b467af30813c82ba0"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair1_2_v021_gate_input_up.log",
+      "bytes": 5301,
+      "sha256": "461c417038ce56b22df334d1a274f93acb9b017bb3c88144caa3c36e66498034"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair2_1_v021_gate_input_up.log",
+      "bytes": 5301,
+      "sha256": "12a6e498dc540e5ec1c1dad9161c4271c7322ae6c6704e6ee4d6f77a6b558857"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair2_2_v020_parent.log",
+      "bytes": 5275,
+      "sha256": "48186c625690ba931ce008d022d56441153ab477afccf25eee32f5486fb99895"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair3_1_v020_parent.log",
+      "bytes": 5281,
+      "sha256": "867b67de450e99f0f46197afc35ccf17c6ebf44d547d22ff50f097d68b312dcd"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair3_2_v021_gate_input_up.log",
+      "bytes": 5301,
+      "sha256": "935b193c09ea077d6ec36f273df7322ab2093afc2d375daf605ea610906df4d2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair4_1_v021_gate_input_up.log",
+      "bytes": 5303,
+      "sha256": "4fb70197557da369f55b5493de5e22c338e89294ff6366403804008f3810251d"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/pair4_2_v020_parent.log",
+      "bytes": 5281,
+      "sha256": "b4614a23bde69c78d1c68516317e08706928bc24380d861121fd912a8f2de5b4"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/benchmark/paired_case2/v021_gate_input_up_vs_v020_paired_oj_summary.json",
+      "bytes": 4979,
+      "sha256": "aa7a8e456aa05072c22aeea12a7ae1a0b490e729cac968401bd5e611ddcc6125"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.device_obj.log",
+      "bytes": 10684,
+      "sha256": "7852c83e7eee189894c6337c500973d9936e2b2e3fe8e9562998af4e185c0357"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.embedded.bc",
+      "bytes": 136992,
+      "sha256": "f1b0c226e448713682908854bfd36254a42e0f8ef357aff8a121fcc0c3cc00d8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "76f1eadd534573bd4fc55fc6071a9645f4ec8eb67a5d5140b875ef52842be71c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.llvmcmd",
+      "bytes": 762,
+      "sha256": "bd1ddc6dcceaf22bc393860b2e552a12767f0c6f64fb46eab808d3db2df171a5"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.llvmcmd.txt",
+      "bytes": 758,
+      "sha256": "bf674710453f1b2d2ce09a8ae7c0369606a5d8d27f5c0c9c0705d4de3f72090f"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.mcfb",
+      "bytes": 218848,
+      "sha256": "9cc8cac110261c6da88d93a108168e8a9f726f487e4c40f58bbe046d0493f740"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.metax.s",
+      "bytes": 548773,
+      "sha256": "09d9143ef87790163d11f16a3cfcf0ae213f1a24334165c200e5d5e0317c28cd"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.sha256",
+      "bytes": 1089,
+      "sha256": "460c2efc0a7fb181e2669cba1818912cc81bd8fbf40014b7a0ef63a31b9d4eb1"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.text.bin",
+      "bytes": 47088,
+      "sha256": "98e4a1f230200b6a3fef793297b07339452c6f3e00f179f773408d5bca74b967"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate/v021_candidate_case2_generated_device.xcore1000.elf",
+      "bytes": 218848,
+      "sha256": "9cc8cac110261c6da88d93a108168e8a9f726f487e4c40f58bbe046d0493f740"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/candidate_isa_summary.json",
+      "bytes": 4182,
+      "sha256": "7310627930b48dc0fdf6eecd48b48583d3fd52d6c8a68caa1108333b54636b4d"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.device_obj.log",
+      "bytes": 10672,
+      "sha256": "abff5aa374ba262d723203cb181a59254212419028b60e4e6f61ad73db1da8fb"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.embedded.bc",
+      "bytes": 136976,
+      "sha256": "33552d57697fe06a660d86fc2ac480dc47ff5ba6a1848230ed60c8520b1eaa46"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "7c214ecee29375bc802c057e9f65623c5a20c8d19c98e1eedc0427db19fca544"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.llvmcmd",
+      "bytes": 756,
+      "sha256": "d0833d89d4a904cf45eeec3cdf5a2ec29992f8b44736ebc6f8dd00fe696e80f1"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.llvmcmd.txt",
+      "bytes": 752,
+      "sha256": "6e0cdf73d7c47baf7cbb3ca754c98e7b490c61248723651a096b694e776eb0f1"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.mcfb",
+      "bytes": 218856,
+      "sha256": "20b33419cab770702c3b493b3ca1ded7187c4d686b628a9c7d8c8004f3edcd34"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.metax.s",
+      "bytes": 545844,
+      "sha256": "f5fab84600034b8c3120423ea757f5c5e17b7a864b903d4cf43f44c15e9137b5"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.sha256",
+      "bytes": 1062,
+      "sha256": "411bdbd9a84bbfbc15b12ee40e73949d8344f208621974c646e82db87ec5ca11"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.text.bin",
+      "bytes": 47088,
+      "sha256": "9ba217cc9af82583b8071d3c99575f25a97c84483f550427ea65d3f1843d27cb"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent/v020_parent_case2_generated_device.xcore1000.elf",
+      "bytes": 218856,
+      "sha256": "20b33419cab770702c3b493b3ca1ded7187c4d686b628a9c7d8c8004f3edcd34"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/isa/parent_isa_summary.json",
+      "bytes": 4176,
+      "sha256": "4e4123c5bab0853f2b4bc9520f326e10d5db1b66e8a1f55aad61015144518cb5"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case1_compiler.log",
+      "bytes": 10718,
+      "sha256": "dc941ee26ef06de366bf615b6f671fac8bce409e3410adc2e5cb0a3bc0e7ede5"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case1_generated_device.cpp",
+      "bytes": 26449,
+      "sha256": "1a50eb0e818191e7cd9b077a5acd0ad88551aec4ac63b844f3e7d8ff670626f3"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case1_resource_usage.json",
+      "bytes": 1112,
+      "sha256": "fa5e6585c230e0dc888f977b87967a27b8256349425afb60063e78dc0441d3a8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case2_compiler.log",
+      "bytes": 10718,
+      "sha256": "346a46fbfeeaee13a4eb7df8fb1c13d179f0bd2804d6e509e8fc82534db66486"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case2_generated_device.cpp",
+      "bytes": 27864,
+      "sha256": "2a0755c62f768b8d81b0b669dd3616a91846c03508708616ea8206306414f0eb"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case2_resource_usage.json",
+      "bytes": 1112,
+      "sha256": "a7401f07dc2b1b5503e15eb47034cce6ce9998a344175657395e534ad59c89bf"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case3_compiler.log",
+      "bytes": 10718,
+      "sha256": "0a487af04375633a4578016bbda6c8c7b8e08d8d008398e0e2fcb7de6f5019a8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case3_generated_device.cpp",
+      "bytes": 27864,
+      "sha256": "c80f44d8cb492426128f8b984e7279b4110d66c3adb9e54114e4ca80518c2db8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_parent_case3_resource_usage.json",
+      "bytes": 1112,
+      "sha256": "915318b7c6de449ad635be68272c2f9cc551eb02cdb333ea19deb4ffaea44deb"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v020_vs_v021_case2_generated.diff",
+      "bytes": 7385,
+      "sha256": "b76e3e4f92c8953a5b24665276b54be4850552915e5a34566a7ab5207b55b76e"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case1_compiler.log",
+      "bytes": 10718,
+      "sha256": "cdd5ceca4ae828d8d1d38821ce0f2cff188564514278d50eadc37f26abdcd3e2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case1_generated_device.cpp",
+      "bytes": 26449,
+      "sha256": "1a50eb0e818191e7cd9b077a5acd0ad88551aec4ac63b844f3e7d8ff670626f3"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case1_resource_usage.json",
+      "bytes": 1124,
+      "sha256": "d1586fd72224d5a04f4f687996f9ce393a9ed2dcee0ad9c8f8371645c2b04a02"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case2_compiler.log",
+      "bytes": 10718,
+      "sha256": "224063f742b8bf35df3d8bd28d34d831ba70b3666a1a801c1b1d6043f380783c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case2_generated_device.cpp",
+      "bytes": 27861,
+      "sha256": "1581836d07665920e062ba291886499c4b31076a62c35629ddbb1523408638f2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case2_resource_usage.json",
+      "bytes": 1124,
+      "sha256": "a5acbf1cdadbcb2f6e5e6376cee26dc4f895da7e1f662ccd14139eb82608d227"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case3_compiler.log",
+      "bytes": 10718,
+      "sha256": "c422d9f6ec4600d29dadf2fd4bf5d9aba065678399edda3fb4b46c1db8b5d10e"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case3_generated_device.cpp",
+      "bytes": 27864,
+      "sha256": "c80f44d8cb492426128f8b984e7279b4110d66c3adb9e54114e4ca80518c2db8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/codegen/v021_candidate_case3_resource_usage.json",
+      "bytes": 1124,
+      "sha256": "911e0f95ab364765e2da42e7ad9df2c1895b41f1c04de11e1b945700fc254a13"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/correctness/official_source.log",
+      "bytes": 6518,
+      "sha256": "bd915554d77d3586d55dab0207dfd85018393a349fdf74437fadf72d88584755"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/after.txt",
+      "bytes": 5439,
+      "sha256": "067a53dda26c2dfaf438fda43df23773ae6034af0b27bfa3a2d14b53f5c7f1a2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/before.txt",
+      "bytes": 5390,
+      "sha256": "5ff38a438f3c7a2f2e9da4f1dc756a6c9092bf5452fb9a187b7fa6d935742953"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/kernel_source.sha256",
+      "bytes": 127,
+      "sha256": "f7830bf5947a14bd9dc14f15abc7af4f234af95ac1cce5eab982d973907522a3"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler.log",
+      "bytes": 178106,
+      "sha256": "4bd4db077e1eacbfdfb0963b880b35f6648d2daf2ce8d117e54045a74087ba2e"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3073,
+      "sha256": "087e66f98be9273854766ff3836ebf9c7cc0929cab0e9ce957e5704796e16c14"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1783,
+      "sha256": "6550ef3e639b9d82190018c1d1d0ae1915763713161f931adeca98ea92c9001b"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3742,
+      "sha256": "6900913ff5d42b9fb07037f75b4c354aecbebe30d4d434c21967709bf160c553"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3170,
+      "sha256": "7786ac27a17d9a2c7083efb3e1526c8deb6f2b4d04c3fe090bf207855ceeecac"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812055226430.png",
+      "bytes": 38839,
+      "sha256": "ccad66befa6fa037b0609c53202e3c01301f1bafe0bbc9d6d977fbc4f38ad0c3"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812055227036.png",
+      "bytes": 37353,
+      "sha256": "3d1e6fc1e8e6dfa5f56aa9f5c8e5b126a7adf2e9155953db2a6b5d66c242fba1"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812055227443.png",
+      "bytes": 37353,
+      "sha256": "3d1e6fc1e8e6dfa5f56aa9f5c8e5b126a7adf2e9155953db2a6b5d66c242fba1"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812055226590.png",
+      "bytes": 38995,
+      "sha256": "eb46d4aa5b5315c13a649ab50a30d5919ec580532a93a85050f863605686b50a"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812055227167.png",
+      "bytes": 38657,
+      "sha256": "b3a79f0337eeb1282c368a1f57ca830e72729d97b056d9d68cf87f0e12172e0e"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812055227574.png",
+      "bytes": 38657,
+      "sha256": "b3a79f0337eeb1282c368a1f57ca830e72729d97b056d9d68cf87f0e12172e0e"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "4434c35d88cc5609d5770b1d5942e65848b939ca59e39d880e08fabfac9e41d6"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1680,
+      "sha256": "e609a0cfcc95cfd955397bf86f890cb7ac08a2586828bd1603614d8f3c85c7a6"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1254,
+      "sha256": "619105a8e62c1c666b361e6b5b52cf775baa1262037be863a9a276bae933d58d"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 770,
+      "sha256": "522edc0e0292835f66251f5382d850bed5d83cb7b0e441af35869f10e17d7634"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 421,
+      "sha256": "49b1077c70461c4a2e480d99936791ee3b99d77f7436691e955c67592382f2b7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 421,
+      "sha256": "49b1077c70461c4a2e480d99936791ee3b99d77f7436691e955c67592382f2b7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 78585,
+      "sha256": "fbbd3e25c5033520ec02ae651cb74db0631edb70e879959c226f5fa5c0923a15"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3096,
+      "sha256": "dda8d530282c167fafc898be5bcc3dab7c3b91af8efb6499701975ee0109b4d3"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1806,
+      "sha256": "6b10febaa6444672a3c8523d78f4ca585dd30a05055e41a2f0da844d44a9462d"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3765,
+      "sha256": "3b3241efe317262ad17646aaf7ae787cd461ac8cc1c75fcd5f3cd52f26e1fe97"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3193,
+      "sha256": "73d2295a8243c7f6cdccb0e209fa48a0bf341e8b32846d99235d0003e447a81c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63906,
+      "sha256": "ae486776794d2df5d7a54629312ad3d4b4799008f6b25ad6f8ad971d021cd7f0"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/mcprofiler_output/v021_step1_gate_input_up_order_sc-16g_audit1_v020_parent_case2_step1_targeted.json",
+      "bytes": 578606,
+      "sha256": "d71cc7997ed2d057e459c51c642114d8a8b7e807849571087fa3371482f51f57"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v020_parent_case2_step1_targeted/target_command.txt",
+      "bytes": 556,
+      "sha256": "e2b4b10b4c3f04a2d99ec923daa0583637dbb721ea9cb27aae5f58b07603cdf4"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/after.txt",
+      "bytes": 5488,
+      "sha256": "ed97d178fe01d7b6d5ee341932f9cae837cf5763a329ce611d639cad3fcf101b"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/before.txt",
+      "bytes": 5439,
+      "sha256": "067a53dda26c2dfaf438fda43df23773ae6034af0b27bfa3a2d14b53f5c7f1a2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/kernel_source.sha256",
+      "bytes": 130,
+      "sha256": "f7a0341dfe8ff7529f026437212cf06b2c75a9c3aa251b3b7b3693f84dcbd51d"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler.log",
+      "bytes": 178974,
+      "sha256": "ea6c6ce24705c2ecfc5da3136a3367d9a3e238d443781cdf4dee2e2300a45f60"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3073,
+      "sha256": "61842b872ef52732f1a35dd7d91529e4a936b76c7b6ebc926b9e275af623f21f"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1783,
+      "sha256": "a7c5c40b40e1cc7c443d233ba739d2d014ba7891b5cd4b5da27e5e3b9516c725"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3742,
+      "sha256": "7328a28cbb5a5e053b5c492f9980f38103c1114e0907039b428c3df4342003b0"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3175,
+      "sha256": "07145422c9f862e65fc20736bd36f44be92372e05437b30159f1068a0a023718"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812055554587.png",
+      "bytes": 38839,
+      "sha256": "6cd6a22e4dd79abad080b9d3a50580be0191d7b510313793f2c50e4507e6cc5b"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812055555181.png",
+      "bytes": 37435,
+      "sha256": "8fbc99f6dac64b36bc92f71f71ce05b7663239dfb7959ca3bb5cf499b1eb465c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812055555562.png",
+      "bytes": 37435,
+      "sha256": "8fbc99f6dac64b36bc92f71f71ce05b7663239dfb7959ca3bb5cf499b1eb465c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812055554741.png",
+      "bytes": 39130,
+      "sha256": "553677206c2646bee6a04f032987b88f06548b2c5370e2f3f8b7afebe552b7c7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812055555311.png",
+      "bytes": 38421,
+      "sha256": "789b739c7813e7a8f12419d175a1c29aee04404f54a7156b6e6e16b0c983f9f4"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812055555694.png",
+      "bytes": 38421,
+      "sha256": "789b739c7813e7a8f12419d175a1c29aee04404f54a7156b6e6e16b0c983f9f4"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "60dea023c961ea6405f286fed7b4ba80f54bbc510571d8a4d99483f51ef0a8bd"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1700,
+      "sha256": "3da10984d1a2c30c40e9fcab9db98fc52e7f1c44f0e880e5db9132a8b70e89ed"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1217,
+      "sha256": "c4c7ae6f405ce345ffec1833ca918414eb2bc0fed1d403350bbbbf4a17c64c95"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 769,
+      "sha256": "79b1bf08feaa0face355ec031df957c4bafc31d2c82f2fe13c8489b6936ff50b"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 439,
+      "sha256": "3882d9e1a873d8aeaa6aa3ebdca56e85666bd9fe4b2d7044b286d7d7279a230c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 439,
+      "sha256": "3882d9e1a873d8aeaa6aa3ebdca56e85666bd9fe4b2d7044b286d7d7279a230c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 78734,
+      "sha256": "39a2b9be3a70b5718c6da9af399f6c08b35f2be5d8c59b82573572b83d9b0ee7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3096,
+      "sha256": "cc9bd77db7b6a6418ff2eefc7ce57edbf0cfc1b9639b1247daa6fefcd1f02348"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1806,
+      "sha256": "335bc8d26b29809d5e03f7f6d9cef27c87e4adef7668fd98f323f48fa9b3aec2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3765,
+      "sha256": "7e7710d59a3a5f3ff35870183fe1d91b53520ae8dda332ad851f5a7a3c5f9032"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3193,
+      "sha256": "5c403af220730cbd166569397aef16ccfd21be5246bb5a12c7dc44de9898e097"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63906,
+      "sha256": "85ca1a2effe08e6eb32b488044b987c86fb9ef016ccf1a73c3fe7a75f81a7119"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/mcprofiler_output/v021_step1_gate_input_up_order_sc-16g_audit1_v021_candidate_case2_step1_targeted.json",
+      "bytes": 578577,
+      "sha256": "89905d40ef190b720b419a936e8d8976926376d03068ee23a7b3d7d40e27f129"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/raw/audit1_v021_candidate_case2_step1_targeted/target_command.txt",
+      "bytes": 565,
+      "sha256": "1f24f7c9b56cbcb935b3966ad6eb8d6939015c99a31f075d5e087e5ba006c35a"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mcprofiler/v021_case2_step1_targeted_summary.json",
+      "bytes": 2546,
+      "sha256": "231f3981c84d429bee3fc2ab17c037e62b4509551f08edb2d67172f0edc088fe"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_1_v020_parent/command.json",
+      "bytes": 697,
+      "sha256": "a5f96517b5b8d672b115ce3fc7835642f4fdc18ea007f3c89e0dc49c885787ed"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_1_v020_parent/mctracer_console.log",
+      "bytes": 5080,
+      "sha256": "f3c0a92b8bf9662c385bbb62eeeaa7de8bbe8d112a392cb01009e5ebc074feb7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_1_v020_parent/summary.json",
+      "bytes": 854,
+      "sha256": "2f0e40d1771aaabe592fddaa10e538b6969b60708dba47d4c564972475210fc8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_1_v020_parent/v021_case2_pair1_1_v020_parent-152108.json",
+      "bytes": 95320,
+      "sha256": "e543888eb8a8248368056bd979dcf35cd4cf35131888a2abf2e252a1dda1c128"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_2_v021_gate_input_up/command.json",
+      "bytes": 721,
+      "sha256": "cbd0d333738555d4135fc2fcaa62b5101a54c973d42efcf106255d6a278bbdc7"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_2_v021_gate_input_up/mctracer_console.log",
+      "bytes": 5104,
+      "sha256": "a5324a784da165c332effb8e317f87654c7ab58fdd64eea46b2cf42e6b7cd03a"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_2_v021_gate_input_up/summary.json",
+      "bytes": 877,
+      "sha256": "09a7c62d81fe032b22b98abff7761f1288be7f7b3b7294ba828b5c4feddc7dd8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair1_2_v021_gate_input_up/v021_case2_pair1_2_v021_gate_input_up-152235.json",
+      "bytes": 95324,
+      "sha256": "f2b0f4a0f52ccc0251eaf79abe10cdc1d7da5b4a7ab6020a24b589411bf3615e"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_1_v021_gate_input_up/command.json",
+      "bytes": 721,
+      "sha256": "e5c99a80939ac70bf3aaabc893ad7b49eb2b7e65ca8aca1dc0854c679ca19eae"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_1_v021_gate_input_up/mctracer_console.log",
+      "bytes": 5104,
+      "sha256": "ac0ddea6f7de0c87b5b500ad49c91f2f01bf04c8d2534787743899bf80ef3035"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_1_v021_gate_input_up/summary.json",
+      "bytes": 885,
+      "sha256": "d6b4927e8f3df18b3dd8c10fc40bee9997451c0386ae8b115b4e7a528bd0a90d"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_1_v021_gate_input_up/v021_case2_pair2_1_v021_gate_input_up-152364.json",
+      "bytes": 95319,
+      "sha256": "ac879d8adab10a9bbf62f378736b6426cbf17b4d0476132ea5f024acfa3e630b"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_2_v020_parent/command.json",
+      "bytes": 697,
+      "sha256": "26b0283233732cf014c22e4821a392f0e8c36f2e5d3cdbedeec19bab52754244"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_2_v020_parent/mctracer_console.log",
+      "bytes": 5080,
+      "sha256": "9181da5984d0015bfa1b60644b3824dd2c5e69e5affde403993a44a4d8ad947a"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_2_v020_parent/summary.json",
+      "bytes": 856,
+      "sha256": "da797c859d3b5a594cda5b3d3d3e973f5c8024aa72dded0dc7bd114ba8901a92"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair2_2_v020_parent/v021_case2_pair2_2_v020_parent-152494.json",
+      "bytes": 95320,
+      "sha256": "ff6881bd3c266f3909d4ac3d53defbfdb83a8c14a213fa77031c29deb530f065"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_1_v020_parent/command.json",
+      "bytes": 697,
+      "sha256": "969331891d9f8898eef5e17e73e27a9c80400873b2cf5b3cde4eef320a24a6a8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_1_v020_parent/mctracer_console.log",
+      "bytes": 5080,
+      "sha256": "3a150051e9d03a7bf2343b27f8d517f217ab60d09e5f121746fe9cf25467aab0"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_1_v020_parent/summary.json",
+      "bytes": 865,
+      "sha256": "c3144c44a5184dbcfa0ad1090409e0ac7e5dadea2b1b15cb494bd394b977883f"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_1_v020_parent/v021_case2_pair3_1_v020_parent-152622.json",
+      "bytes": 95322,
+      "sha256": "6a2f51519473570c915755b2019d641a50ad03b34b3dd776e49181d9ab6a49d0"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_2_v021_gate_input_up/command.json",
+      "bytes": 721,
+      "sha256": "37960a85ff0302568e65de2db92411a33866008ef270a5d55e3ddbf393c40e62"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_2_v021_gate_input_up/mctracer_console.log",
+      "bytes": 5104,
+      "sha256": "5c3f234453d529f41fe6edb5919bbf96437e75df77d9d174479f9befa96931e8"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_2_v021_gate_input_up/summary.json",
+      "bytes": 876,
+      "sha256": "6ab279dd0dfa44b4d84456a038b9d3d6dea811d58bf5a27dee3f2b33e553bbf2"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/pair3_2_v021_gate_input_up/v021_case2_pair3_2_v021_gate_input_up-152842.json",
+      "bytes": 95304,
+      "sha256": "71cc99dbe663588406d7ea31752448523ddd7d4e18a7e75135665bbaaf249329"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mctracer/case2_paired/v021_gate_input_up_vs_v020_case2_mctracer_summary.json",
+      "bytes": 9632,
+      "sha256": "8aa266a15bc62eaa49befdd8e1f11866e99b50fbdcfa1c8da8a339907f8cc8da"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mxsmi/v021_step1_gate_input_up_order_sc-16g_hbm_ap_samples.txt",
+      "bytes": 65016,
+      "sha256": "93ffbf592c06a607912ac9550e595a7c750db47f379cd0fd53280365950ee2b9"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mxsmi/v021_step1_gate_input_up_order_sc-16g_mxsmi_snapshot.txt",
+      "bytes": 2302,
+      "sha256": "72b3a3b43884ac62cc01784396a51d01eb8367b0d424e135dee2956edf4f5025"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mxsmi/v021_step1_gate_input_up_order_sc-16g_sampled_workload.log",
+      "bytes": 5279,
+      "sha256": "520865c54853482391e96f41a85d8a3cf4729f5d7d5f8e45257b32e0d9f3cbbf"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/profiler/mxsmi/v021_step1_gate_input_up_order_sc-16g_workload_command.txt",
+      "bytes": 352,
+      "sha256": "a0b22a1b51f056924e5c3916f65919f6bb9acaefada25f925607115edce6bb27"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_environment.txt",
+      "bytes": 17630,
+      "sha256": "5e477f0e763634a38941e1a80525073e75c404d9825a7ab883d55de4de7665d1"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_report.md",
+      "bytes": 6140,
+      "sha256": "59b2561958f4505c8dbbf2509350db53871973366e0803b73bc8a4ee8784510c"
+    },
+    {
+      "path": "restart-rep/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_source_hashes.sha256",
+      "bytes": 363,
+      "sha256": "4437e7fa37d4104f8a1be23a4c136c7bbdac87b7a35b2a0a6a16f274e0acce3a"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/.gitattributes",
+      "bytes": 17,
+      "sha256": "f3a1c3452600a3f3cbcbfd97b3ec2e1bd82c0119afe5be73eaaa17c5e3360a4b"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/analyze_metax_isa.py",
+      "bytes": 4213,
+      "sha256": "6a347ba94efe7e09d934a3700c2d66541672561f32462cdde3b6b74c2ac6e7ac"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/capture_codegen_source.py",
+      "bytes": 4868,
+      "sha256": "ed54863e9ad7d208319b271d63ae743c404df9f5ef655217b67c56d8d7237d54"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/collect_environment.sh",
+      "bytes": 2256,
+      "sha256": "851209b34cf8ec7485c17939005801aa4ffe3a251ea95a051c60a1a68f574051"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/collect_mxsmi.sh",
+      "bytes": 1296,
+      "sha256": "6835aa300bc2b1ddde664e39b9e46266ad7ebcfdb5ba6404cb7d87160ef121ad"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/dump_tilelang_codegen.py",
+      "bytes": 2884,
+      "sha256": "96fd666c7bcd939013a92c26b7e71197b36856594b5aec2ceaedbde5405c49c1"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/extract_metax_isa.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/finalize_v021.py",
+      "bytes": 2463,
+      "sha256": "4b2f328b756045933cce943f910135b9c3f8f2fd93eac9ca7f07bc3058dcaed4"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/profile_one_case_source.py",
+      "bytes": 1890,
+      "sha256": "9aa32af08a629a7f84841e61def6c86ef2feb3080c80f9497e04c25af5e10d0a"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/render_roofline.py",
+      "bytes": 10075,
+      "sha256": "9b022302085c9b022077a230fff26d63373f5119e8ef13b6e476fd9409e011a1"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_correctness.sh",
+      "bytes": 712,
+      "sha256": "5924fbb93c24454b94a8cc532a131f165f6ce9849e5a6151fc141a18cd89072d"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_iteration_bundle.sh",
+      "bytes": 806,
+      "sha256": "11662510b293ab33e31706a05c076ca21a9f4a2e28226e66a6e9ae0d19631d00"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_mcprofiler.sh",
+      "bytes": 714,
+      "sha256": "7a9a0c20ea22f572ebd73078b3b2de8790ad443526a385b976703a6b1179f840"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_mcprofiler_source.sh",
+      "bytes": 4156,
+      "sha256": "22de7dd58efe057df34c0be3b6f130fac8cd52f5101ffcd6c1aa7104d80d07cd"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_mctracer.sh",
+      "bytes": 698,
+      "sha256": "f4adf436b5d9dd6d3ddf3a93f6a084cfffe1b74c13d5d316bcd1df73eb385d22"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_official_benchmark.sh",
+      "bytes": 660,
+      "sha256": "d4c647078b16025d396dcb386f350f253c97b265011203d39b67a55e97520e4c"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_official_source.py",
+      "bytes": 1276,
+      "sha256": "2dcecf45287dcf33ec956462d4de00c663a1ed4c4b5a90081792daecd19ab2ca"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_oj_benchmark.sh",
+      "bytes": 636,
+      "sha256": "7260202b134ae2306bcd5e840d7671b67ed74a87c7a7f6d249fab7f7f502812c"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_paired_mctracer.py",
+      "bytes": 8924,
+      "sha256": "cb2b4a0c07625a1c45afa727e58fdb41eb7aa240a2be6a0c0d8bb98e7d36caa9"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_paired_source_oj.py",
+      "bytes": 7141,
+      "sha256": "fbccb8321b3508792acebcbfa56ad02677c7e8fdbf1a8a8e935ad9f83f3b5718"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/run_source_oj.py",
+      "bytes": 2058,
+      "sha256": "d461e4b86a45e8d36882d43004ee14b0979fa758b7e2c8c05618343f00712abf"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/summarize_mcprofiler.py",
+      "bytes": 3748,
+      "sha256": "0f858b62fec1d2317079568fb3bbce7d23520ef1f4c8d72dde83f2a336251edb"
+    },
+    {
+      "path": "restart-scripts/v021_step1_gate_input_up_order_sc-16g/v021_step1_gate_input_up_order_sc-16g_scripts.md",
+      "bytes": 2965,
+      "sha256": "92a0721b6bb27a2bd690f4322419e5d35cfe5417e32d19197c109e87a2ea53e2"
+    }
+  ]
+}
