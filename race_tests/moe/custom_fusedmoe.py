@@ -6,7 +6,13 @@ import tilelang
 import tilelang.language as T
 from tilelang.autotuner import *
 from tilelang.layout import make_swizzled_layout
-from tilelang.intrinsics.maca_mma_macro_generator import TensorCoreIntrinEmitter
+
+try:
+    # TileLang 0.1.10+ exposes the maintained MetaX emitter here.
+    from tilelang.maca.intrinsics.macro.mma_macro_generator import TensorCoreIntrinEmitter
+except ImportError:
+    # Keep the moe-minibs private-emitter checkout usable for historical builds.
+    from tilelang.intrinsics.maca_mma_macro_generator import TensorCoreIntrinEmitter
 
 
 @tilelang.jit(pass_configs={tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True})
@@ -17,12 +23,13 @@ def moe_forward_tilelang_routed(
     group_sum,  # routed 后的 token-expert pair 总数：batch_size * seq_len * top_k。
     group_count,  # expert 分组数量，通常等于 n_routed_experts。
     block_token=128,
-    block_dhidden_step1=128,
-    block_dexpert_step1=64,
-    block_dhidden_step2=256,
+    block_dhidden_step1=64,
+    block_dexpert_step1=128,
+    block_dhidden_step2=128,
     block_dexpert_step2=64,
     threads=256,
     num_stages=1,
+    persistent_blocks=104,
     use_grid_transpose_step1=False,
     use_grid_transpose_step2=False,
 ):
@@ -92,10 +99,12 @@ def moe_forward_tilelang_routed(
     group_sizes_shape = n_routed_experts  # 每个 expert 对应一个 token 数量。
     step1_col_tiles = math.ceil(dexpert / block_dexpert_step1)
     step2_col_tiles = math.ceil(dhidden / block_dhidden_step2)
-    step1_grid_x = step1_col_tiles if use_grid_transpose_step1 else M
-    step1_grid_y = M if use_grid_transpose_step1 else step1_col_tiles
-    step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else M
-    step2_grid_y = M if use_grid_transpose_step2 else step2_col_tiles
+    step1_tiles = M * step1_col_tiles
+    step2_tiles = M * step2_col_tiles
+    assert persistent_blocks > 0
+    persistent_grid = min(persistent_blocks, max(step1_tiles, step2_tiles))
+    step1_waves = math.ceil(step1_tiles / persistent_grid)
+    step2_waves = math.ceil(step2_tiles / persistent_grid)
 
     @T.prim_func
     def kernel(
@@ -111,17 +120,25 @@ def moe_forward_tilelang_routed(
         up_logits: T.Tensor(intermediate_shape, dtype),  # type: ignore
         output: T.Tensor(input_shape, dtype),  # type: ignore
     ):
-        # Step 1: Compute gate and up logits
-        with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
-            bx = pid1 if use_grid_transpose_step1 else pid0
-            by = pid0 if use_grid_transpose_step1 else pid1
+        # A cooperative persistent grid replaces the two original launches. Every
+        # CTA completes a grid-stride subset of Step 1, all CTAs meet at the
+        # device-wide barrier, then the same resident grid completes Step 2.
+        with T.Kernel(persistent_grid, threads=threads) as persistent_id:
             input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
-            routed_expert_gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_gate tile 的 shared memory 缓存。
-            routed_expert_up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_up tile 的 shared memory 缓存。
+            routed_expert_gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+            routed_expert_up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+            gate_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+            up_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+            expert_weight_local = T.alloc_local(
+                (step1_warp_cols * step1_k_pack * step1_local_size_b), dtype=dtype
+            )
 
-            gate_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_gate.T 的局部累加器。
-            up_logits_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)  # input @ W_up.T 的局部累加器。
-            expert_weight_local = T.alloc_local((step1_warp_cols * step1_k_pack * step1_local_size_b), dtype=dtype)
+            up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+            routed_expert_down_shared = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
+            output_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+            down_weight_local = T.alloc_local(
+                (step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype
+            )
 
             T.annotate_layout(
                 {
@@ -130,65 +147,6 @@ def moe_forward_tilelang_routed(
                     routed_expert_up_shared: make_swizzled_layout(routed_expert_up_shared),
                     gate_logits_local: step1_mma.make_mma_store_layout(gate_logits_local),
                     up_logits_local: step1_mma.make_mma_store_layout(up_logits_local),
-                }
-            )
-
-            T.use_swizzle(10, enable=False)
-
-            m_start_padded = bx * block_token  # 当前 block 在 padding 后 routed-row 坐标空间里的起始位置。
-
-            cur_group_idx = group_idx_for_bx[bx]  # 当前 block row 负责的 expert id。
-
-            T.assume(0 <= cur_group_idx)
-            T.assume(cur_group_idx < n_routed_experts)
-
-            cur_group_size = group_sizes[cur_group_idx]
-            m_start = m_start_padded - group_padded_offsets[cur_group_idx] + group_offsets[cur_group_idx]                       # 算出它在真实 compact input 里的行起点 m_start
-            actual_rows = T.max(0, T.min(block_token, cur_group_size - (m_start_padded - group_padded_offsets[cur_group_idx]))) # 算出这个 tile 里有多少真实行 actual_rows
-
-            T.clear(gate_logits_local)
-            T.clear(up_logits_local)
-
-            for k in T.Pipelined(T.ceildiv(dhidden, block_dhidden_step1), num_stages=num_stages):
-                T.copy(
-                    input[m_start : m_start + block_token, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1],
-                    input_shared,
-                )
-                T.copy(
-                    routed_expert_gate[
-                        cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
-                    ],
-                    routed_expert_gate_shared,
-                )
-                T.copy(
-                    routed_expert_up[
-                        cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
-                    ],
-                    routed_expert_up_shared,
-                )
-                for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
-                    step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
-                    step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
-
-            # element-wise activation
-            for i, j in T.Parallel(block_token, block_dexpert_step1):
-                gate_logits_local[i, j] = gate_logits_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_logits_local[i, j] * scale)))
-                if i < actual_rows:
-                    up_logits[m_start + i, by * block_dexpert_step1 + j] = up_logits_local[i, j] * gate_logits_local[i, j]
-
-        # Step 2: Compute down logits
-        with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
-            bx = pid1 if use_grid_transpose_step2 else pid0
-            by = pid0 if use_grid_transpose_step2 else pid1
-            up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
-            routed_expert_down_shared = T.alloc_shared((block_dhidden_step2, block_dexpert_step2), dtype=dtype)
-            output_local = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
-            down_weight_local = T.alloc_local((step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype)
-
-            T.annotate_layout(
-                {
                     up_logits_shared: step2_mma.make_mma_load_layout(up_logits_shared, matrix="A"),
                     routed_expert_down_shared: make_swizzled_layout(routed_expert_down_shared),
                     output_local: step2_mma.make_mma_store_layout(output_local),
@@ -197,37 +155,128 @@ def moe_forward_tilelang_routed(
 
             T.use_swizzle(10, enable=False)
 
-            m_start_padded = bx * block_token
+            for wave in T.serial(step1_waves):
+                tile_id = persistent_id + wave * persistent_grid
+                if tile_id < step1_tiles:
+                    if use_grid_transpose_step1:
+                        bx = tile_id // step1_col_tiles
+                        by = tile_id % step1_col_tiles
+                    else:
+                        bx = tile_id % M
+                        by = tile_id // M
 
-            cur_group_idx = group_idx_for_bx[bx]
+                    m_start_padded = bx * block_token
+                    cur_group_idx = group_idx_for_bx[bx]
+                    T.assume(0 <= cur_group_idx)
+                    T.assume(cur_group_idx < n_routed_experts)
 
-            T.assume(0 <= cur_group_idx)
-            T.assume(cur_group_idx < n_routed_experts)
+                    cur_group_size = group_sizes[cur_group_idx]
+                    m_start = m_start_padded - group_padded_offsets[cur_group_idx] + group_offsets[cur_group_idx]
+                    actual_rows = T.max(
+                        0,
+                        T.min(
+                            block_token,
+                            cur_group_size - (m_start_padded - group_padded_offsets[cur_group_idx]),
+                        ),
+                    )
 
-            cur_group_size = group_sizes[cur_group_idx]
-            m_start = m_start_padded - group_padded_offsets[cur_group_idx] + group_offsets[cur_group_idx]
-            actual_rows = T.max(0, T.min(block_token, cur_group_size - (m_start_padded - group_padded_offsets[cur_group_idx])))
+                    T.clear(gate_logits_local)
+                    T.clear(up_logits_local)
 
-            T.clear(output_local)
+                    for k in T.Pipelined(T.ceildiv(dhidden, block_dhidden_step1), num_stages=num_stages):
+                        T.copy(
+                            input[
+                                m_start : m_start + block_token,
+                                k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                            ],
+                            input_shared,
+                        )
+                        T.copy(
+                            routed_expert_gate[
+                                cur_group_idx,
+                                by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_gate_shared,
+                        )
+                        T.copy(
+                            routed_expert_up[
+                                cur_group_idx,
+                                by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                            ],
+                            routed_expert_up_shared,
+                        )
+                        for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
+                            step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
+                            step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
+                            step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
+                            step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
 
-            for k in T.Pipelined(T.ceildiv(dexpert, block_dexpert_step2), num_stages=num_stages):
-                T.copy(
-                    up_logits[m_start : m_start + block_token, k * block_dexpert_step2 : (k + 1) * block_dexpert_step2],
-                    up_logits_shared,
-                )
-                T.copy(
-                    routed_expert_down[
-                        cur_group_idx, by * block_dhidden_step2 : (by + 1) * block_dhidden_step2, k * block_dexpert_step2 : (k + 1) * block_dexpert_step2
-                    ],
-                    routed_expert_down_shared,
-                )
-                for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
-                    step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_shared, ki)
-                    step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
+                    for i, j in T.Parallel(block_token, block_dexpert_step1):
+                        gate_logits_local[i, j] = gate_logits_local[i, j] * (
+                            1.0 / (1.0 + T.exp2(-gate_logits_local[i, j] * scale))
+                        )
+                        if i < actual_rows:
+                            up_logits[m_start + i, by * block_dexpert_step1 + j] = (
+                                up_logits_local[i, j] * gate_logits_local[i, j]
+                            )
 
-            for i, j in T.Parallel(block_token, block_dhidden_step2):
-                if i < actual_rows:
-                    output[m_start + i, by * block_dhidden_step2 + j] = output_local[i, j] * routed_expert_weights[m_start + i]
+            # Step 2 must not observe up_logits until every Step-1 tile is visible.
+            T.sync_grid()
+
+            for wave in T.serial(step2_waves):
+                tile_id = persistent_id + wave * persistent_grid
+                if tile_id < step2_tiles:
+                    if use_grid_transpose_step2:
+                        bx = tile_id // step2_col_tiles
+                        by = tile_id % step2_col_tiles
+                    else:
+                        bx = tile_id % M
+                        by = tile_id // M
+
+                    m_start_padded = bx * block_token
+                    cur_group_idx = group_idx_for_bx[bx]
+                    T.assume(0 <= cur_group_idx)
+                    T.assume(cur_group_idx < n_routed_experts)
+
+                    cur_group_size = group_sizes[cur_group_idx]
+                    m_start = m_start_padded - group_padded_offsets[cur_group_idx] + group_offsets[cur_group_idx]
+                    actual_rows = T.max(
+                        0,
+                        T.min(
+                            block_token,
+                            cur_group_size - (m_start_padded - group_padded_offsets[cur_group_idx]),
+                        ),
+                    )
+
+                    T.clear(output_local)
+
+                    for k in T.Pipelined(T.ceildiv(dexpert, block_dexpert_step2), num_stages=num_stages):
+                        T.copy(
+                            up_logits[
+                                m_start : m_start + block_token,
+                                k * block_dexpert_step2 : (k + 1) * block_dexpert_step2,
+                            ],
+                            up_logits_shared,
+                        )
+                        T.copy(
+                            routed_expert_down[
+                                cur_group_idx,
+                                by * block_dhidden_step2 : (by + 1) * block_dhidden_step2,
+                                k * block_dexpert_step2 : (k + 1) * block_dexpert_step2,
+                            ],
+                            routed_expert_down_shared,
+                        )
+                        for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
+                            step2_mma.ldmatrix_b(down_weight_local, routed_expert_down_shared, ki)
+                            step2_mma.mma(up_logits_shared, down_weight_local, output_local, ki)
+
+                    for i, j in T.Parallel(block_token, block_dhidden_step2):
+                        if i < actual_rows:
+                            output[m_start + i, by * block_dhidden_step2 + j] = (
+                                output_local[i, j] * routed_expert_weights[m_start + i]
+                            )
 
     return kernel
 
@@ -235,7 +284,7 @@ def moe_forward_tilelang_routed(
 class RoutedMoEKernel:
     _DEFAULT_BLOCK_DHIDDEN_STEP1 = 64
     _DEFAULT_BLOCK_DEXPERT_STEP1 = 128
-    _DEFAULT_BLOCK_DHIDDEN_STEP2 = 256
+    _DEFAULT_BLOCK_DHIDDEN_STEP2 = 128
     _DEFAULT_BLOCK_DEXPERT_STEP2 = 64
 
     @staticmethod
@@ -296,10 +345,11 @@ class RoutedMoEKernel:
         block_token: int = 128,
         block_dhidden: int = 64,
         block_dexpert: int = 128,
-        block_dhidden_step2: int = 256,
+        block_dhidden_step2: int = 128,
         block_dexpert_step2: int = 64,
         threads: int = 256,
         num_stages: int = 1,
+        persistent_blocks: int = 104,
         backend: str = "tilelang",
     ):
         self.d_hidden = d_hidden
@@ -314,6 +364,7 @@ class RoutedMoEKernel:
         self.block_dexpert_step2 = block_dexpert_step2
         self.threads = threads
         self.num_stages = num_stages
+        self.persistent_blocks = persistent_blocks
         self.backend = backend
         schedule = self._select_schedule(
             d_hidden,
@@ -340,6 +391,7 @@ class RoutedMoEKernel:
             block_dexpert_step2=int(schedule["block_dexpert_step2"]),
             threads=threads,
             num_stages=num_stages,
+            persistent_blocks=persistent_blocks,
             use_grid_transpose_step1=self.use_grid_transpose_step1,
             use_grid_transpose_step2=self.use_grid_transpose_step2,
         )
