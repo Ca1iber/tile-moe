@@ -25,6 +25,7 @@ def moe_forward_tilelang_routed(
     num_stages=1,
     use_grid_transpose_step1=False,
     use_grid_transpose_step2=False,
+    use_step1_input_prefetch=False,
 ):
     scale = 1.44269504  # log2(e)
     dtype = T.float16
@@ -91,6 +92,7 @@ def moe_forward_tilelang_routed(
     routed_expert_weights_shape = group_sum  # 每个 routed token-expert pair 对应一个 router 权重。
     group_sizes_shape = n_routed_experts  # 每个 expert 对应一个 token 数量。
     step1_col_tiles = math.ceil(dexpert / block_dexpert_step1)
+    step1_k_tiles = math.ceil(dhidden / block_dhidden_step1)
     step2_output_tile = 2 * block_dhidden_step2
     step2_col_tiles = math.ceil(dhidden / step2_output_tile)
     step1_grid_x = step1_col_tiles if use_grid_transpose_step1 else M
@@ -117,6 +119,7 @@ def moe_forward_tilelang_routed(
             bx = pid1 if use_grid_transpose_step1 else pid0
             by = pid0 if use_grid_transpose_step1 else pid1
             input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+            input_prefetch = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
             routed_expert_gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_gate tile 的 shared memory 缓存。
             routed_expert_up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)  # 当前 W_up tile 的 shared memory 缓存。
 
@@ -127,6 +130,7 @@ def moe_forward_tilelang_routed(
             T.annotate_layout(
                 {
                     input_shared: step1_mma.make_mma_load_layout(input_shared, matrix="A"),
+                    input_prefetch: step1_mma.make_mma_load_layout(input_prefetch, matrix="A"),
                     routed_expert_gate_shared: make_swizzled_layout(routed_expert_gate_shared),
                     routed_expert_up_shared: make_swizzled_layout(routed_expert_up_shared),
                     gate_logits_local: step1_mma.make_mma_store_layout(gate_logits_local),
@@ -150,28 +154,102 @@ def moe_forward_tilelang_routed(
             T.clear(gate_logits_local)
             T.clear(up_logits_local)
 
-            for k in T.Pipelined(T.ceildiv(dhidden, block_dhidden_step1), num_stages=num_stages):
+            if use_step1_input_prefetch:
+                # Keep BN128 and ping-pong only the register A fragments. Tile 0 is
+                # primed here; every later A tile is issued before the preceding MMA.
                 T.copy(
-                    input[m_start : m_start + block_token, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1],
+                    input[m_start : m_start + block_token, 0:block_dhidden_step1],
                     input_shared,
                 )
-                T.copy(
-                    routed_expert_gate[
-                        cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
-                    ],
-                    routed_expert_gate_shared,
-                )
-                T.copy(
-                    routed_expert_up[
-                        cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
-                    ],
-                    routed_expert_up_shared,
-                )
-                for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
-                    step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
-                    step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
-                    step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
+                for k_pair in T.serial(step1_k_tiles // 2):
+                    k_even = k_pair * 2
+                    k_odd = k_even + 1
+                    T.copy(
+                        routed_expert_gate[
+                            cur_group_idx,
+                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                        ],
+                        routed_expert_gate_shared,
+                    )
+                    T.copy(
+                        routed_expert_up[
+                            cur_group_idx,
+                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                        ],
+                        routed_expert_up_shared,
+                    )
+                    T.sync_threads()
+                    T.copy(
+                        input[
+                            m_start : m_start + block_token,
+                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                        ],
+                        input_prefetch,
+                    )
+                    for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
+                        step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
+                        step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
+                        step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
+                        step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
+                    T.sync_threads()
+                    T.copy(
+                        routed_expert_gate[
+                            cur_group_idx,
+                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                        ],
+                        routed_expert_gate_shared,
+                    )
+                    T.copy(
+                        routed_expert_up[
+                            cur_group_idx,
+                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                        ],
+                        routed_expert_up_shared,
+                    )
+                    T.sync_threads()
+                    if k_pair + 1 < step1_k_tiles // 2:
+                        k_next_even = k_odd + 1
+                        T.copy(
+                            input[
+                                m_start : m_start + block_token,
+                                k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                            ],
+                            input_shared,
+                        )
+                    for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
+                        step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
+                        step1_mma.mma(input_prefetch, expert_weight_local, gate_logits_local, ki)
+                        step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
+                        step1_mma.mma(input_prefetch, expert_weight_local, up_logits_local, ki)
+                    if k_pair + 1 < step1_k_tiles // 2:
+                        T.sync_threads()
+            else:
+                for k in T.Pipelined(T.ceildiv(dhidden, block_dhidden_step1), num_stages=num_stages):
+                    T.copy(
+                        input[m_start : m_start + block_token, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1],
+                        input_shared,
+                    )
+                    T.copy(
+                        routed_expert_gate[
+                            cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
+                        ],
+                        routed_expert_gate_shared,
+                    )
+                    T.copy(
+                        routed_expert_up[
+                            cur_group_idx, by * block_dexpert_step1 : (by + 1) * block_dexpert_step1, k * block_dhidden_step1 : (k + 1) * block_dhidden_step1
+                        ],
+                        routed_expert_up_shared,
+                    )
+                    for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
+                        step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
+                        step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
+                        step1_mma.ldmatrix_b(expert_weight_local, routed_expert_up_shared, ki)
+                        step1_mma.mma(input_shared, expert_weight_local, up_logits_local, ki)
 
             # element-wise activation
             for i, j in T.Parallel(block_token, block_dexpert_step1):
@@ -286,6 +364,7 @@ class RoutedMoEKernel:
             "block_dexpert_step2": block_dexpert_step2,
             "use_grid_transpose_step1": False,
             "use_grid_transpose_step2": False,
+            "use_step1_input_prefetch": False,
         }
 
         using_default_tiles = (
@@ -309,6 +388,7 @@ class RoutedMoEKernel:
         elif d_hidden == 7168 and d_expert == 2048 and n_routed_experts >= 32:
             schedule["use_grid_transpose_step1"] = True
             schedule["use_grid_transpose_step2"] = True
+            schedule["use_step1_input_prefetch"] = n_routed_experts >= 64
         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:
             # Conservative fallback for smaller hidden shapes: keep proven tile sizes,
             # but use transposed grid to expose column tiles first, matching 3584/1024.
@@ -357,6 +437,7 @@ class RoutedMoEKernel:
         )
         self.use_grid_transpose_step1 = bool(schedule["use_grid_transpose_step1"])
         self.use_grid_transpose_step2 = bool(schedule["use_grid_transpose_step2"])
+        self.use_step1_input_prefetch = bool(schedule["use_step1_input_prefetch"])
 
         self.impl = moe_forward_tilelang_routed(
             d_hidden=d_hidden,
@@ -373,6 +454,7 @@ class RoutedMoEKernel:
             num_stages=num_stages,
             use_grid_transpose_step1=self.use_grid_transpose_step1,
             use_grid_transpose_step2=self.use_grid_transpose_step2,
+            use_step1_input_prefetch=self.use_step1_input_prefetch,
         )
 
     def __call__(

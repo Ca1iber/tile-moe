@@ -1,0 +1,966 @@
+{
+  "iteration_id": "v018_step1_input_prefetch_sc-16g",
+  "version": "v018",
+  "slug": "step1_input_prefetch",
+  "machine": "sc-16g",
+  "status": "accepted",
+  "created_at_utc": "2026-08-12T03:10:49.794488+00:00",
+  "baseline_id": "v004_step2_router_weight_register_reuse_sc-16g",
+  "parent_id": "v013_step2_split_accumulator_sc-16g",
+  "current_best_id": "v018_step1_input_prefetch_sc-16g",
+  "kind": "evidence",
+  "decision": "accepted",
+  "source_sha256": {
+    "parent": "7e72737a3ac33d662d2d2b8771cedfd85e6a4ce32d9b2a492f027580d3aacbc3",
+    "candidate_a": "45cc70e812210ff712e5d2387e807012a292c272639178e04c8d11cbaddd84e4",
+    "candidate_b_and_main": "f856ab903980f63f71a92151635ec94b2d7e81f29f93c3d6d53eea136efeda7b"
+  },
+  "benchmark_sha256": {
+    "official": "adfe36d8e042adc3369813b7bd367bd865e560207c811d0e8514235fc33ec67f",
+    "oj": "1165d1481f8932b6b2341f53e83e5ce5d871c62835259c22dc8d770c232585c8"
+  },
+  "summarized_at_utc": "2026-08-12T04:01:16.462636+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "2c39181327d7947eebae705aec5dbbd59d514841",
+    "status_short": "m 3rdparty/tvm\nM  race_tests/moe/custom_fusedmoe.py\nA  race_tests/moe/moe-roofline/v018_step1_input_prefetch_sc-16g/.gitattributes\nA  race_tests/moe/moe-roofline/v018_step1_input_prefetch_sc-16g/README.md\nA  race_tests/moe/moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_case3_step1_paired_roofline.svg\nA  race_tests/moe/moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_case3_step1_paired_roofline_render.json\nA  race_tests/moe/moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_case3_step1_points.csv\nA  race_tests/moe/moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_manifest.json\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/.gitattributes\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g.patch\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_a_odd_only.patch\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_a_odd_only_custom_fusedmoe.py\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_b_full_pingpong.patch\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_b_full_pingpong_custom_fusedmoe.py\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_custom_fusedmoe.py\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_experiment.md\nA  race_tests/moe/restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_parent_v013_custom_fusedmoe.py\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/.gitattributes\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_screen/pair1_1_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_screen/pair1_2_v018_step1_input_prefetch.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_screen/v018_step1_input_prefetch_vs_v013_paired_oj_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair1_1_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair1_2_v018_candidate_b_full_pingpong.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair2_1_v018_candidate_b_full_pingpong.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair2_2_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair3_1_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair3_2_v018_candidate_b_full_pingpong.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/v018_candidate_b_full_pingpong_vs_v013_paired_oj_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/official_candidate_b/v018_candidate_b_official.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/screen/pair1_1_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/screen/pair1_2_v018_step1_input_prefetch.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/screen/v018_step1_input_prefetch_vs_v013_paired_oj_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair1_1_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair1_2_v018_step1_input_prefetch.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair2_1_v018_step1_input_prefetch.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair2_2_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair3_1_v013_parent.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair3_2_v018_step1_input_prefetch.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/v018_step1_input_prefetch_vs_v013_paired_oj_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/v018_installed_main_oj.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate/v018_step1_input_prefetch_case3_compiler.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate/v018_step1_input_prefetch_case3_generated_device.cpp\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate/v018_step1_input_prefetch_case3_resource_usage.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_compiler.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.cpp\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_resource_usage.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/parent/v013_parent_case3_compiler.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/parent/v013_parent_case3_generated_device.cpp\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/codegen/parent/v013_parent_case3_resource_usage.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/correctness/correctness_summary.md\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.bundle_targets.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.device_obj.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.embedded.bc\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.isa_backend.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.llvmcmd\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.llvmcmd.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.mcfb\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.metax.s\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.sha256\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.text.bin\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.xcore1000.elf\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_isa_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.bundle_targets.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.device_obj.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.embedded.bc\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.isa_backend.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.llvmcmd\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.llvmcmd.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.mcfb\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.metax.s\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.sha256\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.text.bin\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.xcore1000.elf\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_isa_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/after.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/before.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/kernel_source.sha256\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034219310.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034219927.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034220304.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034219464.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034220060.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034220435.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/batches.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_1.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_2.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_3.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_4.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/mcProfiler.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.pdf\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.txt.csv\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.txt.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report_dumped_result.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report_js.html\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/v018_step1_input_prefetch_sc-16g_compare_v013_parent_case3_step1_targeted.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/target_command.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/after.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/before.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/kernel_source.sha256\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034525023.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034525610.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034525984.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034525176.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034525743.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034526117.png\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/batches.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_1.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_2.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_3.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_4.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/mcProfiler.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.pdf\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.txt.csv\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.txt.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report_dumped_result.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report_js.html\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/v018_step1_input_prefetch_sc-16g_compare_v018_candidate_b_full_pingpong_case3_step1_targeted.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/target_command.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/v018_candidate_b_vs_v013_case3_step1_targeted_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/command.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/v018_case3_pair1_1_v013_parent-89583.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/command.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/mctracer_console.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/v018_case3_pair1_2_v018_candidate_b_full_pingpong-89806.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/command.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/mctracer_console.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/v018_case3_pair2_1_v018_candidate_b_full_pingpong-90028.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/command.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/v018_case3_pair2_2_v013_parent-90249.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/command.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/v018_case3_pair3_1_v013_parent-90470.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/command.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/mctracer_console.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/v018_case3_pair3_2_v018_candidate_b_full_pingpong-90692.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/v018_candidate_b_full_pingpong_vs_v013_case3_mctracer_summary.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_pythonpath/v018_step1_input_prefetch_sc-16g_hbm_ap_samples.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_pythonpath/v018_step1_input_prefetch_sc-16g_sampled_workload.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_pythonpath/v018_step1_input_prefetch_sc-16g_workload_command.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_workdir/v018_step1_input_prefetch_sc-16g_hbm_ap_samples.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_workdir/v018_step1_input_prefetch_sc-16g_sampled_workload.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_workdir/v018_step1_input_prefetch_sc-16g_workload_command.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/v018_step1_input_prefetch_sc-16g_hbm_ap_samples.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/v018_step1_input_prefetch_sc-16g_sampled_workload.log\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/v018_step1_input_prefetch_sc-16g_workload_command.txt\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_manifest.json\nA  race_tests/moe/restart-rep/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_report.md\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/.gitattributes\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/capture_codegen_source_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/collect_environment.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/collect_mxsmi.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/dump_tilelang_codegen.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/finalize_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/fix_archive_paths_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/profile_one_case_source_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/render_roofline.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_correctness.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_iteration_bundle.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_mcprofiler.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_mcprofiler_source_v018.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_mctracer.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_official_benchmark.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_official_source_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_oj_benchmark.sh\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_paired_mctracer_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_paired_source_oj_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_paired_source_oj_v018b.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/run_source_oj_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/summarize_mcprofiler_v018.py\nA  race_tests/moe/restart-scripts/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_scripts.md\n?? .20260810032650.db\n?? .20260810032800.db\n?? .20260810162423.db\n?? .20260810162850.db\n?? .20260810162933.db\n?? .20260811052801.db\n?? .20260811235118.db\n?? .20260812020543.db\n?? .20260812030602.db\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step2/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/v011c_case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_codegen_summary.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case1/\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case3/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v018_step1_input_prefetch_sc-16g/.gitattributes",
+      "bytes": 26,
+      "sha256": "51128227786dc90b993a5faa8b108f8c2f0ae5b38894b228d71860dc94293dac"
+    },
+    {
+      "path": "moe-roofline/v018_step1_input_prefetch_sc-16g/README.md",
+      "bytes": 797,
+      "sha256": "cdcadb5e5bd4d3bd8efd99fe8c9ed0abfd49730cf9bc1df1d8227da3a125a26c"
+    },
+    {
+      "path": "moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_case3_step1_paired_roofline.svg",
+      "bytes": 9940,
+      "sha256": "10b870f5cf84e86dc3cf358f82c595627792cc5f60e92c1e14d757e513c47a33"
+    },
+    {
+      "path": "moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_case3_step1_paired_roofline_render.json",
+      "bytes": 959,
+      "sha256": "4975a5d0b09b77e18657789a6f631547659e033264c9a5c2f7f78e342489eca3"
+    },
+    {
+      "path": "moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_case3_step1_points.csv",
+      "bytes": 351,
+      "sha256": "602847673a03767d379cd8b1cd4bf679b14cdf9b6165f3b84dfec159679584ad"
+    },
+    {
+      "path": "moe-roofline/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_manifest.json",
+      "bytes": 921,
+      "sha256": "5682a0bdfe84ffb7a307dc80a1768898aeec316ecd9ec834611d973b5b1817bc"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/.gitattributes",
+      "bytes": 20,
+      "sha256": "fb25a78a6381f5646d71aacea4486f6aeeeb03c4d71740227011024be0d20a8f"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g.patch",
+      "bytes": 10773,
+      "sha256": "9f1e877e2ff22496ddb22746432c468ed6a01d934b60dc33d0c83fde27163336"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_a_odd_only.patch",
+      "bytes": 10540,
+      "sha256": "0bfeabd5da2ac552928e4b963f35a2bef84cda1977af2f85c66b6b5a3e5fc30f"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_a_odd_only_custom_fusedmoe.py",
+      "bytes": 23456,
+      "sha256": "45cc70e812210ff712e5d2387e807012a292c272639178e04c8d11cbaddd84e4"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_b_full_pingpong.patch",
+      "bytes": 10773,
+      "sha256": "9f1e877e2ff22496ddb22746432c468ed6a01d934b60dc33d0c83fde27163336"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_candidate_b_full_pingpong_custom_fusedmoe.py",
+      "bytes": 23760,
+      "sha256": "f856ab903980f63f71a92151635ec94b2d7e81f29f93c3d6d53eea136efeda7b"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_custom_fusedmoe.py",
+      "bytes": 23760,
+      "sha256": "f856ab903980f63f71a92151635ec94b2d7e81f29f93c3d6d53eea136efeda7b"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_experiment.md",
+      "bytes": 4566,
+      "sha256": "74ed6ecc60469c756d28f189e00fedff2e3feee69cb877e9e79f1450328a7676"
+    },
+    {
+      "path": "restart-experiments/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_parent_v013_custom_fusedmoe.py",
+      "bytes": 19081,
+      "sha256": "7e72737a3ac33d662d2d2b8771cedfd85e6a4ce32d9b2a492f027580d3aacbc3"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/.gitattributes",
+      "bytes": 278,
+      "sha256": "e5736b09335fdb574ac86e29184f75cf62171b3de8b3e0c28be9e2ac93a062fe"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_screen/pair1_1_v013_parent.log",
+      "bytes": 6072,
+      "sha256": "a65c4854d13551e703ee1de71617e51300649d46addd6a06756db83856e965a3"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_screen/pair1_2_v018_step1_input_prefetch.log",
+      "bytes": 6840,
+      "sha256": "8bffaa53863c988d0cb37086106efea57acb2a82b9814dab16889544350ad5bc"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_screen/v018_step1_input_prefetch_vs_v013_paired_oj_summary.json",
+      "bytes": 3968,
+      "sha256": "513761a027327f1785979b7032334e7830c11a5ef60d6f142f4b8b3ce2c2186b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair1_1_v013_parent.log",
+      "bytes": 6687,
+      "sha256": "a6f5c06b0f10423cb94254e7ca7d6b3b54333598801bcaa04e2ab6a56b64a4be"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair1_2_v018_candidate_b_full_pingpong.log",
+      "bytes": 6749,
+      "sha256": "8ea85ebc9a5fe0409ea2f15f263372ef8d211887daa23a86d71bdc666278f165"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair2_1_v018_candidate_b_full_pingpong.log",
+      "bytes": 6741,
+      "sha256": "0286902e3193adc76a6516d9a82eea2f7c86ba1772d5dab0bd2db8a6dd4f8f40"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair2_2_v013_parent.log",
+      "bytes": 6677,
+      "sha256": "e016e70a2f6d5e80d8c18e174b6b0f1557c1ba5603e2e8312a3352515a361d31"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair3_1_v013_parent.log",
+      "bytes": 6687,
+      "sha256": "4412e3016d6f937a9f3ae6cb534c40eef4a45ffac41c92726bd7ae9ea8f1fb24"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/pair3_2_v018_candidate_b_full_pingpong.log",
+      "bytes": 6753,
+      "sha256": "b679bfd163a0495053847a021b77f4d50970a0653a357f1df5512ac9d6178c89"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/candidate_b_strict/v018_candidate_b_full_pingpong_vs_v013_paired_oj_summary.json",
+      "bytes": 11633,
+      "sha256": "c79c25c501eef6146a62cbac8f025583c936ab0cf79ac5c69b4ed5bef3cbd69b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/official_candidate_b/v018_candidate_b_official.log",
+      "bytes": 6573,
+      "sha256": "8a5c3dca1308b0d7e43297ece751d7522db0603b8206090e44fa0cc7fe0f5be9"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/screen/pair1_1_v013_parent.log",
+      "bytes": 7744,
+      "sha256": "554cbf5e00138fdfb37b42eafce53135532e58cc26245bccc5a3ee3597cf1a74"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/screen/pair1_2_v018_step1_input_prefetch.log",
+      "bytes": 7748,
+      "sha256": "38412bdfafeda8bb23c43b7aa56cb9f89551b15b20813a77e855bd6fab75f56b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/screen/v018_step1_input_prefetch_vs_v013_paired_oj_summary.json",
+      "bytes": 5521,
+      "sha256": "8921c7fa1784c4a0984677be9a3d2f798eafec6afd42bd2dc34e0ee6136bf9b4"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair1_1_v013_parent.log",
+      "bytes": 6078,
+      "sha256": "dbcef2f43d0a102224ba0fe82313bf0b3992bcb596da7f7527032db6f53a2dd2"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair1_2_v018_step1_input_prefetch.log",
+      "bytes": 6082,
+      "sha256": "29fd30ee8f5a06072250265d4f77e4b36647bd5d7c2ffe22df3a393d77760323"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair2_1_v018_step1_input_prefetch.log",
+      "bytes": 6082,
+      "sha256": "246889b0d5888870162c6dd760e45f847e8ef6e2c926859f7949b325b3ad0bb3"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair2_2_v013_parent.log",
+      "bytes": 6078,
+      "sha256": "4a15fdeed56d1e41b542ffea1f7eb2a88dc62923785734f7f8657ec6459b0fda"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair3_1_v013_parent.log",
+      "bytes": 6072,
+      "sha256": "3df24a920c46f285289afc491801b6340a2bcd145272ebe5c7ccc3833f4e99ba"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/pair3_2_v018_step1_input_prefetch.log",
+      "bytes": 6080,
+      "sha256": "286674eda7652ae6e78aec1031725affbb5d2491050b9d113dc77c057798848a"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/oj/strict_long/v018_step1_input_prefetch_vs_v013_paired_oj_summary.json",
+      "bytes": 7833,
+      "sha256": "94ce67ef490f5e3f7272bfb704d0c2c2209774485d27544c3fd71a71cadfaa69"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/benchmark/v018_installed_main_oj.log",
+      "bytes": 3381,
+      "sha256": "2388d373fd340842e1a784c9310cc364ff41d260d446e235b4a6458091d986c8"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate/v018_step1_input_prefetch_case3_compiler.log",
+      "bytes": 10718,
+      "sha256": "fd29179a78c3873810c4421578470b88b1245dd8b166e2b008a35e991adc946d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate/v018_step1_input_prefetch_case3_generated_device.cpp",
+      "bytes": 26698,
+      "sha256": "d08839dcff9ea63dcc945b8139399ad68121009560e92e667b1590819e49fe86"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate/v018_step1_input_prefetch_case3_resource_usage.json",
+      "bytes": 1244,
+      "sha256": "b4cf771918ab8296c6604a9d867b96c9a92b6d6e2f0be8c27a6469d326f48dff"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_compiler.log",
+      "bytes": 10718,
+      "sha256": "820cd9812472f254efa24649a2d5d6d60f27c3ee23e77bb60c7d2390629c669d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.cpp",
+      "bytes": 27864,
+      "sha256": "c80f44d8cb492426128f8b984e7279b4110d66c3adb9e54114e4ca80518c2db8"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_resource_usage.json",
+      "bytes": 1317,
+      "sha256": "c7047071457248926afcf3096a0ee604a949462132100a3ac12944068071d450"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/parent/v013_parent_case3_compiler.log",
+      "bytes": 10914,
+      "sha256": "c847bd4216f42a1332aefd0c858afc01d95c7c28c54ed05386322b98e9dd80ec"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/parent/v013_parent_case3_generated_device.cpp",
+      "bytes": 26451,
+      "sha256": "0469f891e3f6167218b8885034b083322377ad63bf068bc9b87217dff9c2b7ae"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/codegen/parent/v013_parent_case3_resource_usage.json",
+      "bytes": 1208,
+      "sha256": "6135e394b1dfc63b49cbca0c79ebc0bfd753aa50792e0f25134f8dabdabcc4d5"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/correctness/correctness_summary.md",
+      "bytes": 581,
+      "sha256": "4c807bdf58ed3a1e6aa5610f9c9dddca57dc1c1039aa356a5a819929f2742eaf"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.device_obj.log",
+      "bytes": 10832,
+      "sha256": "cd512d557d2e71f8bac6577a2d837df5ee53f3759c7de1184ae5d1737dde71aa"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.embedded.bc",
+      "bytes": 137120,
+      "sha256": "01515a3437aadb30181e244dd838bfc4afd21120f6b895a13c2ebfc39085859b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "7c214ecee29375bc802c057e9f65623c5a20c8d19c98e1eedc0427db19fca544"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.llvmcmd",
+      "bytes": 781,
+      "sha256": "6cfd2d922ff9e57ae0838c060cff970d9cad221ad9026ba5af2c8a7df2f8f04f"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.llvmcmd.txt",
+      "bytes": 777,
+      "sha256": "09cc8463c0fabce204f53ebf17a2a967f675d4183eff5bcc7d848416c4eabd73"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.mcfb",
+      "bytes": 219104,
+      "sha256": "65e1e8c3b3885ea6bde44d5bb1a2a4ac144c8bc84d4089d4f79269f12be9f37b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.metax.s",
+      "bytes": 603798,
+      "sha256": "63c267dde33f97e3aee173e23a229396d981c5f151708a8a65a19e0e6eb9982b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.sha256",
+      "bytes": 1202,
+      "sha256": "a9828bdecd3922b18ce276ba583d4c5cd5d7a6e26741ffc3fe2f33f939bbf706"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.text.bin",
+      "bytes": 47088,
+      "sha256": "4e50f13e51f8b59b03b6963cd38312768891a68b89c44ff269398c99ebb97a85"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_generated_device.xcore1000.elf",
+      "bytes": 219104,
+      "sha256": "65e1e8c3b3885ea6bde44d5bb1a2a4ac144c8bc84d4089d4f79269f12be9f37b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/candidate_b_full_pingpong/v018_candidate_b_full_pingpong_case3_isa_summary.json",
+      "bytes": 4201,
+      "sha256": "3b1cf839fe989ecc5c1f9d45eb4263237b46765ff8f30fb8b19a5a0aa8e9689d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.device_obj.log",
+      "bytes": 10680,
+      "sha256": "3d7a47511d0ce79303c9beb11adba95202aef1cc345d217aee79e4e1e795f3de"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.embedded.bc",
+      "bytes": 135360,
+      "sha256": "1298b12ccf2fdb8b126097353e86adf7f3e0e89915bf12e109d1cd03585f5a54"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "b651bc79b6c8892923d3bed9748162070d5ca70db9ad07290cd59189351f7639"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.llvmcmd",
+      "bytes": 743,
+      "sha256": "42066fb6600c7d91b88469f1d950fe61d0ebcb25db0c3de3dcba10f395649690"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.llvmcmd.txt",
+      "bytes": 739,
+      "sha256": "47e36a26d070eff2893e253fabad363e3349d08bcddf2c167e95191383b70b84"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.mcfb",
+      "bytes": 216664,
+      "sha256": "38cd5f43853fecc47cddda25dd92f051bf9d73ac18e211e313977ee037cc035e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.metax.s",
+      "bytes": 546084,
+      "sha256": "659bc342cf59b3a293aa31813e0f5139a9fa473e00441593646206a223877616"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.sha256",
+      "bytes": 1012,
+      "sha256": "cf7959cf86c288ad3fc2fb5c5f8643a2d8d8e0aa0dcb4feb869ba92bc09793e7"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.text.bin",
+      "bytes": 46576,
+      "sha256": "0ddaf8c466cb37d270a2deda70572582aa4ca777643840c95c26be2e4330c5be"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_generated_device.xcore1000.elf",
+      "bytes": 216664,
+      "sha256": "38cd5f43853fecc47cddda25dd92f051bf9d73ac18e211e313977ee037cc035e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/isa/parent/v013_parent_case3_isa_summary.json",
+      "bytes": 4163,
+      "sha256": "900aa73c4cdc1c35c38b26a53cd8d7e872af5ef011db001a171a42accef0306e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/after.txt",
+      "bytes": 5145,
+      "sha256": "afe5071017ce47d8b0f5d968de7bfb2f0d77bd1a3a33dc24c548be210c300118"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/before.txt",
+      "bytes": 5096,
+      "sha256": "61febe6a1fc2084be7c6c0b077bdf603525f439e90e8e279458faebd3c8c2911"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/kernel_source.sha256",
+      "bytes": 219,
+      "sha256": "c13759916a5a1d9e2467da163d03deca94f681b0ca91a29386e84837b10b8763"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler.log",
+      "bytes": 179982,
+      "sha256": "552367ef0fd215c85799a3b530949ea495ad0baa82dd49af3d841a4374b600eb"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3073,
+      "sha256": "9df6455125a6217cd5f7ec8ed1a1d5d35495ea4f08ce45bcd978dbcb86a1bd4e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1783,
+      "sha256": "96fc2c12dcfaf5113c6b4378b7ac56d6a1fa2b0f7d97dbcab335ecbac47b2af9"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3742,
+      "sha256": "a35cdf12d4f21dd11a95cdcb0952956b4539eb18f820bc7d2e922f61f0fe6f4f"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3171,
+      "sha256": "02b12697f2cdfce5f0687d9d13f8774d7306989daebf54aab1359b10ca94c834"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034219310.png",
+      "bytes": 39862,
+      "sha256": "4e6f20ac2c9ba9b68e843c4d89c611818fef7202f632644aee114f3b3592a412"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034219927.png",
+      "bytes": 37974,
+      "sha256": "38c41aa4a1bb5a963b6de6c8739dad443894e2a3d75ed0ec1b73c908b3185ea9"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034220304.png",
+      "bytes": 37974,
+      "sha256": "38c41aa4a1bb5a963b6de6c8739dad443894e2a3d75ed0ec1b73c908b3185ea9"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034219464.png",
+      "bytes": 39262,
+      "sha256": "f27e0b952035ce83244e19f9df61169da27de7c8d810989b15e27505073b52a0"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034220060.png",
+      "bytes": 38686,
+      "sha256": "672f7190434de11575b1f660359a1186bc9f9391dbc23cdf35903099bd1c359c"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034220435.png",
+      "bytes": 38686,
+      "sha256": "672f7190434de11575b1f660359a1186bc9f9391dbc23cdf35903099bd1c359c"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "827ca7e54bf90425ab5dd79d3d885f9b47fe9fc02a9cfbd3fe20ede263b266f3"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1741,
+      "sha256": "11a7e16df0e2c33bd7647383288edbf99f44cbd795b900e28afba7d7c8a67972"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1205,
+      "sha256": "dd5c8ba0873a45d38892606304c1157f3ddfb20adaa0d337d291a4cc2331c49e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 758,
+      "sha256": "294aaddff4af7505843e610edcbd552c65acba0a857b0cb2a7a235f41613904a"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 421,
+      "sha256": "4e77c8bffb4f07ae30bbd1c13c74476f434cd653c932622c389b047c8d46595f"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 421,
+      "sha256": "4e77c8bffb4f07ae30bbd1c13c74476f434cd653c932622c389b047c8d46595f"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 79202,
+      "sha256": "a4fafbdb02fae3ed86bc6b7fef21501d2c77f9ea55f46f6d91cba1f29d42d421"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3098,
+      "sha256": "42a2d6747814cfeecaabcc4e2319b0f8c827ccddad502f06c9d382930bbe5b50"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1808,
+      "sha256": "86b2afce72dfe5b253c0348ce07c803490767c4b4d82d1dbfce276a2e4c8ba45"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3767,
+      "sha256": "500a5080d30ce6933c5b2913a7021954df760ed54a3910945d73a45f0f1a100d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3194,
+      "sha256": "bb555388fe24349bb55a26ece57a81f77c2c9de928d94706c852715c66bc2532"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63909,
+      "sha256": "e6b8209f32b96192b0642f9b80a13f1ecf42bf726960fb84761342238b178de5"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/mcprofiler_output/v018_step1_input_prefetch_sc-16g_compare_v013_parent_case3_step1_targeted.json",
+      "bytes": 579943,
+      "sha256": "23c479636337056cc97d118ac59b255baf64028ab6ff3ec90a29fcb2a6ca4b8c"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v013_parent_case3_step1_targeted/target_command.txt",
+      "bytes": 644,
+      "sha256": "f6e163aff73a53f99e7130a7f901831a6e470c8131560fd6c7773e2476996ff8"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/after.txt",
+      "bytes": 5194,
+      "sha256": "a51f339ebef12299e8fe9142c24ef8d208976063a6edeb0a6d28eef810050413"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/before.txt",
+      "bytes": 5145,
+      "sha256": "afe5071017ce47d8b0f5d968de7bfb2f0d77bd1a3a33dc24c548be210c300118"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/kernel_source.sha256",
+      "bytes": 233,
+      "sha256": "9c25a6d69acdc8e696cf6d2f68f78571589f8c0457f87e2f9243b71627fdc262"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler.log",
+      "bytes": 180367,
+      "sha256": "c5137867658110b2a2c8b93499ad981f567d68b354476a899c2c5331d81bdae8"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3073,
+      "sha256": "6742086010d4e5fa5b7097e14d4a89faeb5ce9be4e2e1f78b52a55f19cdec541"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1783,
+      "sha256": "2a173e4edcf6b5df95eda8ab2c86371d3e0158c3d5bdbf28426af7e621199707"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3742,
+      "sha256": "312353e2cac18988de07bdc6a98f2ff2131e9ce075342fce7c708b95b1890c86"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3170,
+      "sha256": "487ba6e9436b2da94c4f91477a37dc4e58a329b44fb38c5207525717d6fc2555"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034525023.png",
+      "bytes": 38237,
+      "sha256": "dfec8007438303cd0c1b1d18aa4b050de2c7f84c2109c62d145ab274b477a581"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034525610.png",
+      "bytes": 36932,
+      "sha256": "298c6e99654c101032e97f2d1bc126b56300f22f52f7e40002c1e4e1e9f957e8"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812034525984.png",
+      "bytes": 36932,
+      "sha256": "298c6e99654c101032e97f2d1bc126b56300f22f52f7e40002c1e4e1e9f957e8"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034525176.png",
+      "bytes": 38402,
+      "sha256": "48945036474fc7b3d4cdcf953f445cbe2646df734c6dd107ca1680c39f303cef"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034525743.png",
+      "bytes": 38085,
+      "sha256": "cbc33055d2cd0eae148f2c2e39db5b62f06ec940ea203d335bdafeb6474cfaed"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812034526117.png",
+      "bytes": 38085,
+      "sha256": "cbc33055d2cd0eae148f2c2e39db5b62f06ec940ea203d335bdafeb6474cfaed"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "a5f93d856f684078d542f117df7ecd2aa224773264da35bf5940218e09fdf41b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1724,
+      "sha256": "752e3fc817465c33d9889b8c840d04499e41da3e8a4544ea9db007df02e6a567"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1235,
+      "sha256": "71a28d133a414cfda8e421bbcaa05e99f8d463b60df68f48344f81bd0baa780d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 737,
+      "sha256": "b2203ef9fea11a0bdc6133f832f498e2835c5bb61488603659df16c47ccd9021"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 429,
+      "sha256": "f5ec4a5bb72a2e60e18921e3069171d6777f4e7d95179268fa23297d83ed59e4"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 429,
+      "sha256": "f5ec4a5bb72a2e60e18921e3069171d6777f4e7d95179268fa23297d83ed59e4"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 77460,
+      "sha256": "034cb1b88947ab490ed9f205be905b007867dc452a188adae4373dbb944b0fe6"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3098,
+      "sha256": "12f06b8d6d2df2e3523b6bfe974de3057ab133a030cfed8fe4e25474bae98220"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1808,
+      "sha256": "185a23d900e86befc0d7563a329b8ff43c77301d604ecf90afb1e0161f55e257"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3767,
+      "sha256": "4be4e7fd2552be7bb58bb2e3e7819977ad31eb5f8440ba1ea4f1836de7c2573c"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3196,
+      "sha256": "861125bb1bcf4d6dbfb0d1a28a6299048d885f84d30e1180eef55609e48cdcc6"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63909,
+      "sha256": "fb38517c6854130f8f03051d9dbb0c25b2725c98c67007258e5205c1d32b7e20"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/mcprofiler_output/v018_step1_input_prefetch_sc-16g_compare_v018_candidate_b_full_pingpong_case3_step1_targeted.json",
+      "bytes": 580182,
+      "sha256": "f54c6ebad527048ac8db1cef21ee1d02e0aef2417ac742be6280e925253d867f"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/raw/compare_v018_candidate_b_full_pingpong_case3_step1_targeted/target_command.txt",
+      "bytes": 696,
+      "sha256": "9560464a26b071ca683338f844e8ce4e3296438011d76d84d95845c1bd8f614e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mcprofiler/v018_candidate_b_vs_v013_case3_step1_targeted_summary.json",
+      "bytes": 2404,
+      "sha256": "51f8e6de402b7176833208f900b8a3c2e2413cd2ff054a27c7e21d6a618ec995"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/command.json",
+      "bytes": 790,
+      "sha256": "b91e1686cc776c640ca32dafe42fc89be4224470edb6cca04b6f181aa8a85e17"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/mctracer_console.log",
+      "bytes": 5172,
+      "sha256": "dbbbe4d7c3d085e89963ac1dbda98ca36a4f13d6bed8915eec95ee9f2895a6b1"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/summary.json",
+      "bytes": 856,
+      "sha256": "843ce82534c274ed4814f325217a6bfc08038877c25ca5608710d61a936178fe"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_1_v013_parent/v018_case3_pair1_1_v013_parent-89583.json",
+      "bytes": 94489,
+      "sha256": "f5773419a245015d17ecebd975d65dcd5d54554dddf98aac744421e4b70c2521"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/command.json",
+      "bytes": 861,
+      "sha256": "4e8eb689b518ee5bb54a76c15d8ff45272b4066e385db8626f5b63d2fa0750b0"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/mctracer_console.log",
+      "bytes": 5243,
+      "sha256": "2cd4779f1a9ea99b042d291b75d51328f5ee4aa4b3d73304c6f508aaa4c6b1da"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/summary.json",
+      "bytes": 913,
+      "sha256": "45fe38703c32fe3f36d0b0d2361730d15465b7f535d1f86fd5f7367059090bbb"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair1_2_v018_candidate_b_full_pingpong/v018_case3_pair1_2_v018_candidate_b_full_pingpong-89806.json",
+      "bytes": 94490,
+      "sha256": "4b38830b09a2476f783e7a148706ff266e8659b06e03607e38cf180e8997cf56"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/command.json",
+      "bytes": 861,
+      "sha256": "834c69c82c830e8210bfc3c89aad09bc51a264a625c47b6cbd99c1d1c294e8c1"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/mctracer_console.log",
+      "bytes": 5243,
+      "sha256": "a64c98ca371eca0822675b0115d73efb621fa62e8a0fdadd7f38eaeb92634a38"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/summary.json",
+      "bytes": 914,
+      "sha256": "b0c3b9a4f9726b82919199bc02d2c08ee992903c8bcabe4b63a121356fa35372"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_1_v018_candidate_b_full_pingpong/v018_case3_pair2_1_v018_candidate_b_full_pingpong-90028.json",
+      "bytes": 94490,
+      "sha256": "c16a8a8f2169111cf21f37dae2c65606046119e61554428ae960a98d31b76d0d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/command.json",
+      "bytes": 790,
+      "sha256": "c80a28813edeb283b153dfb2243571cbcfbb78ea73ca7cfd2de8120eb0341338"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/mctracer_console.log",
+      "bytes": 5172,
+      "sha256": "43721ff4b552e5fff1403fde0a3dddf0cc93b1dbff3a1bb77d4f4e21801ea10d"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/summary.json",
+      "bytes": 856,
+      "sha256": "52a5925a8c1d2a56bf6f374ebff3cee0fc7e729a3f1817858ea17a08ebc56581"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair2_2_v013_parent/v018_case3_pair2_2_v013_parent-90249.json",
+      "bytes": 94488,
+      "sha256": "0a4d1cb8c265330f3c2e92d735b83e825826100f14bc5d8c6f18a791dfce457e"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/command.json",
+      "bytes": 790,
+      "sha256": "627a3c508622230945a73860874ee9508714ba8277706eda41ee23b3d24dce06"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/mctracer_console.log",
+      "bytes": 5172,
+      "sha256": "e96bb613b3ad80737b056544e81986e01b30823f89821022156d13ea4f734af7"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/summary.json",
+      "bytes": 857,
+      "sha256": "93b4cf7f69f92e8d3cff05e5279c005b78a3f0738fff1a56e639e4bee1817ca1"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_1_v013_parent/v018_case3_pair3_1_v013_parent-90470.json",
+      "bytes": 94492,
+      "sha256": "db82b64a6b4176690a0096521801782302a2158d4843c83e3324f7777b714f1f"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/command.json",
+      "bytes": 861,
+      "sha256": "912c2621c63de6481e0020f1f96f2a13b86a0c486043064cfe766d745528b903"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/mctracer_console.log",
+      "bytes": 5243,
+      "sha256": "1cc2231e41ec5d52749ee93b631f6bfb730ea5e90d05c05c718241a95b609792"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/summary.json",
+      "bytes": 913,
+      "sha256": "02a805b1fcccfcc6f5e154872fcec2799958f05377f53f530a679a68955ab0ad"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/pair3_2_v018_candidate_b_full_pingpong/v018_case3_pair3_2_v018_candidate_b_full_pingpong-90692.json",
+      "bytes": 94492,
+      "sha256": "90efe54d6b958d19e25b670ee449c51eee3cc724951b33b1b0f96ee46cbaf046"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mctracer/candidate_b_paired/v018_candidate_b_full_pingpong_vs_v013_case3_mctracer_summary.json",
+      "bytes": 9915,
+      "sha256": "68a4e10d14fee7d92623a4e9406aa90059ea4ed6b63fdd7cb3c5a677013d53d0"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_pythonpath/v018_step1_input_prefetch_sc-16g_hbm_ap_samples.txt",
+      "bytes": 46440,
+      "sha256": "9e225fe8783091553bf85ac56d0bd12b2ffef58cd8466f68573668864a6c4fdb"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_pythonpath/v018_step1_input_prefetch_sc-16g_sampled_workload.log",
+      "bytes": 1011,
+      "sha256": "47243140584ae6a4795787dcd8fb557047102c6116de64a2d7851741a998a350"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_pythonpath/v018_step1_input_prefetch_sc-16g_workload_command.txt",
+      "bytes": 249,
+      "sha256": "6f46349258f7fa18170383da29fe4f0a088c9487886424470190c1d856e6045c"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_workdir/v018_step1_input_prefetch_sc-16g_hbm_ap_samples.txt",
+      "bytes": 2322,
+      "sha256": "2fbf29a512c74066296f303eacc0ff4c13971a5a41fa45008fc92fea9000daec"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_workdir/v018_step1_input_prefetch_sc-16g_sampled_workload.log",
+      "bytes": 170,
+      "sha256": "8bd65b081c80f0ae7b6bca38e12c1c645010974b022629c6bd6b315869046f3a"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/failed_workdir/v018_step1_input_prefetch_sc-16g_workload_command.txt",
+      "bytes": 222,
+      "sha256": "c0e3efda06ab6c9e71a4978b76968518dde034b08c32d0b399f45bed74607ff4"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/v018_step1_input_prefetch_sc-16g_hbm_ap_samples.txt",
+      "bytes": 60372,
+      "sha256": "ef2eac0dcaa1a56b181af3ad6652b02017d33a2a69dc190f553a38a213aee012"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/v018_step1_input_prefetch_sc-16g_sampled_workload.log",
+      "bytes": 5638,
+      "sha256": "1905f52f447fb9b2e81a4f471d570436b9041d5dde7e12bdb79a14207bd0fe0b"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/profiler/mxsmi/v018_step1_input_prefetch_sc-16g_workload_command.txt",
+      "bytes": 369,
+      "sha256": "e43e7e3b210406382a8fbc79e3ac7fdebc3837e257dcc14fb2f87261cf55ed36"
+    },
+    {
+      "path": "restart-rep/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_report.md",
+      "bytes": 2532,
+      "sha256": "124c501ab75f3f0e0d19b20f0f314b28441269f004b99ecb522125afd1564787"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/.gitattributes",
+      "bytes": 17,
+      "sha256": "f3a1c3452600a3f3cbcbfd97b3ec2e1bd82c0119afe5be73eaaa17c5e3360a4b"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/capture_codegen_source_v018.py",
+      "bytes": 4868,
+      "sha256": "ed54863e9ad7d208319b271d63ae743c404df9f5ef655217b67c56d8d7237d54"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/collect_environment.sh",
+      "bytes": 2256,
+      "sha256": "851209b34cf8ec7485c17939005801aa4ffe3a251ea95a051c60a1a68f574051"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/collect_mxsmi.sh",
+      "bytes": 1296,
+      "sha256": "6835aa300bc2b1ddde664e39b9e46266ad7ebcfdb5ba6404cb7d87160ef121ad"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/dump_tilelang_codegen.py",
+      "bytes": 2884,
+      "sha256": "96fd666c7bcd939013a92c26b7e71197b36856594b5aec2ceaedbde5405c49c1"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/finalize_v018.py",
+      "bytes": 1734,
+      "sha256": "f6c05a7ded3e4cbbc9f54081f44b1c098b532a115c8d0432dfea9631f79519f4"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/fix_archive_paths_v018.py",
+      "bytes": 1168,
+      "sha256": "f84a7549c917ad242c22a9422ffa697fc41dd493a3d8abd03bd22b1979ed6bb9"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/profile_one_case_source_v018.py",
+      "bytes": 1890,
+      "sha256": "9d41abb4614bb648b6e231cab511e626cd1c1b279075b9e4d5d3003b350b18cb"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/render_roofline.py",
+      "bytes": 10075,
+      "sha256": "9b022302085c9b022077a230fff26d63373f5119e8ef13b6e476fd9409e011a1"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_correctness.sh",
+      "bytes": 712,
+      "sha256": "5924fbb93c24454b94a8cc532a131f165f6ce9849e5a6151fc141a18cd89072d"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_iteration_bundle.sh",
+      "bytes": 806,
+      "sha256": "11662510b293ab33e31706a05c076ca21a9f4a2e28226e66a6e9ae0d19631d00"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_mcprofiler.sh",
+      "bytes": 714,
+      "sha256": "7a9a0c20ea22f572ebd73078b3b2de8790ad443526a385b976703a6b1179f840"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_mcprofiler_source_v018.sh",
+      "bytes": 4156,
+      "sha256": "9142148bcdaf78f38d29651cab11ac64eb875f145b26eaefb4ae1e389eb85fc5"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_mctracer.sh",
+      "bytes": 698,
+      "sha256": "f4adf436b5d9dd6d3ddf3a93f6a084cfffe1b74c13d5d316bcd1df73eb385d22"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_official_benchmark.sh",
+      "bytes": 660,
+      "sha256": "d4c647078b16025d396dcb386f350f253c97b265011203d39b67a55e97520e4c"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_official_source_v018.py",
+      "bytes": 1276,
+      "sha256": "2dcecf45287dcf33ec956462d4de00c663a1ed4c4b5a90081792daecd19ab2ca"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_oj_benchmark.sh",
+      "bytes": 636,
+      "sha256": "7260202b134ae2306bcd5e840d7671b67ed74a87c7a7f6d249fab7f7f502812c"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_paired_mctracer_v018.py",
+      "bytes": 8986,
+      "sha256": "9da8de7ae105e3b6d36d4d7dba8a21ad419871736afcfeb8fed983c7f035e60a"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_paired_source_oj_v018.py",
+      "bytes": 7174,
+      "sha256": "bb7b4a33e2aaa0b0d345c2ff7b0ec7ae5c726a1f24ef68128dd09324b62a558e"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_paired_source_oj_v018b.py",
+      "bytes": 7206,
+      "sha256": "6c78ed598984b625d785427ac93d84d2234d7f8327e0ede7bf03734e75dcea0b"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/run_source_oj_v018.py",
+      "bytes": 2058,
+      "sha256": "d461e4b86a45e8d36882d43004ee14b0979fa758b7e2c8c05618343f00712abf"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/summarize_mcprofiler_v018.py",
+      "bytes": 2983,
+      "sha256": "2d835c3343585d18f7ae799f62e3240972a73c515102719b412e3c2714fd6a83"
+    },
+    {
+      "path": "restart-scripts/v018_step1_input_prefetch_sc-16g/v018_step1_input_prefetch_sc-16g_scripts.md",
+      "bytes": 1526,
+      "sha256": "01cd9a49fad0d74360eac4f13b105ce27ba7259ae7d9e75eb56644ac4c6a42a0"
+    }
+  ]
+}
