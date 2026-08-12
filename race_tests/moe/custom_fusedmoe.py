@@ -26,6 +26,7 @@ def moe_forward_tilelang_routed(
     use_grid_transpose_step1=False,
     use_grid_transpose_step2=False,
     use_step1_input_prefetch=False,
+    use_step1_prefetch_before_barrier=False,
 ):
     scale = 1.44269504  # log2(e)
     dtype = T.float16
@@ -156,7 +157,8 @@ def moe_forward_tilelang_routed(
 
             if use_step1_input_prefetch:
                 # Keep BN128 and ping-pong only the register A fragments. Tile 0 is
-                # primed here; every later A tile is issued before the preceding MMA.
+                # primed here. The 32-expert shape issues later A tiles before the
+                # weight barrier; the saturated 64-expert shape retains v019 order.
                 T.copy(
                     input[m_start : m_start + block_token, 0:block_dhidden_step1],
                     input_shared,
@@ -180,14 +182,23 @@ def moe_forward_tilelang_routed(
                         ],
                         routed_expert_up_shared,
                     )
+                    if use_step1_prefetch_before_barrier:
+                        T.copy(
+                            input[
+                                m_start : m_start + block_token,
+                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                            ],
+                            input_prefetch,
+                        )
                     T.sync_threads()
-                    T.copy(
-                        input[
-                            m_start : m_start + block_token,
-                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
-                        ],
-                        input_prefetch,
-                    )
+                    if not use_step1_prefetch_before_barrier:
+                        T.copy(
+                            input[
+                                m_start : m_start + block_token,
+                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                            ],
+                            input_prefetch,
+                        )
                     for ki in T.serial(0, block_dhidden_step1 // (step1_micro_size_k * step1_k_pack)):
                         step1_mma.ldmatrix_b(expert_weight_local, routed_expert_gate_shared, ki)
                         step1_mma.mma(input_shared, expert_weight_local, gate_logits_local, ki)
@@ -210,8 +221,17 @@ def moe_forward_tilelang_routed(
                         ],
                         routed_expert_up_shared,
                     )
+                    if use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
+                        k_next_even = k_odd + 1
+                        T.copy(
+                            input[
+                                m_start : m_start + block_token,
+                                k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                            ],
+                            input_shared,
+                        )
                     T.sync_threads()
-                    if k_pair + 1 < step1_k_tiles // 2:
+                    if not use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
                         k_next_even = k_odd + 1
                         T.copy(
                             input[
@@ -365,6 +385,7 @@ class RoutedMoEKernel:
             "use_grid_transpose_step1": False,
             "use_grid_transpose_step2": False,
             "use_step1_input_prefetch": False,
+            "use_step1_prefetch_before_barrier": False,
         }
 
         using_default_tiles = (
@@ -389,6 +410,7 @@ class RoutedMoEKernel:
             schedule["use_grid_transpose_step1"] = True
             schedule["use_grid_transpose_step2"] = True
             schedule["use_step1_input_prefetch"] = n_routed_experts >= 32
+            schedule["use_step1_prefetch_before_barrier"] = n_routed_experts == 32
         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:
             # Conservative fallback for smaller hidden shapes: keep proven tile sizes,
             # but use transposed grid to expose column tiles first, matching 3584/1024.
@@ -438,6 +460,7 @@ class RoutedMoEKernel:
         self.use_grid_transpose_step1 = bool(schedule["use_grid_transpose_step1"])
         self.use_grid_transpose_step2 = bool(schedule["use_grid_transpose_step2"])
         self.use_step1_input_prefetch = bool(schedule["use_step1_input_prefetch"])
+        self.use_step1_prefetch_before_barrier = bool(schedule["use_step1_prefetch_before_barrier"])
 
         self.impl = moe_forward_tilelang_routed(
             d_hidden=d_hidden,
@@ -455,6 +478,7 @@ class RoutedMoEKernel:
             use_grid_transpose_step1=self.use_grid_transpose_step1,
             use_grid_transpose_step2=self.use_grid_transpose_step2,
             use_step1_input_prefetch=self.use_step1_input_prefetch,
+            use_step1_prefetch_before_barrier=self.use_step1_prefetch_before_barrier,
         )
 
     def __call__(

@@ -1,0 +1,130 @@
+{
+  "created_at_utc": "2026-08-12T04:54:17.825501+00:00",
+  "protocol": {
+    "pairs": 3,
+    "orders": "AB, BA, AB ...",
+    "warmup": 10,
+    "repeat": 100,
+    "cases": [
+      3
+    ],
+    "fresh_process_per_variant_sample": true
+  },
+  "sources": {
+    "v019_parent": "/root/moe_runs/v020_step1_prefetch_before_barrier/v019_parent.py",
+    "v020_prefetch_before_barrier": "/root/moe_runs/v020_step1_prefetch_before_barrier/v020_candidate.py"
+  },
+  "raw": [
+    {
+      "pair": 1,
+      "order_in_pair": 1,
+      "tag": "v019_parent",
+      "case": 3,
+      "average_ms": 10.33423095703125,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case3/pair1_1_v019_parent.log"
+    },
+    {
+      "pair": 1,
+      "order_in_pair": 2,
+      "tag": "v020_prefetch_before_barrier",
+      "case": 3,
+      "average_ms": 10.51845947265625,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case3/pair1_2_v020_prefetch_before_barrier.log"
+    },
+    {
+      "pair": 2,
+      "order_in_pair": 1,
+      "tag": "v020_prefetch_before_barrier",
+      "case": 3,
+      "average_ms": 10.51419921875,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case3/pair2_1_v020_prefetch_before_barrier.log"
+    },
+    {
+      "pair": 2,
+      "order_in_pair": 2,
+      "tag": "v019_parent",
+      "case": 3,
+      "average_ms": 10.331932373046875,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case3/pair2_2_v019_parent.log"
+    },
+    {
+      "pair": 3,
+      "order_in_pair": 1,
+      "tag": "v019_parent",
+      "case": 3,
+      "average_ms": 10.33749755859375,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case3/pair3_1_v019_parent.log"
+    },
+    {
+      "pair": 3,
+      "order_in_pair": 2,
+      "tag": "v020_prefetch_before_barrier",
+      "case": 3,
+      "average_ms": 10.51398193359375,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case3/pair3_2_v020_prefetch_before_barrier.log"
+    }
+  ],
+  "aggregate": {
+    "3": {
+      "v019_parent": {
+        "samples": [
+          10.33423095703125,
+          10.331932373046875,
+          10.33749755859375
+        ],
+        "mean_ms": 10.334553629557291,
+        "median_ms": 10.33423095703125,
+        "min_ms": 10.331932373046875,
+        "max_ms": 10.33749755859375,
+        "pstdev_ms": 0.0022834054556125677
+      },
+      "v020_prefetch_before_barrier": {
+        "samples": [
+          10.51845947265625,
+          10.51419921875,
+          10.51398193359375
+        ],
+        "mean_ms": 10.515546875,
+        "median_ms": 10.51419921875,
+        "min_ms": 10.51398193359375,
+        "max_ms": 10.51845947265625,
+        "pstdev_ms": 0.002061427020323038
+      }
+    }
+  },
+  "paired": {
+    "3": {
+      "pairs": [
+        {
+          "pair": 1,
+          "parent_ms": 10.33423095703125,
+          "candidate_ms": 10.51845947265625,
+          "candidate_change_percent": 1.7827017452097138,
+          "candidate_speedup_percent": -1.7514781142991431
+        },
+        {
+          "pair": 2,
+          "parent_ms": 10.331932373046875,
+          "candidate_ms": 10.51419921875,
+          "candidate_change_percent": 1.764111872998786,
+          "candidate_speedup_percent": -1.7335304563954712
+        },
+        {
+          "pair": 3,
+          "parent_ms": 10.33749755859375,
+          "candidate_ms": 10.51398193359375,
+          "candidate_change_percent": 1.7072253125059778,
+          "candidate_speedup_percent": -1.678568368432376
+        }
+      ],
+      "median_change_percent": 1.764111872998786,
+      "mean_change_percent": 1.7513463102381592
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "created_at_utc": "2026-08-12T04:44:27.989033+00:00",
+  "protocol": {
+    "pairs": 3,
+    "orders": "AB, BA, AB ...",
+    "warmup": 10,
+    "repeat": 100,
+    "cases": [
+      2
+    ],
+    "fresh_process_per_variant_sample": true
+  },
+  "sources": {
+    "v019_parent": "/root/moe_runs/v020_step1_prefetch_before_barrier/v019_parent.py",
+    "v020_prefetch_before_barrier": "/root/moe_runs/v020_step1_prefetch_before_barrier/v020_candidate.py"
+  },
+  "raw": [
+    {
+      "pair": 1,
+      "order_in_pair": 1,
+      "tag": "v019_parent",
+      "case": 2,
+      "average_ms": 6.509342651367188,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case2/pair1_1_v019_parent.log"
+    },
+    {
+      "pair": 1,
+      "order_in_pair": 2,
+      "tag": "v020_prefetch_before_barrier",
+      "case": 2,
+      "average_ms": 5.326443481445312,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case2/pair1_2_v020_prefetch_before_barrier.log"
+    },
+    {
+      "pair": 2,
+      "order_in_pair": 1,
+      "tag": "v020_prefetch_before_barrier",
+      "case": 2,
+      "average_ms": 5.3302197265625,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case2/pair2_1_v020_prefetch_before_barrier.log"
+    },
+    {
+      "pair": 2,
+      "order_in_pair": 2,
+      "tag": "v019_parent",
+      "case": 2,
+      "average_ms": 5.341378784179687,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case2/pair2_2_v019_parent.log"
+    },
+    {
+      "pair": 3,
+      "order_in_pair": 1,
+      "tag": "v019_parent",
+      "case": 2,
+      "average_ms": 5.346843872070313,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case2/pair3_1_v019_parent.log"
+    },
+    {
+      "pair": 3,
+      "order_in_pair": 2,
+      "tag": "v020_prefetch_before_barrier",
+      "case": 2,
+      "average_ms": 5.331885986328125,
+      "max_abs": 0.001953125,
+      "log": "/root/tilelang-metax/race_tests/moe/restart-rep/v020_step1_prefetch_before_barrier_sc-16g/benchmark/paired_case2/pair3_2_v020_prefetch_before_barrier.log"
+    }
+  ],
+  "aggregate": {
+    "2": {
+      "v019_parent": {
+        "samples": [
+          6.509342651367188,
+          5.341378784179687,
+          5.346843872070313
+        ],
+        "mean_ms": 5.7325217692057295,
+        "median_ms": 5.346843872070313,
+        "min_ms": 5.341378784179687,
+        "max_ms": 6.509342651367188,
+        "pstdev_ms": 0.5492998446616646
+      },
+      "v020_prefetch_before_barrier": {
+        "samples": [
+          5.326443481445312,
+          5.3302197265625,
+          5.331885986328125
+        ],
+        "mean_ms": 5.32951639811198,
+        "median_ms": 5.3302197265625,
+        "min_ms": 5.326443481445312,
+        "max_ms": 5.331885986328125,
+        "pstdev_ms": 0.0022768718353395412
+      }
+    }
+  },
+  "paired": {
+    "2": {
+      "pairs": [
+        {
+          "pair": 1,
+          "parent_ms": 6.509342651367188,
+          "candidate_ms": 5.326443481445312,
+          "candidate_change_percent": -18.17232911641893,
+          "candidate_speedup_percent": 22.2080488423938
+        },
+        {
+          "pair": 2,
+          "parent_ms": 5.341378784179687,
+          "candidate_ms": 5.3302197265625,
+          "candidate_change_percent": -0.20891717416181566,
+          "candidate_speedup_percent": 0.20935455177535367
+        },
+        {
+          "pair": 3,
+          "parent_ms": 5.346843872070313,
+          "candidate_ms": 5.331885986328125,
+          "candidate_change_percent": -0.2797516834243452,
+          "candidate_speedup_percent": 0.2805364889748585
+        }
+      ],
+      "median_change_percent": -0.2797516834243452,
+      "mean_change_percent": -6.2203326580016975
+    }
+  }
+}
