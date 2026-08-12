@@ -1,0 +1,68 @@
+--- /root/moe_runs/v026_step1_v024_stable_clock_revalidation/v023_parent.py	2026-08-12 10:45:45.577143754 +0000
++++ /root/moe_runs/v026_step1_v024_stable_clock_revalidation/v024_candidate.py	2026-08-12 10:45:45.577143754 +0000
+@@ -157,8 +157,9 @@
+ 
+             if use_step1_input_prefetch:
+                 # Keep BN128 and ping-pong only the register A fragments. Tile 0 is
+-                # primed here. The 32-expert shape interleaves gate, A, and up
+-                # half-tiles to cap every Step1 global-load burst at half a tile;
++                # primed here. For 32 experts, keep v023's 1-2-1 weight/input
++                # grouping while swapping only the two middle weight half-copies.
++                # This isolates instruction order without changing transfer volume;
+                 # 64 experts retain the unsplit v019 weight-copy path.
+                 T.copy(
+                     input[m_start : m_start + block_token, 0:block_dhidden_step1],
+@@ -184,20 +185,20 @@
+                             input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
+                         )
+                         T.copy(
+-                            routed_expert_up[
++                            routed_expert_gate[
+                                 cur_group_idx,
+-                                by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                 k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                             ],
+-                            routed_expert_up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                            routed_expert_gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                         )
+                         T.copy(
+-                            routed_expert_gate[
++                            routed_expert_up[
+                                 cur_group_idx,
+-                                by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                 k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                             ],
+-                            routed_expert_gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                            routed_expert_up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                         )
+                         T.copy(
+                             input[
+@@ -265,20 +266,20 @@
+                                 input_shared[0 : block_token // 2, 0:block_dhidden_step1],
+                             )
+                         T.copy(
+-                            routed_expert_up[
++                            routed_expert_gate[
+                                 cur_group_idx,
+-                                by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                 k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                             ],
+-                            routed_expert_up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                            routed_expert_gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                         )
+                         T.copy(
+-                            routed_expert_gate[
++                            routed_expert_up[
+                                 cur_group_idx,
+-                                by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                 k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                             ],
+-                            routed_expert_gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                            routed_expert_up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                         )
+                         if k_pair + 1 < step1_k_tiles // 2:
+                             T.copy(
