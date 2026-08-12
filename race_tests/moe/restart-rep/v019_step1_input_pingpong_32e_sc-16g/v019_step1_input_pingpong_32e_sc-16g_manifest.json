@@ -1,0 +1,851 @@
+{
+  "iteration_id": "v019_step1_input_pingpong_32e_sc-16g",
+  "version": "v019",
+  "slug": "step1_input_pingpong_32e",
+  "machine": "sc-16g",
+  "status": "accepted",
+  "created_at_utc": "2026-08-12T04:03:03.623886+00:00",
+  "baseline_id": "v004_step2_router_weight_register_reuse_sc-16g",
+  "parent_id": "v018_step1_input_prefetch_sc-16g",
+  "current_best_id": "v019_step1_input_pingpong_32e_sc-16g",
+  "kind": "evidence",
+  "decision": "accepted",
+  "source_sha256": {
+    "parent": "f856ab903980f63f71a92151635ec94b2d7e81f29f93c3d6d53eea136efeda7b",
+    "candidate_and_main": "35529c68e99c7d55b56b5a353fa1e15bb9b8fc9f95b7c97d25c2262332f02ae0"
+  },
+  "benchmark_sha256": {
+    "official": "adfe36d8e042adc3369813b7bd367bd865e560207c811d0e8514235fc33ec67f",
+    "oj": "1165d1481f8932b6b2341f53e83e5ce5d871c62835259c22dc8d770c232585c8"
+  },
+  "mcprofiler_status": "candidate_replay_quarantined_internal_inconsistency",
+  "summarized_at_utc": "2026-08-12T04:30:58.076094+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "af0ebed2bccf8552b83744165cc274ee2b4b5804",
+    "status_short": "m 3rdparty/tvm\n M race_tests/moe/custom_fusedmoe.py\n?? .20260810032650.db\n?? .20260810032800.db\n?? .20260810162423.db\n?? .20260810162850.db\n?? .20260810162933.db\n?? .20260811052801.db\n?? .20260811235118.db\n?? .20260812020543.db\n?? .20260812030602.db\n?? race_tests/moe/moe-roofline/v019_step1_input_pingpong_32e_sc-16g/\n?? race_tests/moe/restart-experiments/v019_step1_input_pingpong_32e_sc-16g/\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step2/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/v011c_case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_codegen_summary.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case1/\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case3/\n?? race_tests/moe/restart-rep/v019_step1_input_pingpong_32e_sc-16g/\n?? race_tests/moe/restart-scripts/v019_step1_input_pingpong_32e_sc-16g/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v019_step1_input_pingpong_32e_sc-16g/.gitattributes",
+      "bytes": 26,
+      "sha256": "51128227786dc90b993a5faa8b108f8c2f0ae5b38894b228d71860dc94293dac"
+    },
+    {
+      "path": "moe-roofline/v019_step1_input_pingpong_32e_sc-16g/README.md",
+      "bytes": 550,
+      "sha256": "5e092c9187041c4dda6b939145188af5ef47a66434de40e06d1490ac431c7a55"
+    },
+    {
+      "path": "moe-roofline/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_case2_step1_paired_roofline.svg",
+      "bytes": 9940,
+      "sha256": "a83bc7c9f042314a1e989b4bd7eb1256875c053c460732df9365399257eb2854"
+    },
+    {
+      "path": "moe-roofline/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_case2_step1_paired_roofline_render.json",
+      "bytes": 976,
+      "sha256": "54f7ff3966c015548270516ed6333f5c40c82768c4cb41eb0c2bf8b439e88d1a"
+    },
+    {
+      "path": "moe-roofline/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_case2_step1_points.csv",
+      "bytes": 354,
+      "sha256": "7bebcfd36102f8d52fb0dcb917c6fb992cdbe03ed963fe13fd4445edda5cdf84"
+    },
+    {
+      "path": "moe-roofline/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_manifest.json",
+      "bytes": 919,
+      "sha256": "bee842758975b751c952bed64381aabee65520c036a33379e53ee176f9169df4"
+    },
+    {
+      "path": "restart-experiments/v019_step1_input_pingpong_32e_sc-16g/.gitattributes",
+      "bytes": 20,
+      "sha256": "fb25a78a6381f5646d71aacea4486f6aeeeb03c4d71740227011024be0d20a8f"
+    },
+    {
+      "path": "restart-experiments/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g.patch",
+      "bytes": 752,
+      "sha256": "45d94c6e627bfa51aa4edc0cdb54bbd912d0c52e6afbb4e9740dd562892b745c"
+    },
+    {
+      "path": "restart-experiments/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_custom_fusedmoe.py",
+      "bytes": 23760,
+      "sha256": "35529c68e99c7d55b56b5a353fa1e15bb9b8fc9f95b7c97d25c2262332f02ae0"
+    },
+    {
+      "path": "restart-experiments/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_experiment.md",
+      "bytes": 3227,
+      "sha256": "0b074af979f7a256fbb8671e476e150f3132231c9423523e2077d67554ebcfae"
+    },
+    {
+      "path": "restart-experiments/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_parent_v018_custom_fusedmoe.py",
+      "bytes": 23760,
+      "sha256": "f856ab903980f63f71a92151635ec94b2d7e81f29f93c3d6d53eea136efeda7b"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/.gitattributes",
+      "bytes": 278,
+      "sha256": "e5736b09335fdb574ac86e29184f75cf62171b3de8b3e0c28be9e2ac93a062fe"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/official/v019_official.log",
+      "bytes": 6549,
+      "sha256": "219eb37b0757c8566bb61e29664f787c2ca011887cf8168b4215ae10b723bd93"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/screen/pair1_1_v018_parent.log",
+      "bytes": 7760,
+      "sha256": "70db6e389f070d2ccd25de63198c07c0cd64317647391957a703df90a21550a3"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/screen/pair1_2_v019_input_pingpong_32e.log",
+      "bytes": 7048,
+      "sha256": "c12230eedc1c435839f9977c9ca23acadcb4a45702a236f630c325a3bd048a83"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/screen/v019_input_pingpong_32e_vs_v018_paired_oj_summary.json",
+      "bytes": 5531,
+      "sha256": "dce057670ae56c16d9310285b9b0707c5fa7d80a249e5ffbe1083c9afbe7f899"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/pair1_1_v018_parent.log",
+      "bytes": 6701,
+      "sha256": "64b519ac7af105d0887493a13666a2985d9754ae8de88a3a9899d6a0526d150a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/pair1_2_v019_input_pingpong_32e.log",
+      "bytes": 6695,
+      "sha256": "e97c5f745691856b71da0f0ddc05c97f5cdcbf246143fec341108a43aeb48003"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/pair2_1_v019_input_pingpong_32e.log",
+      "bytes": 6701,
+      "sha256": "98ddf589cd4020fc7e95638af5b67cd4d16d2352c87875406509495320cc43fe"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/pair2_2_v018_parent.log",
+      "bytes": 6697,
+      "sha256": "3775e9ec6891fce4dd1585723fd00d34803b5f872e5611b4189b057ea6f00e01"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/pair3_1_v018_parent.log",
+      "bytes": 6697,
+      "sha256": "7e0a1c876688f7d35c2bf87c71fe074e3c4fd2ef12381e0234bd9247a7a6b4ca"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/pair3_2_v019_input_pingpong_32e.log",
+      "bytes": 6701,
+      "sha256": "d337f11fc7de7445f2fec3644ab191cfe508ab4d0f1dc49491f0e918713eb84a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/strict/v019_input_pingpong_32e_vs_v018_paired_oj_summary.json",
+      "bytes": 11317,
+      "sha256": "bf809ab43e2a2c45b0ec23838faf8b54105c8125ca2c6bb0d9320abc76f2dd20"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/benchmark/v019_installed_main_oj.log",
+      "bytes": 3379,
+      "sha256": "104120be4c658afa6b02e7952ce0ea0d9b7cfacc6c276f4401d009c722e64f7a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/codegen/candidate/v019_input_pingpong_32e_case2_compiler.log",
+      "bytes": 10914,
+      "sha256": "cddee3b652d421597e62932239600223fa5281fe7041c11d5d4e0ac64cd91851"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/codegen/candidate/v019_input_pingpong_32e_case2_generated_device.cpp",
+      "bytes": 27864,
+      "sha256": "5bdeae407fb7ca2a4a8a2f76d7e94fb1361b937dac8a7d869ba26d1c77d2f4cd"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/codegen/candidate/v019_input_pingpong_32e_case2_resource_usage.json",
+      "bytes": 1254,
+      "sha256": "539cec7487f7f0fb5f73ff72f73362c10bd2d8d5b0a89cd1c68b52b680846527"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/codegen/parent/v018_parent_case2_compiler.log",
+      "bytes": 10914,
+      "sha256": "41ac52be92e55fa9d28aaab37da9a286af3722184f57e4a9a8aa42d2c99d5baa"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/codegen/parent/v018_parent_case2_generated_device.cpp",
+      "bytes": 26451,
+      "sha256": "13f9d00b8c504f86953c2327b343e846e47b4661a8c14dfe6701ee03937f54a3"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/codegen/parent/v018_parent_case2_resource_usage.json",
+      "bytes": 1224,
+      "sha256": "d9b06178c2b38bda9245339399fabb8bfda69dd591184ef9a4e5a29918f38487"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/correctness/correctness_summary.md",
+      "bytes": 368,
+      "sha256": "26f8039bb8c2b86d46b753309640d2e06e809537138e6a316ebdb2cfa290a933"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.device_obj.log",
+      "bytes": 10756,
+      "sha256": "826efaf2eecba110c790700fdad6f9790b6946b7e1a786978a8e633f8aa0a81e"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.embedded.bc",
+      "bytes": 137056,
+      "sha256": "ef879e44f61e665bca8d34a46eb5490e2ede735babb8447a17892ba814d2cba5"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "7c214ecee29375bc802c057e9f65623c5a20c8d19c98e1eedc0427db19fca544"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.llvmcmd",
+      "bytes": 762,
+      "sha256": "b04935e3a3701575650cfb757b2d4e16f9a19d5e59bcbe011d2a4f2e2357008b"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.llvmcmd.txt",
+      "bytes": 758,
+      "sha256": "71a95bdfde65998f18bbf1ff632ac07a5f12824470c037ae48ae900c7d88089a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.mcfb",
+      "bytes": 218984,
+      "sha256": "58c0bcbafc2d0d8b31d99101f2efb40990c2ecc85536791961814b90efac2a8c"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.metax.s",
+      "bytes": 576134,
+      "sha256": "4d38eb324632053c75b3d0873a5ae0465691d61740da4538b67d816c22bd64de"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.sha256",
+      "bytes": 1107,
+      "sha256": "2ca0f7e77c51e737e22f5b75e3254ffacfc44546576cd3322c56d3aec36643ff"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.text.bin",
+      "bytes": 47088,
+      "sha256": "bfaa464904395f1c3ff20e12a44f63789aff5659ce7422aa297178dd78b56eaf"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_generated_device.xcore1000.elf",
+      "bytes": 218984,
+      "sha256": "58c0bcbafc2d0d8b31d99101f2efb40990c2ecc85536791961814b90efac2a8c"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/candidate/v019_input_pingpong_32e_case2_isa_summary.json",
+      "bytes": 4182,
+      "sha256": "ce215888822aafe060a8250b54313d108f664d893a13f017d3cfdd66e48f3a84"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.device_obj.log",
+      "bytes": 10696,
+      "sha256": "6dd5abf760820f992093a2f276f4dbe24ce8d3a221df3100b6b3f20b46c73b8e"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.embedded.bc",
+      "bytes": 135376,
+      "sha256": "182c6cd6d9922e53683b4fd230cb80d1959bf76af3f1448bdb43ab2e33a57cdb"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "b651bc79b6c8892923d3bed9748162070d5ca70db9ad07290cd59189351f7639"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.llvmcmd",
+      "bytes": 747,
+      "sha256": "43168238774834fda68aae7f0a95402a476c350c008032f659652a6bc99e4295"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.llvmcmd.txt",
+      "bytes": 743,
+      "sha256": "aa1fd80f01650508587bb3e34dfc94422cd84b963d3a0f96904c9a398bf20b7c"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.mcfb",
+      "bytes": 216696,
+      "sha256": "c392d1c8b3736a23da39018946972bf7e43b70fd662f9c1b3235d70af8d51aac"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.metax.s",
+      "bytes": 551952,
+      "sha256": "67c44c04878b8b739482e6bb324b3283f852932b3412d9f4e905f3318a0ed79a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.sha256",
+      "bytes": 1032,
+      "sha256": "d41da9b8ed5dc386ac9dd7a51e7a652ccd7a0ef89a10b92c48d46c1617114078"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.text.bin",
+      "bytes": 46576,
+      "sha256": "fd3c96683d1be7f46a9299a35d2e24f6005d7d8e539a0c5a0186f76343166ce7"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_generated_device.xcore1000.elf",
+      "bytes": 216696,
+      "sha256": "c392d1c8b3736a23da39018946972bf7e43b70fd662f9c1b3235d70af8d51aac"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/isa/parent/v018_parent_case2_isa_summary.json",
+      "bytes": 4167,
+      "sha256": "46e1b4a6bd772afc268a0c82cf13d40ef464553a54974878d0388a036b7f45d0"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/after.txt",
+      "bytes": 5243,
+      "sha256": "b110797c4260373ac4c824e0657ac5f01bce5314e931b14f5d334d6e82e97a66"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/before.txt",
+      "bytes": 5194,
+      "sha256": "a51f339ebef12299e8fe9142c24ef8d208976063a6edeb0a6d28eef810050413"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/kernel_source.sha256",
+      "bytes": 227,
+      "sha256": "979533a842bcad1a767bfaa63425ae2676ebd45fd298136cbae6fa1f193c5381"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler.log",
+      "bytes": 178730,
+      "sha256": "f047ec3b540989cda75697ef963c17bba1fedc40a02a7539845b5b6cffb8cd30"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3072,
+      "sha256": "2d77b9c33e0ab7d565e7493dd29fafee7470fba684e40d6ba0272fac3692b92d"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1782,
+      "sha256": "b0264bf7419d02045f54fa8602d90219277c06f36ace4d8e9c3418d6d0762ff4"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3741,
+      "sha256": "8a4fbe9ac586ad1b3e26008c27edba78221acf95c234d306e3174964a97cbaeb"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3164,
+      "sha256": "8f2cb9c8518120e5a699fee8950938aba10e9e70adb8fdf39173733833858ae5"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812041945223.png",
+      "bytes": 38450,
+      "sha256": "fee1cae12ce819abba2ccf338e4ed6a0f836485d21db958524d1e0b093608ebe"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812041945816.png",
+      "bytes": 37064,
+      "sha256": "57666515e9def998312803b91957856e4833ef11266718a6e63909158dbadc40"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812041946205.png",
+      "bytes": 37064,
+      "sha256": "57666515e9def998312803b91957856e4833ef11266718a6e63909158dbadc40"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812041945379.png",
+      "bytes": 38301,
+      "sha256": "a9d4c2e4fac702c3d51f9c4d4e29cccaa9015aff6847a856a3fcf062b8970c0f"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812041945949.png",
+      "bytes": 37195,
+      "sha256": "5e1fde4faff7ab8fa73a53acfd17d4e55f741cb023362554bf511f1b814ce5ee"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812041946337.png",
+      "bytes": 37195,
+      "sha256": "5e1fde4faff7ab8fa73a53acfd17d4e55f741cb023362554bf511f1b814ce5ee"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "e006703044e5f400c9763f06f644b4c9472f89d2451681a35bc40f386bb36fad"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1684,
+      "sha256": "29962861d8fe85e8f32ec10145beed4500de558943f9e57be959ef8ff41b5ee4"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1247,
+      "sha256": "b4a0a40ef29924f092fe450d45c4fe2ff879e8c3e3a9b60fdb37a9abf8c13c9a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 762,
+      "sha256": "a27f43bd5009637fe0b45ca38fc5bc9321cfc7564ff88a975470eb744a2db379"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 432,
+      "sha256": "1b43827d3e84fc568ab85a511de92f9d3b511eaf786fd95c0e46e2239a1598e4"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 432,
+      "sha256": "1b43827d3e84fc568ab85a511de92f9d3b511eaf786fd95c0e46e2239a1598e4"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 77630,
+      "sha256": "05c4d73ef5b1ce18c751d0b050c3cbf36f6445a109f634df3a5df2be96168b28"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3096,
+      "sha256": "1646628432831234cc471fc151c93045ecb2f74748ad4517c617d3af2bcfc9df"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1806,
+      "sha256": "80b2e7f27de94b699200113bfd22be4dcdd6e2b24a0a5e2468dfa9c0dbee8632"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3765,
+      "sha256": "24acf8718c4977b1b4210cda92654586a2519b65258a06d519589748ae150990"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3193,
+      "sha256": "83e07ef7199079f448b24aa3ade2400c766f028a2819e1017a8536d6c742a271"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63906,
+      "sha256": "72323922f5603eedcf353b3638f39d070dc7ee3f6567fe7824eb53a0723aa5d0"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/mcprofiler_output/v019_step1_input_pingpong_32e_sc-16g_compare_v018_parent_case2_step1_targeted.json",
+      "bytes": 578604,
+      "sha256": "971c5185ce22112b9d58fdea0077721319020cb40e458416eb647c4c32fb2df8"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v018_parent_case2_step1_targeted/target_command.txt",
+      "bytes": 660,
+      "sha256": "f9a0678a6a1a5adce834889648120674845736e9f1ce6890b900b9a65d5fb336"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/after.txt",
+      "bytes": 5292,
+      "sha256": "264185a7855f7c2d004a25c75daaa9a2091575e8bfbb72df4bf252e7b84ddae9"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/before.txt",
+      "bytes": 5243,
+      "sha256": "b110797c4260373ac4c824e0657ac5f01bce5314e931b14f5d334d6e82e97a66"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/kernel_source.sha256",
+      "bytes": 215,
+      "sha256": "2b826f82ea0fb4d0b07d5fbb0e575766a08e4865c54fcbbd579c203c7750a05d"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler.log",
+      "bytes": 179202,
+      "sha256": "1ed5961dd60a78706282d917ae317c6b7621458c327e39aadae4ee32d23a2cfe"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3066,
+      "sha256": "a7e692710e6d30035be63f4a1a7e772cb700807ef9c86cc36c5eddd798980c00"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1774,
+      "sha256": "b4156c3132506bc13dd7374b62162a221f35a9b18bb608e2741d017f1cf390f6"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3733,
+      "sha256": "3064e6ca001dea2e3af349086a5434e80aadaf0ae224d80a7cbd1917a1ef8d95"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3158,
+      "sha256": "c486ff99021c9883f6666bee6e3ce1d9b984302db39179a9b7964e44bf253cc4"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812042257254.png",
+      "bytes": 37136,
+      "sha256": "38183bcf24de95ab96e34bf28e450066953208ea911eff55eff3ab17333a0c6b"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812042257863.png",
+      "bytes": 36853,
+      "sha256": "30dd53914656d9567f5f621c9cdeba69ae29c10aeebd4d0398af79f929295008"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812042258280.png",
+      "bytes": 36853,
+      "sha256": "30dd53914656d9567f5f621c9cdeba69ae29c10aeebd4d0398af79f929295008"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812042257414.png",
+      "bytes": 42173,
+      "sha256": "d165f1f67a539b3bd75a75ede5b4c3ee5b33fea69e54af87dc0f12558c96e084"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812042257999.png",
+      "bytes": 37533,
+      "sha256": "863d867663ae3f370c92f1070000196c7a92b4753b0a8675dfe416a2562e1b81"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812042258411.png",
+      "bytes": 37533,
+      "sha256": "863d867663ae3f370c92f1070000196c7a92b4753b0a8675dfe416a2562e1b81"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "b5d3599a0163aca36e61a25cf2ec54fd7c28beb4449de4aa67ede30ee5ff4618"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1699,
+      "sha256": "3ef5a7a4990008f3bf5f6fc2c671164324a1900277862d751562e41b49a9b323"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1249,
+      "sha256": "b5eea20fc8213065a3cac1fe6e2422d068bd48ff76a3cbea3a50b710bdb021ac"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 750,
+      "sha256": "7348fc16b838cbfc68bf953e5bf05f288e00a70c392fc3ca90821a5addcd1c7a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 427,
+      "sha256": "03bfd6188860f475f5646c75bfa652d95ac1b0919684158cae9298b79f2172ec"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 427,
+      "sha256": "03bfd6188860f475f5646c75bfa652d95ac1b0919684158cae9298b79f2172ec"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 81236,
+      "sha256": "678fa3cef30eaff5ce3af2abb144eb572c945bdd50fe310ed5fa66668925de8e"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3107,
+      "sha256": "cc29c1bf5cf5c279b35ab815003e70a1470c13a258fbdb8695c8b029cb23a022"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1819,
+      "sha256": "35e1850d28d9d9b9d8c0a68254b2ed52d77a1bc383eab9f3a4196fb2a0973e93"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3778,
+      "sha256": "ec32807d997eeb926029b034d854f65179f74159b4693a41660a753dffc5e51d"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3200,
+      "sha256": "17779542fbc01dd14f7444a4d3c7b9a8a6e329c8c885a9951570008f7ea4417a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63922,
+      "sha256": "d2161923bf8ca387b987ffd88a4aefcb93810da11c09171393afc0010b825bb7"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/mcprofiler_output/v019_step1_input_pingpong_32e_sc-16g_compare_v019_input_pingpong_32e_case2_step1_targeted.json",
+      "bytes": 580048,
+      "sha256": "78d32cda9a40fa3726da17b577e72d415a184da76e3e16ce743ead3a0aaa5f0f"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/raw/compare_v019_input_pingpong_32e_case2_step1_targeted/target_command.txt",
+      "bytes": 672,
+      "sha256": "e2c57302ecdcfa22ae7a856cbc45d1f6753a16ded226bc2857954cde5c79c206"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mcprofiler/v019_vs_v018_case2_step1_targeted_summary.json",
+      "bytes": 2833,
+      "sha256": "2f419db5828b3115d5cb7bff629300fceb7a4429fbb74de2a985ee1b7bbb24d9"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_1_v018_parent/command.json",
+      "bytes": 790,
+      "sha256": "b604a77b7142192ac6cd949e0a9b52683e8592f212897805658299224786b276"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_1_v018_parent/mctracer_console.log",
+      "bytes": 5173,
+      "sha256": "6aed8898e66b62218f38605953f9451bfd08140ae44c2d5764fabc421b325aef"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_1_v018_parent/summary.json",
+      "bytes": 846,
+      "sha256": "9177659c69a858e54bc3b12f801d85265b1a576cff35aaa37d3993195baefd29"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_1_v018_parent/v019_case2_pair1_1_v018_parent-112201.json",
+      "bytes": 95321,
+      "sha256": "f651325ef6623d852d07b5910ca802e5817978b3cc46831db5aa5162fa81d47a"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_2_v019_input_pingpong_32e/command.json",
+      "bytes": 814,
+      "sha256": "0e339f336b74857382fba0775e9bbcb3d1cdb7ea715217e4a42c12ee179229fb"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_2_v019_input_pingpong_32e/mctracer_console.log",
+      "bytes": 5197,
+      "sha256": "5cd90dbda11a41883028997b6333a1c8bf13af86bcaae3f142906808fa377d67"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_2_v019_input_pingpong_32e/summary.json",
+      "bytes": 884,
+      "sha256": "5f7f87baac1b050d0976332c6efcc691a15ab6f2f27a3388d05ffd1e24ed7f80"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair1_2_v019_input_pingpong_32e/v019_case2_pair1_2_v019_input_pingpong_32e-112517.json",
+      "bytes": 95319,
+      "sha256": "37160e5199277ee0fffa82c6f51afe4a55840cfcdba2caaa477fdbcd8f2d86d2"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_1_v019_input_pingpong_32e/command.json",
+      "bytes": 814,
+      "sha256": "9bd4fef52cdced87b829f80912b28fe27f664e3faf2bdd5a1c9f4ddeb55e7ad1"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_1_v019_input_pingpong_32e/mctracer_console.log",
+      "bytes": 5197,
+      "sha256": "d2b5ae0511d07fba299dae1fe8bf5a4b3124046f44e47936598d026b7114fff0"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_1_v019_input_pingpong_32e/summary.json",
+      "bytes": 895,
+      "sha256": "49a2c5237ab0eb39028e6ff99cba3809950d74ed9aa746edde7516eb8ee1df91"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_1_v019_input_pingpong_32e/v019_case2_pair2_1_v019_input_pingpong_32e-112833.json",
+      "bytes": 95322,
+      "sha256": "b548ab3be82eba9ddb635a36547f41842bd6f823d15883d8c30b0a747d26c12b"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_2_v018_parent/command.json",
+      "bytes": 790,
+      "sha256": "609b28f36e73037fd3e74edbeea3390cf8971f8b6970ab207e603623a59281d0"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_2_v018_parent/mctracer_console.log",
+      "bytes": 5173,
+      "sha256": "a2f7ebfc9b9170c7462268d8068588891ac48850efb768ed5ab1be1514658b79"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_2_v018_parent/summary.json",
+      "bytes": 847,
+      "sha256": "6a601c9217c2d0fc1e65b85b8740686493077eb35a5f7d59f9380111492edc30"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair2_2_v018_parent/v019_case2_pair2_2_v018_parent-113149.json",
+      "bytes": 95282,
+      "sha256": "a66eaed41d62f034ed25774025d9e612d5da83aa9b50aaf8d4bdf47152875e3f"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_1_v018_parent/command.json",
+      "bytes": 790,
+      "sha256": "19beecc668fcd9b6688eab1b3267d0321f1f7b47ee14f4fbfe48faaeafb3de6f"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_1_v018_parent/mctracer_console.log",
+      "bytes": 5173,
+      "sha256": "b3505535712b30839821e5cb06289e9317340484a4c5cde780b04bd93d8f4880"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_1_v018_parent/summary.json",
+      "bytes": 850,
+      "sha256": "fd23f9ea2c4720515698de5bd13171a33c98c3141ab72e11fa18dc06f3371586"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_1_v018_parent/v019_case2_pair3_1_v018_parent-113465.json",
+      "bytes": 95323,
+      "sha256": "ddf654bdb322cf3cde22d13b33ec1c5e34f32fb00fcab0ed72cf1d2896efca69"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_2_v019_input_pingpong_32e/command.json",
+      "bytes": 814,
+      "sha256": "48f7134c6d7afdb82a921d950a8d8f684f7d7cd0bd485ce4779eaaee739c35a6"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_2_v019_input_pingpong_32e/mctracer_console.log",
+      "bytes": 5197,
+      "sha256": "1074ba3d554f8e3aedfd62a6a93764e1c6482a222c0cd7c5923b830f429c1169"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_2_v019_input_pingpong_32e/summary.json",
+      "bytes": 886,
+      "sha256": "9082956a004a6ab34fd2bb8d45e06a73362450a683d935e883109e99f4239c31"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/pair3_2_v019_input_pingpong_32e/v019_case2_pair3_2_v019_input_pingpong_32e-113782.json",
+      "bytes": 95327,
+      "sha256": "84776ffb573c6e1b019e7e8dca6886c97d8fe5c88aec002310c573351effebcc"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mctracer/paired/v019_input_pingpong_32e_vs_v018_case2_mctracer_summary.json",
+      "bytes": 9824,
+      "sha256": "f886abc61ec4f4a79e347d045f5b146dee7fc0952d1f8932bc82ea413f739f01"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mxsmi/v019_step1_input_pingpong_32e_sc-16g_hbm_ap_samples.txt",
+      "bytes": 60372,
+      "sha256": "38f4ce0a76625a6003e62a9f5416e9a83e89d8fa2bcbf7c52efa4f7543f50436"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mxsmi/v019_step1_input_pingpong_32e_sc-16g_sampled_workload.log",
+      "bytes": 5636,
+      "sha256": "9d2d5cc6d8190b1f29b9166e982d04bc8834ae196442b4909ccadcf64083ea59"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/profiler/mxsmi/v019_step1_input_pingpong_32e_sc-16g_workload_command.txt",
+      "bytes": 373,
+      "sha256": "d30cb89ed08a0bb619c754c3d06d2a50ee21607ab7f76acf0a8f751fc88817ed"
+    },
+    {
+      "path": "restart-rep/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_report.md",
+      "bytes": 1679,
+      "sha256": "8b646dfa1b452267abb36428901746c7c3ea8f8a4aa089e5588aebf6d4dc1260"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/.gitattributes",
+      "bytes": 17,
+      "sha256": "f3a1c3452600a3f3cbcbfd97b3ec2e1bd82c0119afe5be73eaaa17c5e3360a4b"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/analyze_metax_isa_v019.py",
+      "bytes": 4213,
+      "sha256": "6a347ba94efe7e09d934a3700c2d66541672561f32462cdde3b6b74c2ac6e7ac"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/capture_codegen_source_v019.py",
+      "bytes": 4868,
+      "sha256": "ed54863e9ad7d208319b271d63ae743c404df9f5ef655217b67c56d8d7237d54"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/collect_environment.sh",
+      "bytes": 2256,
+      "sha256": "851209b34cf8ec7485c17939005801aa4ffe3a251ea95a051c60a1a68f574051"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/collect_mxsmi.sh",
+      "bytes": 1296,
+      "sha256": "6835aa300bc2b1ddde664e39b9e46266ad7ebcfdb5ba6404cb7d87160ef121ad"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/dump_tilelang_codegen.py",
+      "bytes": 2884,
+      "sha256": "96fd666c7bcd939013a92c26b7e71197b36856594b5aec2ceaedbde5405c49c1"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/extract_metax_isa_v019.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/finalize_v019.py",
+      "bytes": 1726,
+      "sha256": "798a315d0dcb0647356cacf10c63c604e7a5e110cebd373ccc85235102696237"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/profile_one_case_source_v019.py",
+      "bytes": 1890,
+      "sha256": "9aa32af08a629a7f84841e61def6c86ef2feb3080c80f9497e04c25af5e10d0a"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/render_roofline.py",
+      "bytes": 10075,
+      "sha256": "9b022302085c9b022077a230fff26d63373f5119e8ef13b6e476fd9409e011a1"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_correctness.sh",
+      "bytes": 712,
+      "sha256": "5924fbb93c24454b94a8cc532a131f165f6ce9849e5a6151fc141a18cd89072d"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_iteration_bundle.sh",
+      "bytes": 806,
+      "sha256": "11662510b293ab33e31706a05c076ca21a9f4a2e28226e66a6e9ae0d19631d00"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_mcprofiler.sh",
+      "bytes": 714,
+      "sha256": "7a9a0c20ea22f572ebd73078b3b2de8790ad443526a385b976703a6b1179f840"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_mcprofiler_source_v019.sh",
+      "bytes": 4160,
+      "sha256": "c79c908ba9b8a3fff1ba43d09b51335862a50863b9ca07899d7dced8f8a75b2c"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_mctracer.sh",
+      "bytes": 698,
+      "sha256": "f4adf436b5d9dd6d3ddf3a93f6a084cfffe1b74c13d5d316bcd1df73eb385d22"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_official_benchmark.sh",
+      "bytes": 660,
+      "sha256": "d4c647078b16025d396dcb386f350f253c97b265011203d39b67a55e97520e4c"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_official_source_v019.py",
+      "bytes": 1276,
+      "sha256": "2dcecf45287dcf33ec956462d4de00c663a1ed4c4b5a90081792daecd19ab2ca"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_oj_benchmark.sh",
+      "bytes": 636,
+      "sha256": "7260202b134ae2306bcd5e840d7671b67ed74a87c7a7f6d249fab7f7f502812c"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_paired_mctracer_v019.py",
+      "bytes": 8953,
+      "sha256": "d38ed7eb01c48673bcfe67ca760fad36ef91005037d203fdd288e347b3580009"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_paired_source_oj_v019.py",
+      "bytes": 7168,
+      "sha256": "4320ef9080e06421fc1649a48873b8d0ba8ec10485a47ea419fcb7286de67460"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/run_source_oj_v019.py",
+      "bytes": 2058,
+      "sha256": "d461e4b86a45e8d36882d43004ee14b0979fa758b7e2c8c05618343f00712abf"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/summarize_mcprofiler_v019.py",
+      "bytes": 3748,
+      "sha256": "0f858b62fec1d2317079568fb3bbce7d23520ef1f4c8d72dde83f2a336251edb"
+    },
+    {
+      "path": "restart-scripts/v019_step1_input_pingpong_32e_sc-16g/v019_step1_input_pingpong_32e_sc-16g_scripts.md",
+      "bytes": 1039,
+      "sha256": "6bc9faf9d56c555820d0653f36725cdc5b59ea9bc575280e6c1294edfe2220e9"
+    }
+  ]
+}

@@ -388,7 +388,7 @@ class RoutedMoEKernel:
         elif d_hidden == 7168 and d_expert == 2048 and n_routed_experts >= 32:
             schedule["use_grid_transpose_step1"] = True
             schedule["use_grid_transpose_step2"] = True
-            schedule["use_step1_input_prefetch"] = n_routed_experts >= 64
+            schedule["use_step1_input_prefetch"] = n_routed_experts >= 32
         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:
             # Conservative fallback for smaller hidden shapes: keep proven tile sizes,
             # but use transposed grid to expose column tiles first, matching 3584/1024.
