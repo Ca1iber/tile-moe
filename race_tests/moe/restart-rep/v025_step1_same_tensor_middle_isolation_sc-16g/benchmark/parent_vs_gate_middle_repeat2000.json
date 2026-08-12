@@ -1,0 +1,123 @@
+{
+  "created_at_utc": "2026-08-12T10:13:41.474161+00:00",
+  "protocol": {
+    "case": 2,
+    "same_process": true,
+    "shared_input_weights": true,
+    "separate_scratch_outputs": true,
+    "pairs": 4,
+    "orders": "AB, BA alternating",
+    "warmup_per_window": 20,
+    "repeat_per_window": 2000
+  },
+  "sources": {
+    "parent": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v024_parent.py",
+    "candidate": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v025_gate_middle.py"
+  },
+  "correctness": "PASS for both, torch.assert_close rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "pair": 1,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 4.963515625
+    },
+    {
+      "pair": 1,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 4.9655205078125
+    },
+    {
+      "pair": 1,
+      "tag": "paired_change",
+      "change_percent": 0.04039239450364107
+    },
+    {
+      "pair": 2,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 4.965125
+    },
+    {
+      "pair": 2,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 4.963392578125
+    },
+    {
+      "pair": 2,
+      "tag": "paired_change",
+      "change_percent": 0.034903986491707784
+    },
+    {
+      "pair": 3,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 4.963623046875
+    },
+    {
+      "pair": 3,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 4.96433251953125
+    },
+    {
+      "pair": 3,
+      "tag": "paired_change",
+      "change_percent": 0.014293443509916237
+    },
+    {
+      "pair": 4,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 4.9645048828125
+    },
+    {
+      "pair": 4,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 4.96408837890625
+    },
+    {
+      "pair": 4,
+      "tag": "paired_change",
+      "change_percent": 0.008390340269137653
+    }
+  ],
+  "aggregate": {
+    "parent": {
+      "samples": [
+        4.963515625,
+        4.963392578125,
+        4.963623046875,
+        4.96408837890625
+      ],
+      "mean_ms": 4.963654907226562,
+      "median_ms": 4.9635693359375,
+      "pstdev_ms": 0.00026321515688464305
+    },
+    "candidate": {
+      "samples": [
+        4.9655205078125,
+        4.965125,
+        4.96433251953125,
+        4.9645048828125
+      ],
+      "mean_ms": 4.964870727539062,
+      "median_ms": 4.9648149414062495,
+      "pstdev_ms": 0.0004770689446418982
+    }
+  },
+  "paired": {
+    "changes_percent": [
+      0.04039239450364107,
+      0.034903986491707784,
+      0.014293443509916237,
+      0.008390340269137653
+    ],
+    "median_change_percent": 0.02459871500081201,
+    "mean_change_percent": 0.024495041193600686,
+    "improved_pairs": 0
+  }
+}

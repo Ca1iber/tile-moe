@@ -1,0 +1,155 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+2026-08-12 10:15:13  [TileLang:tilelang.cache.kernel_cache:WARNING] (kernel_cache.py:322): Found kernel 'kernel' in memory cache. For better performance, consider using `@tilelang.jit` instead of direct kernel caching.
+{
+  "created_at_utc": "2026-08-12T10:16:35.780184+00:00",
+  "protocol": {
+    "case": 2,
+    "same_process": true,
+    "shared_input_weights": true,
+    "separate_scratch_outputs": true,
+    "pairs": 4,
+    "orders": "AB, BA alternating",
+    "warmup_per_window": 20,
+    "repeat_per_window": 2000
+  },
+  "sources": {
+    "parent": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v024_parent.py",
+    "candidate": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v024_parent.py"
+  },
+  "correctness": "PASS for both, torch.assert_close rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "pair": 1,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 5.10497607421875
+    },
+    {
+      "pair": 1,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.1057490234375
+    },
+    {
+      "pair": 1,
+      "tag": "paired_change",
+      "change_percent": 0.01514109385651885
+    },
+    {
+      "pair": 2,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.1054345703125
+    },
+    {
+      "pair": 2,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 5.103828125
+    },
+    {
+      "pair": 2,
+      "tag": "paired_change",
+      "change_percent": 0.03147530193330361
+    },
+    {
+      "pair": 3,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 5.105783203125
+    },
+    {
+      "pair": 3,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.10606982421875
+    },
+    {
+      "pair": 3,
+      "tag": "paired_change",
+      "change_percent": 0.0056136557771369056
+    },
+    {
+      "pair": 4,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.1048427734375
+    },
+    {
+      "pair": 4,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 5.1051416015625
+    },
+    {
+      "pair": 4,
+      "tag": "paired_change",
+      "change_percent": -0.005853473778438811
+    }
+  ],
+  "aggregate": {
+    "parent": {
+      "samples": [
+        5.10497607421875,
+        5.103828125,
+        5.105783203125,
+        5.1051416015625
+      ],
+      "mean_ms": 5.104932250976562,
+      "median_ms": 5.105058837890625,
+      "pstdev_ms": 0.0007051527982358674
+    },
+    "candidate": {
+      "samples": [
+        5.1057490234375,
+        5.1054345703125,
+        5.10606982421875,
+        5.1048427734375
+      ],
+      "mean_ms": 5.105524047851563,
+      "median_ms": 5.105591796875,
+      "pstdev_ms": 0.00045294230165128437
+    }
+  },
+  "paired": {
+    "changes_percent": [
+      0.01514109385651885,
+      0.03147530193330361,
+      0.0056136557771369056,
+      -0.005853473778438811
+    ],
+    "median_change_percent": 0.010377374816827878,
+    "mean_change_percent": 0.01159414444713014,
+    "improved_pairs": 1
+  }
+}

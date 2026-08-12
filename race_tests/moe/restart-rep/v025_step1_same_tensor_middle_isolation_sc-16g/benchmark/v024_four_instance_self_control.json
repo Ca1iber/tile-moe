@@ -1,0 +1,214 @@
+{
+  "created_at_utc": "2026-08-12T10:27:31.368991+00:00",
+  "protocol": {
+    "case": 2,
+    "same_process": true,
+    "four_separately_instantiated_kernels": true,
+    "build_order": [
+      "parent_first",
+      "candidate_second",
+      "candidate_first",
+      "parent_second"
+    ],
+    "measurement_order": "four-order Latin rotation",
+    "bias_cancellation": "geometric mean of B_second/A_first and B_first/A_second",
+    "rounds": 4,
+    "warmup_per_window": 5,
+    "repeat_per_window": 500
+  },
+  "sources": {
+    "parent": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v024_parent.py",
+    "candidate": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v024_parent.py"
+  },
+  "codegen_sha256": {
+    "parent_first": "57d0974d866ad6bc439f787fe16dae93d08a8e352dbb939d797ca98ec2d5636d",
+    "candidate_second": "57d0974d866ad6bc439f787fe16dae93d08a8e352dbb939d797ca98ec2d5636d",
+    "candidate_first": "57d0974d866ad6bc439f787fe16dae93d08a8e352dbb939d797ca98ec2d5636d",
+    "parent_second": "57d0974d866ad6bc439f787fe16dae93d08a8e352dbb939d797ca98ec2d5636d"
+  },
+  "correctness": "PASS for all four instances, torch.assert_close rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "position": 1,
+      "slot": "parent_first",
+      "average_ms": 5.24009033203125
+    },
+    {
+      "round": 1,
+      "position": 2,
+      "slot": "candidate_second",
+      "average_ms": 5.23302294921875
+    },
+    {
+      "round": 1,
+      "position": 3,
+      "slot": "candidate_first",
+      "average_ms": 5.23599169921875
+    },
+    {
+      "round": 1,
+      "position": 4,
+      "slot": "parent_second",
+      "average_ms": 5.24512451171875
+    },
+    {
+      "round": 1,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 0.9986512860724368,
+      "ba_candidate_first_over_parent_second": 0.9982587996758523,
+      "change_percent": -0.15449764113473208
+    },
+    {
+      "round": 2,
+      "position": 1,
+      "slot": "candidate_second",
+      "average_ms": 5.23477197265625
+    },
+    {
+      "round": 2,
+      "position": 2,
+      "slot": "parent_first",
+      "average_ms": 5.2408359375
+    },
+    {
+      "round": 2,
+      "position": 3,
+      "slot": "parent_second",
+      "average_ms": 5.24200732421875
+    },
+    {
+      "round": 2,
+      "position": 4,
+      "slot": "candidate_first",
+      "average_ms": 5.23797216796875
+    },
+    {
+      "round": 2,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 0.998842939386757,
+      "ba_candidate_first_over_parent_second": 0.9992302268958388,
+      "change_percent": -0.09634356257345322
+    },
+    {
+      "round": 3,
+      "position": 1,
+      "slot": "candidate_first",
+      "average_ms": 5.23335107421875
+    },
+    {
+      "round": 3,
+      "position": 2,
+      "slot": "parent_second",
+      "average_ms": 5.237349609375
+    },
+    {
+      "round": 3,
+      "position": 3,
+      "slot": "parent_first",
+      "average_ms": 5.23925244140625
+    },
+    {
+      "round": 3,
+      "position": 4,
+      "slot": "candidate_second",
+      "average_ms": 5.23134912109375
+    },
+    {
+      "round": 3,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 0.9984915175588717,
+      "ba_candidate_first_over_parent_second": 0.9992365346111146,
+      "change_percent": -0.11360433752153343
+    },
+    {
+      "round": 4,
+      "position": 1,
+      "slot": "parent_second",
+      "average_ms": 5.2399599609375
+    },
+    {
+      "round": 4,
+      "position": 2,
+      "slot": "candidate_first",
+      "average_ms": 5.237798828125
+    },
+    {
+      "round": 4,
+      "position": 3,
+      "slot": "candidate_second",
+      "average_ms": 5.23301220703125
+    },
+    {
+      "round": 4,
+      "position": 4,
+      "slot": "parent_first",
+      "average_ms": 5.24363818359375
+    },
+    {
+      "round": 4,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 0.9979735488623632,
+      "ba_candidate_first_over_parent_second": 0.9995875669225318,
+      "change_percent": -0.12197681369668922
+    }
+  ],
+  "slot_aggregate": {
+    "parent_first": {
+      "samples": [
+        5.24009033203125,
+        5.2408359375,
+        5.23925244140625,
+        5.24363818359375
+      ],
+      "mean": 5.240954223632812,
+      "median": 5.2404631347656245,
+      "pstdev": 0.0016477260184133457
+    },
+    "candidate_second": {
+      "samples": [
+        5.23302294921875,
+        5.23477197265625,
+        5.23134912109375,
+        5.23301220703125
+      ],
+      "mean": 5.2330390625,
+      "median": 5.233017578125001,
+      "pstdev": 0.0012103574286370328
+    },
+    "candidate_first": {
+      "samples": [
+        5.23599169921875,
+        5.23797216796875,
+        5.23335107421875,
+        5.237798828125
+      ],
+      "mean": 5.236278442382813,
+      "median": 5.236895263671875,
+      "pstdev": 0.001859568846238975
+    },
+    "parent_second": {
+      "samples": [
+        5.24512451171875,
+        5.24200732421875,
+        5.237349609375,
+        5.2399599609375
+      ],
+      "mean": 5.2411103515625,
+      "median": 5.240983642578125,
+      "pstdev": 0.0028453744084483167
+    }
+  },
+  "balanced": {
+    "samples": [
+      -0.15449764113473208,
+      -0.09634356257345322,
+      -0.11360433752153343,
+      -0.12197681369668922
+    ],
+    "mean": -0.12160558873160199,
+    "median": -0.11779057560911133,
+    "pstdev": 0.021119984054246917,
+    "improved_rounds": 4
+  }
+}

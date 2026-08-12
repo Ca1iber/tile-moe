@@ -1,0 +1,214 @@
+{
+  "created_at_utc": "2026-08-12T10:29:02.945923+00:00",
+  "protocol": {
+    "case": 2,
+    "same_process": true,
+    "four_separately_instantiated_kernels": true,
+    "build_order": [
+      "parent_first",
+      "candidate_second",
+      "candidate_first",
+      "parent_second"
+    ],
+    "measurement_order": "four-order Latin rotation",
+    "bias_cancellation": "geometric mean of B_second/A_first and B_first/A_second",
+    "rounds": 4,
+    "warmup_per_window": 5,
+    "repeat_per_window": 500
+  },
+  "sources": {
+    "parent": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v025_up_middle.py",
+    "candidate": "/root/moe_runs/v025_step1_same_tensor_middle_isolation/v025_up_middle.py"
+  },
+  "codegen_sha256": {
+    "parent_first": "c531a104ffe3049d3c9a98535945b24a62399e91563437cda39313b845c16041",
+    "candidate_second": "c531a104ffe3049d3c9a98535945b24a62399e91563437cda39313b845c16041",
+    "candidate_first": "c531a104ffe3049d3c9a98535945b24a62399e91563437cda39313b845c16041",
+    "parent_second": "c531a104ffe3049d3c9a98535945b24a62399e91563437cda39313b845c16041"
+  },
+  "correctness": "PASS for all four instances, torch.assert_close rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "position": 1,
+      "slot": "parent_first",
+      "average_ms": 4.9682333984375
+    },
+    {
+      "round": 1,
+      "position": 2,
+      "slot": "candidate_second",
+      "average_ms": 4.97063623046875
+    },
+    {
+      "round": 1,
+      "position": 3,
+      "slot": "candidate_first",
+      "average_ms": 4.96984912109375
+    },
+    {
+      "round": 1,
+      "position": 4,
+      "slot": "parent_second",
+      "average_ms": 4.96983740234375
+    },
+    {
+      "round": 1,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 1.0004836391204983,
+      "ba_candidate_first_over_parent_second": 1.0000023579745274,
+      "change_percent": 0.024296960060388173
+    },
+    {
+      "round": 2,
+      "position": 1,
+      "slot": "candidate_second",
+      "average_ms": 4.9696787109375
+    },
+    {
+      "round": 2,
+      "position": 2,
+      "slot": "parent_first",
+      "average_ms": 4.9686748046875
+    },
+    {
+      "round": 2,
+      "position": 3,
+      "slot": "parent_second",
+      "average_ms": 4.968646484375
+    },
+    {
+      "round": 2,
+      "position": 4,
+      "slot": "candidate_first",
+      "average_ms": 4.968607421875
+    },
+    {
+      "round": 2,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 1.0002020470828668,
+      "ba_candidate_first_over_parent_second": 0.9999921382009924,
+      "change_percent": 0.009708713474698705
+    },
+    {
+      "round": 3,
+      "position": 1,
+      "slot": "candidate_first",
+      "average_ms": 4.9712373046875
+    },
+    {
+      "round": 3,
+      "position": 2,
+      "slot": "parent_second",
+      "average_ms": 4.97016943359375
+    },
+    {
+      "round": 3,
+      "position": 3,
+      "slot": "parent_first",
+      "average_ms": 4.9701513671875
+    },
+    {
+      "round": 3,
+      "position": 4,
+      "slot": "candidate_second",
+      "average_ms": 4.97016845703125
+    },
+    {
+      "round": 3,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 1.0000034384956287,
+      "ba_candidate_first_over_parent_second": 1.0002148560744293,
+      "change_percent": 0.010914169846465427
+    },
+    {
+      "round": 4,
+      "position": 1,
+      "slot": "parent_second",
+      "average_ms": 4.96928955078125
+    },
+    {
+      "round": 4,
+      "position": 2,
+      "slot": "candidate_first",
+      "average_ms": 4.96964111328125
+    },
+    {
+      "round": 4,
+      "position": 3,
+      "slot": "candidate_second",
+      "average_ms": 4.97087841796875
+    },
+    {
+      "round": 4,
+      "position": 4,
+      "slot": "parent_first",
+      "average_ms": 4.96875048828125
+    },
+    {
+      "round": 4,
+      "slot": "balanced_change",
+      "ab_candidate_second_over_parent_first": 1.0004282625365308,
+      "ba_candidate_first_over_parent_second": 1.000070747034643,
+      "change_percent": 0.024948881240538512
+    }
+  ],
+  "slot_aggregate": {
+    "parent_first": {
+      "samples": [
+        4.9682333984375,
+        4.9686748046875,
+        4.9701513671875,
+        4.96875048828125
+      ],
+      "mean": 4.9689525146484375,
+      "median": 4.968712646484375,
+      "pstdev": 0.0007197765296767895
+    },
+    "candidate_second": {
+      "samples": [
+        4.97063623046875,
+        4.9696787109375,
+        4.97016845703125,
+        4.97087841796875
+      ],
+      "mean": 4.970340454101563,
+      "median": 4.97040234375,
+      "pstdev": 0.00045944961344128275
+    },
+    "candidate_first": {
+      "samples": [
+        4.96984912109375,
+        4.968607421875,
+        4.9712373046875,
+        4.96964111328125
+      ],
+      "mean": 4.969833740234375,
+      "median": 4.9697451171875,
+      "pstdev": 0.0009369086943933826
+    },
+    "parent_second": {
+      "samples": [
+        4.96983740234375,
+        4.968646484375,
+        4.97016943359375,
+        4.96928955078125
+      ],
+      "mean": 4.969485717773438,
+      "median": 4.9695634765625005,
+      "pstdev": 0.0005774823689554925
+    }
+  },
+  "balanced": {
+    "samples": [
+      0.024296960060388173,
+      0.009708713474698705,
+      0.010914169846465427,
+      0.024948881240538512
+    ],
+    "mean": 0.017467181155522704,
+    "median": 0.0176055649534268,
+    "pstdev": 0.007172124755302539,
+    "improved_rounds": 0
+  }
+}
