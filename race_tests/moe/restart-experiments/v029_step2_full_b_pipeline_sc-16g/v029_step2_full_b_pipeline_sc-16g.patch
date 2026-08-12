@@ -1,0 +1,269 @@
+diff --git a/v028l/tmp/v028l_step2_inverse_swizzle_sync_only.py b/v029o/tmp/v029o_overlap_reverse_producer_order.py
+index 3cd8a82..a69858e 100644
+--- a/v028l/tmp/v028l_step2_inverse_swizzle_sync_only.py
++++ b/v029o/tmp/v029o_overlap_reverse_producer_order.py
+@@ -29,7 +29,7 @@ def moe_forward_tilelang_routed(
+     use_step1_input_prefetch=False,
+     use_step1_prefetch_before_barrier=False,
+     use_step2_input_prefetch=False,
+-    use_step2_half_b_pingpong=False,
++    use_step2_full_b_pingpong=False,
+ ):
+     scale = 1.44269504  # log2(e)
+     dtype = T.float16
+@@ -371,7 +371,10 @@ def moe_forward_tilelang_routed(
+             by = pid0 if use_grid_transpose_step2 else pid1
+             up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+             up_logits_prefetch = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+-            routed_expert_down_shared = T.alloc_shared((step2_output_tile, block_dexpert_step2), dtype=dtype)
++            routed_expert_down_shared = T.alloc_shared(
++                (step2_output_tile * (2 if use_step2_full_b_pingpong else 1), block_dexpert_step2),
++                dtype=dtype,
++            )
+             output_local_0 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+             output_local_1 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+             down_weight_local = T.alloc_local((step2_warp_cols * step2_k_pack * step2_local_size_b), dtype=dtype)
+@@ -404,12 +407,11 @@ def moe_forward_tilelang_routed(
+             T.clear(output_local_0)
+             T.clear(output_local_1)
+ 
+-            if use_step2_half_b_pingpong:
+-                # Keep the two independent accumulator chains from v027, but
+-                # reinterpret the 256x64 shared tile as two 128x64 B stages.
+-                # While one half-B tile feeds MMA, the next half is copied into
+-                # the other stage. The A fragments retain v027's register
+-                # ping-pong, so this does not serialize the two output halves.
++            if use_step2_full_b_pingpong:
++                # Double-buffer the complete 256x64 B tile at the 64 KiB C500
++                # per-CTA shared-memory limit. Each async 32 KiB producer then
++                # overlaps both 128-column MMA accumulator chains, cutting the
++                # half-tile pipeline's four CTA barriers per K pair to two.
+                 T.copy(
+                     up_logits[m_start : m_start + block_token, 0:block_dexpert_step2],
+                     up_logits_shared,
+@@ -417,17 +419,19 @@ def moe_forward_tilelang_routed(
+                 T.copy(
+                     routed_expert_down[
+                         cur_group_idx,
+-                        by * step2_output_tile : by * step2_output_tile + block_dhidden_step2,
++                        by * step2_output_tile : (by + 1) * step2_output_tile,
+                         0:block_dexpert_step2,
+                     ],
+-                    routed_expert_down_shared[0:block_dhidden_step2, 0:block_dexpert_step2],
++                    routed_expert_down_shared[0:step2_output_tile, 0:block_dexpert_step2],
+                 )
+                 T.sync_threads()
+                 for k_pair in T.serial(step2_k_tiles // 2):
+                     k_even = k_pair * 2
+                     k_odd = k_even + 1
+ 
+-                    # Produce B1(even) and A(odd) while B0(even) is consumed.
++                    # Keep each producer group at four 16-byte BSM requests per
++                    # thread. The first producer must target output1: v029n
++                    # proved that output0-first corrupts one fixed fragment.
+                     async_tx = T.get_thread_binding()
+                     for row_batch_async_0 in T.serial(block_dhidden_step2 // (threads // 8)):
+                         logical_row_async_0 = row_batch_async_0 * (threads // 8) + async_tx // 8
+@@ -440,7 +444,9 @@ def moe_forward_tilelang_routed(
+                                 tir.op.Op.get("tl.maca_memcpy_async"),
+                                 T.access_ptr(
+                                     routed_expert_down_shared[
+-                                        block_dhidden_step2 + logical_row_async_0,
++                                        step2_output_tile
++                                        + block_dhidden_step2
++                                        + logical_row_async_0,
+                                         logical_col_async_0,
+                                     ],
+                                     "w",
+@@ -449,8 +455,10 @@ def moe_forward_tilelang_routed(
+                                 T.access_ptr(
+                                     routed_expert_down[
+                                         cur_group_idx,
+-                                        by * step2_output_tile + block_dhidden_step2 + logical_row_async_0,
+-                                        k_even * block_dexpert_step2 + logical_col_async_0,
++                                        by * step2_output_tile
++                                        + block_dhidden_step2
++                                        + logical_row_async_0,
++                                        k_odd * block_dexpert_step2 + logical_col_async_0,
+                                     ],
+                                     "r",
+                                     8,
+@@ -474,9 +482,9 @@ def moe_forward_tilelang_routed(
+                             ki,
+                         )
+                         step2_mma.mma(up_logits_shared, down_weight_local, output_local_0, ki)
+-                    T.sync_threads()
++                    T.maca_barrier_arrive_and_wait(down_copy_barrier)
+ 
+-                    # Produce B0(odd) while B1(even) is consumed.
++                    # After output1, issue output0 while even/output1 computes.
+                     for row_batch_async_1 in T.serial(block_dhidden_step2 // (threads // 8)):
+                         logical_row_async_1 = row_batch_async_1 * (threads // 8) + async_tx // 8
+                         physical_group_async_1 = async_tx % 8
+@@ -487,7 +495,10 @@ def moe_forward_tilelang_routed(
+                                 "float16",
+                                 tir.op.Op.get("tl.maca_memcpy_async"),
+                                 T.access_ptr(
+-                                    routed_expert_down_shared[logical_row_async_1, logical_col_async_1],
++                                    routed_expert_down_shared[
++                                        step2_output_tile + logical_row_async_1,
++                                        logical_col_async_1,
++                                    ],
+                                     "w",
+                                     8,
+                                 ),
+@@ -517,41 +528,43 @@ def moe_forward_tilelang_routed(
+                         step2_mma.mma(up_logits_shared, down_weight_local, output_local_1, ki)
+                     T.sync_threads()
+ 
+-                    # Produce B1(odd) and the next even A tile while B0(odd)
+-                    # is consumed. The final pair omits the unused A prefetch.
+-                    for row_batch_async_2 in T.serial(block_dhidden_step2 // (threads // 8)):
+-                        logical_row_async_2 = row_batch_async_2 * (threads // 8) + async_tx // 8
+-                        physical_group_async_2 = async_tx % 8
+-                        logical_group_async_2 = physical_group_async_2 ^ (logical_row_async_2 % 8)
+-                        logical_col_async_2 = logical_group_async_2 * 8
+-                        T.evaluate(
+-                            tir.call_intrin(
+-                                "float16",
+-                                tir.op.Op.get("tl.maca_memcpy_async"),
+-                                T.access_ptr(
+-                                    routed_expert_down_shared[
+-                                        block_dhidden_step2 + logical_row_async_2,
+-                                        logical_col_async_2,
+-                                    ],
+-                                    "w",
+-                                    8,
+-                                ),
+-                                T.access_ptr(
+-                                    routed_expert_down[
+-                                        cur_group_idx,
+-                                        by * step2_output_tile + block_dhidden_step2 + logical_row_async_2,
+-                                        k_odd * block_dexpert_step2 + logical_col_async_2,
+-                                    ],
+-                                    "r",
+-                                    8,
+-                                ),
+-                                16,
+-                                down_copy_barrier[0],
+-                                annotations={"barrier_type": tir.StringImm("b128vectype")},
+-                            )
+-                        )
++                    # Refill stage 0 in two four-request groups while stage 1
++                    # feeds the two odd-tile accumulator chains.
+                     k_next_even = k_odd + 1
+                     if k_pair + 1 < step2_k_tiles // 2:
++                        for row_batch_async_2 in T.serial(block_dhidden_step2 // (threads // 8)):
++                            logical_row_async_2 = row_batch_async_2 * (threads // 8) + async_tx // 8
++                            physical_group_async_2 = async_tx % 8
++                            logical_group_async_2 = physical_group_async_2 ^ (logical_row_async_2 % 8)
++                            logical_col_async_2 = logical_group_async_2 * 8
++                            T.evaluate(
++                                tir.call_intrin(
++                                    "float16",
++                                    tir.op.Op.get("tl.maca_memcpy_async"),
++                                    T.access_ptr(
++                                        routed_expert_down_shared[
++                                            block_dhidden_step2 + logical_row_async_2,
++                                            logical_col_async_2,
++                                        ],
++                                        "w",
++                                        8,
++                                    ),
++                                    T.access_ptr(
++                                        routed_expert_down[
++                                            cur_group_idx,
++                                            by * step2_output_tile
++                                            + block_dhidden_step2
++                                            + logical_row_async_2,
++                                            k_next_even * block_dexpert_step2 + logical_col_async_2,
++                                        ],
++                                        "r",
++                                        8,
++                                    ),
++                                    16,
++                                    down_copy_barrier[0],
++                                    annotations={"barrier_type": tir.StringImm("b128vectype")},
++                                )
++                            )
+                         T.copy(
+                             up_logits[
+                                 m_start : m_start + block_token,
+@@ -562,14 +575,15 @@ def moe_forward_tilelang_routed(
+                     for ki in T.serial(0, block_dexpert_step2 // (step2_micro_size_k * step2_k_pack)):
+                         step2_mma.ldmatrix_b(
+                             down_weight_local,
+-                            routed_expert_down_shared[0:block_dhidden_step2, 0:block_dexpert_step2],
++                            routed_expert_down_shared[
++                                step2_output_tile : step2_output_tile + block_dhidden_step2,
++                                0:block_dexpert_step2,
++                            ],
+                             ki,
+                         )
+                         step2_mma.mma(up_logits_prefetch, down_weight_local, output_local_0, ki)
+-                    T.sync_threads()
+-
+-                    # Produce B0(next even) while B1(odd) is consumed.
+                     if k_pair + 1 < step2_k_tiles // 2:
++                        T.maca_barrier_arrive_and_wait(down_copy_barrier)
+                         for row_batch_async_3 in T.serial(block_dhidden_step2 // (threads // 8)):
+                             logical_row_async_3 = row_batch_async_3 * (threads // 8) + async_tx // 8
+                             physical_group_async_3 = async_tx % 8
+@@ -580,7 +594,10 @@ def moe_forward_tilelang_routed(
+                                     "float16",
+                                     tir.op.Op.get("tl.maca_memcpy_async"),
+                                     T.access_ptr(
+-                                        routed_expert_down_shared[logical_row_async_3, logical_col_async_3],
++                                        routed_expert_down_shared[
++                                            logical_row_async_3,
++                                            logical_col_async_3,
++                                        ],
+                                         "w",
+                                         8,
+                                     ),
+@@ -602,7 +619,8 @@ def moe_forward_tilelang_routed(
+                         step2_mma.ldmatrix_b(
+                             down_weight_local,
+                             routed_expert_down_shared[
+-                                block_dhidden_step2:step2_output_tile,
++                                step2_output_tile
++                                + block_dhidden_step2 : 2 * step2_output_tile,
+                                 0:block_dexpert_step2,
+                             ],
+                             ki,
+@@ -765,7 +783,7 @@ class RoutedMoEKernel:
+             "use_step1_input_prefetch": False,
+             "use_step1_prefetch_before_barrier": False,
+             "use_step2_input_prefetch": False,
+-            "use_step2_half_b_pingpong": False,
++            "use_step2_full_b_pingpong": False,
+         }
+ 
+         using_default_tiles = (
+@@ -793,7 +811,7 @@ class RoutedMoEKernel:
+             schedule["use_step1_input_prefetch"] = n_routed_experts >= 32
+             schedule["use_step1_prefetch_before_barrier"] = n_routed_experts == 32
+             schedule["use_step2_input_prefetch"] = n_routed_experts >= 32
+-            schedule["use_step2_half_b_pingpong"] = n_routed_experts == 32
++            schedule["use_step2_full_b_pingpong"] = n_routed_experts == 32
+         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:
+             # Conservative fallback for smaller hidden shapes: keep proven tile sizes,
+             # but use transposed grid to expose column tiles first, matching 3584/1024.
+@@ -845,7 +863,7 @@ class RoutedMoEKernel:
+         self.use_step1_input_prefetch = bool(schedule["use_step1_input_prefetch"])
+         self.use_step1_prefetch_before_barrier = bool(schedule["use_step1_prefetch_before_barrier"])
+         self.use_step2_input_prefetch = bool(schedule["use_step2_input_prefetch"])
+-        self.use_step2_half_b_pingpong = bool(schedule["use_step2_half_b_pingpong"])
++        self.use_step2_full_b_pingpong = bool(schedule["use_step2_full_b_pingpong"])
+ 
+         self.impl = moe_forward_tilelang_routed(
+             d_hidden=d_hidden,
+@@ -865,7 +883,7 @@ class RoutedMoEKernel:
+             use_step1_input_prefetch=self.use_step1_input_prefetch,
+             use_step1_prefetch_before_barrier=self.use_step1_prefetch_before_barrier,
+             use_step2_input_prefetch=self.use_step2_input_prefetch,
+-            use_step2_half_b_pingpong=self.use_step2_half_b_pingpong,
++            use_step2_full_b_pingpong=self.use_step2_full_b_pingpong,
+         )
+ 
+     def __call__(

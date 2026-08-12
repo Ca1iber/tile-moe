@@ -1,0 +1,1062 @@
+{
+  "iteration_id": "v029_step2_full_b_pipeline_sc-16g",
+  "version": "v029",
+  "slug": "step2_full_b_pipeline",
+  "machine": "sc-16g",
+  "kind": "evidence",
+  "status": "rejected",
+  "created_at": "2026-08-13T07:32:57+08:00",
+  "baseline_id": "v000_minibs_baseline_sc-16g",
+  "parent_id": "v028_step2_half_b_pipeline_sc-16g",
+  "current_best_id": "v028_step2_half_b_pipeline_sc-16g",
+  "source_identity": {
+    "parent_sha256": "385510c606a6392a9aaf3bf62542df652176f7d32649ec46c8dce3d35d12b858",
+    "candidate_sha256": "fe14ee16a485fbd40644b03186b34f29913f8bc70c7b481b2754de71653b3c94",
+    "installed_kernel_sha256": "385510c606a6392a9aaf3bf62542df652176f7d32649ec46c8dce3d35d12b858",
+    "official_benchmark_sha256": "adfe36d8e042adc3369813b7bd367bd865e560207c811d0e8514235fc33ec67f",
+    "oj_benchmark_sha256": "1165d1481f8932b6b2341f53e83e5ce5d871c62835259c22dc8d770c232585c8",
+    "patch_sha256": "8512090ca1eaf6a84723583377c0924a4ddea1158649cb8b2782a5c60fd7ef0e"
+  },
+  "git_parent": {
+    "branch": "dorm",
+    "commit": "1f4b98b42c772a3a66c3eecd8dcb3c4eb01d1358"
+  },
+  "verdict": {
+    "correctness": "PASS",
+    "paired_case2_median_change_percent": 5.4180870331507975,
+    "paired_case2_improved_rounds": 0,
+    "paired_case2_rounds": 10,
+    "mctracer_step2_median_change_percent": 16.327496450544253,
+    "decision": "rejected",
+    "reason": "Full-B 64 KiB ping-pong reduces static sync sites but lowers MMA duty and regresses Step2 and end-to-end latency."
+  },
+  "summarized_at_utc": "2026-08-12T23:39:24.467123+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "1f4b98b42c772a3a66c3eecd8dcb3c4eb01d1358",
+    "status_short": "m 3rdparty/tvm\nAM race_tests/moe/moe-roofline/v029_step2_full_b_pipeline_sc-16g/UNAVAILABLE.md\nAM race_tests/moe/moe-roofline/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_manifest.json\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029_full_b_pingpong.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029a_full_b_explicit_wait.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029b_full_b_sync_control.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029c_full_b_split_issue.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029e_full_b_no_ldmatrix_overlap.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029f_interleaved_stage_layout.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029g_swap_output0_stage_bases.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029h_swap_accumulator_roles.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029i_move_odd_a_before_bsm.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029j_force_odd0_ldsmma_wait.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029k_reverse_odd0_mma_j.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029l_swap_odd_compute_order.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029m_stage_reuse_consumer_fence.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029n_swap_async_producer_order.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029o_overlap_reverse_producer_order.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029q_dual_barrier_overlap.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029r_single_handle_no_group_wait.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/v028l_parent_custom_fusedmoe.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/v029o_candidate_custom_fusedmoe.py\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g.patch\nA  race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_custom_fusedmoe.py\nAM race_tests/moe/restart-experiments/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_experiment.md\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/.gitattributes\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/official/v029o_official.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/oj/v029n_oj_all.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/oj/v029o_oj_all.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/oj/v029o_oj_verdict_w10_r100.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/paired_case2/v028l_vs_v029o_case2.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/paired_case2/v028l_vs_v029o_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029a_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029b_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029c_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029e_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029f_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029g_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029h_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029i_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029j_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029k_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029l_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029m_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029n_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029o_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029q_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029r_case2.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.bundle_targets.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.device_obj.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.embedded.bc\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.isa_backend.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.llvmcmd\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.llvmcmd.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.mcfb\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.metax.s\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.sha256\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.text.bin\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.xcore1000.elf\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_candidate_case2_lowering_summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_candidate_case2_tilelang_primfunc.py\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_case2_compiler.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_case2_generated_device.cpp\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.bundle_targets.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.device_obj.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.embedded.bc\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.isa_backend.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.llvmcmd\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.llvmcmd.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.mcfb\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.metax.s\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.sha256\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.text.bin\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.xcore1000.elf\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_parent_case2_lowering_summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_parent_case2_tilelang_primfunc.py\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_sync_only_case2_compiler.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_sync_only_case2_generated_device.cpp\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_sync_only_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/correctness/v029o_oj_all.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029_rows.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029_stage_contributions.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029_stage_contributions_fit.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029g_spatial_pattern.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029g_stage_contributions.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029h_stage_contributions.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029k_spatial_pattern.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_full_pingpong_loop.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_strided_source.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_two_regions.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_upper_overlap.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_upper_shared.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_inverse_swizzle_upper_shared.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_inverse_swizzle_upper_shared_multicta.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/v029l_spatial.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/after.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/before.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/kernel_source.sha256\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1.txt.csv\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1.txt.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1_dumped_result.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812163155873.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812163156478.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812163156884.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163156032.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163156608.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163157015.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/batches.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_1.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_2.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_3.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_4.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/mcProfiler.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.pdf\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.txt.csv\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.txt.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report_dumped_result.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report_js.html\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/v028_step2_half_b_pipeline_sc-16g_v029diag_a_v028l_case2_step2_targeted.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/target_command.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/after.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/before.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/kernel_source.sha256\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163444887.png\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/batches.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_1.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_2.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_3.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_4.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/mcProfiler.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.pdf\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.txt.csv\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.txt.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report_js.html\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/v028_step2_half_b_pipeline_sc-16g_v029diag_b_v029o_case2_step2_targeted.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/target_command.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/summary/v028l_vs_v029o_mcprofiler.json\nAM race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/summary/v029o_vs_v028l_case2_step2_summary.md\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/command.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/mctracer_console.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/v029_case2_pair1_1_v028l-284696.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/command.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/mctracer_console.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/v029_case2_pair1_2_v029o-284824.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/command.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/mctracer_console.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/v029_case2_pair2_1_v029o-284952.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/command.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/mctracer_console.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/v029_case2_pair2_2_v028l-285080.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/command.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/mctracer_console.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/v029_case2_pair3_1_v028l-285208.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/command.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/mctracer_console.log\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/summary.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/v029_case2_pair3_2_v029o-285336.json\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/v029o_vs_v028l_case2_mctracer_summary.json\nAM race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mxsmi/UNAVAILABLE.md\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/source_sha256.txt\nA  race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_manifest.json\nAM race_tests/moe/restart-rep/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_report.md\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/capture_codegen_source.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/compare_mcprofiler_reports.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029_stage_contributions.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029g_spatial_pattern.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029g_stage_contributions.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029h_stage_contributions.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029k_spatial_pattern.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029l_spatial_pattern.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/dump_lowering_source.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/extract_metax_isa.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_full_pingpong_loop.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_strided_source.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_two_regions.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_upper_overlap.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_upper_shared.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_inverse_swizzle_upper_shared.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_inverse_swizzle_upper_shared_multicta.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/profile_one_case_source.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/render_roofline.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_mcprofiler_source.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_mcprofiler_source_v029.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_official_source.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_paired_mctracer_v029.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_paired_v028l_v029o.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_source_oj.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029a_case2.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029b_case2.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029c_case2.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029e_case2.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029f_case2.sh\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/summarize_iteration.py\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_scripts.md\nA  race_tests/moe/restart-scripts/v029_step2_full_b_pipeline_sc-16g/validate_iteration.py\n?? .20260810032650.db\n?? .20260810032800.db\n?? .20260810162423.db\n?? .20260810162850.db\n?? .20260810162933.db\n?? .20260811052801.db\n?? .20260811235118.db\n?? .20260812020543.db\n?? .20260812030602.db\n?? .20260812052202.db\n?? .20260812052300.db\n?? .20260812060609.db\n?? .20260812060711.db\n?? .20260812072636.db\n?? .20260812094916.db\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step2/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/v011c_case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_codegen_summary.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case1/\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case3/\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028b/isa/v028b_manual_half_b_case2_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028b/isa/v028b_manual_half_b_case2_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028b/isa/v028b_manual_half_b_case2_generated_device.mcfb\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028b/isa/v028b_manual_half_b_case2_generated_device.text.bin\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028b/isa/v028b_manual_half_b_case2_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028f/isa/v028f_async_quarter_barriers_case2_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028f/isa/v028f_async_quarter_barriers_case2_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028f/isa/v028f_async_quarter_barriers_case2_generated_device.mcfb\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028f/isa/v028f_async_quarter_barriers_case2_generated_device.text.bin\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028f/isa/v028f_async_quarter_barriers_case2_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028k/isa/v028k_inverse_swizzle_case2_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028k/isa/v028k_inverse_swizzle_case2_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028k/isa/v028k_inverse_swizzle_case2_generated_device.mcfb\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028k/isa/v028k_inverse_swizzle_case2_generated_device.text.bin\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028k/isa/v028k_inverse_swizzle_case2_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028l/isa/v028l_sync_only_case2_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028l/isa/v028l_sync_only_case2_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028l/isa/v028l_sync_only_case2_generated_device.mcfb\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028l/isa/v028l_sync_only_case2_generated_device.text.bin\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/codegen/v028l/isa/v028l_sync_only_case2_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v029_step2_full_b_pipeline_sc-16g/UNAVAILABLE.md",
+      "bytes": 1001,
+      "sha256": "68de0ddbecc3b3df9382c737b737a50588eb419bd839b661ef32a02fb4afb2c8"
+    },
+    {
+      "path": "moe-roofline/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_manifest.json",
+      "bytes": 498,
+      "sha256": "6aac47e102d35ee98a19a0a5d878a696ab0d8ad954204058c7e1c653a01c8b38"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029_full_b_pingpong.py",
+      "bytes": 44086,
+      "sha256": "89c91a87dbc0c8743409a3770c78e479fe8e8e9cfe5bce26c06877a29d71f432"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029a_full_b_explicit_wait.py",
+      "bytes": 44230,
+      "sha256": "cb63936324675cd5e101665a8c1ea3a9bb420471f09d1cd88c22cd2ad4317b33"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029b_full_b_sync_control.py",
+      "bytes": 41578,
+      "sha256": "944417ccbf818121f2e533923604ff93030d167b9d43150081c23d89321f74c3"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029c_full_b_split_issue.py",
+      "bytes": 48208,
+      "sha256": "a7f7c6bd8a53935dd5acfb3135d70c3dc1bc66aae862f6a4669d35360fefc22b"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029e_full_b_no_ldmatrix_overlap.py",
+      "bytes": 48296,
+      "sha256": "1985a833c606dbdd6f2ae956bac92db7d251a8a071b380fdb5d05de885c0025f"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029f_interleaved_stage_layout.py",
+      "bytes": 48966,
+      "sha256": "371ccfe174b35d042ce1ccf7ee28e02cb4e3fbe6fd0626ff5472451779e136de"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029g_swap_output0_stage_bases.py",
+      "bytes": 49184,
+      "sha256": "817fb722f6a0929aaafa4c5351da07d1d6470a7af91e096eb3d63052c784328e"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029h_swap_accumulator_roles.py",
+      "bytes": 49782,
+      "sha256": "747c40e310d74093958f76f4de8846a50f80c9a32c10ffbe7d61a33f6d25ef5a"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029i_move_odd_a_before_bsm.py",
+      "bytes": 49412,
+      "sha256": "c0f9e91806d571b8fd286a0ea672aecbeb194d46b87221d4054b43a8cd4e5b9e"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029j_force_odd0_ldsmma_wait.py",
+      "bytes": 48487,
+      "sha256": "0a360affac7031abc3be4d930a8352eb2514838497a58c410787797aed62bb24"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029k_reverse_odd0_mma_j.py",
+      "bytes": 49213,
+      "sha256": "9c99a28d4c105cf0825923718d78aaf8390933ae9cefa29e18fa49302d162450"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029l_swap_odd_compute_order.py",
+      "bytes": 48296,
+      "sha256": "28d08510ada4e7070a48981aea119481097956eda87ecf0b6b006422774c48f2"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029m_stage_reuse_consumer_fence.py",
+      "bytes": 48824,
+      "sha256": "35caaa7322dd68f672b8fb699ff95121666cc0599a326286fb9d7852565a3b34"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029n_swap_async_producer_order.py",
+      "bytes": 48674,
+      "sha256": "47b7a8bbb68bd4e6c516a6ba006067297ddf5a686816ee87730c65382af1b61e"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029o_overlap_reverse_producer_order.py",
+      "bytes": 48522,
+      "sha256": "fe14ee16a485fbd40644b03186b34f29913f8bc70c7b481b2754de71653b3c94"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029q_dual_barrier_overlap.py",
+      "bytes": 48455,
+      "sha256": "b299eb3f6192b14fab4e2920fe01fb754b779424090353fec0b3d53b5d768562"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/exploration/v029r_single_handle_no_group_wait.py",
+      "bytes": 48377,
+      "sha256": "1c1b7e3836237737d21a4d1053d381612087ed09f18fd3778609b9128f8b7f2e"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/v028l_parent_custom_fusedmoe.py",
+      "bytes": 47514,
+      "sha256": "385510c606a6392a9aaf3bf62542df652176f7d32649ec46c8dce3d35d12b858"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/source/v029o_candidate_custom_fusedmoe.py",
+      "bytes": 48522,
+      "sha256": "fe14ee16a485fbd40644b03186b34f29913f8bc70c7b481b2754de71653b3c94"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g.patch",
+      "bytes": 15936,
+      "sha256": "8512090ca1eaf6a84723583377c0924a4ddea1158649cb8b2782a5c60fd7ef0e"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_custom_fusedmoe.py",
+      "bytes": 48522,
+      "sha256": "fe14ee16a485fbd40644b03186b34f29913f8bc70c7b481b2754de71653b3c94"
+    },
+    {
+      "path": "restart-experiments/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_experiment.md",
+      "bytes": 5052,
+      "sha256": "a257d9fc7de636603ccdeb8e7de4472f762f519990af155d37e588733af71570"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/.gitattributes",
+      "bytes": 112,
+      "sha256": "d8e62e134958933ed6b8ee63759a1f28aceff310ff9a342edc0b06208920624e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/official/v029o_official.log",
+      "bytes": 6500,
+      "sha256": "4c242e99e770ae34cc1bdc40df2a12829af45db76d5dd3dec83344b696233e1e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/oj/v029n_oj_all.log",
+      "bytes": 5662,
+      "sha256": "37b53da73b909183cfae963e50190e0704bbf63867ec93bfc56401e17d271245"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/oj/v029o_oj_all.log",
+      "bytes": 4954,
+      "sha256": "66ba40c22e3fcc19126faf02f534150a5b7dca9f84552940a66e4bacef0328a2"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/oj/v029o_oj_verdict_w10_r100.log",
+      "bytes": 8180,
+      "sha256": "70694356b207ab00f3a00dd2094425acd4cbd8aa0886dccdf6134051e170ca4b"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/paired_case2/v028l_vs_v029o_case2.json",
+      "bytes": 4807,
+      "sha256": "7b7851994ef62841f302f899824c685f9673835d3c0c78166ded3484ca4dee5c"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/paired_case2/v028l_vs_v029o_case2.log",
+      "bytes": 10955,
+      "sha256": "c6a5c1f66ceece31ea31115a77f5361b98c6ae64b922b2a32a597f88453b4c84"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029a_case2.log",
+      "bytes": 4811,
+      "sha256": "4c1401a73686d83bd5253046f3e6c610fcbedc8ba6e0fbb692320e83f49e31b9"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029b_case2.log",
+      "bytes": 4781,
+      "sha256": "44274cf59df4011a5beeaaceb6009e7caeea12b14a6441afbe6b728d10b4455a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029c_case2.log",
+      "bytes": 5168,
+      "sha256": "df230d80a2011a4889e160323b2c3d02a2aab7409e19c879280ee420e62a940e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029e_case2.log",
+      "bytes": 5168,
+      "sha256": "46eadd44afcc8174afcb26359b593d20e96834a08566a4d1344bd255a2a4461f"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029f_case2.log",
+      "bytes": 5168,
+      "sha256": "f94ec8a1d11f256b3c22d40f612f7e9d2a28fe258f97fe121a32569123fcbc84"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029g_case2.log",
+      "bytes": 5168,
+      "sha256": "a687f48cc79ab0ff75113c13182554dc9e20587e173f3fdb5ab3a5b8de383bdc"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029h_case2.log",
+      "bytes": 5168,
+      "sha256": "87b3c31e6fe8bcab2cd3c1819a51f827d8322b69ef3f810865bcb596a7091d6a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029i_case2.log",
+      "bytes": 5168,
+      "sha256": "5f32f73af182c0936cb2a8bc6a60e3ca1adf33e97e505bef488c881d2d3738b5"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029j_case2.log",
+      "bytes": 5168,
+      "sha256": "434f47a93d07b06ee22853723331c9521806b655a4e402f0588b90dbd7730732"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029k_case2.log",
+      "bytes": 5168,
+      "sha256": "eef2f56362bcd758f67b40965f8a2d2bf0a2d734e81abdcbc14b16a28a6eeb55"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029l_case2.log",
+      "bytes": 5168,
+      "sha256": "5cd680da6e52e4769cbf245f7d554803c1f0f90e2e23ff9bb2d9280c8b9fcb9d"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029m_case2.log",
+      "bytes": 5168,
+      "sha256": "b88ad68154538d01aa77244b6a75a9727f4a5cba3973e77a441e68a06bd9815e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029n_case2.log",
+      "bytes": 4781,
+      "sha256": "63be9be7966562b80c2011f580206a0d4da2ad8f58d6f36fc5a60422f41d0eef"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029o_case2.log",
+      "bytes": 4781,
+      "sha256": "aac7324a9610717879fa601c886edd3e0f255cada2dddc778833f4826fc83813"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029q_case2.log",
+      "bytes": 4781,
+      "sha256": "d0d751a635cf4ecb58c8a9eb829e96a4e239a588fa5dfa74d6d52f4f10bbe56c"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/benchmark/screens/v029r_case2.log",
+      "bytes": 4780,
+      "sha256": "0387a85006004edd1f97abafccd7b2ced120bf388f585fb8a4283467d76428b4"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.device_obj.log",
+      "bytes": 10388,
+      "sha256": "a513a4461b207c54d1fa8543f65439bb5f1c7f660d171b04ef99ef244be660d4"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.embedded.bc",
+      "bytes": 150896,
+      "sha256": "098164b63b5ab805bf24e8f96f75b4ad0e3531fd7d9daebda28221083ba03af4"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "9feacbc5d179295619e068fc5e619519c6e100299629b0d951e991b3fe80f816"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.llvmcmd",
+      "bytes": 678,
+      "sha256": "92cf94d088c68283d0a4dea68531a7f988b257e752283d2524fafed82597e4ae"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.llvmcmd.txt",
+      "bytes": 674,
+      "sha256": "5be5aa10c4348e948c82d195d002820be861c9fc36a4864e98999536b8a705f7"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.mcfb",
+      "bytes": 235952,
+      "sha256": "b4a86f2533d2e059afff99b80f1d3ef15987e4b12ce332fb2ce3ab3e916e09e5"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.metax.s",
+      "bytes": 488276,
+      "sha256": "7bc5b03b8dff3af721848ea5bca64a7c176e374cf9b388b10b4903329fc0435a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.sha256",
+      "bytes": 679,
+      "sha256": "5cf745d62fa565bccb9419051c42686ea47392b84770a7488822669220fae666"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.text.bin",
+      "bytes": 49392,
+      "sha256": "0527be8850adf57e662465474c87569664081dac42016283256076b970051c66"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/isa/v029o_case2_generated_device.xcore1000.elf",
+      "bytes": 235952,
+      "sha256": "b4a86f2533d2e059afff99b80f1d3ef15987e4b12ce332fb2ce3ab3e916e09e5"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_candidate_case2_lowering_summary.json",
+      "bytes": 675,
+      "sha256": "6a9565275112307f063d624fb1a6d62304ffa9c7400ae1880c6e1f28fd997b78"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_candidate_case2_tilelang_primfunc.py",
+      "bytes": 88078,
+      "sha256": "23711bf6abae95498c05900e291a07b075213511f70b641bbec11e42ae29d969"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_case2_compiler.log",
+      "bytes": 10914,
+      "sha256": "b33ec73fe18f89a68d45251b5c567df62982261c1aeee7841aecb04b5b962e75"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_case2_generated_device.cpp",
+      "bytes": 37740,
+      "sha256": "bbd21b6003f86928437be68538b726bcbfe3a38c1d8af7b1ab9d334ef28d4146"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/final_v029o/v029o_case2_resource_usage.json",
+      "bytes": 958,
+      "sha256": "d8bf579c137f0e53f8402042fa16990ac29f60d93f7ef3f9239ed311cba5586a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.device_obj.log",
+      "bytes": 10696,
+      "sha256": "ffb56a85dad12f872e0b93db57f4fdcd7f228ef30431c17e37761b3fbb4feded"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.embedded.bc",
+      "bytes": 147520,
+      "sha256": "7f36095c51316b5c1518d0983229a8c67f0bdcca23fc86289088501be8fca090"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "3a73508cfa3915ec68e090d956b8a36c6edb15dc7563fbfb511224daa36b15c8"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.llvmcmd",
+      "bytes": 755,
+      "sha256": "728cabcfebfb43cad19165bd892e71a68c51723c2b61e0c234449de04e1c508e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.llvmcmd.txt",
+      "bytes": 751,
+      "sha256": "17f60644b7ef7dade1a21a57b29d039ae6e401db1baed43603a513ebbe951c90"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.mcfb",
+      "bytes": 232336,
+      "sha256": "800fc4621c61077c9428ae26f42f6153b4c32b636880cc97f045fd8ec11fda49"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.metax.s",
+      "bytes": 577986,
+      "sha256": "7e11bab3b14ce837e1b8d898286faa720469326cc72adf25596d5f79dd61f8b8"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.sha256",
+      "bytes": 1064,
+      "sha256": "536de90f7ee4606729a49defe363a4c8c0cbe637baee66b2a14e675a9294377d"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.text.bin",
+      "bytes": 49136,
+      "sha256": "1401f3954164d8f0418bb0963651a8d52ca9229afe8d36e489b19ea103fd8973"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/isa/v028l_sync_only_case2_generated_device.xcore1000.elf",
+      "bytes": 232336,
+      "sha256": "800fc4621c61077c9428ae26f42f6153b4c32b636880cc97f045fd8ec11fda49"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_parent_case2_lowering_summary.json",
+      "bytes": 671,
+      "sha256": "70c3d3efa9434d548f75f4196258329378fdea30fd39d5c510339f159ccce220"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_parent_case2_tilelang_primfunc.py",
+      "bytes": 87985,
+      "sha256": "08312e673bbaf9b4533a97681c8ee9ead51bf41bfc6fbbd2c31acd8e701efe54"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_sync_only_case2_compiler.log",
+      "bytes": 10718,
+      "sha256": "a1934f5eb50320a6058b02aa916c11b09e4b99d8aac8827590e69bc6c3d47ddc"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_sync_only_case2_generated_device.cpp",
+      "bytes": 37650,
+      "sha256": "b13ac8112502aa0d45a22f691579fde1b7c3ea0d9bd532fce222b820898ec2e3"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/codegen/parent_v028l/v028l_sync_only_case2_resource_usage.json",
+      "bytes": 1123,
+      "sha256": "f9113b14141af505c30dab61418bb420ecc332aaffe2086f709027a80489afe3"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/correctness/v029o_oj_all.log",
+      "bytes": 4954,
+      "sha256": "66ba40c22e3fcc19126faf02f534150a5b7dca9f84552940a66e4bacef0328a2"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029_rows.log",
+      "bytes": 20164,
+      "sha256": "6823d3d355fc72a6285590ed555b270e3d720705cdb01339ccf24657a17f9c92"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029_stage_contributions.log",
+      "bytes": 5022,
+      "sha256": "0afba26e9173f39e89b64ae95b2c7ab43de4074afd54b4c3fbfb489aaa053a02"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029_stage_contributions_fit.log",
+      "bytes": 6136,
+      "sha256": "1f5d31aed659007bd0631349ccc965604de731dbbb44b78407422d1d0c9af378"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029g_spatial_pattern.log",
+      "bytes": 24213,
+      "sha256": "fdd5916b57663435adc8d26945732a9691775bb22d79d54af2f64d195a5d35d4"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029g_stage_contributions.log",
+      "bytes": 20145,
+      "sha256": "864772cca5ba2e447021dc85ef7af9107f3ca2f32b2b5fbfb09bb432b02037ff"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029h_stage_contributions.log",
+      "bytes": 20149,
+      "sha256": "2932f3b2db8d8207e5b963149b518e3da86f2d1d253f56a22b9ad349f234a862"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/diagnose_v029k_spatial_pattern.log",
+      "bytes": 24198,
+      "sha256": "6ceb278f9f99bcf5e4b1e4b33b12b86606fc74d8d957ac94bbb8084e64c5de78"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_full_pingpong_loop.log",
+      "bytes": 9919,
+      "sha256": "d41bf5dfb3e1bcdc09dd378157fac5d9f49b2e58812cefa9aa9a09e66a127f4c"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_strided_source.log",
+      "bytes": 7020,
+      "sha256": "45107029cd2348145f01b02fe38f252a8d942665ff1e75ce71e801c4d637ef80"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_two_regions.log",
+      "bytes": 7314,
+      "sha256": "35aa7d3b374b523a35ddea18d71270dd2c8eb2add5bb47c0d572399ae6143cea"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_upper_overlap.log",
+      "bytes": 5677,
+      "sha256": "ae344351a6bf5799f0c2b1dffc0ca3dce5d9045fc3d9ab714e13227daeb26a73"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_bsm_upper_shared.log",
+      "bytes": 6203,
+      "sha256": "32c054843bb7590538d9bad6f8df3dffa95d0c1f1dd6702d81a925dafe89ee7d"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_inverse_swizzle_upper_shared.log",
+      "bytes": 6011,
+      "sha256": "dcc9ce8c359b39def91ffc2b2f9a2f1610346f31c3904604195535b14901bbaf"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/probe_inverse_swizzle_upper_shared_multicta.log",
+      "bytes": 6067,
+      "sha256": "4d8652a4e60c31248f7685e85a75008061129b5e20cd4e08c4cb2e33ecb96868"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/diagnostics/v029l_spatial.json",
+      "bytes": 20069,
+      "sha256": "f368a01f6fb25a4a77c84b4ec642d875310cecbd23fa7f6e1dfcfea86583fb98"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/after.txt",
+      "bytes": 6321,
+      "sha256": "e5dfa8658d8852a74d3141ece4ab397ac0518004e682079556ef69c12b39ec78"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/before.txt",
+      "bytes": 6272,
+      "sha256": "67c55ea29cac83851eb89f7db1c2c7faf2df50feb1b7e917d5328bcd968b1b85"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/kernel_source.sha256",
+      "bytes": 122,
+      "sha256": "a2b8a379ed8138cf2dd93380c24f96080c63e4f681d2f6737085ce5201dd9ac8"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler.log",
+      "bytes": 176740,
+      "sha256": "c6de00b2e1c1ef7ed45d907a6db501d3dea140bf4c96f00c0a3bd35795c31a32"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1.txt",
+      "bytes": 3072,
+      "sha256": "c33a9efaae44fddce60f4aacc0ac529be68fffae679a56e253e25facec4142dd"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1.txt.csv",
+      "bytes": 1782,
+      "sha256": "defb94e8c51168a8bd9af83c5b3352fd6133864afd6fd14ed65ea5583720561b"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1.txt.json",
+      "bytes": 3741,
+      "sha256": "3846734c03b0cadf8d0bbc1797bd2664b59db2b3277b136b9658fc51f4d5100e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/1_kernel_kernel_1_dumped_result.json",
+      "bytes": 3172,
+      "sha256": "c90b139555685f0eb228804d67e4d65750faa7ec7acb1ff1f40272d045efa081"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812163155873.png",
+      "bytes": 38094,
+      "sha256": "c0338feda59aff068f46b39e021409ea3cc1897dad6bb1e8bcffb1a02c9ce436"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812163156478.png",
+      "bytes": 36369,
+      "sha256": "f07e295ca4d729ecf1b38f6f596e1ba6815afb172c34370fd4c8afcf9832e179"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812163156884.png",
+      "bytes": 36369,
+      "sha256": "f07e295ca4d729ecf1b38f6f596e1ba6815afb172c34370fd4c8afcf9832e179"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163156032.png",
+      "bytes": 40483,
+      "sha256": "f90164f8d400c691798087353eaec9ef2e5190828fe36c0b823f7fa98843bfa8"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163156608.png",
+      "bytes": 35838,
+      "sha256": "6642eb721eb36cfec41e1dc303d52909f4483e3d8fcec5b98cc18db3498229ad"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163157015.png",
+      "bytes": 35838,
+      "sha256": "6642eb721eb36cfec41e1dc303d52909f4483e3d8fcec5b98cc18db3498229ad"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "c97f75c4dda29ef93506ba956e34b666ad553f4fb9a2d5c3802e3210c2be1649"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1720,
+      "sha256": "748c605ae5fca731dd692c573f022199a35c4d6a001a37318badc5c2eec3067e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1226,
+      "sha256": "2cb62a10e082159fd03697180c6800a9923cc61cdaa40fbbd91d4c4df58b1357"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 747,
+      "sha256": "6db1f58b9375b9518fffbb7db0f6c7e0edffca0c7f014c72c75cff81a03f47a4"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 440,
+      "sha256": "23b746d374e0e86fa60f28a5b4bd40b34393f48419305873a0a65088ff7255d6"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 440,
+      "sha256": "23b746d374e0e86fa60f28a5b4bd40b34393f48419305873a0a65088ff7255d6"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.pdf",
+      "bytes": 79722,
+      "sha256": "4bca5eb6c4abd29f04d579092489644e82b8c81346377ede9a26bf5e4c2a8e60"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.txt",
+      "bytes": 3098,
+      "sha256": "539203c68d59ada6d861919f25022d93b9f770a34679450e49dad1c27e5c3bef"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1808,
+      "sha256": "cc5c57ec51fe4bfb33f41f12e8249bddb1a3c7bdf2c196c6fc8cd343d678fe90"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3767,
+      "sha256": "759f15a07c410bb227cc941eb1ab58eaa79d9cadf348427f8da805f2903171fa"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3208,
+      "sha256": "0243f439863415c2f215a3de89a2611bd08ea8e6b5cc1deec041643191e38aba"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63908,
+      "sha256": "a7dce69b839ac3f61ccf311d35732863d164513beae3b76929348fcd6e3944c6"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/mcprofiler_output/v028_step2_half_b_pipeline_sc-16g_v029diag_a_v028l_case2_step2_targeted.json",
+      "bytes": 578676,
+      "sha256": "3eca749345fabff015bbf027fd8ffb5e853165dc2f3c484989ac20df62c8b98e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_a_v028l_case2_step2_targeted/target_command.txt",
+      "bytes": 535,
+      "sha256": "c8737da081ab8f1fd2b44a4f8c8569f4a141ccfd115975a54a481a7eb8aa6c40"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/after.txt",
+      "bytes": 6370,
+      "sha256": "0867e0e3eb88eb62d8fb76b2db5cc946641901d6170600911f1e0c7411fca271"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/before.txt",
+      "bytes": 6321,
+      "sha256": "e5dfa8658d8852a74d3141ece4ab397ac0518004e682079556ef69c12b39ec78"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/kernel_source.sha256",
+      "bytes": 121,
+      "sha256": "8b30f62349dcc5dccd23a71771a9316f8acadff7e9168941a53c68c4a9fa3eb0"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler.log",
+      "bytes": 143135,
+      "sha256": "e8ab1bd61b087a6ef779affc82422d4f3ccffbbe1583d75c743573abfc267abc"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812163444887.png",
+      "bytes": 38247,
+      "sha256": "b694f8a56352133129ef8ddab3ebbb86a91b9481e16a4b48c629f6b1e18a8025"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "100c44c567ba3963999edaf1e044e7701d476f387fda333f8d57ac7a7981cb75"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1697,
+      "sha256": "23e0242cec6388496dadc9be690e78b8427154f5849c09265a9efc2729f4625c"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1247,
+      "sha256": "f32e17e22aa3b65af1a804685ee7016e43a7a52b689596f60a444e076540783d"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 758,
+      "sha256": "df69bad73ce7398faf875d99e17b358f9afa628a7dc9d6957af3110ea5fe9806"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 431,
+      "sha256": "06eb00b961bba33035a08d6c2bcc130748825b3e6c1807253cb029350e3fe3bd"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 431,
+      "sha256": "06eb00b961bba33035a08d6c2bcc130748825b3e6c1807253cb029350e3fe3bd"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.pdf",
+      "bytes": 42598,
+      "sha256": "39c9cc7e8982110b465dfe39ec3532bf2f14ed398a1a6534db6113f6d3504b73"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.txt",
+      "bytes": 3324,
+      "sha256": "9ce14dd2708d58eccfaac2e48d1e576d8f23c3e7008b8ee5f42a1129c265928b"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 2008,
+      "sha256": "4264136fcea0755b6fd5996e3190cfa46cf2ca5e312c6fc9c6e861fcfdc6253c"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3901,
+      "sha256": "f1947b9d55c0f1e19aaa08fb55bf5748f65af8d12d1a683b12b3fbe29e1a0a45"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/report_js.html",
+      "bytes": 16064,
+      "sha256": "d5e38c84262df4f1626ebd67f0279877b3845deef1554d63fc3a7fa7cae4f404"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/mcprofiler_output/v028_step2_half_b_pipeline_sc-16g_v029diag_b_v029o_case2_step2_targeted.json",
+      "bytes": 437829,
+      "sha256": "9b6ebc7aa7421a7b49df2555feb8ad8ebae71ccbb14b63acca5661c5f9dc9a27"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/raw/v029diag_b_v029o_case2_step2_targeted/target_command.txt",
+      "bytes": 534,
+      "sha256": "6dc7d51e79e43fa93afb03c01b9057cef8ab829932254cb72ff388c91f86b81a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/summary/v028l_vs_v029o_mcprofiler.json",
+      "bytes": 5942,
+      "sha256": "55058f5ce84887e60060efccadc9d0a4c9db181609e7426d4476879e99416012"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mcprofiler/summary/v029o_vs_v028l_case2_step2_summary.md",
+      "bytes": 1434,
+      "sha256": "54e66ba8125ff90ace6dd2ebffcefc2582c325482def2bd26953228826cdb3bc"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/command.json",
+      "bytes": 653,
+      "sha256": "10a7ad9976a4d24ae42d25ce0d8e7b96ceb64819ad328370ebdb80b93ab2224e"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/mctracer_console.log",
+      "bytes": 5040,
+      "sha256": "61a7802de241f51cbc0506f4f68f22195af5879ef499ef70a79d729bc5886a03"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/summary.json",
+      "bytes": 822,
+      "sha256": "77c15951df2760d8cadd61c22666f831232797496b2403e8a9a5afc284594a64"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_1_v028l/v029_case2_pair1_1_v028l-284696.json",
+      "bytes": 95726,
+      "sha256": "96b83570be243be9e83431b5a9a0fb790e561a2016ef060a0f2e52cc6d689570"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/command.json",
+      "bytes": 652,
+      "sha256": "e6c26cfde23991422d0fb39541d616576d3dbd9c2b9d1f2cdfa05a158ed14030"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/mctracer_console.log",
+      "bytes": 5039,
+      "sha256": "cf033930a006db4ad3bbdedcda7fc8dd243723277d63cc1215948ea8cd6d076a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/summary.json",
+      "bytes": 820,
+      "sha256": "ac3d3ff0a66f84ce3a05f9cb98415c6ef7e1b1d01f551c544405bb08425b9324"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair1_2_v029o/v029_case2_pair1_2_v029o-284824.json",
+      "bytes": 95646,
+      "sha256": "bae39e9b50df1927676d979107280e9bf425891993f6a1191c021a3291bfa0fc"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/command.json",
+      "bytes": 652,
+      "sha256": "394785433935a4022d59aed48054ee3acca689989c3b19aebf0073846f551d42"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/mctracer_console.log",
+      "bytes": 5039,
+      "sha256": "e10d0b632439944366bc451b3893b1e6e350fd6787081eb86bb04b9539daade1"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/summary.json",
+      "bytes": 821,
+      "sha256": "8697e88376cc1fb61cc6896f60bcb71c8e055a8e1eedd49183173dd831245852"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_1_v029o/v029_case2_pair2_1_v029o-284952.json",
+      "bytes": 95733,
+      "sha256": "158b126ffeb4157fd719b6b35fa378ba9aa55dc2e2377a2d9b2bf7a254d2be9c"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/command.json",
+      "bytes": 653,
+      "sha256": "abe2878a0344627b8ddbaff319fbf7a0c0457bb0f43f452507407426ae6e96d8"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/mctracer_console.log",
+      "bytes": 5040,
+      "sha256": "887dfd859e098f5fa3077b00d23bf3fb08f0da9a4c2e1900607c8b3322fa2b03"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/summary.json",
+      "bytes": 821,
+      "sha256": "e8a4c8011da2df704b6d835fe2e5d6677d063aeb9a9a2287a38744f50b5f4094"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair2_2_v028l/v029_case2_pair2_2_v028l-285080.json",
+      "bytes": 95727,
+      "sha256": "a9f333b35bf51853756a3004cc15fe6e2c4b83184d73904120a7c895eaf07d91"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/command.json",
+      "bytes": 653,
+      "sha256": "aae2a67440be19e91ed6bc37605c7533b2bc48aca9e51d091dbc759c3c4308d9"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/mctracer_console.log",
+      "bytes": 5040,
+      "sha256": "5464725128ec1cf05b8fa579c5773146908aeabc40eec115929e5fe20b661e14"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/summary.json",
+      "bytes": 830,
+      "sha256": "1ba19f7327900ac88af2366ffcf0d1638b354dabce347f0c2605b5b0fef750ee"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_1_v028l/v029_case2_pair3_1_v028l-285208.json",
+      "bytes": 95655,
+      "sha256": "603ead9e4ae2e98dd2dc66ed15b6d38dc85af5dc8585b862c9120ea34b3d2a00"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/command.json",
+      "bytes": 652,
+      "sha256": "f05b65b7dc9bce502a23893bf5d7852502434c560ba8161aed755b5b8cc4eb02"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/mctracer_console.log",
+      "bytes": 5039,
+      "sha256": "04206ebacd89663cdfea7c50ce9aeb65e4444dd1e7fb19eabfa50f825d291390"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/summary.json",
+      "bytes": 819,
+      "sha256": "a589a5a781d379f6435514e4cf4f93093f0d0bb4ee005d8bf1aa19db32b5191a"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/pair3_2_v029o/v029_case2_pair3_2_v029o-285336.json",
+      "bytes": 95661,
+      "sha256": "0552eb37283080640675adb4c6a20e5b4264aa48b315fe0a41c62f5f876ca644"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mctracer/v029o_vs_v028l_case2_mctracer_summary.json",
+      "bytes": 9249,
+      "sha256": "e2e6547e38af58a5c9890ae4aebb4a2e94769919719cd1cbbec23529dbf95ada"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/profiler/mxsmi/UNAVAILABLE.md",
+      "bytes": 770,
+      "sha256": "2e618ead3493add010e398c18211bc99d16d56b53f0cf20ddd400e97c954ed97"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/source_sha256.txt",
+      "bytes": 475,
+      "sha256": "5efd4d72f1521a6064ed2fe22b27ce5e61694a719588f29864f055c697a9c5bd"
+    },
+    {
+      "path": "restart-rep/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_report.md",
+      "bytes": 9820,
+      "sha256": "5c728b1fca242e5de7eaf6fdbbb451f36b1c5aedcdf6957e9893b6afa470c6b1"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/capture_codegen_source.py",
+      "bytes": 4868,
+      "sha256": "ed54863e9ad7d208319b271d63ae743c404df9f5ef655217b67c56d8d7237d54"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/compare_mcprofiler_reports.py",
+      "bytes": 3326,
+      "sha256": "51d0c6377474911f8cc772677fb57d8e0ae88c6c130ca50a88ca53d5990ed82f"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029_stage_contributions.py",
+      "bytes": 4293,
+      "sha256": "e22d2ae1c111a84b3cc2c564e543bc53c6fb5eee2ae757356b8214a4892ad39f"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029g_spatial_pattern.py",
+      "bytes": 2907,
+      "sha256": "7e6f9eee5c3c2bd23bf414edd0666eafce7d78cd316a1bf865dc52e2b037020a"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029g_stage_contributions.py",
+      "bytes": 4291,
+      "sha256": "b0e98d468658831c1c45a34c39a3599e64f6ff9f61738a0f24ceef3573b14f97"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029h_stage_contributions.py",
+      "bytes": 4289,
+      "sha256": "70bc7eb5f038ad1b53bb4579bf2e26f6e548b6002b4e297efcacd7e20f81bd7e"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029k_spatial_pattern.py",
+      "bytes": 2901,
+      "sha256": "02f80e2feabc1219da7d343b100c03ff217c6dbd5f6b9a196e955f27d1000064"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/diagnose_v029l_spatial_pattern.py",
+      "bytes": 2905,
+      "sha256": "594a2f2e556c1704f137385d198cbaa921cca294eb1b2b8861b10ae626d9e5ab"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/dump_lowering_source.py",
+      "bytes": 2664,
+      "sha256": "78fd08eff688c28439d4c2a897b3cf3257bc086184fc5ff13087df3176b4e35f"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/extract_metax_isa.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_full_pingpong_loop.py",
+      "bytes": 7730,
+      "sha256": "ba09d0396af1a80a7f4aabccbb0d4e3b0c9f480e133265b159db499e5db774aa"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_strided_source.py",
+      "bytes": 3593,
+      "sha256": "4961c2aab20fc6b163093e84884ef1bd95c395825359cc6ad6d9734775a8df2d"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_two_regions.py",
+      "bytes": 4994,
+      "sha256": "652888332bc47bf7af9bb19536b47ab093f126f0d0473c7b003c714423df172b"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_upper_overlap.py",
+      "bytes": 3689,
+      "sha256": "1bec896b725acbea28da72042d771daa5cdbd9ea0b77f038f1dc0e6f2ae0db1a"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_bsm_upper_shared.py",
+      "bytes": 1977,
+      "sha256": "c3beb7c1f0f53f7e08aa1ea8e8dd223fc57e57f08fab5e0f8805169ec1785973"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_inverse_swizzle_upper_shared.py",
+      "bytes": 2640,
+      "sha256": "5e860ae4accb9b8ccf60746c3dffc452fa05b5b9156f4caf0f015db7a79488fe"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/probe_inverse_swizzle_upper_shared_multicta.py",
+      "bytes": 2825,
+      "sha256": "b2a053b734fd55c9c521f0d3637ca6bb85e84324d362b0a1421699fa18b3dc20"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/profile_one_case_source.py",
+      "bytes": 1890,
+      "sha256": "aec8606c2db1a2e5736d516563ed2245f0deb68d7b5a13da138c376e220121e6"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/render_roofline.py",
+      "bytes": 10075,
+      "sha256": "9b022302085c9b022077a230fff26d63373f5119e8ef13b6e476fd9409e011a1"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_mcprofiler_source.sh",
+      "bytes": 4122,
+      "sha256": "a4c2a9689f8e252a6f7cb8aea91c21ece78704d93270e04f5f0a9fb5e285ec04"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_mcprofiler_source_v029.sh",
+      "bytes": 4122,
+      "sha256": "e31c7762ea60b6fb6d3511fa95f72caa5366b0bfa91aca76028b9bcafec2cc24"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_official_source.py",
+      "bytes": 1276,
+      "sha256": "2dcecf45287dcf33ec956462d4de00c663a1ed4c4b5a90081792daecd19ab2ca"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_paired_mctracer_v029.py",
+      "bytes": 8828,
+      "sha256": "7f0244ebbe320b7a382ceea6b408ef5906c1ddfc7eb5d666bea819625bec1dc0"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_paired_v028l_v029o.py",
+      "bytes": 5091,
+      "sha256": "900f2ee3930478b08df728f82c20e5d527a9f8a49c6e21cc949fdaf0e8144d05"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_source_oj.py",
+      "bytes": 2058,
+      "sha256": "d461e4b86a45e8d36882d43004ee14b0979fa758b7e2c8c05618343f00712abf"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029a_case2.sh",
+      "bytes": 565,
+      "sha256": "0d868e40ec4268a5d27a0c49f29e4a464869a76ab2bff8a3bb827658e2c4160d"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029b_case2.sh",
+      "bytes": 522,
+      "sha256": "945400996439428105bb11598b1d1f2ebbf4406d32024dcfb2f2feca656cd487"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029c_case2.sh",
+      "bytes": 522,
+      "sha256": "22103f835b278c81957f02f3828ae363b1d8a74d01a19456fa74d3930abd97d2"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029e_case2.sh",
+      "bytes": 529,
+      "sha256": "09ba7c2e5843461c1b2bb8a522d6f21e2445d1e6bbe78d1cfcc26fe25ef94434"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/run_v029f_case2.sh",
+      "bytes": 527,
+      "sha256": "2741679e284c6c01cf17063e91b194a3a5f8f9bb74b7571cfb614d1c2a1299d3"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/summarize_iteration.py",
+      "bytes": 3127,
+      "sha256": "dd95064639a88a92f0c026a3d879f59e9a762c78e94d1b0375e3a8d3072ec1b0"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/v029_step2_full_b_pipeline_sc-16g_scripts.md",
+      "bytes": 3650,
+      "sha256": "8ee6aef523ad4b96dc109bc7b1df732535b87f3bc9d73c87217c8823f4b4d3ee"
+    },
+    {
+      "path": "restart-scripts/v029_step2_full_b_pipeline_sc-16g/validate_iteration.py",
+      "bytes": 3471,
+      "sha256": "813a4eeb0b42c1c06e583c1c652b4ee59df555c0e6caa5d7695d48b1ee9ee93a"
+    }
+  ]
+}
