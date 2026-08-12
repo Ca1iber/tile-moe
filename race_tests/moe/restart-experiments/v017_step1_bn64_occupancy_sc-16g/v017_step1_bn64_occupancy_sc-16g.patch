@@ -1,0 +1,12 @@
+--- /tmp/v016_init/restart-experiments/v016_step2_async_revalidation_sc-16g/v016_step2_async_revalidation_sc-16g_parent_v013_custom_fusedmoe.py	2026-08-12 10:13:24.691129953 +0800
++++ /tmp/v017_step1_bn64_candidate.py	2026-08-12 10:46:27.299275421 +0800
+@@ -307,6 +307,9 @@
+             schedule["use_grid_transpose_step1"] = True
+             schedule["use_grid_transpose_step2"] = True
+         elif d_hidden == 7168 and d_expert == 2048 and n_routed_experts >= 32:
++            # Long-K Step1 occupancy experiment: halve the N tile so the two
++            # FP32 accumulators and gate/up shared tiles are each halved.
++            schedule["block_dexpert_step1"] = 64
+             schedule["use_grid_transpose_step1"] = True
+             schedule["use_grid_transpose_step2"] = True
+         elif d_hidden <= 4096 and d_expert <= 1024 and n_routed_experts >= 4:

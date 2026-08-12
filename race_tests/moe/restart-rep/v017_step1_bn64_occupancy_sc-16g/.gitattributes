@@ -1,0 +1,15 @@
+# Preserve raw compiler and profiler binaries byte-for-byte despite the
+# repository-wide `* text eol=lf` rule.
+**/*.bc binary
+**/*.mcfb binary
+**/*.bin binary
+**/*.elf binary
+**/*.pdf binary
+**/*.csv binary
+# Raw generated/compiler/tool evidence may intentionally retain trailing space
+# or terminal blank lines. Preserve it exactly and exclude it from patch lint.
+**/*.patch -whitespace
+**/*_generated_device.cpp -whitespace
+**/mx-smi-help.txt -whitespace
+**/*.log -whitespace
+**/*_environment.txt -whitespace
