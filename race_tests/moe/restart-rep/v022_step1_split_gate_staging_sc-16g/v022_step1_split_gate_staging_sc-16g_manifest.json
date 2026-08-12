@@ -1,0 +1,1169 @@
+{
+  "iteration_id": "v022_step1_split_gate_staging_sc-16g",
+  "version": "v022",
+  "slug": "step1_split_gate_staging",
+  "machine": "sc-16g",
+  "status": "accepted",
+  "created_at_utc": "2026-08-12T06:32:38.981508+00:00",
+  "baseline_id": "v004_step2_router_weight_register_reuse_sc-16g",
+  "parent_id": "v021_step1_gate_input_up_order_sc-16g",
+  "current_best_id": "v022_step1_split_gate_staging_sc-16g",
+  "kind": "evidence",
+  "decision": "accepted_case2_gate_input_half_interleave",
+  "source_sha256": {
+    "parent": "fe5dbc61802e3777e7305163fb4f3d2251c78102b1f2b97eba450dbbb78e2e45",
+    "candidate_and_main": "96f2eb1c71e8bd5d8e3bde840e9497d3761475bb0b7bb1f5071e5beb54f553b8"
+  },
+  "benchmark_sha256": {
+    "official": "adfe36d8e042adc3369813b7bd367bd865e560207c811d0e8514235fc33ec67f",
+    "oj": "1165d1481f8932b6b2341f53e83e5ce5d871c62835259c22dc8d770c232585c8"
+  },
+  "verdict_metrics": {
+    "case2_oj_paired_median_change_percent": -1.8122381296175882,
+    "case2_oj_paired_mean_change_percent": -1.945330796192743,
+    "case2_mctracer_step1_median_change_percent": -3.5295003010234693,
+    "case2_mctracer_device_span_median_change_percent": -2.2963795377925367,
+    "step1_mt_registers_parent": 214,
+    "step1_mt_registers_candidate": 212,
+    "mcprofiler_vls_pipeline_stall_change_percent": -22.783710215838184,
+    "mcprofiler_stage_latency_change_percent": -1.9991244710345857,
+    "installed_oj_case2_ms": 5.096737365722657,
+    "mxsmi_repeat2000_case2_ms": 5.08359912109375
+  },
+  "mcprofiler_status": "internally_consistent_directional_support_only",
+  "roofline_model": {
+    "arithmetic_intensity_flop_per_byte": 84.82840236686391,
+    "sensitivity_bandwidth_gb_per_s": 1400,
+    "compute_roof_tflops": 160,
+    "region": "HBM"
+  },
+  "summarized_at_utc": "2026-08-12T07:36:43.557099+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "3439b479ae6e462864cc02089306acf790dcd082",
+    "status_short": "m 3rdparty/tvm\nM  race_tests/moe/custom_fusedmoe.py\nA  race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/.gitattributes\nA  race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/README.md\nAD race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_roofline_README.md\nA  race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_roofline_points.csv\nA  race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_case2_step1_paired_roofline.svg\nA  race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_case2_step1_paired_roofline_render.json\nA  race_tests/moe/moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_manifest.json\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/.gitattributes\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v021_parent.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_even_only.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_gate_half_a_gate_half_up.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_interleave_gate_a_halves.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_interleave_gate_a_quarters.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_odd_only.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_split_gate_and_up.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g.patch\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_custom_fusedmoe.py\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_experiment.md\nA  race_tests/moe/restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_source_snapshots.sha256\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/.gitattributes\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair1_1_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair1_2_v022_split_gate.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair2_1_v022_split_gate.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair2_2_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair3_1_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair3_2_v022_split_gate.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair4_1_v022_split_gate.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair4_2_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/v022_split_gate_vs_v021_paired_oj_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair1_1_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair1_2_v022_interleave.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair2_1_v022_interleave.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair2_2_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair3_1_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair3_2_v022_interleave.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair4_1_v022_interleave.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair4_2_v021_parent.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/v022_interleave_vs_v021_paired_oj_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/screens/even_only_case2_screen.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/screens/odd_only_case2_screen.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/v022_installed_oj_all.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/v022_interleave_official_source.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case1_compiler.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case1_generated_device.cpp\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case1_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case3_compiler.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case3_generated_device.cpp\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case3_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_gate_a_halves_case2_compiler.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_gate_a_halves_case2_generated_device.cpp\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_gate_a_halves_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/isa_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.bundle_targets.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.device_obj.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.embedded.bc\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.isa_backend.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.llvmcmd\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.llvmcmd.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.mcfb\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.metax.s\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.sha256\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.text.bin\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.xcore1000.elf\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.bundle_targets.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.device_obj.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.embedded.bc\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.isa_backend.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.llvmcmd\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.llvmcmd.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.mcfb\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.metax.s\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.sha256\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.text.bin\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.xcore1000.elf\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate_isa_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/v021_parent_isa_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_even_only_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_gate_half_a_gate_half_up_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_interleave_gate_a_halves_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_interleave_gate_a_quarters_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_odd_only_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_split_gate_and_up_case2_resource_usage.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/case2_repeat2000.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/installed_oj_all_cases.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/official_functional_and_performance.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/rejected_quarter_candidate_failure.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/after.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/before.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/kernel_source.sha256\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070612546.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070613143.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070613519.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070612700.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070613275.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070613651.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/batches.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_1.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_2.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_3.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_4.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/mcProfiler.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.pdf\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.txt.csv\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.txt.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report_dumped_result.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report_js.html\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/v022_step1_split_gate_staging_sc-16g_final_interleave_v021_parent_case2_step1_targeted.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/target_command.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/after.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/before.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/kernel_source.sha256\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070938057.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070938668.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070939050.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070938224.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070938799.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070939182.png\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/batches.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_1.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_2.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_3.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_4.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/mcProfiler.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.pdf\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.txt.csv\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.txt.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report_dumped_result.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report_js.html\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/v022_step1_split_gate_staging_sc-16g_final_interleave_v022_interleave_case2_step1_targeted.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/target_command.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/v021_vs_v022_interleave_case2_step1_targeted_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/v022_case2_pair1_1_v021_parent-174010.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/v022_case2_pair1_2_v022_interleave-174137.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/v022_case2_pair2_1_v022_interleave-174266.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/v022_case2_pair2_2_v021_parent-174393.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/v022_case2_pair3_1_v021_parent-174521.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/v022_case2_pair3_2_v022_interleave-174650.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/v022_interleave_vs_v021_case2_mctracer_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/v022_case2_pair1_1_v021_parent-171274.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/v022_case2_pair1_2_v022_split_gate-171403.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/v022_case2_pair2_1_v022_split_gate-171531.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/v022_case2_pair2_2_v021_parent-171658.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/v022_case2_pair3_1_v021_parent-171786.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/command.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/mctracer_console.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/v022_case2_pair3_2_v022_split_gate-171914.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/v022_split_gate_vs_v021_case2_mctracer_summary.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_hbm_ap_samples.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_mxsmi_snapshot.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_sampled_workload.log\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_workload_command.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/v022_codegen_scope.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/v022_quarter_failure.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_environment.txt\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_manifest.json\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_report.md\nA  race_tests/moe/restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_source_hashes.sha256\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/.gitattributes\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/analyze_metax_isa.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/capture_codegen_source.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/collect_environment.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/collect_mxsmi.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/dump_tilelang_codegen.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/extract_metax_isa.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/finalize_v022.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/profile_one_case_source.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/render_roofline.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_correctness.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_iteration_bundle.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_mcprofiler.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_mcprofiler_source.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_mctracer.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_official_benchmark.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_official_source.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_oj_benchmark.sh\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_paired_interleave_oj.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_paired_mctracer.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/run_source_oj.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/summarize_mcprofiler.py\nA  race_tests/moe/restart-scripts/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_scripts.md\n?? .20260810032650.db\n?? .20260810032800.db\n?? .20260810162423.db\n?? .20260810162850.db\n?? .20260810162933.db\n?? .20260811052801.db\n?? .20260811235118.db\n?? .20260812020543.db\n?? .20260812030602.db\n?? .20260812052202.db\n?? .20260812052300.db\n?? .20260812060609.db\n?? .20260812060711.db\n?? .20260812072636.db\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step2/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/v011c_case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_codegen_summary.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case1/\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case3/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v022_step1_split_gate_staging_sc-16g/.gitattributes",
+      "bytes": 26,
+      "sha256": "51128227786dc90b993a5faa8b108f8c2f0ae5b38894b228d71860dc94293dac"
+    },
+    {
+      "path": "moe-roofline/v022_step1_split_gate_staging_sc-16g/README.md",
+      "bytes": 732,
+      "sha256": "dec2938b0c4506d2b229f03e7092c77954cb0f35773dd8f918fa87cd3a25802e"
+    },
+    {
+      "path": "moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_roofline_points.csv",
+      "bytes": 158,
+      "sha256": "21214ed33da2ae27e0fb6ab9efd77dcd6ed34aa452aa80afd5ddfff86d99d0c4"
+    },
+    {
+      "path": "moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_case2_step1_paired_roofline.svg",
+      "bytes": 9419,
+      "sha256": "a3746dfb8163487c2f63588f3bef4d8c54ee8ebcd5c8d3fe7af9ebd217218d7e"
+    },
+    {
+      "path": "moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_case2_step1_paired_roofline_render.json",
+      "bytes": 975,
+      "sha256": "ccd0cea09a6eca9f1d6d8ac5a48ab3f6fbdcc22fc65725e77f0248074ad64c3d"
+    },
+    {
+      "path": "moe-roofline/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_manifest.json",
+      "bytes": 1759,
+      "sha256": "d29057fa22876f4d2ba9521847498c8adc554b9e1507552f462f1d46412002d6"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/.gitattributes",
+      "bytes": 20,
+      "sha256": "fb25a78a6381f5646d71aacea4486f6aeeeb03c4d71740227011024be0d20a8f"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v021_parent.py",
+      "bytes": 25216,
+      "sha256": "fe5dbc61802e3777e7305163fb4f3d2251c78102b1f2b97eba450dbbb78e2e45"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_even_only.py",
+      "bytes": 25211,
+      "sha256": "de08a3e1e40e0263b0c8f487eeccefb666d765f90bd112e8936e9f4da31c1f66"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_gate_half_a_gate_half_up.py",
+      "bytes": 27494,
+      "sha256": "37bf925dbf0e112f435be0b7927a2bd9e3d2410b77be3b1b01171b4a17a09469"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_interleave_gate_a_halves.py",
+      "bytes": 28495,
+      "sha256": "96f2eb1c71e8bd5d8e3bde840e9497d3761475bb0b7bb1f5071e5beb54f553b8"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_interleave_gate_a_quarters.py",
+      "bytes": 27603,
+      "sha256": "0dd42466090522e97618ae4673da88992bb309c7f8e31fbf5e3bc952672ddba2"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_odd_only.py",
+      "bytes": 25211,
+      "sha256": "8c5f44a35c751386157b7096ace8ade1a1bcf357efb74d8bccda61e7812f322d"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/sources/v022_split_gate_and_up.py",
+      "bytes": 29791,
+      "sha256": "0b938b69f21c39170796a66c28682f72330b52138a1d29362cd7b2310b73c404"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g.patch",
+      "bytes": 7759,
+      "sha256": "3a1a42cdaad588d55cfb4cd2d08412f9e1c7e2acbf8d55bf4c9b46cc27c385e7"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_custom_fusedmoe.py",
+      "bytes": 28495,
+      "sha256": "96f2eb1c71e8bd5d8e3bde840e9497d3761475bb0b7bb1f5071e5beb54f553b8"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_experiment.md",
+      "bytes": 3718,
+      "sha256": "47f5d04bf4e5c8083daf1775b6d7033fdd978dc386e05fd0c31e9cb52a495183"
+    },
+    {
+      "path": "restart-experiments/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_source_snapshots.sha256",
+      "bytes": 1199,
+      "sha256": "0b87d518334e81ac9b36aeba61de139aa6a7796e46bf048f8fb4fca7643a0acc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/.gitattributes",
+      "bytes": 307,
+      "sha256": "0e00cd52396104b7b5d8f5355077f3b90e223f9d535c34bcd240d021188ff20e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair1_1_v021_parent.log",
+      "bytes": 5638,
+      "sha256": "d85274be8c8b67fb74331ab9727e589d0fe2d7cb97f5c6ab6ac1da041d394fc8"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair1_2_v022_split_gate.log",
+      "bytes": 5327,
+      "sha256": "afcfe252716dcb0dde5973c74b8b29d1e19bf84a5517c4e7d2b12cb3ca9c01b7"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair2_1_v022_split_gate.log",
+      "bytes": 5327,
+      "sha256": "e3845408816e4773a627190ca5aed4fd82f404e760158203b33fe97665cb527d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair2_2_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "be00ff6d2f22bb6215adeb6c864ca8c603d080881dac1df9fdc64e262e0a6d6d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair3_1_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "64dea496f70d67062d94f7530efd4c2b303e030f1749199fb676ea5bca1da0f0"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair3_2_v022_split_gate.log",
+      "bytes": 5327,
+      "sha256": "30a8743382f5a2e76d509fceaa75391de0ad13582250ef95b6c333e973fa5a5e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair4_1_v022_split_gate.log",
+      "bytes": 5327,
+      "sha256": "44c9e8ee1844874fce1ae216e0fd721eb95ab735b1cba90e98e35edb20d2fd37"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/pair4_2_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "eb33f97ae75f0730b77b06f101ded4a7ce05f3dd95aafe685d5dbeadf56aaea5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/intermediate_split_gate/v022_split_gate_vs_v021_paired_oj_summary.json",
+      "bytes": 4578,
+      "sha256": "2c9c167e453fc840394a3017de2b2a555918e482f2695eb7d0f5b88affbf3c07"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair1_1_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "d0974efb41f08a8d65b45275c533bf874047236e09f10347649cffee2545bdac"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair1_2_v022_interleave.log",
+      "bytes": 5327,
+      "sha256": "8ee72db6e5f6c2b2b859a3a74ccd6cdb03a96cfdd44bafb443188dd22d1c9d2c"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair2_1_v022_interleave.log",
+      "bytes": 5329,
+      "sha256": "2a09600c8dafe55cb5039fbb3d438f3e0f8fb82168de46419a5e1e9e90169f8c"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair2_2_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "0c3d0f23bd728f2f492b642343cf17dad200a361cbbaa9b78c76e59dcdfa41bd"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair3_1_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "fb74e04044c2da932311f30279e72a6eb71dba57277394c977df6a80b2d4d007"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair3_2_v022_interleave.log",
+      "bytes": 5327,
+      "sha256": "3ac220a7462c0e85ecedfd747e7b31ba4c10101661580b6f4389a028f658ff9c"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair4_1_v022_interleave.log",
+      "bytes": 5327,
+      "sha256": "076cb7351bec6ff6606ed9d62a2d4f89250b5f0f9c919cee9d86a7cb7f3348b5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/pair4_2_v021_parent.log",
+      "bytes": 5283,
+      "sha256": "dfc2c97b5350e7b0f43aedc4fe56a4c74f3325a0bec2cd10858559e74eac0725"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/paired_interleave_case2/v022_interleave_vs_v021_paired_oj_summary.json",
+      "bytes": 5055,
+      "sha256": "cd752479f559f701cb57c2ffcfeda5d85e05c70bcc4151f0a18e02f54ff55ec6"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/screens/even_only_case2_screen.log",
+      "bytes": 5654,
+      "sha256": "e4c8c1f38d06b7cf748f7125474f212dc5d65de3c59e1cff7105c072f25232b5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/screens/odd_only_case2_screen.log",
+      "bytes": 5648,
+      "sha256": "4add24a3188472dd33ba98c745ebe503c753f981cdb0363f615750a69e9bd660"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/v022_installed_oj_all.log",
+      "bytes": 7109,
+      "sha256": "1dcf70df443fd5c47f52520d115f49fe894e545a3536079f22988724764455c2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/benchmark/v022_interleave_official_source.log",
+      "bytes": 6535,
+      "sha256": "8e4161d5fca5cb3ab4dbbd8127d372e220495c78917f87afaccef871b6357732"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case1_compiler.log",
+      "bytes": 10718,
+      "sha256": "9e8c31a566f1d0049b316415a8bf1e54cc9ac56c819e021db7f0679ec4c97b1b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case1_generated_device.cpp",
+      "bytes": 26449,
+      "sha256": "1a50eb0e818191e7cd9b077a5acd0ad88551aec4ac63b844f3e7d8ff670626f3"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case1_resource_usage.json",
+      "bytes": 1153,
+      "sha256": "bf14e7385998d09156c6819d1f1b42afd07068ca686b72ee8caf0b8f9391c7ad"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case3_compiler.log",
+      "bytes": 10718,
+      "sha256": "f22998766ea019406b27058b58bfc3806b43cf9428c3d2a064d3cd15101b7ee7"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case3_generated_device.cpp",
+      "bytes": 27864,
+      "sha256": "c80f44d8cb492426128f8b984e7279b4110d66c3adb9e54114e4ca80518c2db8"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_case3_resource_usage.json",
+      "bytes": 1153,
+      "sha256": "f0f34a5484208be639604e608a16cbfbd9269f50ba6bbd1ef40c77a4adbfb2f5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_gate_a_halves_case2_compiler.log",
+      "bytes": 10718,
+      "sha256": "c8fa5a11c486d7a8aaf126249cb3fae56e409e255cfcd993cbac899ec7a0f01a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_gate_a_halves_case2_generated_device.cpp",
+      "bytes": 31817,
+      "sha256": "1b7fb60a809761f960bfa0ced3a6017143ed12701617f858338a3a8fe65e8965"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/final/v022_interleave_gate_a_halves_case2_resource_usage.json",
+      "bytes": 1107,
+      "sha256": "9bd249c83547878b0176d545751394ccbc8a8a04c0b7253ce210614bfa1e3b28"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/isa_summary.json",
+      "bytes": 4209,
+      "sha256": "986d379d26fde2e2a76ca5ab895fbd5575d9a12226cd5f4ffed6687433b741ee"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.device_obj.log",
+      "bytes": 10588,
+      "sha256": "e7e01cd74f84b3cacab6c4023fed18ecc546c8459b7839c8d67887988702d3d3"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.embedded.bc",
+      "bytes": 144144,
+      "sha256": "5256882bd4abec206ba7d8b36c8a72202c399ced451e238e5db651151d111a18"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "9cfba59b1f404f486aa44901e00e58fe6c7659a79677ec9a5346983dac812a54"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.llvmcmd",
+      "bytes": 787,
+      "sha256": "fb732d0112665f00fe23b0d6cf21fe1a305667d9f5977e0a98ea68ebef3990bc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.llvmcmd.txt",
+      "bytes": 783,
+      "sha256": "47c20362a8ee33f1fcd4316f1b76443e0a2cce785bdf2ffb0d35b1e2bedb1878"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.mcfb",
+      "bytes": 227160,
+      "sha256": "6247982496deacc8d981f5b75a8ccbfe3972458db115c4d669d390d420bfbd26"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.metax.s",
+      "bytes": 549841,
+      "sha256": "0d57160dc722257f741601a0521d45f428f07a3f7b241a6f5671da60122d61db"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.sha256",
+      "bytes": 1165,
+      "sha256": "f946095e5860845f3fc6ba92a0dc45a3e152b6fce7da2e4f88725ca381f1e464"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.text.bin",
+      "bytes": 48112,
+      "sha256": "af0fa3e82adb8506bb978c6a8d4e0b76ee1d2da999c71fe06d424e672093b42f"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/interleave_candidate/v022_interleave_gate_a_halves_case2_generated_device.xcore1000.elf",
+      "bytes": 227160,
+      "sha256": "6247982496deacc8d981f5b75a8ccbfe3972458db115c4d669d390d420bfbd26"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.device_obj.log",
+      "bytes": 10588,
+      "sha256": "0a3b4b9f53c31baf9e3741805979a432937ab11e3a1b59e3c50707b6f0ad3c6a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.embedded.bc",
+      "bytes": 137088,
+      "sha256": "d873c2ee2f5c7c9db0a7f835500e40dc2fc2ccb672b62d0392900d1b664b2a5d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "075ab9cd695cec6f02db4b193316765c4dd2f24d0bcaa2e69d142d24bbf382e5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.llvmcmd",
+      "bytes": 776,
+      "sha256": "0e80532fbcdfe991e0f575936e6bc6c4c2afc6593e734d1d42cadc24ad44d5cc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.llvmcmd.txt",
+      "bytes": 772,
+      "sha256": "a0ef79005a2ae4f98c3c7fdd193bd74e0aeeb82eb19fba05e9de90d1cbb67f08"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.mcfb",
+      "bytes": 218944,
+      "sha256": "2818063e5eb5871eed3dd871efe222d04e6897e3739016819a28cab7dbf2a453"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.metax.s",
+      "bytes": 536641,
+      "sha256": "0180df77352e7e3f323b8e79a66d5613c3505e85370bd1f913e85650dca40762"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.sha256",
+      "bytes": 1121,
+      "sha256": "a04d5ddf8dbfa3a6e8c0d34daccb604143824e7d250ae46ff3734ca24f80d22b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.text.bin",
+      "bytes": 47088,
+      "sha256": "463bba027ae470a9327cdd3b44d4d7f3ef70c8a3695e32f566214e64c5bd0c8c"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate/v022_gate_half_a_gate_half_up_case2_generated_device.xcore1000.elf",
+      "bytes": 218944,
+      "sha256": "2818063e5eb5871eed3dd871efe222d04e6897e3739016819a28cab7dbf2a453"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/intermediate_split_gate_isa_summary.json",
+      "bytes": 4196,
+      "sha256": "339059097e315384ae9e0a0006b1cbea91cf2e4bc25ff71220d468f9e4b0ca76"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/isa/v021_parent_isa_summary.json",
+      "bytes": 4182,
+      "sha256": "7310627930b48dc0fdf6eecd48b48583d3fd52d6c8a68caa1108333b54636b4d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_even_only_case2_resource_usage.json",
+      "bytes": 1047,
+      "sha256": "6ba494ddc3de82250f66b9ac7cc50ef6caa47ad2abc624c33d1b4670214c48cb"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_gate_half_a_gate_half_up_case2_resource_usage.json",
+      "bytes": 1107,
+      "sha256": "729f0f23a447c3cc6c30d1bbe1b51aae37a3d3a5b07a881b8c9ca06d8a02d243"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_interleave_gate_a_halves_case2_resource_usage.json",
+      "bytes": 1107,
+      "sha256": "9bd249c83547878b0176d545751394ccbc8a8a04c0b7253ce210614bfa1e3b28"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_interleave_gate_a_quarters_case2_resource_usage.json",
+      "bytes": 1115,
+      "sha256": "6f880f5514dab6edbf692d8b742441e5ca8d3727042a0a7afa3715cf58023274"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_odd_only_case2_resource_usage.json",
+      "bytes": 1043,
+      "sha256": "7ed178bc02d0dc9d4755ecdaec5df19b0cfedd6870eb47150218ae2bb1b740c2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/codegen/screens/v022_split_gate_and_up_case2_resource_usage.json",
+      "bytes": 1079,
+      "sha256": "00c959a888b70e61fd22181db4e798ccb6ba144c5f3644ca226095293e1bc029"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/case2_repeat2000.log",
+      "bytes": 5281,
+      "sha256": "ab40e1f923ce8fffd3fcfd8b5173bb4d532903966b8aa4004aec50bb0c433b85"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/installed_oj_all_cases.log",
+      "bytes": 7109,
+      "sha256": "1dcf70df443fd5c47f52520d115f49fe894e545a3536079f22988724764455c2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/official_functional_and_performance.log",
+      "bytes": 6535,
+      "sha256": "8e4161d5fca5cb3ab4dbbd8127d372e220495c78917f87afaccef871b6357732"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/correctness/rejected_quarter_candidate_failure.json",
+      "bytes": 724,
+      "sha256": "d81523624f38b0e795ac866b416e9ecbbf8f343fac4e6223dc66b90966f4b1a2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/after.txt",
+      "bytes": 5537,
+      "sha256": "6e937df650ef7865eebce44420abd54b28273dae341d60dd5f5ce29e852283fe"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/before.txt",
+      "bytes": 5488,
+      "sha256": "ed97d178fe01d7b6d5ee341932f9cae837cf5763a329ce611d639cad3fcf101b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/kernel_source.sha256",
+      "bytes": 128,
+      "sha256": "e076047cbd9dfde3a8afe9aef5297301d43de0b40bbc7a8bba276bd94e1388ca"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler.log",
+      "bytes": 179083,
+      "sha256": "e47ffcf19ca9a38df533b72da91f512fc2a8b93fab1de60a9575a383a202ee10"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3072,
+      "sha256": "5428fe20ed7794380dfcd44e676c6c6d8c25f9183ab5ca854bed2c54ba837b62"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1782,
+      "sha256": "b39e67a0f8619995e66f58331261c1c6b4818ff5b88f99cc6165917b5f38f5e1"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3741,
+      "sha256": "7a8c2a8c18d1d3155e45af3935b5e8d7da8c0c3667c42a9c1a1c49cad5595dc2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3171,
+      "sha256": "5f6b49255eb3867c4fae11f421bbfdaf603b9ceaec6f0a55bd6fa71930f4102a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070612546.png",
+      "bytes": 38964,
+      "sha256": "9df3103ef82cc9f131800238dd23e14d8d9bc21170eccd46078ff55e7578752d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070613143.png",
+      "bytes": 37464,
+      "sha256": "68e4c51bd501b18476ad1fbd0f51ccea4713c6cbf6f80585d02c64a1a7fc31ed"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070613519.png",
+      "bytes": 37464,
+      "sha256": "68e4c51bd501b18476ad1fbd0f51ccea4713c6cbf6f80585d02c64a1a7fc31ed"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070612700.png",
+      "bytes": 38706,
+      "sha256": "04df1c0545465626c52d206a60fcbe77b2c9addd449a56913e3e0a6e396ab577"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070613275.png",
+      "bytes": 39763,
+      "sha256": "5dbfe2056563023b613eda0b8c02993c286d20d012134f7a52354b9c5e246b1d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070613651.png",
+      "bytes": 39763,
+      "sha256": "5dbfe2056563023b613eda0b8c02993c286d20d012134f7a52354b9c5e246b1d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "cfee714dd5407a9c6659aecb6bb436ec6a2a2aeec421736d3b0987a195ee5992"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1710,
+      "sha256": "ed045ef6f05c182295c5294d672f5470e91910c927d3ebed5c14e82ce9ba0c3e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1230,
+      "sha256": "8f76f9f89ff8a840696c99cf7f35ca595f8780ec3c46d17e9249773cf0c52776"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 756,
+      "sha256": "52411ef0db51e824507832b18bb18aed525e2456f15896613e9d5d145ee5c2bd"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 429,
+      "sha256": "e826a29147da47e72f77ff95df9b1f6fb733f7b9d5d0119641f9c869f81cfc57"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 429,
+      "sha256": "e826a29147da47e72f77ff95df9b1f6fb733f7b9d5d0119641f9c869f81cfc57"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 78555,
+      "sha256": "47584a91ea3a34c2114da08bea601ef72bed46094a2028116ba2a0c7b254baa5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3096,
+      "sha256": "0111de32765b3f83406b3807ec0f340474dc5aee629d3846000af1b183044d79"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1806,
+      "sha256": "88eae49dd654c615710db94fe8857d30920d89b0ee1d79cd6afe3af6ebf6d105"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3765,
+      "sha256": "45e3f59b1b78ce881df44a53d92d6c1c4348fce3ea0bdc6ed42e9e832f3e62a9"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3193,
+      "sha256": "48740bdf2efa79a6427a5a2005dc68f94eb8b6e17b12c2065b9ee96543c4c521"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63906,
+      "sha256": "8e96815f676852368cbff15696a9f9f06df7049329c5e3311a625c877be1b1b0"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/mcprofiler_output/v022_step1_split_gate_staging_sc-16g_final_interleave_v021_parent_case2_step1_targeted.json",
+      "bytes": 578604,
+      "sha256": "14cd173159913ca653e7b8fce5f4f81b3d0ea7185905f985f5dac2aca327b415"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v021_parent_case2_step1_targeted/target_command.txt",
+      "bytes": 565,
+      "sha256": "4e985dbf792c1985932a46f3760489c7b1dd43c4929ecb5cf91b2d926dc5374b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/after.txt",
+      "bytes": 5586,
+      "sha256": "f31bd7e679b4750e46384fda7f695fd9427a19d966606e44d9d7d2fe34978b8b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/before.txt",
+      "bytes": 5537,
+      "sha256": "6e937df650ef7865eebce44420abd54b28273dae341d60dd5f5ce29e852283fe"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/kernel_source.sha256",
+      "bytes": 146,
+      "sha256": "230d76c62370fab13a613cf614054e6eb4dbf1524a6ba7c4ec43112fa331df18"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler.log",
+      "bytes": 176839,
+      "sha256": "da8f4c855f96cadebec0f3a72116d91ec4d9afd6c4f892c913a80e5512ee0925"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt",
+      "bytes": 3073,
+      "sha256": "a2ea772648d8d1fe4a0921d7bd14f3eb30cd2ff791bca8471d11605d8813d01b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.csv",
+      "bytes": 1783,
+      "sha256": "0fa08e6631fc0d784bed72ba7d0b38d965777005d2f24f67fd52fd4d28d1535e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel.txt.json",
+      "bytes": 3742,
+      "sha256": "0c83d06a850504d57a79121cd27436f456145ac643bc741b5ee014b629984f61"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/1_kernel_kernel_dumped_result.json",
+      "bytes": 3171,
+      "sha256": "768eae8667bab6b3a224dd994e985048b5ecbc0689d556200adecbbcfe4b17bb"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070938057.png",
+      "bytes": 38581,
+      "sha256": "def624df164c067c23c491f594e7201a6d4cce6bf9394862f748414e4e97cacb"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070938668.png",
+      "bytes": 37677,
+      "sha256": "018828fff54ee655b759862601fdaf24124f14ca83397384138043807b986d2e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/ISU_stall_cycles_layout20260812070939050.png",
+      "bytes": 37677,
+      "sha256": "018828fff54ee655b759862601fdaf24124f14ca83397384138043807b986d2e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070938224.png",
+      "bytes": 38144,
+      "sha256": "95bdbe9b0d5d1eed627384e9326f8bc2c2344d811789cfc8d8d4318c71a799a9"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070938799.png",
+      "bytes": 37624,
+      "sha256": "b18ce2dc1910666bff27f31d049bdce6e2e9e6dc7553360b48ad9b5d701c2a6d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/VL1_partition_stall_cycles_layout20260812070939182.png",
+      "bytes": 37624,
+      "sha256": "b18ce2dc1910666bff27f31d049bdce6e2e9e6dc7553360b48ad9b5d701c2a6d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/batches.json",
+      "bytes": 1654,
+      "sha256": "1b863c85598baf4bd4ba90a967b211dd9c7905a0d66fa564f58daf197cb06a3e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_1.json",
+      "bytes": 1734,
+      "sha256": "be134e4ff6226fb5c68cf54d4af9d805698351333e95afb8f48a455d99a67209"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_2.json",
+      "bytes": 1221,
+      "sha256": "32f2b3d6952c8debf8e60bcf161f65a8fb9ee8a626d4536c4cb64c34093b745e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_3.json",
+      "bytes": 745,
+      "sha256": "9e703ede80eeb4ce75ad87c7b0a6de3a8cc4cf4384b86dbceaa122408a841d45"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/event_batch_4.json",
+      "bytes": 425,
+      "sha256": "1aa85a73ac23284c108178ea97cf83a3a32f70c601b3c1c26754cc5f6a0fa1a2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/mcProfiler.json",
+      "bytes": 425,
+      "sha256": "1aa85a73ac23284c108178ea97cf83a3a32f70c601b3c1c26754cc5f6a0fa1a2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.pdf",
+      "bytes": 77916,
+      "sha256": "fb5e50e5d0bf850a41528f4e712d8b3790db4bad89b6fc2f766a37b6b4b8cb36"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.txt",
+      "bytes": 3096,
+      "sha256": "45e97a91fe20ccb97ca182e8ba23b7b71b0072660691f63f5139145e876621df"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.txt.csv",
+      "bytes": 1806,
+      "sha256": "481eb11dbccc12442ce9bb9b8e9da13adf6d92a6844fb9a9d83ddf901858d963"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report.txt.json",
+      "bytes": 3765,
+      "sha256": "7141a451868521ac518a79487cb23fea34ed6c18b47f052fce05115d8f022c9b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report_dumped_result.json",
+      "bytes": 3193,
+      "sha256": "0cf8a78e14d53dbf7de6b87619db04607878956a86a6414e1fff3d659e54f754"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/report_js.html",
+      "bytes": 63906,
+      "sha256": "836137eaba105ce7f2e319ce8a4e9fc1eeb8fee682627e8fe3758aeda3e49529"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/mcprofiler_output/v022_step1_split_gate_staging_sc-16g_final_interleave_v022_interleave_case2_step1_targeted.json",
+      "bytes": 578454,
+      "sha256": "8645a1ae11d8b1e76feca1942426c5b51c3e0899be23898d2280e7cfa2512141"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/raw/final_interleave_v022_interleave_case2_step1_targeted/target_command.txt",
+      "bytes": 591,
+      "sha256": "f97f969d633462c9688dce325b5f50794b41b848e2f7d86467e39bf05b4fe534"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mcprofiler/v021_vs_v022_interleave_case2_step1_targeted_summary.json",
+      "bytes": 2573,
+      "sha256": "c3c370628621797074eb55f34e1b059b37656e917f50c99965b49f5b843a429c"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/command.json",
+      "bytes": 708,
+      "sha256": "d99afcc72b22c72f62ca62ad490acc847971d37db7c15f6cdb6513789a5d8677"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/mctracer_console.log",
+      "bytes": 5091,
+      "sha256": "12f39eb10375761b625f0f5b4fd30855a78b49d66dcd603ab34768517369f63d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/summary.json",
+      "bytes": 866,
+      "sha256": "95e02b739be1f4a3e3ac7f7e0e578e1c0f2da706b0f682fb1f775d3ffbb2a2cc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_1_v021_parent/v022_case2_pair1_1_v021_parent-174010.json",
+      "bytes": 95321,
+      "sha256": "acc9cc2a3fac1b5be7e030345d870213b8f2e567fb9b19ba055962a3ffde2dcc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/command.json",
+      "bytes": 738,
+      "sha256": "b4180cd6be56349422692afcecaf1471744e2b1179c8169a7a43b4d6bf8aa82b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/mctracer_console.log",
+      "bytes": 5121,
+      "sha256": "9d1e18d7fbcc4edcfc07111c2889d67f44597c3abcb336b1c01e7de9cd1d7ac2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/summary.json",
+      "bytes": 877,
+      "sha256": "f198bc8de263e1c14e273863a2290af1d0040fb2e95c64fda0ec20aaa7a33977"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair1_2_v022_interleave/v022_case2_pair1_2_v022_interleave-174137.json",
+      "bytes": 95322,
+      "sha256": "fcb9ced53ef61f772c5a268dfe0928ec43487bf9bdbe159370e669075529d055"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/command.json",
+      "bytes": 738,
+      "sha256": "3ebaef9332e988a26f2b343362827a93adb873f411003d2917a21df7ece019f3"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/mctracer_console.log",
+      "bytes": 5121,
+      "sha256": "da3abdd326e84f2762f7ca37e3f5559570dfacfb3663831c2ccefdf5477df378"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/summary.json",
+      "bytes": 878,
+      "sha256": "1a3dbb0c6f4f053d2c025c2929f56c3661b3bc6e29d2fb8669440f959f7e4d98"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_1_v022_interleave/v022_case2_pair2_1_v022_interleave-174266.json",
+      "bytes": 95321,
+      "sha256": "265594359d2c294ad685c5344cb635bf5efdc85f17348c5f43f7c6d7554ec86c"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/command.json",
+      "bytes": 708,
+      "sha256": "f1750a7b2c43a7b134302c0dd6ccbc5e213b08015666f0910e5d170bd40407c3"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/mctracer_console.log",
+      "bytes": 5091,
+      "sha256": "62dc9ec99389d0bcffccb6c8b4a419ecf2275d230e3b00d72c940ff037baeb05"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/summary.json",
+      "bytes": 865,
+      "sha256": "f7094289e430d27ce871b97435b0d08db3f398a2c2948b969ba6c83f89fc5d7a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair2_2_v021_parent/v022_case2_pair2_2_v021_parent-174393.json",
+      "bytes": 95323,
+      "sha256": "2fc070563d96075056a824f536e3e2cc8c9425dc677bbe9d20af7c49382e98fc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/command.json",
+      "bytes": 708,
+      "sha256": "d11880575509472d82c832df537ab47b6050d2250415cd7e7be9ca3cc83109a6"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/mctracer_console.log",
+      "bytes": 5091,
+      "sha256": "cd0413cd2e98662757b891853b571266893be01d1968e2809ba71283ca3e9efc"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/summary.json",
+      "bytes": 866,
+      "sha256": "5e52ad6e2be9332f197ab107989f6d47c654bddef789cffc4cbf64081238422d"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_1_v021_parent/v022_case2_pair3_1_v021_parent-174521.json",
+      "bytes": 95322,
+      "sha256": "a3a56a4c8a1a8ba10fa53fc9f8427feaacc1997b9a137942315cebcd39907b85"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/command.json",
+      "bytes": 738,
+      "sha256": "10ce2684b561a47fdae696a5d8bc57c2266f2b8223d1a7852040c7efe0b7eda9"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/mctracer_console.log",
+      "bytes": 5121,
+      "sha256": "16eef9d86058f30b2253cf0a212095acd0bd025b3956fd6ff3ea27ade43aab8a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/summary.json",
+      "bytes": 878,
+      "sha256": "a4670de94f2f92483d96954985fa117397958fe1b8669119521632cc5196159a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/pair3_2_v022_interleave/v022_case2_pair3_2_v022_interleave-174650.json",
+      "bytes": 95304,
+      "sha256": "aef05ba1b68cd49beceb57c6bb8429052deea6132aa234860880bd74c896b5dd"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_interleave_paired/v022_interleave_vs_v021_case2_mctracer_summary.json",
+      "bytes": 9640,
+      "sha256": "5f3e36ff48a02176632dcabce0c29b659f18a91690bc7c63f6ed71315247f91a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/command.json",
+      "bytes": 697,
+      "sha256": "77983e544714413d01dea945cb6189edeb06687f312a6cb71d8e3e52cf1e2ef6"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/mctracer_console.log",
+      "bytes": 5080,
+      "sha256": "cea1dd34a32ab3c174ea5c8252c71d08b69ef77e2b1039ae862a92da09cca91b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/summary.json",
+      "bytes": 865,
+      "sha256": "31c3ef4ee1561de09ef9508f600ce3b88ef0a6d3540812b37d19426b80b3acc9"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_1_v021_parent/v022_case2_pair1_1_v021_parent-171274.json",
+      "bytes": 95220,
+      "sha256": "7891a7274586b8dafc6bb53a7e2cdad6ba59457e79c03e8adecdb85b8b9a10c1"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/command.json",
+      "bytes": 727,
+      "sha256": "a2ca4141984d6b42af7574e241f70b176dd4512b062337d63c1b16c13ac38b48"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/mctracer_console.log",
+      "bytes": 5110,
+      "sha256": "b695a433deecf415f7eb2d1c6f838ae828c1cfe40c99de24c30140146edf560e"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/summary.json",
+      "bytes": 876,
+      "sha256": "1d4cef59518693e31ed7fae69c149d5629221ad0357936fdc9e7f595be110be4"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair1_2_v022_split_gate/v022_case2_pair1_2_v022_split_gate-171403.json",
+      "bytes": 95320,
+      "sha256": "d83b1ba42a899a85dfb0e13d0eddf0b9e318170eb6033ebc31408a9b57f58667"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/command.json",
+      "bytes": 727,
+      "sha256": "3ca60a2a63ad37de5cf96f2b5e1f313dcfe50363f99e589adfd9e0a4a7da4aa0"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/mctracer_console.log",
+      "bytes": 5110,
+      "sha256": "4a18194fe4f7264e3d3ad541ca107c11266bd2070c427ff66874f901f39b4ae6"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/summary.json",
+      "bytes": 867,
+      "sha256": "8b9039817f88ff4371dc67e55a401675c178b35d898fc2f5e3e7045b173fe9e8"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_1_v022_split_gate/v022_case2_pair2_1_v022_split_gate-171531.json",
+      "bytes": 95323,
+      "sha256": "d094a1366143cf1bf1c5ab0054c6b720fe1cac0e685363a23303f8931cdb33a5"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/command.json",
+      "bytes": 697,
+      "sha256": "caf8193ea7efe0a2609d99f4e5e170f366fecec0ab5ef3cbf6ec9f0bdef88061"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/mctracer_console.log",
+      "bytes": 5080,
+      "sha256": "9c5a092acc764d22ade60cc6e02d4fe0601085546aaa3dd89fd4a121d7907c50"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/summary.json",
+      "bytes": 854,
+      "sha256": "84ea4063c8e34ef69a2dfe6979589cc5d138cae9f1b3e3996cfaeaa0ff513ec7"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair2_2_v021_parent/v022_case2_pair2_2_v021_parent-171658.json",
+      "bytes": 95318,
+      "sha256": "2af519d83fe6a2d565f635597b151663bb75977881f3073fadda104061eb0ab2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/command.json",
+      "bytes": 697,
+      "sha256": "f32fd0d01cd98e44c1f89391a41466aa02bde90fbd285411c37d8251ec13bfe3"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/mctracer_console.log",
+      "bytes": 5080,
+      "sha256": "a79555c40cef2df5d6c3aa42d0a5f147e93ec00e35672494cf8862492a3404a9"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/summary.json",
+      "bytes": 856,
+      "sha256": "691e8b66f5095c96d7a7593a245a0c0cfd2af03c5db09e99f193fcac72d17207"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_1_v021_parent/v022_case2_pair3_1_v021_parent-171786.json",
+      "bytes": 95307,
+      "sha256": "23f3a26b3d702b04b98fae62a1ca19b54931450d0fdc894e6f48e80350330bbe"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/command.json",
+      "bytes": 727,
+      "sha256": "47c07634c17d8275a744a4653349b7ea4062dc69c56d7798a64a6440eb5d915a"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/mctracer_console.log",
+      "bytes": 5110,
+      "sha256": "ddd69000a6fea950ae123cfba3beb5c90ebbf03b6e0d8d8c3b74cb352b9b68fe"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/summary.json",
+      "bytes": 867,
+      "sha256": "d5c0e2023dc90800fda972a7d6d745fe55abd36a119fad292a7d1ea8f14f2b13"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/pair3_2_v022_split_gate/v022_case2_pair3_2_v022_split_gate-171914.json",
+      "bytes": 95307,
+      "sha256": "dcaaa618ccb377d19426e66de49f8a1624bef78cdb27e29f7542d44496cb5f72"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mctracer/case2_paired/v022_split_gate_vs_v021_case2_mctracer_summary.json",
+      "bytes": 9637,
+      "sha256": "f14c26280e588f001fff27f96a3efdce96d1250d1c0220d714361431f9de3754"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_hbm_ap_samples.txt",
+      "bytes": 65016,
+      "sha256": "8f14deca6ac1ca0a9993192682fe67f88c0d126656d530aa0c3b91da1066f1c4"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_mxsmi_snapshot.txt",
+      "bytes": 2302,
+      "sha256": "a4d6cd1fc405e1a1726e4d341304ccee5ed25a1204e1eb8b5de8ac5a953517de"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_sampled_workload.log",
+      "bytes": 5281,
+      "sha256": "ab40e1f923ce8fffd3fcfd8b5173bb4d532903966b8aa4004aec50bb0c433b85"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/profiler/mxsmi/v022_step1_split_gate_staging_sc-16g_workload_command.txt",
+      "bytes": 335,
+      "sha256": "14a21e9e4c796c53fa90b4d858a25c7c040cac3cbaaab82f5f944b8b6c28f1b2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/v022_codegen_scope.json",
+      "bytes": 517,
+      "sha256": "527db29bddb4adee810586084e3f216acb02d821a1f851b3e1cf162353c1245b"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/v022_quarter_failure.json",
+      "bytes": 724,
+      "sha256": "d81523624f38b0e795ac866b416e9ecbbf8f343fac4e6223dc66b90966f4b1a2"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_environment.txt",
+      "bytes": 9751,
+      "sha256": "8471b2c1d860a7bd561738f06657ae3feac158347f3da87c93e04f24d54f7928"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_report.md",
+      "bytes": 5595,
+      "sha256": "e3242ea6167085c3982d09376246b3ee341fd55bf13ef0438b4b0a601a1e85b7"
+    },
+    {
+      "path": "restart-rep/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_source_hashes.sha256",
+      "bytes": 363,
+      "sha256": "0c9ade386c309f6b479e3738c9e115df24610e23e275ed75d9c1fa8bf78ee66b"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/.gitattributes",
+      "bytes": 17,
+      "sha256": "f3a1c3452600a3f3cbcbfd97b3ec2e1bd82c0119afe5be73eaaa17c5e3360a4b"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/analyze_metax_isa.py",
+      "bytes": 4213,
+      "sha256": "6a347ba94efe7e09d934a3700c2d66541672561f32462cdde3b6b74c2ac6e7ac"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/capture_codegen_source.py",
+      "bytes": 4868,
+      "sha256": "ed54863e9ad7d208319b271d63ae743c404df9f5ef655217b67c56d8d7237d54"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/collect_environment.sh",
+      "bytes": 2553,
+      "sha256": "6d36bdda1e5574053e8873cc8aa1aa19088105dcfcd847325bc4c0db0bcbc57a"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/collect_mxsmi.sh",
+      "bytes": 1296,
+      "sha256": "6835aa300bc2b1ddde664e39b9e46266ad7ebcfdb5ba6404cb7d87160ef121ad"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/dump_tilelang_codegen.py",
+      "bytes": 2884,
+      "sha256": "96fd666c7bcd939013a92c26b7e71197b36856594b5aec2ceaedbde5405c49c1"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/extract_metax_isa.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/finalize_v022.py",
+      "bytes": 2776,
+      "sha256": "cc645795e24be2d7a8745a370a6ebc6e2fc9959942e5fb54b59fe11299e44368"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/profile_one_case_source.py",
+      "bytes": 1890,
+      "sha256": "9aa32af08a629a7f84841e61def6c86ef2feb3080c80f9497e04c25af5e10d0a"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/render_roofline.py",
+      "bytes": 10075,
+      "sha256": "9b022302085c9b022077a230fff26d63373f5119e8ef13b6e476fd9409e011a1"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_correctness.sh",
+      "bytes": 712,
+      "sha256": "5924fbb93c24454b94a8cc532a131f165f6ce9849e5a6151fc141a18cd89072d"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_iteration_bundle.sh",
+      "bytes": 806,
+      "sha256": "11662510b293ab33e31706a05c076ca21a9f4a2e28226e66a6e9ae0d19631d00"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_mcprofiler.sh",
+      "bytes": 714,
+      "sha256": "7a9a0c20ea22f572ebd73078b3b2de8790ad443526a385b976703a6b1179f840"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_mcprofiler_source.sh",
+      "bytes": 4125,
+      "sha256": "15ddf8bfc1ffa2dfc9283fc942114d478394ee63324302d7eae8784f86ec1553"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_mctracer.sh",
+      "bytes": 698,
+      "sha256": "f4adf436b5d9dd6d3ddf3a93f6a084cfffe1b74c13d5d316bcd1df73eb385d22"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_official_benchmark.sh",
+      "bytes": 660,
+      "sha256": "d4c647078b16025d396dcb386f350f253c97b265011203d39b67a55e97520e4c"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_official_source.py",
+      "bytes": 1276,
+      "sha256": "2dcecf45287dcf33ec956462d4de00c663a1ed4c4b5a90081792daecd19ab2ca"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_oj_benchmark.sh",
+      "bytes": 636,
+      "sha256": "7260202b134ae2306bcd5e840d7671b67ed74a87c7a7f6d249fab7f7f502812c"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_paired_interleave_oj.py",
+      "bytes": 7133,
+      "sha256": "a349af197c6dd810d3d8a6cac8f9344de5b855645f28ba42959b2b3acf8af827"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_paired_mctracer.py",
+      "bytes": 8925,
+      "sha256": "ed168213d6183222319d85ef0297137b2547e999f4dbd42556eec4bb3db25e12"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/run_source_oj.py",
+      "bytes": 2058,
+      "sha256": "d461e4b86a45e8d36882d43004ee14b0979fa758b7e2c8c05618343f00712abf"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/summarize_mcprofiler.py",
+      "bytes": 3748,
+      "sha256": "0f858b62fec1d2317079568fb3bbce7d23520ef1f4c8d72dde83f2a336251edb"
+    },
+    {
+      "path": "restart-scripts/v022_step1_split_gate_staging_sc-16g/v022_step1_split_gate_staging_sc-16g_scripts.md",
+      "bytes": 1682,
+      "sha256": "e16e1a7f273f8f10bdc3427e93b0d4734155c7109c0f4b1f630632b2143fc505"
+    }
+  ]
+}

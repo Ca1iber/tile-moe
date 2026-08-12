@@ -1,0 +1,20 @@
+{
+  "source": "v022_interleave_gate_a_quarters.py",
+  "source_sha256": "0dd42466090522e97618ae4673da88992bb309c7f8e31fbf5e3bc952672ddba2",
+  "case": 2,
+  "decision": "rejected_correctness_failure",
+  "resources": {
+    "step1_mt_registers": 256,
+    "step1_st_registers": 72,
+    "step1_static_max_warps_per_peu": 2
+  },
+  "correctness": {
+    "mismatched_elements": 26694367,
+    "total_elements": 32571392,
+    "mismatch_percent": 82.0,
+    "greatest_absolute_difference": 3.9755859375,
+    "rtol": 0.01,
+    "atol": 0.01
+  },
+  "interpretation": "T.unroll(4) quarter slicing is not a valid refinement of the accepted half-interleave lowering: it inflated address/thread-map state and did not preserve output coverage."
+}
