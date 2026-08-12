@@ -1,0 +1,123 @@
+{
+  "created_at_utc": "2026-08-12T09:16:47.021845+00:00",
+  "protocol": {
+    "case": 2,
+    "same_process": true,
+    "shared_input_weights": true,
+    "separate_scratch_outputs": true,
+    "pairs": 4,
+    "orders": "AB, BA alternating",
+    "warmup_per_window": 20,
+    "repeat_per_window": 2000
+  },
+  "sources": {
+    "parent": "/root/moe_runs/v024_step1_half_order_isolation/v023_parent.py",
+    "candidate": "/root/moe_runs/v024_step1_half_order_isolation/v024_middle_swap.py"
+  },
+  "correctness": "PASS for both, torch.assert_close rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "pair": 1,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 5.37252294921875
+    },
+    {
+      "pair": 1,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.2709892578125
+    },
+    {
+      "pair": 1,
+      "tag": "paired_change",
+      "change_percent": -1.8898698500862454
+    },
+    {
+      "pair": 2,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.27079638671875
+    },
+    {
+      "pair": 2,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 5.3728232421875
+    },
+    {
+      "pair": 2,
+      "tag": "paired_change",
+      "change_percent": -1.898943085780913
+    },
+    {
+      "pair": 3,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 5.3726669921875
+    },
+    {
+      "pair": 3,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.27074755859375
+    },
+    {
+      "pair": 3,
+      "tag": "paired_change",
+      "change_percent": -1.896998897232105
+    },
+    {
+      "pair": 4,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.270939453125
+    },
+    {
+      "pair": 4,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 5.37206884765625
+    },
+    {
+      "pair": 4,
+      "tag": "paired_change",
+      "change_percent": -1.8825036945565365
+    }
+  ],
+  "aggregate": {
+    "parent": {
+      "samples": [
+        5.37252294921875,
+        5.3728232421875,
+        5.3726669921875,
+        5.37206884765625
+      ],
+      "mean_ms": 5.372520507812499,
+      "median_ms": 5.372594970703124,
+      "pstdev_ms": 0.00028156199634099565
+    },
+    "candidate": {
+      "samples": [
+        5.2709892578125,
+        5.27079638671875,
+        5.27074755859375,
+        5.270939453125
+      ],
+      "mean_ms": 5.270868164062501,
+      "median_ms": 5.270867919921875,
+      "pstdev_ms": 9.930192960043056e-05
+    }
+  },
+  "paired": {
+    "changes_percent": [
+      -1.8898698500862454,
+      -1.898943085780913,
+      -1.896998897232105,
+      -1.8825036945565365
+    ],
+    "median_change_percent": -1.8934343736591752,
+    "mean_change_percent": -1.89207888191395,
+    "improved_pairs": 4
+  }
+}

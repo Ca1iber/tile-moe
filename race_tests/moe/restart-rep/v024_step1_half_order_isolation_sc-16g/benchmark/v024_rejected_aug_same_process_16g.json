@@ -1,0 +1,163 @@
+{
+  "created_at_utc": "2026-08-12T09:09:39.908470+00:00",
+  "protocol": {
+    "case": 2,
+    "same_process": true,
+    "shared_input_weights": true,
+    "separate_scratch_outputs": true,
+    "pairs": 6,
+    "orders": "AB, BA alternating",
+    "warmup_per_window": 5,
+    "repeat_per_window": 200
+  },
+  "sources": {
+    "parent": "/root/moe_runs/v024_step1_half_order_isolation/v023_parent.py",
+    "candidate": "/root/moe_runs/v024_step1_half_order_isolation/v024_aug.py"
+  },
+  "correctness": "PASS for both, torch.assert_close rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "pair": 1,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 4.9712255859375
+    },
+    {
+      "pair": 1,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.0621337890625
+    },
+    {
+      "pair": 1,
+      "tag": "paired_change",
+      "change_percent": 1.8286879473375706
+    },
+    {
+      "pair": 2,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.06624755859375
+    },
+    {
+      "pair": 2,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 4.97185791015625
+    },
+    {
+      "pair": 2,
+      "tag": "paired_change",
+      "change_percent": 1.8984783986824239
+    },
+    {
+      "pair": 3,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 4.972323913574218
+    },
+    {
+      "pair": 3,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.063989868164063
+    },
+    {
+      "pair": 3,
+      "tag": "paired_change",
+      "change_percent": 1.8435233943549179
+    },
+    {
+      "pair": 4,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.060092163085938
+    },
+    {
+      "pair": 4,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 4.970277099609375
+    },
+    {
+      "pair": 4,
+      "tag": "paired_change",
+      "change_percent": 1.8070433836298916
+    },
+    {
+      "pair": 5,
+      "position": 1,
+      "tag": "parent",
+      "average_ms": 4.971290893554688
+    },
+    {
+      "pair": 5,
+      "position": 2,
+      "tag": "candidate",
+      "average_ms": 5.064729614257812
+    },
+    {
+      "pair": 5,
+      "tag": "paired_change",
+      "change_percent": 1.879566549289402
+    },
+    {
+      "pair": 6,
+      "position": 1,
+      "tag": "candidate",
+      "average_ms": 5.062000732421875
+    },
+    {
+      "pair": 6,
+      "position": 2,
+      "tag": "parent",
+      "average_ms": 4.97025146484375
+    },
+    {
+      "pair": 6,
+      "tag": "paired_change",
+      "change_percent": 1.845968322268976
+    }
+  ],
+  "aggregate": {
+    "parent": {
+      "samples": [
+        4.9712255859375,
+        4.97185791015625,
+        4.972323913574218,
+        4.970277099609375,
+        4.971290893554688,
+        4.97025146484375
+      ],
+      "mean_ms": 4.971204477945964,
+      "median_ms": 4.971258239746094,
+      "pstdev_ms": 0.0007589782096286905
+    },
+    "candidate": {
+      "samples": [
+        5.0621337890625,
+        5.06624755859375,
+        5.063989868164063,
+        5.060092163085938,
+        5.064729614257812,
+        5.062000732421875
+      ],
+      "mean_ms": 5.063198954264323,
+      "median_ms": 5.063061828613281,
+      "pstdev_ms": 0.0020201038375479356
+    }
+  },
+  "paired": {
+    "changes_percent": [
+      1.8286879473375706,
+      1.8984783986824239,
+      1.8435233943549179,
+      1.8070433836298916,
+      1.879566549289402,
+      1.845968322268976
+    ],
+    "median_change_percent": 1.844745858311947,
+    "mean_change_percent": 1.8505446659271971,
+    "improved_pairs": 0
+  }
+}
