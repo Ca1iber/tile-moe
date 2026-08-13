@@ -1,0 +1,255 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v036_step2_odd_b0_tail_async_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v037_step2_continuous_async_sc-16g/submission.py
+index d004789f..45210f2f 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v036_step2_odd_b0_tail_async_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v037_step2_continuous_async_sc-16g/submission.py
+@@ -7,6 +7,7 @@ from tilelang.layout import make_swizzled_layout
+ _KERNEL_CACHE = {}
+ _WORKSPACE_CACHE = {}
+ _MOE_ASYNC_COPY_SOURCE = """
++#include <maca_async.h>
+ __device__ __forceinline__ void moe_memcpy_async_16(
+     void* dst_shared, const void* src_global, void* barrier_storage) {
+   *reinterpret_cast<b128vectype*>(barrier_storage) =
+@@ -21,6 +22,35 @@ __device__ __forceinline__ void moe_wait_async_16(const void* barrier_storage) {
+   barrier_arrive_and_wait(
+       *reinterpret_cast<const b128vectype*>(barrier_storage));
+ }
++__device__ __forceinline__ void moe_continuous_memcpy_async_16(
++    void* dst_shared, const void* src_global, void* barrier_storage) {
++  cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++      dst_shared, src_global);
++}
++__device__ __forceinline__ void moe_continuous_wait_all(
++    const void* barrier_storage) {
++  cooperative_groups::details::__pipeline_wait_prior(0);
++}
++__device__ __forceinline__ void moe_select_memcpy_async_16(
++    void* dst_shared, const void* src_global, void* barrier_storage,
++    int use_continuous) {
++  if (use_continuous) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        dst_shared, src_global);
++  } else {
++    *reinterpret_cast<b128vectype*>(barrier_storage) =
++        memcpy_async<16>(dst_shared, const_cast<void*>(src_global));
++  }
++}
++__device__ __forceinline__ void moe_select_wait_async_16(
++    const void* barrier_storage, int use_continuous) {
++  if (use_continuous) {
++    cooperative_groups::details::__pipeline_wait_prior(0);
++  } else {
++    barrier_arrive_and_wait(
++        *reinterpret_cast<const b128vectype*>(barrier_storage));
++  }
++}
+ """
+ 
+ 
+@@ -77,6 +107,7 @@ def run_kernel(
+     use_step2_input_prefetch = False
+     use_step2_half_b_pingpong = False
+     use_step2_row1_tail_async = False
++    use_step2_continuous_async = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -87,6 +118,7 @@ def run_kernel(
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
+         use_step2_row1_tail_async = True
++        use_step2_continuous_async = True
+     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -94,6 +126,9 @@ def run_kernel(
+         use_step1_prefetch_before_barrier = num_experts == 32
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
++        # mcTracer showed a repeatable Step2 regression for the 64-expert OJ
++        # shape, so keep the v036 token/wait path for both 7168x2048 cases.
++        use_step2_continuous_async = False
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -119,6 +154,7 @@ def run_kernel(
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_b_pingpong),
+         bool(use_step2_row1_tail_async),
++        bool(use_step2_continuous_async),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -332,6 +368,7 @@ def run_kernel(
+             use_step2_input_prefetch,
+             use_step2_half_b_pingpong,
+             use_step2_row1_tail_async,
++            use_step2_continuous_async,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -698,7 +735,7 @@ def run_kernel(
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_memcpy_async_16",
++                                        "moe_select_memcpy_async_16",
+                                         T.address_of(
+                                             down_shared[logical_row_0, logical_col_0]
+                                         ),
+@@ -710,6 +747,7 @@ def run_kernel(
+                                             ]
+                                         ),
+                                         T.access_ptr(down_copy_barrier[row_batch_0 * 4], "w", extent=4),
++                                        use_step2_continuous_async,
+                                     )
+                                 )
+                             T.copy(
+@@ -727,12 +765,15 @@ def run_kernel(
+                                     row_offset=block_dhidden_step2,
+                                 )
+                                 step2_mma.mma(up_logits_shared, down_local, out_local_0, ki)
+-                            for wait_slot_0 in T.serial(4):
++                            for wait_slot_0 in T.serial(
++                                0 if use_step2_continuous_async else 4
++                            ):
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_wait_async_16",
++                                        "moe_select_wait_async_16",
+                                         T.access_ptr(down_copy_barrier[wait_slot_0 * 4], "r", extent=4),
++                                        use_step2_continuous_async,
+                                     )
+                                 )
+                             T.sync_threads()
+@@ -743,7 +784,7 @@ def run_kernel(
+                             # output band was missing.  The other three batches
+                             # are independently correct and can overlap B1 MMA.
+                             for row_batch_1 in T.serial(
+-                                1
++                                2
+                                 if use_step2_row1_tail_async
+                                 else block_dhidden_step2 // (threads // 8)
+                             ):
+@@ -772,7 +813,7 @@ def run_kernel(
+                                     )
+                                 )
+                             for row_batch_1_async in T.serial(
+-                                1,
++                                2,
+                                 block_dhidden_step2 // (threads // 8)
+                                 if use_step2_row1_tail_async
+                                 else 1,
+@@ -788,7 +829,7 @@ def run_kernel(
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_memcpy_async_16",
++                                        "moe_select_memcpy_async_16",
+                                         T.address_of(
+                                             down_shared[
+                                                 block_dhidden_step2 + logical_row_1_async,
+@@ -808,6 +849,7 @@ def run_kernel(
+                                             "w",
+                                             extent=4,
+                                         ),
++                                        use_step2_continuous_async,
+                                     )
+                                 )
+                             for ki in T.serial(0, block_dexpert_step2 // 32):
+@@ -819,18 +861,19 @@ def run_kernel(
+                                 )
+                                 step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
+                             for wait_slot_1 in T.serial(
+-                                1,
+-                                block_dhidden_step2 // (threads // 8)
++                                2,
++                                2
+                                 if use_step2_row1_tail_async
+                                 else 1,
+                             ):
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_wait_async_16",
++                                        "moe_select_wait_async_16",
+                                         T.access_ptr(
+                                             down_copy_barrier[wait_slot_1 * 4], "r", extent=4
+                                         ),
++                                        use_step2_continuous_async,
+                                     )
+                                 )
+                             T.sync_threads()
+@@ -845,7 +888,7 @@ def run_kernel(
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_memcpy_async_16",
++                                        "moe_select_memcpy_async_16",
+                                         T.address_of(
+                                             down_shared[logical_row_2, logical_col_2]
+                                         ),
+@@ -857,6 +900,7 @@ def run_kernel(
+                                             ]
+                                         ),
+                                         T.access_ptr(down_copy_barrier[row_batch_2 * 4], "w", extent=4),
++                                        use_step2_continuous_async,
+                                     )
+                                 )
+                             k_next_even = k_odd + 1
+@@ -876,12 +920,15 @@ def run_kernel(
+                                     row_offset=block_dhidden_step2,
+                                 )
+                                 step2_mma.mma(up_logits_prefetch, down_local, out_local_0, ki)
+-                            for wait_slot_2 in T.serial(4):
++                            for wait_slot_2 in T.serial(
++                                0 if use_step2_continuous_async else 4
++                            ):
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_wait_async_16",
++                                        "moe_select_wait_async_16",
+                                         T.access_ptr(down_copy_barrier[wait_slot_2 * 4], "r", extent=4),
++                                        use_step2_continuous_async,
+                                     )
+                                 )
+                             T.sync_threads()
+@@ -896,7 +943,7 @@ def run_kernel(
+                                     T.evaluate(
+                                         T.call_extern(
+                                             "handle",
+-                                            "moe_memcpy_async_16",
++                                            "moe_select_memcpy_async_16",
+                                             T.address_of(
+                                                 down_shared[
+                                                     block_dhidden_step2 + logical_row_3,
+@@ -911,6 +958,7 @@ def run_kernel(
+                                                 ]
+                                             ),
+                                             T.access_ptr(down_copy_barrier[row_batch_3 * 4], "w", extent=4),
++                                            use_step2_continuous_async,
+                                         )
+                                     )
+                             for ki in T.serial(0, block_dexpert_step2 // 32):
+@@ -922,14 +970,17 @@ def run_kernel(
+                                 )
+                                 step2_mma.mma(up_logits_prefetch, down_local, out_local_1, ki)
+                             if k_pair + 1 < step2_k_tiles // 2:
+-                                for wait_slot_3 in T.serial(4):
++                                for wait_slot_3 in T.serial(
++                                    0 if use_step2_continuous_async else 4
++                                ):
+                                     T.evaluate(
+                                         T.call_extern(
+                                             "handle",
+-                                            "moe_wait_async_16",
++                                            "moe_select_wait_async_16",
+                                             T.access_ptr(
+                                                 down_copy_barrier[wait_slot_3 * 4], "r", extent=4
+                                             ),
++                                            use_step2_continuous_async,
+                                         )
+                                     )
+                                 T.sync_threads()

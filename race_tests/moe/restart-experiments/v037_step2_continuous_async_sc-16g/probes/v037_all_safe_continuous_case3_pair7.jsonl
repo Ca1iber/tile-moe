@@ -1,0 +1,151 @@
+2026-08-13 18:16:10  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:133): TileLang begins to compile kernel `kernel` with `out_idx=None`
+2026-08-13 18:16:13  [TileLang:tilelang:WARNING] (phase.py:274): Should support PDL for maca target
+2026-08-13 18:16:16  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:141): TileLang completes to compile kernel `kernel`
+{"pair": 1, "order": ["parent", "candidate"], "parent_ms": 10.65255126953125, "candidate_ms": 10.643558349609375, "change_percent": -0.08442033926273629}
+{"pair": 2, "order": ["candidate", "parent"], "parent_ms": 10.649945068359376, "candidate_ms": 10.6433740234375, "change_percent": -0.06170027056193739}
+{"pair": 3, "order": ["parent", "candidate"], "parent_ms": 10.651407470703125, "candidate_ms": 10.6342138671875, "change_percent": -0.16142095364314324}
+{"pair": 4, "order": ["candidate", "parent"], "parent_ms": 10.6491162109375, "candidate_ms": 10.63646240234375, "change_percent": -0.11882496484313387}
+{"pair": 5, "order": ["parent", "candidate"], "parent_ms": 10.64684814453125, "candidate_ms": 10.642554931640625, "change_percent": -0.04032379190859192}
+{"pair": 6, "order": ["candidate", "parent"], "parent_ms": 10.657945556640625, "candidate_ms": 10.646141357421875, "change_percent": -0.11075492134968723}
+{"pair": 7, "order": ["parent", "candidate"], "parent_ms": 10.653624267578126, "candidate_ms": 10.640709228515625, "change_percent": -0.12122671813952213}
+{
+  "protocol": {
+    "case": 3,
+    "shape": {
+      "experts": 64,
+      "hidden": 7168,
+      "intermediate": 2048,
+      "valid_tokens": 9088
+    },
+    "total_padded": 12288,
+    "pairs": 7,
+    "warmup": 25,
+    "repeat": 100,
+    "orders": "AB/BA alternating",
+    "timing": "torch.cuda.Event average per run"
+  },
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-submission/v036_step2_odd_b0_tail_async_sc-16g/submission.py",
+    "candidate": "/tmp/v037_probe_all_safe_continuous_nowait.py"
+  },
+  "rows": [
+    {
+      "pair": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.65255126953125,
+      "candidate_ms": 10.643558349609375,
+      "change_percent": -0.08442033926273629
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 10.649945068359376,
+      "candidate_ms": 10.6433740234375,
+      "change_percent": -0.06170027056193739
+    },
+    {
+      "pair": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.651407470703125,
+      "candidate_ms": 10.6342138671875,
+      "change_percent": -0.16142095364314324
+    },
+    {
+      "pair": 4,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 10.6491162109375,
+      "candidate_ms": 10.63646240234375,
+      "change_percent": -0.11882496484313387
+    },
+    {
+      "pair": 5,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.64684814453125,
+      "candidate_ms": 10.642554931640625,
+      "change_percent": -0.04032379190859192
+    },
+    {
+      "pair": 6,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 10.657945556640625,
+      "candidate_ms": 10.646141357421875,
+      "change_percent": -0.11075492134968723
+    },
+    {
+      "pair": 7,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.653624267578126,
+      "candidate_ms": 10.640709228515625,
+      "change_percent": -0.12122671813952213
+    }
+  ],
+  "parent": {
+    "samples_ms": [
+      10.65255126953125,
+      10.649945068359376,
+      10.651407470703125,
+      10.6491162109375,
+      10.64684814453125,
+      10.657945556640625,
+      10.653624267578126
+    ],
+    "mean_ms": 10.651633998325893,
+    "median_ms": 10.651407470703125,
+    "min_ms": 10.64684814453125,
+    "max_ms": 10.657945556640625,
+    "pstdev_ms": 0.003312007927728469
+  },
+  "candidate": {
+    "samples_ms": [
+      10.643558349609375,
+      10.6433740234375,
+      10.6342138671875,
+      10.63646240234375,
+      10.642554931640625,
+      10.646141357421875,
+      10.640709228515625
+    ],
+    "mean_ms": 10.641002022879464,
+    "median_ms": 10.642554931640625,
+    "min_ms": 10.6342138671875,
+    "max_ms": 10.646141357421875,
+    "pstdev_ms": 0.003923526456842877
+  },
+  "paired_change_percent": {
+    "samples_ms": [
+      -0.08442033926273629,
+      -0.06170027056193739,
+      -0.16142095364314324,
+      -0.11882496484313387,
+      -0.04032379190859192,
+      -0.11075492134968723,
+      -0.12122671813952213
+    ],
+    "mean_ms": -0.09981027995839316,
+    "median_ms": -0.11075492134968723,
+    "min_ms": -0.16142095364314324,
+    "max_ms": -0.04032379190859192,
+    "pstdev_ms": 0.0377278746969055
+  }
+}
