@@ -1,0 +1,43 @@
+{
+  "submission_sha256": "20a591b49e161bf07b841d41c13f6db644e00a8b237318b49567e860fdd2a2d0",
+  "case1": {
+    "device_cpp_sha256": "706a0cfb9526bfa7a1398be88f831f959cccbcc2a3b48702640ac0ae4780e628",
+    "assembly_sha256": "eab43afe317395b1e3bb4cf0dd655df18346b3854cc5ab5cb05de89f65b326c0",
+    "text_sha256": "a36aa6fa5c5965e296d05f02a6059a7ccdc7c6ce3f0f7d2d1eabcff8a2430366",
+    "step1_resources": "220 MT / 52 ST / 0 private / 0 stack / 2 static waves per PEU",
+    "v040_step1_resources": "204 MT / 28 ST / 0 private / 0 stack / 2 static waves per PEU",
+    "isa_static_step1_counts": {
+      "v040": {
+        "mma": 128,
+        "ldg": 36,
+        "ldg_bsm": 32,
+        "sts": 0,
+        "lds": 32,
+        "barrier": 2,
+        "snop": 431,
+        "ldp": 0,
+        "stp": 0
+      },
+      "v041": {
+        "mma": 128,
+        "ldg": 68,
+        "ldg_bsm": 64,
+        "sts": 0,
+        "lds": 32,
+        "barrier": 2,
+        "snop": 563,
+        "ldp": 0,
+        "stp": 0
+      }
+    }
+  },
+  "case2": {
+    "device_cpp_sha256": "b5f77d9bd5f4a58567cc2d1adead2c6bc2597b15338f26f7ca4a018877137ec8",
+    "byte_identical_to_v040": true
+  },
+  "case3": {
+    "device_cpp_sha256": "1ffdcbfcaa0f97b4cc18e423e42167a692eac0fffba7b6b77822f9d55d6a5477",
+    "byte_identical_to_v040": true
+  },
+  "caveat": "Static text sites changed because one active wave executes a longer unrolled producer loop. Dynamic addresses and bytes are unchanged; static counts are not dynamic work counts."
+}
