@@ -1,0 +1,47 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v038_step2_two_wave_batch0_async_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v039_step2_row0_two_wave_async_sc-16g/submission.py
+index 1662e6d9..0861d908 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v038_step2_two_wave_batch0_async_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v039_step2_row0_two_wave_async_sc-16g/submission.py
+@@ -726,14 +726,24 @@ def run_kernel(
+                             k_odd = k_even + 1
+                             async_tx = T.get_thread_binding()
+ 
+-                            # Copy B1(even) while B0(even) feeds MMA.
+-                            for row_batch_0 in T.serial(block_dhidden_step2 // (threads // 8)):
+-                                logical_row_0 = row_batch_0 * (threads // 8) + async_tx // 8
+-                                physical_group_0 = async_tx % 8
+-                                logical_group_0 = physical_group_0 ^ (logical_row_0 % 8)
+-                                logical_col_0 = logical_group_0 * 8
+-                                T.evaluate(
+-                                    T.call_extern(
++                            # Copy B1(even) while B0(even) feeds MMA.  As with
++                            # v038 row1 batch0, map each 32-row copy batch onto
++                            # the first two waves: eight 16-row rounds preserve
++                            # all 1024 transactions while reducing per-batch
++                            # four-wave BSM contention.  This mapping is only
++                            # enabled for the Case1 continuous path.
++                            for row_batch_0 in T.serial(
++                                8 if use_step2_continuous_async else block_dhidden_step2 // (threads // 8)
++                            ):
++                                if (not use_step2_continuous_async) or async_tx < 128:
++                                    logical_row_0 = row_batch_0 * (
++                                        16 if use_step2_continuous_async else threads // 8
++                                    ) + async_tx // 8
++                                    physical_group_0 = async_tx % 8
++                                    logical_group_0 = physical_group_0 ^ (logical_row_0 % 8)
++                                    logical_col_0 = logical_group_0 * 8
++                                    T.evaluate(
++                                        T.call_extern(
+                                         "handle",
+                                         "moe_select_memcpy_async_16",
+                                         T.address_of(
+@@ -748,8 +758,8 @@ def run_kernel(
+                                         ),
+                                         T.access_ptr(down_copy_barrier[row_batch_0 * 4], "w", extent=4),
+                                         use_step2_continuous_async,
++                                        )
+                                     )
+-                                )
+                             T.copy(
+                                 up_logits[
+                                     block_start : block_start + block_token,
