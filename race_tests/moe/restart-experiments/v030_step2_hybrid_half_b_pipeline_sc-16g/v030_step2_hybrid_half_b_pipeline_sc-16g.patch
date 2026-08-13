@@ -1,0 +1,258 @@
+--- v027_submission.py
++++ v030_submission.py
+@@ -6,6 +6,22 @@
+ 
+ _KERNEL_CACHE = {}
+ _WORKSPACE_CACHE = {}
++_MOE_ASYNC_COPY_SOURCE = """
++__device__ __forceinline__ void moe_memcpy_async_16(
++    void* dst_shared, const void* src_global, void* barrier_storage) {
++  *reinterpret_cast<b128vectype*>(barrier_storage) =
++      memcpy_async<16>(dst_shared, const_cast<void*>(src_global));
++}
++__device__ __forceinline__ void moe_memcpy_sync_16(
++    void* dst_shared, const void* src_global, void* barrier_storage) {
++  *reinterpret_cast<uint4*>(dst_shared) =
++      *reinterpret_cast<const uint4*>(src_global);
++}
++__device__ __forceinline__ void moe_wait_async_16(const void* barrier_storage) {
++  barrier_arrive_and_wait(
++      *reinterpret_cast<const b128vectype*>(barrier_storage));
++}
++"""
+ 
+ 
+ def _workspace(stacked_expert_tokens, intermediate):
+@@ -59,6 +75,7 @@
+     use_step1_input_prefetch = False
+     use_step1_prefetch_before_barrier = False
+     use_step2_input_prefetch = False
++    use_step2_half_b_pingpong = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -73,6 +90,7 @@
+         use_step1_input_prefetch = True
+         use_step1_prefetch_before_barrier = num_experts == 32
+         use_step2_input_prefetch = True
++        use_step2_half_b_pingpong = num_experts == 32
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -96,6 +114,7 @@
+         bool(use_step1_input_prefetch),
+         bool(use_step1_prefetch_before_barrier),
+         bool(use_step2_input_prefetch),
++        bool(use_step2_half_b_pingpong),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -307,6 +326,7 @@
+             use_step1_input_prefetch,
+             use_step1_prefetch_before_barrier,
+             use_step2_input_prefetch,
++            use_step2_half_b_pingpong,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -612,6 +632,7 @@
+                     out_local_1 = T.alloc_fragment((block_token, block_dhidden_step2), dtype=accum_dtype)
+                     down_local = T.alloc_local((step2_mma.warp_cols * step2_mma.k_pack * step2_mma.local_size_b), dtype=dtype)
+                     routed_weight_local = T.alloc_local((2,), dtype=T.float32)
++                    down_copy_barrier = T.alloc_local((16,), dtype=T.uint32)
+ 
+                     T.annotate_layout(
+                         {
+@@ -636,7 +657,191 @@
+ 
+                     T.clear(out_local_0)
+                     T.clear(out_local_1)
+-                    if use_step2_input_prefetch:
++                    if use_step2_half_b_pingpong:
++                        T.import_source(_MOE_ASYNC_COPY_SOURCE)
++                        # Split the 256x64 B tile into two 128x64 stages.  The
++                        # public TileLang extern hook emits MXMACA's 16-byte
++                        # global-to-shared BSM copy without importing TVM or a
++                        # private intrinsic module.
++                        T.copy(
++                            up_logits[block_start : block_start + block_token, 0:block_dexpert_step2],
++                            up_logits_shared,
++                        )
++                        T.copy(
++                            down[
++                                expert_id,
++                                by * step2_output_tile : by * step2_output_tile + block_dhidden_step2,
++                                0:block_dexpert_step2,
++                            ],
++                            down_shared[0:block_dhidden_step2, 0:block_dexpert_step2],
++                        )
++                        T.sync_threads()
++                        for k_pair in T.serial(step2_k_tiles // 2):
++                            k_even = k_pair * 2
++                            k_odd = k_even + 1
++                            async_tx = T.get_thread_binding()
++
++                            # Copy B1(even) while B0(even) feeds MMA.
++                            for row_batch_0 in T.serial(block_dhidden_step2 // (threads // 8)):
++                                logical_row_0 = row_batch_0 * (threads // 8) + async_tx // 8
++                                physical_group_0 = async_tx % 8
++                                logical_group_0 = physical_group_0 ^ (logical_row_0 % 8)
++                                logical_col_0 = logical_group_0 * 8
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_memcpy_async_16",
++                                        T.address_of(
++                                            down_shared[block_dhidden_step2 + logical_row_0, logical_col_0]
++                                        ),
++                                        T.address_of(
++                                            down[
++                                                expert_id,
++                                                by * step2_output_tile + block_dhidden_step2 + logical_row_0,
++                                                k_even * block_dexpert_step2 + logical_col_0,
++                                            ]
++                                        ),
++                                        T.access_ptr(down_copy_barrier[row_batch_0 * 4], "w", extent=4),
++                                    )
++                                )
++                            T.copy(
++                                up_logits[
++                                    block_start : block_start + block_token,
++                                    k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
++                                ],
++                                up_logits_prefetch,
++                            )
++                            for ki in T.serial(0, block_dexpert_step2 // 32):
++                                step2_mma.ldmatrix_b(
++                                    down_local,
++                                    down_shared,
++                                    ki,
++                                )
++                                step2_mma.mma(up_logits_shared, down_local, out_local_0, ki)
++                            for wait_slot_0 in T.serial(4):
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_wait_async_16",
++                                        T.access_ptr(down_copy_barrier[wait_slot_0 * 4], "r", extent=4),
++                                    )
++                                )
++                            T.sync_threads()
++
++                            # Copy B0(odd) while B1(even) feeds MMA.
++                            for row_batch_1 in T.serial(block_dhidden_step2 // (threads // 8)):
++                                logical_row_1 = row_batch_1 * (threads // 8) + async_tx // 8
++                                physical_group_1 = async_tx % 8
++                                logical_group_1 = physical_group_1 ^ (logical_row_1 % 8)
++                                logical_col_1 = logical_group_1 * 8
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_memcpy_sync_16",
++                                        T.address_of(down_shared[logical_row_1, logical_col_1]),
++                                        T.address_of(
++                                            down[
++                                                expert_id,
++                                                by * step2_output_tile + logical_row_1,
++                                                k_odd * block_dexpert_step2 + logical_col_1,
++                                            ]
++                                        ),
++                                        T.access_ptr(down_copy_barrier[row_batch_1 * 4], "w", extent=4),
++                                    )
++                                )
++                            for ki in T.serial(0, block_dexpert_step2 // 32):
++                                step2_mma.ldmatrix_b(
++                                    down_local,
++                                    down_shared,
++                                    ki,
++                                    row_offset=block_dhidden_step2,
++                                )
++                                step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
++                            T.sync_threads()
++
++                            # Copy B1(odd) while B0(odd) feeds MMA, and prepare
++                            # the next even A fragment when another pair exists.
++                            for row_batch_2 in T.serial(block_dhidden_step2 // (threads // 8)):
++                                logical_row_2 = row_batch_2 * (threads // 8) + async_tx // 8
++                                physical_group_2 = async_tx % 8
++                                logical_group_2 = physical_group_2 ^ (logical_row_2 % 8)
++                                logical_col_2 = logical_group_2 * 8
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_memcpy_async_16",
++                                        T.address_of(
++                                            down_shared[block_dhidden_step2 + logical_row_2, logical_col_2]
++                                        ),
++                                        T.address_of(
++                                            down[
++                                                expert_id,
++                                                by * step2_output_tile + block_dhidden_step2 + logical_row_2,
++                                                k_odd * block_dexpert_step2 + logical_col_2,
++                                            ]
++                                        ),
++                                        T.access_ptr(down_copy_barrier[row_batch_2 * 4], "w", extent=4),
++                                    )
++                                )
++                            k_next_even = k_odd + 1
++                            if k_pair + 1 < step2_k_tiles // 2:
++                                T.copy(
++                                    up_logits[
++                                        block_start : block_start + block_token,
++                                        k_next_even * block_dexpert_step2 : (k_next_even + 1) * block_dexpert_step2,
++                                    ],
++                                    up_logits_shared,
++                                )
++                            for ki in T.serial(0, block_dexpert_step2 // 32):
++                                step2_mma.ldmatrix_b(
++                                    down_local,
++                                    down_shared,
++                                    ki,
++                                )
++                                step2_mma.mma(up_logits_prefetch, down_local, out_local_0, ki)
++                            for wait_slot_2 in T.serial(4):
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_wait_async_16",
++                                        T.access_ptr(down_copy_barrier[wait_slot_2 * 4], "r", extent=4),
++                                    )
++                                )
++                            T.sync_threads()
++
++                            # Copy B0(next even) while B1(odd) feeds MMA.
++                            if k_pair + 1 < step2_k_tiles // 2:
++                                for row_batch_3 in T.serial(block_dhidden_step2 // (threads // 8)):
++                                    logical_row_3 = row_batch_3 * (threads // 8) + async_tx // 8
++                                    physical_group_3 = async_tx % 8
++                                    logical_group_3 = physical_group_3 ^ (logical_row_3 % 8)
++                                    logical_col_3 = logical_group_3 * 8
++                                    T.evaluate(
++                                        T.call_extern(
++                                            "handle",
++                                            "moe_memcpy_sync_16",
++                                            T.address_of(down_shared[logical_row_3, logical_col_3]),
++                                            T.address_of(
++                                                down[
++                                                    expert_id,
++                                                    by * step2_output_tile + logical_row_3,
++                                                    k_next_even * block_dexpert_step2 + logical_col_3,
++                                                ]
++                                            ),
++                                            T.access_ptr(down_copy_barrier[row_batch_3 * 4], "w", extent=4),
++                                        )
++                                    )
++                            for ki in T.serial(0, block_dexpert_step2 // 32):
++                                step2_mma.ldmatrix_b(
++                                    down_local,
++                                    down_shared,
++                                    ki,
++                                    row_offset=block_dhidden_step2,
++                                )
++                                step2_mma.mma(up_logits_prefetch, down_local, out_local_1, ki)
++                            if k_pair + 1 < step2_k_tiles // 2:
++                                T.sync_threads()
++                    elif use_step2_input_prefetch:
+                         T.copy(
+                             up_logits[block_start : block_start + block_token, 0:block_dexpert_step2],
+                             up_logits_shared,
