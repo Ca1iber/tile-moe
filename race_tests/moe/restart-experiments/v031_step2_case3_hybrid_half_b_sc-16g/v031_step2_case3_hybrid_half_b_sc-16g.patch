@@ -1,0 +1,11 @@
+--- race_tests/moe/restart-submission/v030_step2_hybrid_half_b_pipeline_sc-16g/submission.py	2026-08-13 05:11:47.025194236 +0000
++++ race_tests/moe/restart-submission/v031_step2_case3_hybrid_half_b_sc-16g/submission.py	2026-08-13 10:08:27.491872157 +0000
+@@ -90,7 +90,7 @@
+         use_step1_input_prefetch = True
+         use_step1_prefetch_before_barrier = num_experts == 32
+         use_step2_input_prefetch = True
+-        use_step2_half_b_pingpong = num_experts == 32
++        use_step2_half_b_pingpong = True
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True

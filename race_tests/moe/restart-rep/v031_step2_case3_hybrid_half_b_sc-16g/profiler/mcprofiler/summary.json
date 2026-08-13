@@ -1,0 +1,59 @@
+{
+  "case": 3,
+  "step": 2,
+  "authority": "mcTracer paired runtime is elapsed-time authority; targeted mcProfiler replay counters are directional only",
+  "v030_report": "raw/baseline_retry_v030_case3_step2_targeted/mcprofiler_output/report.txt.json",
+  "v031_report": "raw/candidate_v031_case3_step2_targeted/mcprofiler_output/report.txt.json",
+  "replay_quarantine": {
+    "metrics": [
+      "Total Cycles",
+      "Average Wave life cycles",
+      "Achieved waves",
+      "Dispatched waves",
+      "absolute AP duty/active aggregates"
+    ],
+    "reason": "The multi-batch v030 replay produced inconsistent wave aggregates: retry1 reports Average Wave life=0 and achieved waves=2x dispatched; retry2 restores wave life but reports dispatched waves=0 and dilutes AP duty across replay batches. These fields are not used for elapsed-time or occupancy conclusions."
+  },
+  "stable_directional_metrics": {
+    "vl1_partition_stall_cycles": {
+      "v030": [416721059, 412286432, 412324247, 413650758],
+      "v031": [396654132, 380109393, 387484533, 383417989],
+      "change_percent": [-4.8154, -7.8045, -6.0243, -7.3088]
+    },
+    "wsm_stall_cycles": {
+      "v030": 284171053,
+      "v031": 248796283,
+      "change_percent": -12.4484
+    },
+    "vls_pipeline_stall_cycles": {
+      "v030": 3068944965,
+      "v031": 3035734375,
+      "change_percent": -1.0822
+    },
+    "global_memory_read_bytes_proxy": {
+      "v030": 39851517408,
+      "v031": 39430113088,
+      "change_percent": -1.0574
+    },
+    "shared_memory_access_efficiency_percent": {
+      "v030": 100.0,
+      "v031": 100.0
+    },
+    "private_read_instructions": {
+      "v030": 0,
+      "v031": 0
+    },
+    "private_write_instructions": {
+      "v030": 0,
+      "v031": 0
+    }
+  },
+  "independent_resource_evidence": {
+    "step2_mt_registers": {"v030": 234, "v031": 234},
+    "step2_st_registers": {"v030": 52, "v031": 52},
+    "dynamic_shared_bytes": {"v030": 32768, "v031": 32768},
+    "private_bytes_per_thread": {"v030": 0, "v031": 0},
+    "static_max_warps_per_peu": {"v030": 2, "v031": 2}
+  },
+  "conclusion": "All four VL1 partitions and WSM stalls decline while compiler/mcTracer resources and spill stay unchanged. This supports improved Step2 operand feed, but mcTracer paired timings remain the runtime authority."
+}
