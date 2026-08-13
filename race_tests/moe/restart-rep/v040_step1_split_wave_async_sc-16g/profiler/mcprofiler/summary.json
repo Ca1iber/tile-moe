@@ -1,0 +1,65 @@
+{
+  "authority": "diagnostic replay; clean paired event benchmark and mcTracer own elapsed time",
+  "parent": "v039",
+  "candidate": "v040",
+  "case1_step1": {
+    "total_kcycles": {
+      "v039": 8646928.24,
+      "v040": 8140525.2,
+      "change_percent": -5.8564501282
+    },
+    "dispatched_waves": {
+      "v039": 1626148,
+      "v040": 1626148
+    },
+    "achieved_waves": {
+      "v039": 1626148,
+      "v040": 1626148
+    },
+    "ap_active_cycles": {
+      "v039": 2389668586,
+      "v040": 2351654789,
+      "change_percent": -1.5907560246
+    },
+    "wsm_stall": {
+      "v039": 62490617,
+      "v040": 20044006,
+      "change_percent": -67.9247750106
+    },
+    "vls_pipeline_stall": {
+      "v039": 742895598,
+      "v040": 929148992,
+      "change_percent": 25.0712744161
+    },
+    "vls_wdata_stall": {
+      "v039": 54018192,
+      "v040": 54018192
+    },
+    "vl1_partition_stall": {
+      "v039": [
+        90973231,
+        91092379,
+        89350259,
+        90960703
+      ],
+      "v040": [
+        99203633,
+        101230090,
+        98642422,
+        101084793
+      ],
+      "mean_change_percent": 10.4268236193
+    },
+    "private_read_write": {
+      "v039": [
+        0,
+        0
+      ],
+      "v040": [
+        0,
+        0
+      ]
+    },
+    "interpretation": "WSM wait collapses while VLS/VL1 queueing rises: the win is overlap/path migration, not uniformly lower memory pressure."
+  }
+}

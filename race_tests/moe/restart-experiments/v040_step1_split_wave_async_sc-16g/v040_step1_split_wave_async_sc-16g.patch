@@ -1,0 +1,163 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v039_step2_row0_two_wave_async_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v040_step1_split_wave_async_sc-16g/submission.py
+index 0861d908..b4c3fb4e 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v039_step2_row0_two_wave_async_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v040_step1_split_wave_async_sc-16g/submission.py
+@@ -104,6 +104,7 @@ def run_kernel(
+     use_grid_transpose_step2 = False
+     use_step1_input_prefetch = False
+     use_step1_prefetch_before_barrier = False
++    use_step1_split_wave_async = False
+     use_step2_input_prefetch = False
+     use_step2_half_b_pingpong = False
+     use_step2_row1_tail_async = False
+@@ -115,6 +116,7 @@ def run_kernel(
+     elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
++        use_step1_split_wave_async = True
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
+         use_step2_row1_tail_async = True
+@@ -151,6 +153,7 @@ def run_kernel(
+         bool(use_grid_transpose_step2),
+         bool(use_step1_input_prefetch),
+         bool(use_step1_prefetch_before_barrier),
++        bool(use_step1_split_wave_async),
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_b_pingpong),
+         bool(use_step2_row1_tail_async),
+@@ -365,6 +368,7 @@ def run_kernel(
+             use_grid_transpose_step2,
+             use_step1_input_prefetch,
+             use_step1_prefetch_before_barrier,
++            use_step1_split_wave_async,
+             use_step2_input_prefetch,
+             use_step2_half_b_pingpong,
+             use_step2_row1_tail_async,
+@@ -457,7 +461,115 @@ def run_kernel(
+ 
+                     T.clear(gate_local)
+                     T.clear(up_local)
+-                    if use_step1_input_prefetch:
++                    if use_step1_split_wave_async:
++                        T.import_source(_MOE_ASYNC_COPY_SOURCE)
++                        async_tx_step1 = T.get_thread_binding()
++
++                        # Balance the two 128x64 weight copies across the CTA:
++                        # waves 0/1 stage gate while waves 2/3 stage up.  Every
++                        # thread issues eight 16B continuous BSM transactions.
++                        for row_batch_step1_init in T.serial(8):
++                            if async_tx_step1 < 128:
++                                logical_row_step1_init = row_batch_step1_init * 16 + async_tx_step1 // 8
++                                physical_group_step1_init = async_tx_step1 % 8
++                                logical_group_step1_init = physical_group_step1_init ^ (logical_row_step1_init % 8)
++                                logical_col_step1_init = logical_group_step1_init * 8
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_continuous_memcpy_async_16",
++                                        T.address_of(gate_shared[logical_row_step1_init, logical_col_step1_init]),
++                                        T.address_of(
++                                            gate[
++                                                expert_id,
++                                                by * block_dexpert_step1 + logical_row_step1_init,
++                                                logical_col_step1_init,
++                                            ]
++                                        ),
++                                        T.address_of(gate_shared[0, 0]),
++                                    )
++                                )
++                            else:
++                                up_tx_step1_init = async_tx_step1 - 128
++                                up_row_step1_init = row_batch_step1_init * 16 + up_tx_step1_init // 8
++                                up_physical_group_step1_init = up_tx_step1_init % 8
++                                up_logical_group_step1_init = up_physical_group_step1_init ^ (up_row_step1_init % 8)
++                                up_col_step1_init = up_logical_group_step1_init * 8
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_continuous_memcpy_async_16",
++                                        T.address_of(up_shared[up_row_step1_init, up_col_step1_init]),
++                                        T.address_of(
++                                            up[
++                                                expert_id,
++                                                by * block_dexpert_step1 + up_row_step1_init,
++                                                up_col_step1_init,
++                                            ]
++                                        ),
++                                        T.address_of(up_shared[0, 0]),
++                                    )
++                                )
++
++                        for k_step1_async in T.serial(step1_k_tiles):
++                            T.copy(
++                                input[
++                                    block_start : block_start + block_token,
++                                    k_step1_async * block_dhidden_step1 : (k_step1_async + 1) * block_dhidden_step1,
++                                ],
++                                input_shared,
++                            )
++                            T.sync_threads()
++                            for ki_step1_async in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki_step1_async)
++                                step1_mma.mma(input_shared, weight_local, gate_local, ki_step1_async)
++                                step1_mma.ldmatrix_b(weight_local, up_shared, ki_step1_async)
++                                step1_mma.mma(input_shared, weight_local, up_local, ki_step1_async)
++                            if k_step1_async + 1 < step1_k_tiles:
++                                T.sync_threads()
++                                for row_batch_step1_next in T.serial(8):
++                                    if async_tx_step1 < 128:
++                                        logical_row_step1_next = row_batch_step1_next * 16 + async_tx_step1 // 8
++                                        physical_group_step1_next = async_tx_step1 % 8
++                                        logical_group_step1_next = physical_group_step1_next ^ (logical_row_step1_next % 8)
++                                        logical_col_step1_next = logical_group_step1_next * 8
++                                        T.evaluate(
++                                            T.call_extern(
++                                                "handle",
++                                                "moe_continuous_memcpy_async_16",
++                                                T.address_of(gate_shared[logical_row_step1_next, logical_col_step1_next]),
++                                                T.address_of(
++                                                    gate[
++                                                        expert_id,
++                                                        by * block_dexpert_step1 + logical_row_step1_next,
++                                                        (k_step1_async + 1) * block_dhidden_step1 + logical_col_step1_next,
++                                                    ]
++                                                ),
++                                                T.address_of(gate_shared[0, 0]),
++                                            )
++                                        )
++                                    else:
++                                        up_tx_step1_next = async_tx_step1 - 128
++                                        up_row_step1_next = row_batch_step1_next * 16 + up_tx_step1_next // 8
++                                        up_physical_group_step1_next = up_tx_step1_next % 8
++                                        up_logical_group_step1_next = up_physical_group_step1_next ^ (up_row_step1_next % 8)
++                                        up_col_step1_next = up_logical_group_step1_next * 8
++                                        T.evaluate(
++                                            T.call_extern(
++                                                "handle",
++                                                "moe_continuous_memcpy_async_16",
++                                                T.address_of(up_shared[up_row_step1_next, up_col_step1_next]),
++                                                T.address_of(
++                                                    up[
++                                                        expert_id,
++                                                        by * block_dexpert_step1 + up_row_step1_next,
++                                                        (k_step1_async + 1) * block_dhidden_step1 + up_col_step1_next,
++                                                    ]
++                                                ),
++                                                T.address_of(up_shared[0, 0]),
++                                            )
++                                        )
++                    elif use_step1_input_prefetch:
+                         T.copy(
+                             input[block_start : block_start + block_token, 0:block_dhidden_step1],
+                             input_shared,
+@@ -700,7 +812,8 @@ def run_kernel(
+                     T.clear(out_local_0)
+                     T.clear(out_local_1)
+                     if use_step2_half_b_pingpong:
+-                        T.import_source(_MOE_ASYNC_COPY_SOURCE)
++                        if not use_step1_split_wave_async:
++                            T.import_source(_MOE_ASYNC_COPY_SOURCE)
+                         # Split the 256x64 B tile into two 128x64 stages.  The
+                         # public TileLang extern hook emits MXMACA's 16-byte
+                         # global-to-shared BSM copy without importing TVM or a
