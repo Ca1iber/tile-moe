@@ -1,0 +1,45 @@
+{
+  "submission_sha256": "56e66c37871a9f5149b57c481aa2a18b4408314fe8d7c60f296d34baacc69e5d",
+  "case1": {
+    "device_cpp_sha256": "78b154bc151e6e9f64d97e1c0841fdb85357e36cbfbf2ad53b3458b4f237d83e",
+    "assembly_sha256": "501a3e8370c24f44d342746dbfb48b6fa676c1d83b3afcff63c25a498feaeec3",
+    "text_sha256": "4aea41b5c7b966c116b40a7c4c23351ca0b631a0fbe97bcc791a04ecb511a6af",
+    "step1_resources": "222 MT / 36 ST / 0 private / 0 stack / 2 static waves per PEU",
+    "v041_step1_resources": "220 MT / 52 ST / 0 private / 0 stack / 2 static waves per PEU",
+    "isa_static_step1_counts": {
+      "v041": {
+        "mma": 128,
+        "ldg": 68,
+        "ldg_bsm": 64,
+        "sts": 0,
+        "lds": 32,
+        "barrier": 2,
+        "snop": 563,
+        "ldp": 0,
+        "stp": 0
+      },
+      "v042": {
+        "mma": 128,
+        "ldg": 51,
+        "ldg_bsm": 47,
+        "sts": 0,
+        "lds": 32,
+        "barrier": 2,
+        "snop": 511,
+        "ldp": 0,
+        "stp": 0
+      }
+    }
+  },
+  "case2": {
+    "whole_cpp_sha256": "fbab29450f43cabb975b552681d6264aa75d3ff7d06a7daf694564f83a676f9f",
+    "kernel_region_sha256": "18cc5dc1ca53035f928d4832507a02bcabfda2dd17f3e5f58b735f6721507f2a",
+    "kernel_region_byte_identical_to_v041": true
+  },
+  "case3": {
+    "whole_cpp_sha256": "1686da810d9ba35397582e1bddcac24571d6117882b577de3ae3b9c001a1ef96",
+    "kernel_region_sha256": "b9514c45b9a8e46ad86c319bba5571ffcfff640ad05cc431ee5ba2ae4f6f1b9b",
+    "kernel_region_byte_identical_to_v041": true
+  },
+  "caveat": "The unused helper changes the Case2/3 file prefix, so whole-file SHA changes. Text from the first extern-C kernel onward is byte-identical. Static BSM site counts reflect helper inlining/unrolling, not dynamic byte reduction."
+}
