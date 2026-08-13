@@ -1,0 +1,121 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v034_step2_next_even_b0_async_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v036_step2_odd_b0_tail_async_sc-16g/submission.py
+index 50d76a48..d004789f 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v034_step2_next_even_b0_async_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v036_step2_odd_b0_tail_async_sc-16g/submission.py
+@@ -76,6 +76,7 @@ def run_kernel(
+     use_step1_prefetch_before_barrier = False
+     use_step2_input_prefetch = False
+     use_step2_half_b_pingpong = False
++    use_step2_row1_tail_async = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -85,6 +86,7 @@ def run_kernel(
+         use_grid_transpose_step2 = True
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
++        use_step2_row1_tail_async = True
+     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -116,6 +118,7 @@ def run_kernel(
+         bool(use_step1_prefetch_before_barrier),
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_b_pingpong),
++        bool(use_step2_row1_tail_async),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -328,6 +331,7 @@ def run_kernel(
+             use_step1_prefetch_before_barrier,
+             use_step2_input_prefetch,
+             use_step2_half_b_pingpong,
++            use_step2_row1_tail_async,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -734,7 +738,15 @@ def run_kernel(
+                             T.sync_threads()
+ 
+                             # Copy B0(odd) while B1(even) feeds MMA.
+-                            for row_batch_1 in T.serial(block_dhidden_step2 // (threads // 8)):
++                            # The first 32-row batch remains synchronous: full
++                            # row1 async isolation showed only its corresponding
++                            # output band was missing.  The other three batches
++                            # are independently correct and can overlap B1 MMA.
++                            for row_batch_1 in T.serial(
++                                1
++                                if use_step2_row1_tail_async
++                                else block_dhidden_step2 // (threads // 8)
++                            ):
+                                 logical_row_1 = row_batch_1 * (threads // 8) + async_tx // 8
+                                 physical_group_1 = async_tx % 8
+                                 logical_group_1 = physical_group_1 ^ (logical_row_1 % 8)
+@@ -759,6 +771,45 @@ def run_kernel(
+                                         T.access_ptr(down_copy_barrier[row_batch_1 * 4], "w", extent=4),
+                                     )
+                                 )
++                            for row_batch_1_async in T.serial(
++                                1,
++                                block_dhidden_step2 // (threads // 8)
++                                if use_step2_row1_tail_async
++                                else 1,
++                            ):
++                                logical_row_1_async = (
++                                    row_batch_1_async * (threads // 8) + async_tx // 8
++                                )
++                                physical_group_1_async = async_tx % 8
++                                logical_group_1_async = physical_group_1_async ^ (
++                                    logical_row_1_async % 8
++                                )
++                                logical_col_1_async = logical_group_1_async * 8
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_memcpy_async_16",
++                                        T.address_of(
++                                            down_shared[
++                                                block_dhidden_step2 + logical_row_1_async,
++                                                logical_col_1_async,
++                                            ]
++                                        ),
++                                        T.address_of(
++                                            down[
++                                                expert_id,
++                                                by * step2_output_tile + logical_row_1_async,
++                                                k_odd * block_dexpert_step2
++                                                + logical_col_1_async,
++                                            ]
++                                        ),
++                                        T.access_ptr(
++                                            down_copy_barrier[row_batch_1_async * 4],
++                                            "w",
++                                            extent=4,
++                                        ),
++                                    )
++                                )
+                             for ki in T.serial(0, block_dexpert_step2 // 32):
+                                 step2_mma.ldmatrix_b(
+                                     down_local,
+@@ -767,6 +818,21 @@ def run_kernel(
+                                     row_offset=0,
+                                 )
+                                 step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
++                            for wait_slot_1 in T.serial(
++                                1,
++                                block_dhidden_step2 // (threads // 8)
++                                if use_step2_row1_tail_async
++                                else 1,
++                            ):
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_wait_async_16",
++                                        T.access_ptr(
++                                            down_copy_barrier[wait_slot_1 * 4], "r", extent=4
++                                        ),
++                                    )
++                                )
+                             T.sync_threads()
+ 
+                             # Copy B1(odd) while B0(odd) feeds MMA, and prepare
