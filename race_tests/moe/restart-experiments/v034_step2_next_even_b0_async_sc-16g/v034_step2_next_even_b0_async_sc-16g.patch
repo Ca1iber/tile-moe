@@ -1,0 +1,30 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v033_step2_case1_swap_shared_halves_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v034_step2_next_even_b0_async_sc-16g/submission.py
+index 1215b104..50d76a48 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v033_step2_case1_swap_shared_halves_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v034_step2_next_even_b0_async_sc-16g/submission.py
+@@ -830,7 +830,7 @@ def run_kernel(
+                                     T.evaluate(
+                                         T.call_extern(
+                                             "handle",
+-                                            "moe_memcpy_sync_16",
++                                            "moe_memcpy_async_16",
+                                             T.address_of(
+                                                 down_shared[
+                                                     block_dhidden_step2 + logical_row_3,
+@@ -856,6 +856,16 @@ def run_kernel(
+                                 )
+                                 step2_mma.mma(up_logits_prefetch, down_local, out_local_1, ki)
+                             if k_pair + 1 < step2_k_tiles // 2:
++                                for wait_slot_3 in T.serial(4):
++                                    T.evaluate(
++                                        T.call_extern(
++                                            "handle",
++                                            "moe_wait_async_16",
++                                            T.access_ptr(
++                                                down_copy_barrier[wait_slot_3 * 4], "r", extent=4
++                                            ),
++                                        )
++                                    )
+                                 T.sync_threads()
+                     elif use_step2_input_prefetch:
+                         T.copy(

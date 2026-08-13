@@ -1,0 +1,157 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+{"pair": 1, "order": ["parent", "candidate"], "parent_ms": 10.7469189453125, "candidate_ms": 10.648995361328126, "change_percent": -0.9111782128689572}
+{"pair": 2, "order": ["candidate", "parent"], "parent_ms": 10.735927734375, "candidate_ms": 10.64137451171875, "change_percent": -0.8807177637150443}
+{"pair": 3, "order": ["parent", "candidate"], "parent_ms": 10.74825439453125, "candidate_ms": 10.63794189453125, "change_percent": -1.0263294480276408}
+{"pair": 4, "order": ["candidate", "parent"], "parent_ms": 10.7495703125, "candidate_ms": 10.632962646484375, "change_percent": -1.0847658336634147}
+{"pair": 5, "order": ["parent", "candidate"], "parent_ms": 10.7475634765625, "candidate_ms": 10.63494384765625, "change_percent": -1.0478619563572766}
+{"pair": 6, "order": ["candidate", "parent"], "parent_ms": 10.74117431640625, "candidate_ms": 10.63920166015625, "change_percent": -0.9493622693958592}
+{"pair": 7, "order": ["parent", "candidate"], "parent_ms": 10.743062744140625, "candidate_ms": 10.638082275390625, "change_percent": -0.9771931082433349}
+{
+  "protocol": {
+    "case": 3,
+    "shape": {
+      "experts": 64,
+      "hidden": 7168,
+      "intermediate": 2048,
+      "valid_tokens": 9088
+    },
+    "total_padded": 12288,
+    "pairs": 7,
+    "warmup": 20,
+    "repeat": 100,
+    "orders": "AB/BA alternating",
+    "timing": "torch.cuda.Event average per run"
+  },
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-submission/v033_step2_case1_swap_shared_halves_sc-16g/submission.py",
+    "candidate": "/tmp/v034_candidate_full_async_v033_layout.py"
+  },
+  "rows": [
+    {
+      "pair": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.7469189453125,
+      "candidate_ms": 10.648995361328126,
+      "change_percent": -0.9111782128689572
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 10.735927734375,
+      "candidate_ms": 10.64137451171875,
+      "change_percent": -0.8807177637150443
+    },
+    {
+      "pair": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.74825439453125,
+      "candidate_ms": 10.63794189453125,
+      "change_percent": -1.0263294480276408
+    },
+    {
+      "pair": 4,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 10.7495703125,
+      "candidate_ms": 10.632962646484375,
+      "change_percent": -1.0847658336634147
+    },
+    {
+      "pair": 5,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.7475634765625,
+      "candidate_ms": 10.63494384765625,
+      "change_percent": -1.0478619563572766
+    },
+    {
+      "pair": 6,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 10.74117431640625,
+      "candidate_ms": 10.63920166015625,
+      "change_percent": -0.9493622693958592
+    },
+    {
+      "pair": 7,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 10.743062744140625,
+      "candidate_ms": 10.638082275390625,
+      "change_percent": -0.9771931082433349
+    }
+  ],
+  "parent": {
+    "samples_ms": [
+      10.7469189453125,
+      10.735927734375,
+      10.74825439453125,
+      10.7495703125,
+      10.7475634765625,
+      10.74117431640625,
+      10.743062744140625
+    ],
+    "mean_ms": 10.744638846261159,
+    "median_ms": 10.7469189453125,
+    "min_ms": 10.735927734375,
+    "max_ms": 10.7495703125,
+    "pstdev_ms": 0.0044962587296028455
+  },
+  "candidate": {
+    "samples_ms": [
+      10.648995361328126,
+      10.64137451171875,
+      10.63794189453125,
+      10.632962646484375,
+      10.63494384765625,
+      10.63920166015625,
+      10.638082275390625
+    ],
+    "mean_ms": 10.639071742466518,
+    "median_ms": 10.638082275390625,
+    "min_ms": 10.632962646484375,
+    "max_ms": 10.648995361328126,
+    "pstdev_ms": 0.004787095852100234
+  },
+  "paired_change_percent": {
+    "samples_ms": [
+      -0.9111782128689572,
+      -0.8807177637150443,
+      -1.0263294480276408,
+      -1.0847658336634147,
+      -1.0478619563572766,
+      -0.9493622693958592,
+      -0.9771931082433349
+    ],
+    "mean_ms": -0.9824869417530754,
+    "median_ms": -0.9771931082433349,
+    "min_ms": -1.0847658336634147,
+    "max_ms": -0.8807177637150443,
+    "pstdev_ms": 0.0688934981661121
+  }
+}
