@@ -1,0 +1,179 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+{"pair": 1, "order": ["parent", "candidate"], "parent_ms": 3.063671366373698, "candidate_ms": 3.085162607828776, "change_percent": 0.7014865135654746}
+{"pair": 2, "order": ["candidate", "parent"], "parent_ms": 3.0638506571451822, "candidate_ms": 3.0864041646321616, "change_percent": 0.7361164107128504}
+{"pair": 3, "order": ["parent", "candidate"], "parent_ms": 3.0640597025553387, "candidate_ms": 3.085687510172526, "change_percent": 0.7058546411204292}
+{"pair": 4, "order": ["candidate", "parent"], "parent_ms": 3.0638036092122394, "candidate_ms": 3.085845438639323, "change_percent": 0.7194269685174337}
+{"pair": 5, "order": ["parent", "candidate"], "parent_ms": 3.0614229838053384, "candidate_ms": 3.0863019307454427, "change_percent": 0.8126595727448338}
+{"pair": 6, "order": ["candidate", "parent"], "parent_ms": 3.0618581136067706, "candidate_ms": 3.0852310180664064, "change_percent": 0.7633568765243348}
+{"pair": 7, "order": ["parent", "candidate"], "parent_ms": 3.0647295633951823, "candidate_ms": 3.0897748311360678, "change_percent": 0.8172097153374747}
+{
+  "protocol": {
+    "case": 1,
+    "shape": {
+      "experts": 16,
+      "hidden": 2048,
+      "intermediate": 8192,
+      "valid_tokens": 2272
+    },
+    "total_padded": 3072,
+    "pairs": 7,
+    "warmup": 10,
+    "repeat": 60,
+    "orders": "AB/BA alternating",
+    "timing": "torch.cuda.Event average per run"
+  },
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-submission/v037_step2_continuous_async_sc-16g/submission.py",
+    "candidate": "/tmp/v038_probe_batch0_lower16_async.py"
+  },
+  "rows": [
+    {
+      "pair": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 3.063671366373698,
+      "candidate_ms": 3.085162607828776,
+      "change_percent": 0.7014865135654746
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 3.0638506571451822,
+      "candidate_ms": 3.0864041646321616,
+      "change_percent": 0.7361164107128504
+    },
+    {
+      "pair": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 3.0640597025553387,
+      "candidate_ms": 3.085687510172526,
+      "change_percent": 0.7058546411204292
+    },
+    {
+      "pair": 4,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 3.0638036092122394,
+      "candidate_ms": 3.085845438639323,
+      "change_percent": 0.7194269685174337
+    },
+    {
+      "pair": 5,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 3.0614229838053384,
+      "candidate_ms": 3.0863019307454427,
+      "change_percent": 0.8126595727448338
+    },
+    {
+      "pair": 6,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "parent_ms": 3.0618581136067706,
+      "candidate_ms": 3.0852310180664064,
+      "change_percent": 0.7633568765243348
+    },
+    {
+      "pair": 7,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent_ms": 3.0647295633951823,
+      "candidate_ms": 3.0897748311360678,
+      "change_percent": 0.8172097153374747
+    }
+  ],
+  "parent": {
+    "samples_ms": [
+      3.063671366373698,
+      3.0638506571451822,
+      3.0640597025553387,
+      3.0638036092122394,
+      3.0614229838053384,
+      3.0618581136067706,
+      3.0647295633951823
+    ],
+    "mean_ms": 3.0633422851562497,
+    "median_ms": 3.0638036092122394,
+    "min_ms": 3.0614229838053384,
+    "max_ms": 3.0647295633951823,
+    "pstdev_ms": 0.001127910071900858
+  },
+  "candidate": {
+    "samples_ms": [
+      3.085162607828776,
+      3.0864041646321616,
+      3.085687510172526,
+      3.085845438639323,
+      3.0863019307454427,
+      3.0852310180664064,
+      3.0897748311360678
+    ],
+    "mean_ms": 3.0863439287458148,
+    "median_ms": 3.085845438639323,
+    "min_ms": 3.085162607828776,
+    "max_ms": 3.0897748311360678,
+    "pstdev_ms": 0.001468232680298984
+  },
+  "paired_change_percent": {
+    "samples_ms": [
+      0.7014865135654746,
+      0.7361164107128504,
+      0.7058546411204292,
+      0.7194269685174337,
+      0.8126595727448338,
+      0.7633568765243348,
+      0.8172097153374747
+    ],
+    "mean_ms": 0.750872956931833,
+    "median_ms": 0.7361164107128504,
+    "min_ms": 0.7014865135654746,
+    "max_ms": 0.8172097153374747,
+    "pstdev_ms": 0.044795208685638306
+  }
+}

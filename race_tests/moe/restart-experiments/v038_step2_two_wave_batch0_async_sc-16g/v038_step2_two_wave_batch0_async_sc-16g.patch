@@ -1,0 +1,66 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v037_step2_continuous_async_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v038_step2_two_wave_batch0_async_sc-16g/submission.py
+index 45210f2f..1662e6d9 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v037_step2_continuous_async_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v038_step2_two_wave_batch0_async_sc-16g/submission.py
+@@ -778,12 +778,56 @@ def run_kernel(
+                                 )
+                             T.sync_threads()
+ 
+-                            # Copy B0(odd) while B1(even) feeds MMA.
+-                            # The first 32-row batch remains synchronous: full
+-                            # row1 async isolation showed only its corresponding
+-                            # output band was missing.  The other three batches
+-                            # are independently correct and can overlap B1 MMA.
++                            # Copy B0(odd) while B1(even) feeds MMA.  Four-wave
++                            # single-issue continuous BSM loses batch0 data on
++                            # C500.  Restrict batch0 to the first two waves and
++                            # let each participating thread issue two rows; this
++                            # preserves all 256 transactions without the hazard.
++                            # Batch1 stays synchronous; batches2/3 retain the
++                            # accepted v037 continuous-async mapping.
++                            for double_issue_1 in T.serial(
++                                2 if use_step2_row1_tail_async else 0
++                            ):
++                                if async_tx < 128:
++                                    logical_row_1_double = (
++                                        double_issue_1 * 16 + async_tx // 8
++                                    )
++                                    physical_group_1_double = async_tx % 8
++                                    logical_group_1_double = (
++                                        physical_group_1_double
++                                        ^ (logical_row_1_double % 8)
++                                    )
++                                    logical_col_1_double = logical_group_1_double * 8
++                                    T.evaluate(
++                                        T.call_extern(
++                                            "handle",
++                                            "moe_select_memcpy_async_16",
++                                            T.address_of(
++                                                down_shared[
++                                                    block_dhidden_step2
++                                                    + logical_row_1_double,
++                                                    logical_col_1_double,
++                                                ]
++                                            ),
++                                            T.address_of(
++                                                down[
++                                                    expert_id,
++                                                    by * step2_output_tile
++                                                    + logical_row_1_double,
++                                                    k_odd * block_dexpert_step2
++                                                    + logical_col_1_double,
++                                                ]
++                                            ),
++                                            T.access_ptr(
++                                                down_copy_barrier[double_issue_1 * 4],
++                                                "w",
++                                                extent=4,
++                                            ),
++                                            use_step2_continuous_async,
++                                        )
++                                    )
+                             for row_batch_1 in T.serial(
++                                1 if use_step2_row1_tail_async else 0,
+                                 2
+                                 if use_step2_row1_tail_async
+                                 else block_dhidden_step2 // (threads // 8)
