@@ -1,0 +1,96 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v032_step2_case1_hybrid_half_b_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v033_step2_case1_swap_shared_halves_sc-16g/submission.py
+index 92067ba1..1215b104 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v032_step2_case1_hybrid_half_b_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v033_step2_case1_swap_shared_halves_sc-16g/submission.py
+@@ -674,7 +674,10 @@ def run_kernel(
+                                 by * step2_output_tile : by * step2_output_tile + block_dhidden_step2,
+                                 0:block_dexpert_step2,
+                             ],
+-                            down_shared[0:block_dhidden_step2, 0:block_dexpert_step2],
++                            down_shared[
++                                block_dhidden_step2 : 2 * block_dhidden_step2,
++                                0:block_dexpert_step2,
++                            ],
+                         )
+                         T.sync_threads()
+                         for k_pair in T.serial(step2_k_tiles // 2):
+@@ -693,7 +696,7 @@ def run_kernel(
+                                         "handle",
+                                         "moe_memcpy_async_16",
+                                         T.address_of(
+-                                            down_shared[block_dhidden_step2 + logical_row_0, logical_col_0]
++                                            down_shared[logical_row_0, logical_col_0]
+                                         ),
+                                         T.address_of(
+                                             down[
+@@ -717,6 +720,7 @@ def run_kernel(
+                                     down_local,
+                                     down_shared,
+                                     ki,
++                                    row_offset=block_dhidden_step2,
+                                 )
+                                 step2_mma.mma(up_logits_shared, down_local, out_local_0, ki)
+                             for wait_slot_0 in T.serial(4):
+@@ -739,7 +743,12 @@ def run_kernel(
+                                     T.call_extern(
+                                         "handle",
+                                         "moe_memcpy_sync_16",
+-                                        T.address_of(down_shared[logical_row_1, logical_col_1]),
++                                        T.address_of(
++                                            down_shared[
++                                                block_dhidden_step2 + logical_row_1,
++                                                logical_col_1,
++                                            ]
++                                        ),
+                                         T.address_of(
+                                             down[
+                                                 expert_id,
+@@ -755,7 +764,7 @@ def run_kernel(
+                                     down_local,
+                                     down_shared,
+                                     ki,
+-                                    row_offset=block_dhidden_step2,
++                                    row_offset=0,
+                                 )
+                                 step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
+                             T.sync_threads()
+@@ -772,7 +781,7 @@ def run_kernel(
+                                         "handle",
+                                         "moe_memcpy_async_16",
+                                         T.address_of(
+-                                            down_shared[block_dhidden_step2 + logical_row_2, logical_col_2]
++                                            down_shared[logical_row_2, logical_col_2]
+                                         ),
+                                         T.address_of(
+                                             down[
+@@ -798,6 +807,7 @@ def run_kernel(
+                                     down_local,
+                                     down_shared,
+                                     ki,
++                                    row_offset=block_dhidden_step2,
+                                 )
+                                 step2_mma.mma(up_logits_prefetch, down_local, out_local_0, ki)
+                             for wait_slot_2 in T.serial(4):
+@@ -821,7 +831,12 @@ def run_kernel(
+                                         T.call_extern(
+                                             "handle",
+                                             "moe_memcpy_sync_16",
+-                                            T.address_of(down_shared[logical_row_3, logical_col_3]),
++                                            T.address_of(
++                                                down_shared[
++                                                    block_dhidden_step2 + logical_row_3,
++                                                    logical_col_3,
++                                                ]
++                                            ),
+                                             T.address_of(
+                                                 down[
+                                                     expert_id,
+@@ -837,7 +852,7 @@ def run_kernel(
+                                     down_local,
+                                     down_shared,
+                                     ki,
+-                                    row_offset=block_dhidden_step2,
++                                    row_offset=0,
+                                 )
+                                 step2_mma.mma(up_logits_prefetch, down_local, out_local_1, ki)
+                             if k_pair + 1 < step2_k_tiles // 2:
