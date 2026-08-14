@@ -1,0 +1,11 @@
+# v055 report: Case3 Step1 BSM plus A-fragment ping-pong
+
+Status: accepted as the new local sc-16g best, OJ-compliant package ready; external OJ timing pending. Parent `v052_step1_case3_one_wave_bsm_sc-16g` / `e8591a30`. Submission SHA-256 `8cbb52c21571234403a95f4a52868b4d7bc25887f506ddae1ed7f39fb37f2483`.
+
+Authoritative Case3 13-pair AB/BA W20/R100: parent median 10.017513 ms, candidate median 9.981776 ms; paired median -0.389331%, mean -0.430468%, 13/13 wins. The separate seven-pair screen is also 7/7 with -0.248671% median. Candidate standalone OJ W20/R100 times are 2.967744 / 4.942758 / 9.988687 ms. All exact shapes pass FP32 reference with max abs 0.001953125 and zero padding; official functional passes 2/2; OJ import validation passes.
+
+The Case3-only schedule combines v052 one-wave BSM weight staging with alternating register A fragments. It issues odd A after the current weight wait and before even MMA, then issues next-even A after the odd-weight wait and before odd MMA. Dynamic A loads, BSM transfers, MMA work, 223 barriers, grid, and 32 KiB shared memory remain unchanged. Step1 moves 216 MT/36 ST -> 234 MT/36 ST, stays at two static waves, and does not spill. Step2 stays 234 MT/52 ST and is unchanged. Case1 is schedule-equivalent and Case2 generated C++ is byte-identical to v052.
+
+mcTracer Step1 paired median is -1.23634%; unchanged Step2 is +0.32533% and treated as noise. Static ISA grows 3966 -> 5004 instructions (+26.1725%) because the paired schedule duplicates parity-specialized sites; this is not extra dynamic math. Static MMA sites 128 -> 256, loads and barriers also duplicate, while declared dynamic work remains fixed.
+
+Wave-matched mcProfiler has 5,758,096 waves on both sources, identical Memory Instructions, and zero private traffic. L2 hit improves 46.08% -> 53.92% and DNOC read requests fall 32.73%, but global-read bytes rise 5.15%, Total Cycles rise 1.26%, MMA duty changes 25.84% -> 25.55%, and MTE duty 40.79% -> 40.67%. Because separate replay batches disagree with clean timing, mcProfiler is retained as mixed diagnostic evidence rather than used to claim a fully proven mechanism. The repeatable 13/13 clean timing result owns the local acceptance decision.

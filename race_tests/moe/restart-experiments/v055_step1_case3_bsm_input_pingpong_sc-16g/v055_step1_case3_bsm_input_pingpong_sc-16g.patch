@@ -1,0 +1,151 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v055_step1_case3_bsm_input_pingpong_sc-16g/submission.py
+index 129046a3..a0088534 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v055_step1_case3_bsm_input_pingpong_sc-16g/submission.py
+@@ -577,7 +577,7 @@ def run_kernel(
+
+                     T.clear(gate_local)
+                     T.clear(up_local)
+-                    if use_step1_split_wave_async:
++                    if use_step1_split_wave_async and num_experts == 64:
+                         T.import_source(
+                             _MOE_ASYNC_COPY_SOURCE
+                             + (_MOE_ASYNC_COPY_7168_SOURCE if num_experts == 64 else "")
+@@ -602,6 +602,126 @@ def run_kernel(
+                                 )
+                             )
+
++                        T.copy(
++                            input[block_start : block_start + block_token, 0:block_dhidden_step1],
++                            input_shared,
++                        )
++                        for k_pair_step1_async in T.serial(step1_k_tiles // 2):
++                            k_even_step1_async = k_pair_step1_async * 2
++                            k_odd_step1_async = k_even_step1_async + 1
++                            k_next_even_step1_async = k_odd_step1_async + 1
++
++                            # Preserve the v019 Case3 input-ping-pong order:
++                            # wait for the current weights first, then issue the
++                            # odd A load before consuming the even A fragment.
++                            T.sync_threads()
++                            T.copy(
++                                input[
++                                    block_start : block_start + block_token,
++                                    k_odd_step1_async * block_dhidden_step1 : (k_odd_step1_async + 1) * block_dhidden_step1,
++                                ],
++                                input_prefetch,
++                            )
++                            for ki_step1_even in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki_step1_even)
++                                step1_mma.mma(input_shared, weight_local, gate_local, ki_step1_even)
++                                step1_mma.ldmatrix_b(weight_local, up_shared, ki_step1_even)
++                                step1_mma.mma(input_shared, weight_local, up_local, ki_step1_even)
++
++                            T.sync_threads()
++                            for row_batch_step1_odd in T.serial(8):
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_stage_gate_up_one_wave_2rows_7168"
++                                        if num_experts == 64
++                                        else "moe_stage_gate_up_one_wave_2rows",
++                                        T.address_of(gate_shared[0, 0]),
++                                        T.address_of(up_shared[0, 0]),
++                                        T.address_of(
++                                            gate[
++                                                expert_id,
++                                                by * block_dexpert_step1,
++                                                k_odd_step1_async * block_dhidden_step1,
++                                            ]
++                                        ),
++                                        T.address_of(
++                                            up[
++                                                expert_id,
++                                                by * block_dexpert_step1,
++                                                k_odd_step1_async * block_dhidden_step1,
++                                            ]
++                                        ),
++                                        row_batch_step1_odd,
++                                        async_tx_step1,
++                                    )
++                                )
++
++                            T.sync_threads()
++                            if k_pair_step1_async + 1 < step1_k_tiles // 2:
++                                T.copy(
++                                    input[
++                                        block_start : block_start + block_token,
++                                        k_next_even_step1_async * block_dhidden_step1 : (k_next_even_step1_async + 1) * block_dhidden_step1,
++                                    ],
++                                    input_shared,
++                                )
++                            for ki_step1_odd in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki_step1_odd)
++                                step1_mma.mma(input_prefetch, weight_local, gate_local, ki_step1_odd)
++                                step1_mma.ldmatrix_b(weight_local, up_shared, ki_step1_odd)
++                                step1_mma.mma(input_prefetch, weight_local, up_local, ki_step1_odd)
++
++                            if k_pair_step1_async + 1 < step1_k_tiles // 2:
++                                T.sync_threads()
++                                for row_batch_step1_next_even in T.serial(8):
++                                    T.evaluate(
++                                        T.call_extern(
++                                            "handle",
++                                            "moe_stage_gate_up_one_wave_2rows_7168"
++                                            if num_experts == 64
++                                            else "moe_stage_gate_up_one_wave_2rows",
++                                            T.address_of(gate_shared[0, 0]),
++                                            T.address_of(up_shared[0, 0]),
++                                            T.address_of(
++                                                gate[
++                                                    expert_id,
++                                                    by * block_dexpert_step1,
++                                                    k_next_even_step1_async * block_dhidden_step1,
++                                                ]
++                                            ),
++                                            T.address_of(
++                                                up[
++                                                    expert_id,
++                                                    by * block_dexpert_step1,
++                                                    k_next_even_step1_async * block_dhidden_step1,
++                                                ]
++                                            ),
++                                            row_batch_step1_next_even,
++                                            async_tx_step1,
++                                        )
++                                    )
++                    elif use_step1_split_wave_async:
++                        T.import_source(_MOE_ASYNC_COPY_SOURCE)
++                        async_tx_step1 = T.get_thread_binding()
++
++                        # Keep the accepted Case1 path byte-for-byte equivalent
++                        # to v052; the A-fragment ping-pong experiment is a
++                        # Case3-only specialization.
++                        for row_batch_step1_init in T.serial(8):
++                            T.evaluate(
++                                T.call_extern(
++                                    "handle",
++                                    "moe_stage_gate_up_one_wave_2rows",
++                                    T.address_of(gate_shared[0, 0]),
++                                    T.address_of(up_shared[0, 0]),
++                                    T.address_of(gate[expert_id, by * block_dexpert_step1, 0]),
++                                    T.address_of(up[expert_id, by * block_dexpert_step1, 0]),
++                                    row_batch_step1_init,
++                                    async_tx_step1,
++                                )
++                            )
++
+                         for k_step1_async in T.serial(step1_k_tiles):
+                             T.copy(
+                                 input[
+@@ -622,9 +742,7 @@ def run_kernel(
+                                     T.evaluate(
+                                         T.call_extern(
+                                             "handle",
+-                                            "moe_stage_gate_up_one_wave_2rows_7168"
+-                                            if num_experts == 64
+-                                            else "moe_stage_gate_up_one_wave_2rows",
++                                            "moe_stage_gate_up_one_wave_2rows",
+                                             T.address_of(gate_shared[0, 0]),
+                                             T.address_of(up_shared[0, 0]),
+                                             T.address_of(
