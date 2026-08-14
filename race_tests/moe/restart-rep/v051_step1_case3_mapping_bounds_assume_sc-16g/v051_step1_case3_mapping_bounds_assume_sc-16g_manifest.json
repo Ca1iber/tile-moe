@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "iteration_id": "v051_step1_case3_mapping_bounds_assume_sc-16g",
+  "status": "rejected",
+  "machine": "sc-16g",
+  "branch": "dorm",
+  "parent_commit": "b7772836dc258898cd1c775895ec69e9bb2242ec",
+  "parent_version": "v050_case1_step2_v027_rollback_sc-16g",
+  "parent_submission_sha256": "3ca06895240e4634e431de2628a887617fca138a6c247a63f4ecf4aa3d95d568",
+  "candidate_sha256": "25cbd5a36f6819966fc82df462b7c56497548daf3ad9309a8124aeab359a0bc6",
+  "change": "Case3 Step1 only: add explicit lower and upper bounds assumptions for expert-grouped bx/by mapping",
+  "correctness": {
+    "oj_import_allowlist": "pass",
+    "cases_passed": 3,
+    "max_abs": 0.001953125,
+    "padding_max": 0.0,
+    "official_functional": "not_run_after_clean_performance_rejection"
+  },
+  "case3_pair_w20_r100": {
+    "pairs": 11,
+    "parent_median_ms": 10.223075561523437,
+    "candidate_median_ms": 10.40532470703125,
+    "paired_median_change_percent": 1.812817719246862,
+    "candidate_wins": 0
+  },
+  "mctracer_case3": {
+    "pairs": 3,
+    "step1_parent_median_ms": 6.865152,
+    "step1_candidate_median_ms": 7.153408,
+    "step1_paired_median_change_percent": 3.8818659805347266,
+    "step2_paired_median_change_percent": -0.246362306567105
+  },
+  "codegen_case3_step1": {
+    "parent_source_bytes": 34844,
+    "candidate_source_bytes": 30515,
+    "parent_mapping_guard_sites": 12,
+    "candidate_mapping_guard_sites": 0,
+    "parent_mt_registers": 210,
+    "candidate_mt_registers": 230,
+    "parent_st_registers": 52,
+    "candidate_st_registers": 28,
+    "static_max_warps_per_peu": 2,
+    "parent_isa_code_bytes": 25336,
+    "candidate_isa_code_bytes": 23496,
+    "parent_static_instruction_count": 3167,
+    "candidate_static_instruction_count": 2937
+  },
+  "isolation_probes": {
+    "bx_only": {
+      "sha256": "8cf904dd2a41ad3d6e3448a173f49ed1b9cce47ecb3d9c7867e6507395a68ed8",
+      "mt_registers": 212,
+      "st_registers": 52,
+      "paired_median_change_percent": 7.17548368245533,
+      "pairs": 9
+    },
+    "by_only": {
+      "sha256": "330a13453caf0b144e7ebb7b1aeeae54574f794870901f482a2f4b2d220381f3",
+      "mt_registers": 228,
+      "st_registers": 28,
+      "performance": "not_run_after_resource_and_main_candidate_rejection"
+    }
+  },
+  "submission_created": false
+}

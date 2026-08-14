@@ -1,0 +1,17 @@
+--- race_tests/moe/restart-submission/v050_case1_step2_v027_rollback_sc-16g/submission.py	2026-08-14 03:39:34.434050246 +0000
++++ /tmp/tile-moe-scratch-20260814/v051-work/v051_submission.py	2026-08-14 04:17:32.263182859 +0000
+@@ -505,6 +505,14 @@
+                             )
+                         bx = cta_mapping[0]
+                         by = cta_mapping[1]
++                        # The exact 64-expert mapping covers the full 96x16
++                        # logical grid.  State those proven ranges so lowering
++                        # can remove redundant safe-memory guards from Step1.
++                        if num_experts == 64:
++                            T.assume(0 <= bx)
++                            T.assume(bx < num_blocks_m)
++                            T.assume(0 <= by)
++                            T.assume(by < step1_col_tiles)
+                     else:
+                         bx = pid1 if use_grid_transpose_step1 else pid0
+                         by = pid0 if use_grid_transpose_step1 else pid1
