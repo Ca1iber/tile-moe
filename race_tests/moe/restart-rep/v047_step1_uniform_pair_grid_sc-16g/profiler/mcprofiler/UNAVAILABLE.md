@@ -1,0 +1,1 @@
+v047 interleaves pairs of unrelated single-block experts for the first third of Case1 Step1. Clean timing already rejects this locality tradeoff; the wave-matched v045 counters remain the accepted reference.

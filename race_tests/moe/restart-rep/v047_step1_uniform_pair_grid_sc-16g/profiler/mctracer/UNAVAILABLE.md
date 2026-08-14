@@ -1,0 +1,1 @@
+v047 was rejected by a stable 5/5 clean AB/BA regression before tracer collection. It changes only the first eight single-block experts; the fully profiled v045 remains the authoritative accepted schedule.
