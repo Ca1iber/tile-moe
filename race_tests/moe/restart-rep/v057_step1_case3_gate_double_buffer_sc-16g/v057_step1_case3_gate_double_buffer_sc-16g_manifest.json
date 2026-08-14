@@ -1,0 +1,42 @@
+{
+  "iteration_id": "v057_step1_case3_gate_double_buffer_sc-16g",
+  "status": "rejected",
+  "decision": "reject-keep-v056",
+  "machine": "sc-16g",
+  "parent_iteration": "v056_step1_case3_half_a_gate_overlap_sc-16g",
+  "parent_commit": "0a1afac1",
+  "candidate_sha256": "006a36d32b66348d0532e7478c2ae1f20fcc20c9fc4edac98e2ebe59a75eb0c9",
+  "change": "Case3 Step1 16 KiB alternate gate shared buffer with split gate/up producers",
+  "correctness": "Case3 reference and OJ import validation pass",
+  "performance": {
+    "parent_median_ms": 9.769572143554688,
+    "candidate_median_ms": 16.294638671875,
+    "paired_median_change_percent": 66.81575926087655,
+    "paired_mean_change_percent": 66.76859937728406,
+    "wins": "0/5",
+    "mctracer_step1_median_ms": {
+      "v056_parent": 6.443776,
+      "v057_candidate": 12.9792
+    },
+    "mctracer_step1_paired_median_change_percent": 101.42227166183307
+  },
+  "resources": {
+    "dynamic_shared_bytes": [
+      32768,
+      49152
+    ],
+    "mt_registers": [
+      234,
+      256
+    ],
+    "st_registers": [
+      40,
+      52
+    ],
+    "stack_frame_bytes": [
+      0,
+      52
+    ]
+  },
+  "conclusion": "48 KiB gate double buffering crosses a likely shared-memory residency tier and is decisively non-viable"
+}

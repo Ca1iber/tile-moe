@@ -1,0 +1,121 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-rep/v056_step1_case3_half_a_gate_overlap_sc-16g/codegen/candidate/case3/v056b_candidate_case3_generated_device.cpp b/tmp/tile-moe-scratch-20260814/v057-work/codegen_candidate_case3/v057_candidate_case3_generated_device.cpp
+index 54766200..7aaabd2d 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-rep/v056_step1_case3_half_a_gate_overlap_sc-16g/codegen/candidate/case3/v056b_candidate_case3_generated_device.cpp
++++ b/tmp/tile-moe-scratch-20260814/v057-work/codegen_candidate_case3/v057_candidate_case3_generated_device.cpp
+@@ -115,6 +115,52 @@ __device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(
+   moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,
+       gate_global_base, up_global_base, (row_pair << 1) + 1, lane);
+ }
++__device__ __forceinline__ void moe_stage_gate_one_wave_7168(
++    void* gate_shared_base, const void* gate_global_base,
++    int row_batch, int lane) {
++  const int local_lane = lane & 63;
++  const int lane_row = local_lane >> 3;
++  const int row = (row_batch << 3) + lane_row;
++  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;
++  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);
++  const int global_byte_offset = row * 14336 + (logical_col << 1);
++  if (lane < 64) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);
++  }
++}
++__device__ __forceinline__ void moe_stage_gate_one_wave_2rows_7168(
++    void* gate_shared_base, const void* gate_global_base,
++    int row_pair, int lane) {
++  moe_stage_gate_one_wave_7168(gate_shared_base, gate_global_base,
++      row_pair << 1, lane);
++  moe_stage_gate_one_wave_7168(gate_shared_base, gate_global_base,
++      (row_pair << 1) + 1, lane);
++}
++__device__ __forceinline__ void moe_stage_up_one_wave_7168(
++    void* up_shared_base, const void* up_global_base,
++    int row_batch, int lane) {
++  const int local_lane = lane & 63;
++  const int lane_row = local_lane >> 3;
++  const int row = (row_batch << 3) + lane_row;
++  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;
++  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);
++  const int global_byte_offset = row * 14336 + (logical_col << 1);
++  if (64 <= lane && lane < 128) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);
++  }
++}
++__device__ __forceinline__ void moe_stage_up_one_wave_2rows_7168(
++    void* up_shared_base, const void* up_global_base,
++    int row_pair, int lane) {
++  moe_stage_up_one_wave_7168(up_shared_base, up_global_base,
++      row_pair << 1, lane);
++  moe_stage_up_one_wave_7168(up_shared_base, up_global_base,
++      (row_pair << 1) + 1, lane);
++}
+ #include <tl_templates/maca/gemm.h>
+ #include <tl_templates/maca/copy.h>
+ #include <tl_templates/maca/reduce.h>
+@@ -181,6 +227,13 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel(half_t* __res
+   }
+   for (int k_pair_step1_async = 0; k_pair_step1_async < 56; ++k_pair_step1_async) {
+     __syncthreads();
++    if (0 <= by) {
++      for (int row_batch_step1_gate_odd = 0; row_batch_step1_gate_odd < 8; ++row_batch_step1_gate_odd) {
++        if (by < 16) {
++          moe_stage_gate_one_wave_2rows_7168((&(((half_t*)buf_dyn_shmem)[16384])), (&(gate[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 64)])), row_batch_step1_gate_odd, ((int)threadIdx.x));
++        }
++      }
++    }
+     #pragma unroll
+     for (int i_3 = 0; i_3 < 4; ++i_3) {
+       if (i_3 < 2) {
+@@ -239,14 +292,21 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel(half_t* __res
+     }
+     __syncthreads();
+     if (0 <= by) {
+-      for (int row_batch_step1_odd = 0; row_batch_step1_odd < 8; ++row_batch_step1_odd) {
++      for (int row_batch_step1_up_odd = 0; row_batch_step1_up_odd < 8; ++row_batch_step1_up_odd) {
+         if (by < 16) {
+-          moe_stage_gate_up_one_wave_2rows_7168((&(((half_t*)buf_dyn_shmem)[0])), (&(((half_t*)buf_dyn_shmem)[8192])), (&(gate[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 64)])), (&(up[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 64)])), row_batch_step1_odd, ((int)threadIdx.x));
++          moe_stage_up_one_wave_2rows_7168((&(((half_t*)buf_dyn_shmem)[8192])), (&(up[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 64)])), row_batch_step1_up_odd, ((int)threadIdx.x));
+         }
+       }
+     }
+     __syncthreads();
+     if (k_pair_step1_async < 55) {
++      if (0 <= by) {
++        for (int row_batch_step1_gate_next_even = 0; row_batch_step1_gate_next_even < 8; ++row_batch_step1_gate_next_even) {
++          if (by < 16) {
++            moe_stage_gate_one_wave_2rows_7168((&(((half_t*)buf_dyn_shmem)[0])), (&(gate[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 128)])), row_batch_step1_gate_next_even, ((int)threadIdx.x));
++          }
++        }
++      }
+       #pragma unroll
+       for (int i_7 = 0; i_7 < 4; ++i_7) {
+         if (i_7 < 2) {
+@@ -263,7 +323,7 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel(half_t* __res
+     }
+     for (int ki_2 = 0; ki_2 < 2; ++ki_2) {
+       for (int j_4 = 0; j_4 < 8; ++j_4) {
+-        *(uint4*)(weight_local + (j_4 * 8)) = *(uint4*)(((half_t*)buf_dyn_shmem) + (((((j_4 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_2) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
++        *(uint4*)(weight_local + (j_4 * 8)) = *(uint4*)(((half_t*)buf_dyn_shmem) + ((((((j_4 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_2) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 16384));
+       }
+       for (int kp_2 = 0; kp_2 < 2; ++kp_2) {
+         for (int i_8 = 0; i_8 < 2; ++i_8) {
+@@ -309,9 +369,9 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel(half_t* __res
+     if (k_pair_step1_async < 55) {
+       __syncthreads();
+       if (0 <= by) {
+-        for (int row_batch_step1_next_even = 0; row_batch_step1_next_even < 8; ++row_batch_step1_next_even) {
++        for (int row_batch_step1_up_next_even = 0; row_batch_step1_up_next_even < 8; ++row_batch_step1_up_next_even) {
+           if (by < 16) {
+-            moe_stage_gate_up_one_wave_2rows_7168((&(((half_t*)buf_dyn_shmem)[0])), (&(((half_t*)buf_dyn_shmem)[8192])), (&(gate[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 128)])), (&(up[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 128)])), row_batch_step1_next_even, ((int)threadIdx.x));
++            moe_stage_up_one_wave_2rows_7168((&(((half_t*)buf_dyn_shmem)[8192])), (&(up[((((expert_id * 14680064) + (by * 917504)) + (k_pair_step1_async * 128)) + 128)])), row_batch_step1_up_next_even, ((int)threadIdx.x));
+           }
+         }
+       }
+@@ -585,3 +645,4 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+     *(uint2*)(output + ((((((((bx * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_11 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (by * 256)) + ((i_11 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4)) + 128)) = *(uint2*)(output_local_cast_1 + 0);
+   }
+ }
++

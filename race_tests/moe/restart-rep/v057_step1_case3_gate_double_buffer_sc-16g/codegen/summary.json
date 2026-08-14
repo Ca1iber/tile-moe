@@ -1,0 +1,31 @@
+{
+  "candidate_sha256": "006a36d32b66348d0532e7478c2ae1f20fcc20c9fc4edac98e2ebe59a75eb0c9",
+  "case3_step2_source_unchanged": true,
+  "dynamic_work": "A/weight source bytes, MMA work, barriers, and grids unchanged",
+  "dynamic_shared_bytes": {
+    "v056_parent": 32768,
+    "v057_candidate": 49152
+  },
+  "step1_resources": {
+    "v056_parent": "234 MT / 40 ST / zero stack",
+    "v057_candidate": "256 MT / 52 ST / 52-byte stack frame"
+  },
+  "step2_resources": "234 MT / 52 ST / zero stack; unchanged",
+  "generated_cpp_bytes": {
+    "v056_parent": 35216,
+    "v057_candidate": 37945
+  },
+  "step1_static_instructions": {
+    "v056_parent": 4952,
+    "v057_candidate": 4982
+  },
+  "selected_static_opcode_delta": {
+    "mma_16x16x16f16": 0,
+    "ldg_b128": 2,
+    "lds_b128": 0,
+    "barrier": 0,
+    "arrive": 12,
+    "snop": 42
+  },
+  "interpretation": "near-2x Step1 slowdown points to the 48 KiB shared-memory residency tier plus register/stack pressure, not the 0.6% static ISA growth"
+}

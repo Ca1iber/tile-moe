@@ -1,0 +1,206 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v056_step1_case3_half_a_gate_overlap_sc-16g/submission.py b/tmp/tile-moe-scratch-20260814/v057-work/v057_submission.py
+index 0c24c7b8..c3d3331a 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v056_step1_case3_half_a_gate_overlap_sc-16g/submission.py
++++ b/tmp/tile-moe-scratch-20260814/v057-work/v057_submission.py
+@@ -128,6 +128,52 @@ __device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(
+   moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,
+       gate_global_base, up_global_base, (row_pair << 1) + 1, lane);
+ }
++__device__ __forceinline__ void moe_stage_gate_one_wave_7168(
++    void* gate_shared_base, const void* gate_global_base,
++    int row_batch, int lane) {
++  const int local_lane = lane & 63;
++  const int lane_row = local_lane >> 3;
++  const int row = (row_batch << 3) + lane_row;
++  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;
++  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);
++  const int global_byte_offset = row * 14336 + (logical_col << 1);
++  if (lane < 64) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);
++  }
++}
++__device__ __forceinline__ void moe_stage_gate_one_wave_2rows_7168(
++    void* gate_shared_base, const void* gate_global_base,
++    int row_pair, int lane) {
++  moe_stage_gate_one_wave_7168(gate_shared_base, gate_global_base,
++      row_pair << 1, lane);
++  moe_stage_gate_one_wave_7168(gate_shared_base, gate_global_base,
++      (row_pair << 1) + 1, lane);
++}
++__device__ __forceinline__ void moe_stage_up_one_wave_7168(
++    void* up_shared_base, const void* up_global_base,
++    int row_batch, int lane) {
++  const int local_lane = lane & 63;
++  const int lane_row = local_lane >> 3;
++  const int row = (row_batch << 3) + lane_row;
++  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;
++  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);
++  const int global_byte_offset = row * 14336 + (logical_col << 1);
++  if (64 <= lane && lane < 128) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);
++  }
++}
++__device__ __forceinline__ void moe_stage_up_one_wave_2rows_7168(
++    void* up_shared_base, const void* up_global_base,
++    int row_pair, int lane) {
++  moe_stage_up_one_wave_7168(up_shared_base, up_global_base,
++      row_pair << 1, lane);
++  moe_stage_up_one_wave_7168(up_shared_base, up_global_base,
++      (row_pair << 1) + 1, lane);
++}
+ """
+
+
+@@ -550,6 +596,10 @@ def run_kernel(
+                     input_prefetch = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+                     gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+                     up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
++                    if use_step1_split_wave_async and num_experts == 64:
++                        gate_prefetch_shared = T.alloc_shared(
++                            (block_dexpert_step1, block_dhidden_step1), dtype=dtype
++                        )
+                     gate_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                     up_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                     weight_local = T.alloc_local((step1_mma.warp_cols * step1_mma.k_pack * step1_mma.local_size_b), dtype=dtype)
+@@ -564,6 +614,10 @@ def run_kernel(
+                             up_local: step1_mma.make_mma_store_layout(up_local),
+                         }
+                     )
++                    if use_step1_split_wave_async and num_experts == 64:
++                        T.annotate_layout(
++                            {gate_prefetch_shared: make_swizzled_layout(gate_prefetch_shared)}
++                        )
+                     T.use_swizzle(10, enable=False)
+
+                     expert_id = group_idx_for_bx[bx]
+@@ -615,6 +669,26 @@ def run_kernel(
+                             # wait for the current weights first, then issue the
+                             # odd A load before consuming the even A fragment.
+                             T.sync_threads()
++                            # Preload the next gate tile into a dedicated 16 KiB
++                            # buffer.  Its producer wave can overlap with the
++                            # current gate/up MMA without overwriting operands.
++                            for row_batch_step1_gate_odd in T.serial(8):
++                                T.evaluate(
++                                    T.call_extern(
++                                        "handle",
++                                        "moe_stage_gate_one_wave_2rows_7168",
++                                        T.address_of(gate_prefetch_shared[0, 0]),
++                                        T.address_of(
++                                            gate[
++                                                expert_id,
++                                                by * block_dexpert_step1,
++                                                k_odd_step1_async * block_dhidden_step1,
++                                            ]
++                                        ),
++                                        row_batch_step1_gate_odd,
++                                        async_tx_step1,
++                                    )
++                                )
+                             # Keep the compact ki loops while placing the two
+                             # halves of the next A tile on opposite sides of
+                             # the current gate MMA group.  This avoids the
+@@ -641,22 +715,12 @@ def run_kernel(
+                                 step1_mma.mma(input_shared, weight_local, up_local, ki_step1_even_up)
+
+                             T.sync_threads()
+-                            for row_batch_step1_odd in T.serial(8):
++                            for row_batch_step1_up_odd in T.serial(8):
+                                 T.evaluate(
+                                     T.call_extern(
+                                         "handle",
+-                                        "moe_stage_gate_up_one_wave_2rows_7168"
+-                                        if num_experts == 64
+-                                        else "moe_stage_gate_up_one_wave_2rows",
+-                                        T.address_of(gate_shared[0, 0]),
++                                        "moe_stage_up_one_wave_2rows_7168",
+                                         T.address_of(up_shared[0, 0]),
+-                                        T.address_of(
+-                                            gate[
+-                                                expert_id,
+-                                                by * block_dexpert_step1,
+-                                                k_odd_step1_async * block_dhidden_step1,
+-                                            ]
+-                                        ),
+                                         T.address_of(
+                                             up[
+                                                 expert_id,
+@@ -664,12 +728,30 @@ def run_kernel(
+                                                 k_odd_step1_async * block_dhidden_step1,
+                                             ]
+                                         ),
+-                                        row_batch_step1_odd,
++                                        row_batch_step1_up_odd,
+                                         async_tx_step1,
+                                     )
+                                 )
+
+                             T.sync_threads()
++                            if k_pair_step1_async + 1 < step1_k_tiles // 2:
++                                for row_batch_step1_gate_next_even in T.serial(8):
++                                    T.evaluate(
++                                        T.call_extern(
++                                            "handle",
++                                            "moe_stage_gate_one_wave_2rows_7168",
++                                            T.address_of(gate_shared[0, 0]),
++                                            T.address_of(
++                                                gate[
++                                                    expert_id,
++                                                    by * block_dexpert_step1,
++                                                    k_next_even_step1_async * block_dhidden_step1,
++                                                ]
++                                            ),
++                                            row_batch_step1_gate_next_even,
++                                            async_tx_step1,
++                                        )
++                                    )
+                             if k_pair_step1_async + 1 < step1_k_tiles // 2:
+                                 T.copy(
+                                     input[
+@@ -679,7 +761,7 @@ def run_kernel(
+                                     input_shared[:, 0:32],
+                                 )
+                             for ki_step1_odd in T.serial(0, block_dhidden_step1 // 32):
+-                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki_step1_odd)
++                                step1_mma.ldmatrix_b(weight_local, gate_prefetch_shared, ki_step1_odd)
+                                 step1_mma.mma(input_prefetch, weight_local, gate_local, ki_step1_odd)
+                             if k_pair_step1_async + 1 < step1_k_tiles // 2:
+                                 T.copy(
+@@ -695,22 +777,12 @@ def run_kernel(
+
+                             if k_pair_step1_async + 1 < step1_k_tiles // 2:
+                                 T.sync_threads()
+-                                for row_batch_step1_next_even in T.serial(8):
++                                for row_batch_step1_up_next_even in T.serial(8):
+                                     T.evaluate(
+                                         T.call_extern(
+                                             "handle",
+-                                            "moe_stage_gate_up_one_wave_2rows_7168"
+-                                            if num_experts == 64
+-                                            else "moe_stage_gate_up_one_wave_2rows",
+-                                            T.address_of(gate_shared[0, 0]),
++                                            "moe_stage_up_one_wave_2rows_7168",
+                                             T.address_of(up_shared[0, 0]),
+-                                            T.address_of(
+-                                                gate[
+-                                                    expert_id,
+-                                                    by * block_dexpert_step1,
+-                                                    k_next_even_step1_async * block_dhidden_step1,
+-                                                ]
+-                                            ),
+                                             T.address_of(
+                                                 up[
+                                                     expert_id,
+@@ -718,7 +790,7 @@ def run_kernel(
+                                                     k_next_even_step1_async * block_dhidden_step1,
+                                                 ]
+                                             ),
+-                                            row_batch_step1_next_even,
++                                            row_batch_step1_up_next_even,
+                                             async_tx_step1,
+                                         )
+                                     )
