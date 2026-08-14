@@ -1,0 +1,44 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py b/tmp/tile-moe-scratch-20260814/v053-work/v053_submission.py
+index 129046a3..ba61e3f4 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py
++++ b/tmp/tile-moe-scratch-20260814/v053-work/v053_submission.py
+@@ -222,9 +222,9 @@ def run_kernel(
+         use_step2_expert_grouped_grid = use_step1_expert_grouped_grid
+         use_step1_input_prefetch = True
+         use_step1_prefetch_before_barrier = num_experts == 32
+-        # Reuse the OJ-proven one-wave gate/up BSM staging only for the exact
+-        # 64-expert Case3 mapping.  Keep Case2 on its synchronous schedule.
+-        use_step1_split_wave_async = use_step1_expert_grouped_grid
++        # Both long-K OJ shapes have 7168-wide FP16 rows.  Reuse the exact
++        # one-wave BSM staging for Case2 as well as the accepted Case3 path.
++        use_step1_split_wave_async = num_experts in (32, 64)
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
+         # mcTracer showed a repeatable Step2 regression for the 64-expert OJ
+@@ -580,7 +580,7 @@ def run_kernel(
+                     if use_step1_split_wave_async:
+                         T.import_source(
+                             _MOE_ASYNC_COPY_SOURCE
+-                            + (_MOE_ASYNC_COPY_7168_SOURCE if num_experts == 64 else "")
++                            + (_MOE_ASYNC_COPY_7168_SOURCE if hidden == 7168 else "")
+                         )
+                         async_tx_step1 = T.get_thread_binding()
+
+@@ -591,7 +591,7 @@ def run_kernel(
+                                 T.call_extern(
+                                     "handle",
+                                     "moe_stage_gate_up_one_wave_2rows_7168"
+-                                    if num_experts == 64
++                                    if hidden == 7168
+                                     else "moe_stage_gate_up_one_wave_2rows",
+                                     T.address_of(gate_shared[0, 0]),
+                                     T.address_of(up_shared[0, 0]),
+@@ -623,7 +623,7 @@ def run_kernel(
+                                         T.call_extern(
+                                             "handle",
+                                             "moe_stage_gate_up_one_wave_2rows_7168"
+-                                            if num_experts == 64
++                                            if hidden == 7168
+                                             else "moe_stage_gate_up_one_wave_2rows",
+                                             T.address_of(gate_shared[0, 0]),
+                                             T.address_of(up_shared[0, 0]),
