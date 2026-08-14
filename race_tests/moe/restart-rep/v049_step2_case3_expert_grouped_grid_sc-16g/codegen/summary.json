@@ -1,0 +1,34 @@
+{
+  "submission_sha256": "52db5220f50b7ce224ec5ccb7f2f536c554f44888affcf94b4d44806e9a3a1fa",
+  "without_assume_sha256": "d292fcad99fd36e22571efb617bf520f06174e745b0bcb43a3d34f6d91964e98",
+  "case1": {
+    "byte_identical_to_v048": true,
+    "device_cpp_sha256": "fed58e1fd01ed1cf2243bb942e2c76dadc782ae3460dabf99b444f824d60076a"
+  },
+  "case2": {
+    "byte_identical_to_v048": true,
+    "device_cpp_sha256": "11594a94c119f41bc4b8756d73651c5fbb5bb73a1ac1567b224560d6b1796c73"
+  },
+  "case3": {
+    "mapping": "Step2 pid1<32 stays identity; pid1>=32 interleaves the two row blocks of each 184-row expert across 28 column tiles",
+    "grid": "Step1 16x96 and Step2 28x96 unchanged",
+    "resources": "Step1 210 MT/52 ST; Step2 234 MT/52 ST; both two static waves/PEU; zero stack/private spill",
+    "without_assume_resources": "Step2 212 MT/30 ST, but repeated safe-memory guards make it slower",
+    "step2_static_isa_counts_unchanged": {
+      "mma_16x16x16f16": 256,
+      "ldg_b128": 32,
+      "lds_b128": 64,
+      "barrier": 17
+    },
+    "generated_cpp_bytes": {
+      "parent_v048": 34763,
+      "without_assume": 37799,
+      "final_v049": 34844
+    },
+    "assembly_bytes": {
+      "parent_v048": 442316,
+      "final_v049": 433186
+    },
+    "lowering_conclusion": "Explicit bx/by assumptions remove safe-memory bounds branches from repeated Step2 memory operations; the remaining delta is CTA-entry mapping and dynamic addresses."
+  }
+}

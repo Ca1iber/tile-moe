@@ -1,0 +1,221 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-rep/v048_step1_case3_expert_grouped_grid_sc-16g/codegen/final/case3/v048_final_case3_generated_device.cpp b/tmp/tile-moe-scratch-20260814/v049-work/codegen/v049_case3_generated_device.cpp
+index c04800b7..db804744 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-rep/v048_step1_case3_expert_grouped_grid_sc-16g/codegen/final/case3/v048_final_case3_generated_device.cpp
++++ b/tmp/tile-moe-scratch-20260814/v049-work/codegen/v049_case3_generated_device.cpp
+@@ -345,6 +345,7 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel(const half_t*
+ }
+ 
+ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __restrict__ down, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
++  int cta_mapping[2];
+   float out_local_0[64];
+   float out_local_1[64];
+   half_t up_logits_shared[32];
+@@ -355,7 +356,22 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+   half_t down_local[64];
+   half_t output_local_cast[4];
+   half_t output_local_cast_1[4];
+-  int expert_id = group_idx_for_bx[((int)blockIdx.y)];
++  if (((int)blockIdx.y) < 32) {
++    cta_mapping[0] = ((int)blockIdx.y);
++    cta_mapping[1] = ((int)blockIdx.x);
++  } else {
++    cta_mapping[0] = (((((int)blockIdx.y) >> 1) * 2) + (((int)blockIdx.x) & 1));
++    cta_mapping[1] = (((((int)blockIdx.y) & 1) * 14) + (((int)blockIdx.x) >> 1));
++  }
++  int bx = cta_mapping[0];
++  int by = cta_mapping[1];
++  int condval;
++  if (((0 <= bx) && (bx < 96))) {
++    condval = group_idx_for_bx[((int64_t)bx)];
++  } else {
++    condval = 0;
++  }
++  int expert_id = condval;
+   int group_size = group_sizes[expert_id];
+   int raw_start = group_offsets[expert_id];
+   int padded_start = group_padded_offsets[expert_id];
+@@ -371,20 +387,45 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+   }
+   #pragma unroll
+   for (int i_2 = 0; i_2 < 4; ++i_2) {
+-    *(uint4*)(up_logits_shared + (i_2 * 8)) = *(uint4*)(up_logits + ((((((((int)blockIdx.y) * 262144) + ((((int)threadIdx.x) >> 6) * 65536)) + ((i_2 & 1) * 32768)) + ((((int)threadIdx.x) & 15) * 2048)) + ((i_2 >> 1) * 32)) + (((((int)threadIdx.x) & 63) >> 4) * 8)));
++    half_t broadcast_var_2 = half_t(0x0p+0f/*0.000000e+00*/);
++    uint4 condval_1;
++    if (((bx < 96) && (0 <= bx))) {
++      condval_1 = *(uint4*)(up_logits + ((((((((int64_t)bx) * (int64_t)262144) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)65536)) + ((((int64_t)i_2) & (int64_t)1) * (int64_t)32768)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)2048)) + ((((int64_t)i_2) >> (int64_t)1) * (int64_t)32)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)4) * (int64_t)8)));
++    } else {
++      condval_1 = make_uint4(__pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2));
++    }
++    *(uint4*)(up_logits_shared + (i_2 * 8)) = condval_1;
+   }
+   #pragma unroll
+   for (int i_3 = 0; i_3 < 4; ++i_3) {
+-    *(uint4*)(down_shared + ((((((i_3 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192)) = *(uint4*)(down + (((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (i_3 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + ((((int)threadIdx.x) & 7) * 8)));
++    half_t broadcast_var_3 = half_t(0x0p+0f/*0.000000e+00*/);
++    uint4 condval_2;
++    if (((by < 28) && (0 <= by))) {
++      condval_2 = *(uint4*)(down + (((((((int64_t)expert_id) * (int64_t)14680064) + (((int64_t)by) * (int64_t)524288)) + (((int64_t)i_3) * (int64_t)65536)) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)3) * (int64_t)2048)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)7) * (int64_t)8)));
++    } else {
++      condval_2 = make_uint4(__pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3));
++    }
++    *(uint4*)(down_shared + ((((((i_3 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192)) = condval_2;
+   }
+   __syncthreads();
+   for (int k_pair = 0; k_pair < 16; ++k_pair) {
+-    for (int row_batch_0 = 0; row_batch_0 < 4; ++row_batch_0) {
+-      moe_select_memcpy_async_16((&(down_shared[(((((row_batch_0 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (&(down[(((((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (row_batch_0 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 262144)])), (&(down_copy_barrier[(row_batch_0 * 4)])), (bool)0);
++    if (0 <= by) {
++      for (int row_batch_0 = 0; row_batch_0 < 4; ++row_batch_0) {
++        if (by < 28) {
++          moe_select_memcpy_async_16((&(down_shared[(((((row_batch_0 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (&(down[(((((((expert_id * 14680064) + (by * 524288)) + (row_batch_0 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 262144)])), (&(down_copy_barrier[(row_batch_0 * 4)])), (bool)0);
++        }
++      }
+     }
+     #pragma unroll
+     for (int i_4 = 0; i_4 < 4; ++i_4) {
+-      *(uint4*)(up_logits_prefetch + (i_4 * 8)) = *(uint4*)(up_logits + ((((((((((int)blockIdx.y) * 262144) + ((((int)threadIdx.x) >> 6) * 65536)) + ((i_4 & 1) * 32768)) + ((((int)threadIdx.x) & 15) * 2048)) + (k_pair * 128)) + ((i_4 >> 1) * 32)) + (((((int)threadIdx.x) & 63) >> 4) * 8)) + 64));
++      half_t broadcast_var_4 = half_t(0x0p+0f/*0.000000e+00*/);
++      uint4 condval_3;
++      if (((bx < 96) && (0 <= bx))) {
++        condval_3 = *(uint4*)(up_logits + ((((((((((int64_t)bx) * (int64_t)262144) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)65536)) + ((((int64_t)i_4) & (int64_t)1) * (int64_t)32768)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)2048)) + (((int64_t)k_pair) * (int64_t)128)) + ((((int64_t)i_4) >> (int64_t)1) * (int64_t)32)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)4) * (int64_t)8)) + (int64_t)64));
++      } else {
++        condval_3 = make_uint4(__pack_half2(broadcast_var_4, broadcast_var_4), __pack_half2(broadcast_var_4, broadcast_var_4), __pack_half2(broadcast_var_4, broadcast_var_4), __pack_half2(broadcast_var_4, broadcast_var_4));
++      }
++      *(uint4*)(up_logits_prefetch + (i_4 * 8)) = condval_3;
+     }
+     for (int ki = 0; ki < 2; ++ki) {
+       for (int j = 0; j < 8; ++j) {
+@@ -406,8 +447,12 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+       moe_select_wait_async_16((&(down_copy_barrier[(wait_slot_0 * 4)])), (bool)0);
+     }
+     __syncthreads();
+-    for (int row_batch_1 = 0; row_batch_1 < 4; ++row_batch_1) {
+-      moe_memcpy_sync_16((&(down_shared[((((((row_batch_1 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8)) + 8192)])), (&(down[(((((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (row_batch_1 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 64)])), (&(down_copy_barrier[(row_batch_1 * 4)])));
++    if (0 <= by) {
++      for (int row_batch_1 = 0; row_batch_1 < 4; ++row_batch_1) {
++        if (by < 28) {
++          moe_memcpy_sync_16((&(down_shared[((((((row_batch_1 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8)) + 8192)])), (&(down[(((((((expert_id * 14680064) + (by * 524288)) + (row_batch_1 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 64)])), (&(down_copy_barrier[(row_batch_1 * 4)])));
++        }
++      }
+     }
+     for (int ki_1 = 0; ki_1 < 2; ++ki_1) {
+       for (int j_2 = 0; j_2 < 8; ++j_2) {
+@@ -426,13 +471,24 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+       }
+     }
+     __syncthreads();
+-    for (int row_batch_2 = 0; row_batch_2 < 4; ++row_batch_2) {
+-      moe_select_memcpy_async_16((&(down_shared[(((((row_batch_2 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (&(down[(((((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (row_batch_2 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 262208)])), (&(down_copy_barrier[(row_batch_2 * 4)])), (bool)0);
++    if (0 <= by) {
++      for (int row_batch_2 = 0; row_batch_2 < 4; ++row_batch_2) {
++        if (by < 28) {
++          moe_select_memcpy_async_16((&(down_shared[(((((row_batch_2 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8))])), (&(down[(((((((expert_id * 14680064) + (by * 524288)) + (row_batch_2 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 262208)])), (&(down_copy_barrier[(row_batch_2 * 4)])), (bool)0);
++        }
++      }
+     }
+     if (k_pair < 15) {
+       #pragma unroll
+       for (int i_7 = 0; i_7 < 4; ++i_7) {
+-        *(uint4*)(up_logits_shared + (i_7 * 8)) = *(uint4*)(up_logits + ((((((((((int)blockIdx.y) * 262144) + ((((int)threadIdx.x) >> 6) * 65536)) + ((i_7 & 1) * 32768)) + ((((int)threadIdx.x) & 15) * 2048)) + (k_pair * 128)) + ((i_7 >> 1) * 32)) + (((((int)threadIdx.x) & 63) >> 4) * 8)) + 128));
++        half_t broadcast_var_5 = half_t(0x0p+0f/*0.000000e+00*/);
++        uint4 condval_4;
++        if (((bx < 96) && (0 <= bx))) {
++          condval_4 = *(uint4*)(up_logits + ((((((((((int64_t)bx) * (int64_t)262144) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)65536)) + ((((int64_t)i_7) & (int64_t)1) * (int64_t)32768)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)2048)) + (((int64_t)k_pair) * (int64_t)128)) + ((((int64_t)i_7) >> (int64_t)1) * (int64_t)32)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)4) * (int64_t)8)) + (int64_t)128));
++        } else {
++          condval_4 = make_uint4(__pack_half2(broadcast_var_5, broadcast_var_5), __pack_half2(broadcast_var_5, broadcast_var_5), __pack_half2(broadcast_var_5, broadcast_var_5), __pack_half2(broadcast_var_5, broadcast_var_5));
++        }
++        *(uint4*)(up_logits_shared + (i_7 * 8)) = condval_4;
+       }
+     }
+     for (int ki_2 = 0; ki_2 < 2; ++ki_2) {
+@@ -456,8 +512,12 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+     }
+     __syncthreads();
+     if (k_pair < 15) {
+-      for (int row_batch_3 = 0; row_batch_3 < 4; ++row_batch_3) {
+-        moe_select_memcpy_async_16((&(down_shared[((((((row_batch_3 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8)) + 8192)])), (&(down[(((((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (row_batch_3 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 128)])), (&(down_copy_barrier[(row_batch_3 * 4)])), (bool)0);
++      if (0 <= by) {
++        for (int row_batch_3 = 0; row_batch_3 < 4; ++row_batch_3) {
++          if (by < 28) {
++            moe_select_memcpy_async_16((&(down_shared[((((((row_batch_3 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) & 1)) & 1) * 8)) + 8192)])), (&(down[(((((((expert_id * 14680064) + (by * 524288)) + (row_batch_3 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + (((((int)threadIdx.x) & 7) ^ ((((int)threadIdx.x) & 63) >> 3)) * 8)) + 128)])), (&(down_copy_barrier[(row_batch_3 * 4)])), (bool)0);
++          }
++        }
+       }
+     }
+     for (int ki_3 = 0; ki_3 < 2; ++ki_3) {
+@@ -485,19 +545,19 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+   }
+   for (int row_slot = 0; row_slot < 2; ++row_slot) {
+     routed_weight_local[row_slot] = 0x0p+0f/*0.000000e+00*/;
+-    if (((((((int)threadIdx.x) >> 6) * 32) + (row_slot * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+-      float condval;
+-      if (((0 <= ((((((((int)blockIdx.y) * 128) + ((((int)threadIdx.x) >> 6) * 32)) + (row_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) - padded_start)) && (((((((((int)blockIdx.y) * 128) + ((((int)threadIdx.x) >> 6) * 32)) + (row_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) - padded_start) < 9088))) {
+-        condval = routed_weights[((((((((int64_t)((int)blockIdx.y)) * (int64_t)128) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)32)) + (((int64_t)row_slot) * (int64_t)16)) + ((int64_t)raw_start)) + (((int64_t)((int)threadIdx.x)) & (int64_t)15)) - ((int64_t)padded_start))];
++    if (((((((int)threadIdx.x) >> 6) * 32) + (row_slot * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (bx * 128))) {
++      float condval_5;
++      if (((0 <= ((((((bx * 128) + ((((int)threadIdx.x) >> 6) * 32)) + (row_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) - padded_start)) && (((((((bx * 128) + ((((int)threadIdx.x) >> 6) * 32)) + (row_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) - padded_start) < 9088))) {
++        condval_5 = routed_weights[((((((((int64_t)bx) * (int64_t)128) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)32)) + (((int64_t)row_slot) * (int64_t)16)) + ((int64_t)raw_start)) + (((int64_t)((int)threadIdx.x)) & (int64_t)15)) - ((int64_t)padded_start))];
+       } else {
+-        condval = 0x0p+0f/*0.000000e+00*/;
++        condval_5 = 0x0p+0f/*0.000000e+00*/;
+       }
+-      routed_weight_local[row_slot] = condval;
++      routed_weight_local[row_slot] = condval_5;
+     }
+   }
+   #pragma unroll
+   for (int i_10 = 0; i_10 < 16; ++i_10) {
+-    if (((((((int)threadIdx.x) >> 6) * 32) + ((i_10 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
++    if (((((((int)threadIdx.x) >> 6) * 32) + ((i_10 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (bx * 128))) {
+       uint2 __1;
+       float4 __2;
+         float4 v_ = *(float4*)(out_local_0 + (i_10 * 4));
+@@ -510,14 +570,22 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+       ((half2*)(&__1))[1] = __float22half2_rn(((float2*)(&__2))[1]);
+       *(uint2*)(output_local_cast + 0) = __1;
+     } else {
+-      half_t broadcast_var_2 = half_t(0x0p+0f/*0.000000e+00*/);
+-      *(uint2*)(output_local_cast + 0) = make_uint2(__pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2));
++      half_t broadcast_var_6 = half_t(0x0p+0f/*0.000000e+00*/);
++      *(uint2*)(output_local_cast + 0) = make_uint2(__pack_half2(broadcast_var_6, broadcast_var_6), __pack_half2(broadcast_var_6, broadcast_var_6));
++    }
++    if (0 <= by) {
++      if (by < 28) {
++        if (0 <= bx) {
++          if (bx < 96) {
++            *(uint2*)(output + (((((((bx * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_10 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (by * 256)) + ((i_10 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4))) = *(uint2*)(output_local_cast + 0);
++          }
++        }
++      }
+     }
+-    *(uint2*)(output + (((((((((int)blockIdx.y) * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_10 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (((int)blockIdx.x) * 256)) + ((i_10 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4))) = *(uint2*)(output_local_cast + 0);
+   }
+   #pragma unroll
+   for (int i_11 = 0; i_11 < 16; ++i_11) {
+-    if (((((((int)threadIdx.x) >> 6) * 32) + ((i_11 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
++    if (((((((int)threadIdx.x) >> 6) * 32) + ((i_11 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (bx * 128))) {
+       uint2 __3;
+       float4 __4;
+         float4 v__2 = *(float4*)(out_local_1 + (i_11 * 4));
+@@ -530,10 +598,18 @@ extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(half_t* __r
+       ((half2*)(&__3))[1] = __float22half2_rn(((float2*)(&__4))[1]);
+       *(uint2*)(output_local_cast_1 + 0) = __3;
+     } else {
+-      half_t broadcast_var_3 = half_t(0x0p+0f/*0.000000e+00*/);
+-      *(uint2*)(output_local_cast_1 + 0) = make_uint2(__pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3));
++      half_t broadcast_var_7 = half_t(0x0p+0f/*0.000000e+00*/);
++      *(uint2*)(output_local_cast_1 + 0) = make_uint2(__pack_half2(broadcast_var_7, broadcast_var_7), __pack_half2(broadcast_var_7, broadcast_var_7));
++    }
++    if (0 <= by) {
++      if (by < 28) {
++        if (0 <= bx) {
++          if (bx < 96) {
++            *(uint2*)(output + ((((((((bx * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_11 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (by * 256)) + ((i_11 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4)) + 128)) = *(uint2*)(output_local_cast_1 + 0);
++          }
++        }
++      }
+     }
+-    *(uint2*)(output + ((((((((((int)blockIdx.y) * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_11 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (((int)blockIdx.x) * 256)) + ((i_11 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4)) + 128)) = *(uint2*)(output_local_cast_1 + 0);
+   }
+ }
+ 

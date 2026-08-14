@@ -1,0 +1,64 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v048_step1_case3_expert_grouped_grid_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v049_step2_case3_expert_grouped_grid_sc-16g/submission.py
+index 31bf1e89..5ef5a321 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v048_step1_case3_expert_grouped_grid_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v049_step2_case3_expert_grouped_grid_sc-16g/submission.py
+@@ -145,6 +145,7 @@ def run_kernel(
+     use_grid_transpose_step1 = False
+     use_grid_transpose_step2 = False
+     use_step1_expert_grouped_grid = False
++    use_step2_expert_grouped_grid = False
+     use_step1_input_prefetch = False
+     use_step1_prefetch_before_barrier = False
+     use_step1_split_wave_async = False
+@@ -180,6 +181,7 @@ def run_kernel(
+             and num_blocks_m == 96
+             and group_idx_len == 96
+         )
++        use_step2_expert_grouped_grid = use_step1_expert_grouped_grid
+         use_step1_input_prefetch = True
+         use_step1_prefetch_before_barrier = num_experts == 32
+         use_step2_input_prefetch = True
+@@ -208,6 +210,7 @@ def run_kernel(
+         bool(use_grid_transpose_step1),
+         bool(use_grid_transpose_step2),
+         bool(use_step1_expert_grouped_grid),
++        bool(use_step2_expert_grouped_grid),
+         bool(use_step1_input_prefetch),
+         bool(use_step1_prefetch_before_barrier),
+         bool(use_step1_split_wave_async),
+@@ -424,6 +427,7 @@ def run_kernel(
+             use_grid_transpose_step1,
+             use_grid_transpose_step2,
+             use_step1_expert_grouped_grid,
++            use_step2_expert_grouped_grid,
+             use_step1_input_prefetch,
+             use_step1_prefetch_before_barrier,
+             use_step1_split_wave_async,
+@@ -810,8 +814,25 @@ def run_kernel(
+                             up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+ 
+                 with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
+-                    bx = pid1 if use_grid_transpose_step2 else pid0
+-                    by = pid0 if use_grid_transpose_step2 else pid1
++                    if use_step2_expert_grouped_grid:
++                        cta_mapping = T.alloc_local((2,), dtype=T.int32)
++                        if pid1 < num_experts // 2:
++                            cta_mapping[0] = pid1
++                            cta_mapping[1] = pid0
++                        else:
++                            cta_mapping[0] = (pid1 // 2) * 2 + pid0 % 2
++                            cta_mapping[1] = (
++                                (pid1 % 2) * (step2_col_tiles // 2) + pid0 // 2
++                            )
++                        bx = cta_mapping[0]
++                        by = cta_mapping[1]
++                    else:
++                        bx = pid1 if use_grid_transpose_step2 else pid0
++                        by = pid0 if use_grid_transpose_step2 else pid1
++                    T.assume(0 <= bx)
++                    T.assume(bx < num_blocks_m)
++                    T.assume(0 <= by)
++                    T.assume(by < step2_col_tiles)
+                     up_logits_shared = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+                     up_logits_prefetch = T.alloc_fragment((block_token, block_dexpert_step2), dtype=dtype)
+                     down_shared = T.alloc_shared((step2_output_tile, block_dexpert_step2), dtype=dtype)
