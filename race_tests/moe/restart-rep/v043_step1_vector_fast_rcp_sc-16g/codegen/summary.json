@@ -1,0 +1,42 @@
+{
+  "submission_sha256": "41053f6c6c07a05e4b91b3cc848f5c6dc50b307eee07115118e4b3304004e986",
+  "case1": {
+    "device_cpp_sha256": "d19ff4fab547d8cb83941d8eea7a6ce71e58f75e09fc5369c6e0418bbb22f54a",
+    "assembly_sha256": "06e87df2eade332b4b72af9d477f015076f05bfa5d0b374880dd42155cfa539d",
+    "resources": "Step1 222 MT / 36 ST; Step2 222 MT / 52 ST; 2 static waves/PEU; zero stack/private/spill",
+    "step1_static_isa": {
+      "unchanged": {
+        "mma": 128,
+        "ldg": 51,
+        "ldg_bsm": 47,
+        "lds": 32,
+        "sts": 0
+      },
+      "v042": {
+        "exp_f32": 64,
+        "rcp_f32": 64,
+        "div_scale_f32": 128,
+        "div_fmas_f32": 64,
+        "div_fixup_f32": 64,
+        "snop": 511
+      },
+      "v043": {
+        "exp_f32": 64,
+        "rcp_f32": 64,
+        "div_scale_f32": 0,
+        "div_fmas_f32": 0,
+        "div_fixup_f32": 0,
+        "snop": 351
+      }
+    }
+  },
+  "case2": {
+    "kernel_region_byte_identical_to_v042": true,
+    "kernel_region_sha256": "18cc5dc1ca53035f928d4832507a02bcabfda2dd17f3e5f58b735f6721507f2a"
+  },
+  "case3": {
+    "kernel_region_byte_identical_to_v042": true,
+    "kernel_region_sha256": "b9514c45b9a8e46ad86c319bba5571ffcfff640ad05cc431ee5ba2ae4f6f1b9b"
+  },
+  "caveat": "The helper prefix changes whole-file SHA for Case2/3; their kernel regions are byte-identical to v042."
+}

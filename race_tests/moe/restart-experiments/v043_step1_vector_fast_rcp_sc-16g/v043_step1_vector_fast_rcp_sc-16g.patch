@@ -1,0 +1,40 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v042_step1_bsm_address_helper_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v043_step1_vector_fast_rcp_sc-16g/submission.py
+index 6a34be58..cced1716 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v042_step1_bsm_address_helper_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v043_step1_vector_fast_rcp_sc-16g/submission.py
+@@ -8,6 +8,17 @@ _KERNEL_CACHE = {}
+ _WORKSPACE_CACHE = {}
+ _MOE_ASYNC_COPY_SOURCE = """
+ #include <maca_async.h>
++__device__ __forceinline__ void moe_silu_fast_rcp_float4x16(float* values) {
++#pragma unroll
++  for (int i = 0; i < 16; ++i) {
++    float4 v = reinterpret_cast<float4*>(values)[i];
++    v.x *= __builtin_mxc_rcpf(1.0f + exp2f(-v.x * 1.44269504f));
++    v.y *= __builtin_mxc_rcpf(1.0f + exp2f(-v.y * 1.44269504f));
++    v.z *= __builtin_mxc_rcpf(1.0f + exp2f(-v.z * 1.44269504f));
++    v.w *= __builtin_mxc_rcpf(1.0f + exp2f(-v.w * 1.44269504f));
++    reinterpret_cast<float4*>(values)[i] = v;
++  }
++}
+ __device__ __forceinline__ void moe_memcpy_async_16(
+     void* dst_shared, const void* src_global, void* barrier_storage) {
+   *reinterpret_cast<b128vectype*>(barrier_storage) =
+@@ -755,8 +766,17 @@ def run_kernel(
+                                 step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                 step1_mma.mma(input_shared, weight_local, up_local, ki)
+
++                    if use_step1_split_wave_async:
++                        T.evaluate(
++                            T.call_extern(
++                                "handle",
++                                "moe_silu_fast_rcp_float4x16",
++                                gate_local.data,
++                            )
++                        )
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+-                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
++                        if not use_step1_split_wave_async:
++                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                         if i < actual_rows:
+                             up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]

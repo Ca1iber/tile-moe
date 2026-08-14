@@ -1,0 +1,29 @@
+{
+  "iteration_id": "v043_step1_vector_fast_rcp_sc-16g",
+  "status": "accepted",
+  "parent_iteration": "v042_step1_bsm_address_helper_sc-16g",
+  "parent_commit": "6086a1ba6bb4fcf227c408574fa9f05dd4656b2d",
+  "machine": "sc-16g",
+  "submission_sha256": "41053f6c6c07a05e4b91b3cc848f5c6dc50b307eee07115118e4b3304004e986",
+  "decision": "accepted-new-best",
+  "primary_change": "Case1 Step1 float4x16 SwiGLU epilogue uses __builtin_mxc_rcpf while preserving FP32 exp2 and vector lowering",
+  "primary_result": {
+    "case1_pair_median_change_percent": -0.4509293504870726,
+    "case1_pair_mean_change_percent": -0.4500653585427018,
+    "case1_pair_wins": "13/13",
+    "mctracer_step1_median_change_percent": -0.7292370020256622,
+    "mctracer_step1_wins": "3/3"
+  },
+  "numerical_gate": "OJ reference 3/3 plus parent comparison across 3 seeds x 3 input scales",
+  "resource_result": "Case1 Step1 222 MT, 36 ST, 0 private/stack, 32 KiB dynamic shared, 2 static waves/PEU",
+  "oj_import_policy": "torch/tilelang/math roots and approved TileLang forms only",
+  "kernel_update": "restart-submission only; root submission.py and custom_fusedmoe.py intentionally untouched",
+  "scratch_policy": "in-flight artifacts under /tmp/tile-moe-scratch-20260814; no race_tests/moe/*_tmp directories",
+  "artifact_roots": [
+    "moe-roofline",
+    "restart-experiments",
+    "restart-rep",
+    "restart-scripts",
+    "restart-submission"
+  ]
+}
