@@ -1,0 +1,35 @@
+{
+  "submission_sha256": "ae6723f560cfee7039f7090a8e800bccf00e4bfc99bbbc825ad889340418c288",
+  "case1": {
+    "byte_identical_to_v045": true,
+    "device_cpp_sha256": "fed58e1fd01ed1cf2243bb942e2c76dadc782ae3460dabf99b444f824d60076a"
+  },
+  "case2": {
+    "byte_identical_to_v045": true,
+    "device_cpp_sha256": "11594a94c119f41bc4b8756d73651c5fbb5bb73a1ac1567b224560d6b1796c73"
+  },
+  "case3": {
+    "mapping": "pid1<32 keeps bx=pid1/by=pid0; pid1>=32 interleaves each adjacent two-block expert across by",
+    "grid": "Step1 16x96 unchanged; Step2 28x96 unchanged",
+    "step1_resources": {
+      "parent": "230 MT / 26 ST / 2 static waves/PEU",
+      "candidate": "210 MT / 52 ST / 2 static waves/PEU",
+      "private_or_stack_spill": 0
+    },
+    "step1_static_isa_counts_unchanged": {
+      "mma_16x16x16f16": 256,
+      "ldg_b128": 28,
+      "lds_b128": 64,
+      "barrier": 4
+    },
+    "assembly_bytes": {
+      "parent": 454031,
+      "candidate": 442316
+    },
+    "generated_cpp_bytes": {
+      "parent": 30234,
+      "candidate": 34763
+    },
+    "interpretation": "The mapping adds CTA-entry scalar control but preserves MMA and vector-memory work. The backend shifts register allocation from 230 MT/26 ST to 210 MT/52 ST without changing two-wave occupancy or spilling; dynamic evidence is required to attribute the speedup."
+  }
+}

@@ -1,0 +1,27 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v045_step1_expert_grouped_grid_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v048_step1_case3_expert_grouped_grid_sc-16g/submission.py
+index f0eb40d2..31bf1e89 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v045_step1_expert_grouped_grid_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v048_step1_case3_expert_grouped_grid_sc-16g/submission.py
+@@ -173,6 +173,13 @@ def run_kernel(
+     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
++        use_step1_expert_grouped_grid = (
++            num_experts == 64
++            and total_padded == 12288
++            and total_valid == 9088
++            and num_blocks_m == 96
++            and group_idx_len == 96
++        )
+         use_step1_input_prefetch = True
+         use_step1_prefetch_before_barrier = num_experts == 32
+         use_step2_input_prefetch = True
+@@ -481,7 +488,7 @@ def run_kernel(
+                 with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
+                     if use_step1_expert_grouped_grid:
+                         cta_mapping = T.alloc_local((2,), dtype=T.int32)
+-                        if pid1 < 8:
++                        if pid1 < num_experts // 2:
+                             cta_mapping[0] = pid1
+                             cta_mapping[1] = pid0
+                         else:
