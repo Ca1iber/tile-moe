@@ -1,0 +1,24 @@
+diff --git a/tmp/tile-moe-scratch-20260814/v054-work/v054_submission.py b/tmp/tile-moe-scratch-20260814/v054-work/v054_repair_submission.py
+index 8cbbee45..5b4b3332 100644
+--- a/tmp/tile-moe-scratch-20260814/v054-work/v054_submission.py
++++ b/tmp/tile-moe-scratch-20260814/v054-work/v054_repair_submission.py
+@@ -133,13 +133,16 @@ __device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(
+     cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
+         reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,
+         reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);
+-    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
+-        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset + 1024,
+-        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset + 114688);
+   } else if (lane < 128) {
+     cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
+         reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,
+         reinterpret_cast<const char*>(up_global_base) + global_byte_offset);
++  }
++  if (lane < 64) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset + 1024,
++        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset + 114688);
++  } else if (lane < 128) {
+     cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
+         reinterpret_cast<char*>(up_shared_base) + shared_byte_offset + 1024,
+         reinterpret_cast<const char*>(up_global_base) + global_byte_offset + 114688);

@@ -1,0 +1,1 @@
+No new Roofline image is generated for this rejected address-CSE probe. The analytical FLOPs and logical bytes are unchanged; mcProfiler instead reveals 11.79% more actual global-read traffic from the changed BSM issue/cache behavior.

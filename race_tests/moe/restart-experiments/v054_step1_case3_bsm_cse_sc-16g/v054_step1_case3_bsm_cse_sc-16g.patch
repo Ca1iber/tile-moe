@@ -1,0 +1,35 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py b/tmp/tile-moe-scratch-20260814/v054-work/v054_submission.py
+index 129046a3..8cbbee45 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py
++++ b/tmp/tile-moe-scratch-20260814/v054-work/v054_submission.py
+@@ -123,10 +123,27 @@ __device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(
+     void* gate_shared_base, void* up_shared_base,
+     const void* gate_global_base, const void* up_global_base,
+     int row_pair, int lane) {
+-  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,
+-      gate_global_base, up_global_base, row_pair << 1, lane);
+-  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,
+-      gate_global_base, up_global_base, (row_pair << 1) + 1, lane);
++  const int local_lane = lane & 63;
++  const int lane_row = local_lane >> 3;
++  const int row = (row_pair << 4) + lane_row;
++  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;
++  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);
++  const int global_byte_offset = row * 14336 + (logical_col << 1);
++  if (lane < 64) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset + 1024,
++        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset + 114688);
++  } else if (lane < 128) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset + 1024,
++        reinterpret_cast<const char*>(up_global_base) + global_byte_offset + 114688);
++  }
+ }
+ """
