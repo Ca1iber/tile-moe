@@ -2,7 +2,7 @@
 
 ## Outcome
 
-Locally accepted as an OJ corrective candidate; platform confirmation is pending.
+Accepted. The exact archived submission passed the OJ correctness check.
 
 ## Change
 
@@ -18,6 +18,8 @@ Starting from v049, Case1 keeps the expert-grouped Step1 implementation but disa
 - mcTracer: Step1 `+0.3236%` (noise), Step2 `+18.2355%`.
 - Regenerated Case1 Step2 matches v027 structurally: 4 MMA sites, 4 CTA synchronizations, no selected continuous/async call; resources `236 MT / 52 ST`, two static waves.
 
-## Limitation
+## OJ confirmation
 
-The original failure was OJ-only and could not be reproduced in 300 local repeats. v050 is therefore a platform-validation candidate, not proof that the OJ issue is closed. If Case1 still fails, the next rollback boundary is the full Case1 path, including Step1.
+The user reported on 2026-08-14 that Case1 and Case2 are both approximately `3.8x`, while Case3 is slightly below `3.5x`. Exact per-case platform times were not provided, so these values are intentionally recorded as approximate.
+
+The passing result establishes v050 as the new OJ-valid baseline and narrows the earlier Case1 failure to the Step2 mechanisms disabled by v050. It does not yet isolate whether half-B ping-pong, row1-tail async, continuous async, or their interaction was responsible.
