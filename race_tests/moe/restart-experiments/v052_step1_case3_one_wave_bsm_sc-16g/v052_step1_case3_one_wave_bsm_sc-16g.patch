@@ -1,0 +1,108 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v050_case1_step2_v027_rollback_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py
+index c275fb68..129046a3 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v050_case1_step2_v027_rollback_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v052_step1_case3_one_wave_bsm_sc-16g/submission.py
+@@ -95,6 +95,41 @@ __device__ __forceinline__ void moe_select_wait_async_16(
+ }
+ """
+
++# The accepted Case1 helper above specializes its global row stride to
++# 2048 FP16 elements (4096 bytes).  Keep it byte-for-byte stable and provide
++# the exact 7168-wide variant separately for OJ Case3.
++_MOE_ASYNC_COPY_7168_SOURCE = """
++__device__ __forceinline__ void moe_stage_gate_up_one_wave_7168(
++    void* gate_shared_base, void* up_shared_base,
++    const void* gate_global_base, const void* up_global_base,
++    int row_batch, int lane) {
++  const int local_lane = lane & 63;
++  const int lane_row = local_lane >> 3;
++  const int row = (row_batch << 3) + lane_row;
++  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;
++  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);
++  const int global_byte_offset = row * 14336 + (logical_col << 1);
++  if (lane < 64) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);
++  } else if (lane < 128) {
++    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(
++        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,
++        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);
++  }
++}
++__device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(
++    void* gate_shared_base, void* up_shared_base,
++    const void* gate_global_base, const void* up_global_base,
++    int row_pair, int lane) {
++  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,
++      gate_global_base, up_global_base, row_pair << 1, lane);
++  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,
++      gate_global_base, up_global_base, (row_pair << 1) + 1, lane);
++}
++"""
++
+
+ def _workspace(stacked_expert_tokens, intermediate):
+     device_index = stacked_expert_tokens.device.index
+@@ -187,6 +222,9 @@ def run_kernel(
+         use_step2_expert_grouped_grid = use_step1_expert_grouped_grid
+         use_step1_input_prefetch = True
+         use_step1_prefetch_before_barrier = num_experts == 32
++        # Reuse the OJ-proven one-wave gate/up BSM staging only for the exact
++        # 64-expert Case3 mapping.  Keep Case2 on its synchronous schedule.
++        use_step1_split_wave_async = use_step1_expert_grouped_grid
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
+         # mcTracer showed a repeatable Step2 regression for the 64-expert OJ
+@@ -540,7 +578,10 @@ def run_kernel(
+                     T.clear(gate_local)
+                     T.clear(up_local)
+                     if use_step1_split_wave_async:
+-                        T.import_source(_MOE_ASYNC_COPY_SOURCE)
++                        T.import_source(
++                            _MOE_ASYNC_COPY_SOURCE
++                            + (_MOE_ASYNC_COPY_7168_SOURCE if num_experts == 64 else "")
++                        )
+                         async_tx_step1 = T.get_thread_binding()
+
+                         # Use one adjacent wave per tensor.  Each active thread
+@@ -549,7 +590,9 @@ def run_kernel(
+                             T.evaluate(
+                                 T.call_extern(
+                                     "handle",
+-                                    "moe_stage_gate_up_one_wave_2rows",
++                                    "moe_stage_gate_up_one_wave_2rows_7168"
++                                    if num_experts == 64
++                                    else "moe_stage_gate_up_one_wave_2rows",
+                                     T.address_of(gate_shared[0, 0]),
+                                     T.address_of(up_shared[0, 0]),
+                                     T.address_of(gate[expert_id, by * block_dexpert_step1, 0]),
+@@ -579,7 +622,9 @@ def run_kernel(
+                                     T.evaluate(
+                                         T.call_extern(
+                                             "handle",
+-                                            "moe_stage_gate_up_one_wave_2rows",
++                                            "moe_stage_gate_up_one_wave_2rows_7168"
++                                            if num_experts == 64
++                                            else "moe_stage_gate_up_one_wave_2rows",
+                                             T.address_of(gate_shared[0, 0]),
+                                             T.address_of(up_shared[0, 0]),
+                                             T.address_of(
+@@ -802,7 +847,7 @@ def run_kernel(
+                                 step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                 step1_mma.mma(input_shared, weight_local, up_local, ki)
+
+-                    if use_step1_split_wave_async:
++                    if use_step1_split_wave_async and num_experts == 16:
+                         T.evaluate(
+                             T.call_extern(
+                                 "handle",
+@@ -811,7 +856,7 @@ def run_kernel(
+                             )
+                         )
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+-                        if not use_step1_split_wave_async:
++                        if not (use_step1_split_wave_async and num_experts == 16):
+                             gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                         if i < actual_rows:
+                             up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]

@@ -1,0 +1,839 @@
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+  info = core._register_object_by_index(type_index, cls)
+[04:40:20] /root/tilelang-metax/3rdparty/tvm/src/script/ir_builder/tir/ir.cc:249: Fatal: ValueError: Try to merge two annotations with different values for key `"pragma_import_c"`, previous one is "\n#include <maca_async.h>\n__device__ __forceinline__ void moe_silu_fast_rcp_float4x16(float* values) {\n#pragma unroll\n  for (int i = 0; i < 16; ++i) {\n    float4 v = reinterpret_cast<float4*>(values)[i];\n    v.x *= __builtin_mxc_rcpf(1.0f + exp2f(-v.x * 1.44269504f));\n    v.y *= __builtin_mxc_rcpf(1.0f + exp2f(-v.y * 1.44269504f));\n    v.z *= __builtin_mxc_rcpf(1.0f + exp2f(-v.z * 1.44269504f));\n    v.w *= __builtin_mxc_rcpf(1.0f + exp2f(-v.w * 1.44269504f));\n    reinterpret_cast<float4*>(values)[i] = v;\n  }\n}\n__device__ __forceinline__ void moe_memcpy_async_16(\n    void* dst_shared, const void* src_global, void* barrier_storage) {\n  *reinterpret_cast<b128vectype*>(barrier_storage) =\n      memcpy_async<16>(dst_shared, const_cast<void*>(src_global));\n}\n__device__ __forceinline__ void moe_memcpy_sync_16(\n    void* dst_shared, const void* src_global, void* barrier_storage) {\n  *reinterpret_cast<uint4*>(dst_shared) =\n      *reinterpret_cast<const uint4*>(src_global);\n}\n__device__ __forceinline__ void moe_wait_async_16(const void* barrier_storage) {\n  barrier_arrive_and_wait(\n      *reinterpret_cast<const b128vectype*>(barrier_storage));\n}\n__device__ __forceinline__ void moe_continuous_memcpy_async_16(\n    void* dst_shared, const void* src_global, void* barrier_storage) {\n  cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n      dst_shared, src_global);\n}\n__device__ __forceinline__ void moe_stage_gate_up_one_wave(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_batch, int lane) {\n  const int local_lane = lane & 63;\n  const int lane_row = local_lane >> 3;\n  const int row = (row_batch << 3) + lane_row;\n  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;\n  // The swizzled logical column lowers to the unswizzled lane group in\n  // physical shared storage: physical_col = (local_lane & 7) * 8.\n  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);\n  const int global_byte_offset = (row << 12) + (logical_col << 1);\n  if (lane < 64) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);\n  } else if (lane < 128) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);\n  }\n}\n__device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_pair, int lane) {\n  moe_stage_gate_up_one_wave(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, row_pair << 1, lane);\n  moe_stage_gate_up_one_wave(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, (row_pair << 1) + 1, lane);\n}\n__device__ __forceinline__ void moe_continuous_wait_all(\n    const void* barrier_storage) {\n  cooperative_groups::details::__pipeline_wait_prior(0);\n}\n__device__ __forceinline__ void moe_select_memcpy_async_16(\n    void* dst_shared, const void* src_global, void* barrier_storage,\n    int use_continuous) {\n  if (use_continuous) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        dst_shared, src_global);\n  } else {\n    *reinterpret_cast<b128vectype*>(barrier_storage) =\n        memcpy_async<16>(dst_shared, const_cast<void*>(src_global));\n  }\n}\n__device__ __forceinline__ void moe_select_wait_async_16(\n    const void* barrier_storage, int use_continuous) {\n  if (use_continuous) {\n    cooperative_groups::details::__pipeline_wait_prior(0);\n  } else {\n    barrier_arrive_and_wait(\n        *reinterpret_cast<const b128vectype*>(barrier_storage));\n  }\n}\n", new one is "\n__device__ __forceinline__ void moe_stage_gate_up_one_wave_7168(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_batch, int lane) {\n  const int local_lane = lane & 63;\n  const int lane_row = local_lane >> 3;\n  const int row = (row_batch << 3) + lane_row;\n  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;\n  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);\n  const int global_byte_offset = row * 14336 + (logical_col << 1);\n  if (lane < 64) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);\n  } else if (lane < 128) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);\n  }\n}\n__device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_pair, int lane) {\n  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, row_pair << 1, lane);\n  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, (row_pair << 1) + 1, lane);\n}\n"
+2026-08-14 04:40:24  [TileLang:tilelang.language.eager.builder:CRITICAL] (builder.py:1281): Failed to build prim_func from kernel
+args={'input': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="input", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float16), storage_scope="global")), dtype=float16, shape=(ir.IntImm(span=None, dtype=int32, value=12288), ir.IntImm(span=None, dtype=int32, value=7168)), strides=(ir.IntImm(span=None, dtype=int32, value=7168), ir.IntImm(span=None, dtype=int32, value=1)), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="input", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'gate': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="gate", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float16), storage_scope="global")), dtype=float16, shape=(ir.IntImm(span=None, dtype=int32, value=64), ir.IntImm(span=None, dtype=int32, value=2048), ir.IntImm(span=None, dtype=int32, value=7168)), strides=(ir.IntImm(span=None, dtype=int32, value=14680064), ir.IntImm(span=None, dtype=int32, value=7168), ir.IntImm(span=None, dtype=int32, value=1)), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="gate", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'up': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="up", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float16), storage_scope="global")), dtype=float16, shape=(ir.IntImm(span=None, dtype=int32, value=64), ir.IntImm(span=None, dtype=int32, value=2048), ir.IntImm(span=None, dtype=int32, value=7168)), strides=(ir.IntImm(span=None, dtype=int32, value=14680064), ir.IntImm(span=None, dtype=int32, value=7168), ir.IntImm(span=None, dtype=int32, value=1)), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="up", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'down': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="down", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float16), storage_scope="global")), dtype=float16, shape=(ir.IntImm(span=None, dtype=int32, value=64), ir.IntImm(span=None, dtype=int32, value=7168), ir.IntImm(span=None, dtype=int32, value=2048)), strides=(ir.IntImm(span=None, dtype=int32, value=14680064), ir.IntImm(span=None, dtype=int32, value=2048), ir.IntImm(span=None, dtype=int32, value=1)), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="down", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'routed_weights': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="routed_weights", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float32), storage_scope="global")), dtype=float32, shape=(ir.IntImm(span=None, dtype=int32, value=9088),), strides=(ir.IntImm(span=None, dtype=int32, value=1),), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="routed_weights", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'group_sizes': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="group_sizes", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=int32), storage_scope="global")), dtype=int32, shape=(ir.IntImm(span=None, dtype=int32, value=64),), strides=(ir.IntImm(span=None, dtype=int32, value=1),), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="group_sizes", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'group_offsets': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="group_offsets", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=int32), storage_scope="global")), dtype=int32, shape=(ir.IntImm(span=None, dtype=int32, value=65),), strides=(ir.IntImm(span=None, dtype=int32, value=1),), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="group_offsets", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'group_padded_offsets': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="group_padded_offsets", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=int32), storage_scope="global")), dtype=int32, shape=(ir.IntImm(span=None, dtype=int32, value=65),), strides=(ir.IntImm(span=None, dtype=int32, value=1),), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="group_padded_offsets", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'group_idx_for_bx': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="group_idx_for_bx", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=int32), storage_scope="global")), dtype=int32, shape=(ir.IntImm(span=None, dtype=int32, value=96),), strides=(ir.IntImm(span=None, dtype=int32, value=1),), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="group_idx_for_bx", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'up_logits': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="up_logits", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float16), storage_scope="global")), dtype=float16, shape=(ir.IntImm(span=None, dtype=int32, value=12288), ir.IntImm(span=None, dtype=int32, value=2048)), strides=(ir.IntImm(span=None, dtype=int32, value=2048), ir.IntImm(span=None, dtype=int32, value=1)), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="up_logits", data_alignment=64, offset_factor=1, buffer_type=1, span=None), 'output': tir.Buffer(data=tir.Var(span=None, dtype=handle, name="output", type_annotation=ir.PointerType(span=None, element_type=ir.PrimType(span=None, dtype=float16), storage_scope="global")), dtype=float16, shape=(ir.IntImm(span=None, dtype=int32, value=12288), ir.IntImm(span=None, dtype=int32, value=7168)), strides=(ir.IntImm(span=None, dtype=int32, value=7168), ir.IntImm(span=None, dtype=int32, value=1)), axis_separators=(), elem_offset=ir.IntImm(span=None, dtype=int32, value=0), name="output", data_alignment=64, offset_factor=1, buffer_type=1, span=None)}
+source=def make_closure(accum_dtype, block_dexpert_step1, block_dexpert_step2, block_dhidden_step1, block_dhidden_step2, block_token, dtype, hidden, intermediate, num_blocks_m, num_experts, num_stages, scale, step1_col_tiles, step1_grid_x, step1_grid_y, step1_k_tiles, step1_mma, step2_col_tiles, step2_grid_x, step2_grid_y, step2_k_tiles, step2_mma, step2_output_tile, threads, use_grid_transpose_step1, use_grid_transpose_step2, use_step1_expert_grouped_grid, use_step1_input_prefetch, use_step1_prefetch_before_barrier, use_step1_split_wave_async, use_step2_continuous_async, use_step2_expert_grouped_grid, use_step2_half_b_pingpong, use_step2_input_prefetch, use_step2_row1_tail_async):
+
+    def kernel(__tb):
+        __tb_fl = 'v052_submission.py'
+        __tb_fn = 'kernel'
+        range = __tb.override('range')
+        __tb.set_fileline(__tb_fl, 520, __tb_fn)
+
+        def kernel(input, gate, up, down, routed_weights, group_sizes, group_offsets, group_padded_offsets, group_idx_for_bx, up_logits, output, **__kwargs):
+            __tb.set_fileline(__tb_fl, 521, __tb_fn)
+            input = __tb.arg('input', input)
+            __tb.set_fileline(__tb_fl, 522, __tb_fn)
+            gate = __tb.arg('gate', gate)
+            __tb.set_fileline(__tb_fl, 523, __tb_fn)
+            up = __tb.arg('up', up)
+            __tb.set_fileline(__tb_fl, 524, __tb_fn)
+            down = __tb.arg('down', down)
+            __tb.set_fileline(__tb_fl, 525, __tb_fn)
+            routed_weights = __tb.arg('routed_weights', routed_weights)
+            __tb.set_fileline(__tb_fl, 526, __tb_fn)
+            group_sizes = __tb.arg('group_sizes', group_sizes)
+            __tb.set_fileline(__tb_fl, 527, __tb_fn)
+            group_offsets = __tb.arg('group_offsets', group_offsets)
+            __tb.set_fileline(__tb_fl, 528, __tb_fn)
+            group_padded_offsets = __tb.arg('group_padded_offsets', group_padded_offsets)
+            __tb.set_fileline(__tb_fl, 529, __tb_fn)
+            group_idx_for_bx = __tb.arg('group_idx_for_bx', group_idx_for_bx)
+            __tb.set_fileline(__tb_fl, 530, __tb_fn)
+            up_logits = __tb.arg('up_logits', up_logits)
+            __tb.set_fileline(__tb_fl, 531, __tb_fn)
+            output = __tb.arg('output', output)
+            __tb.set_fileline(__tb_fl, 1, __tb_fn)
+            if __tb.skip_kernel_ctx():
+                __tb.set_fileline(__tb_fl, 1, __tb_fn)
+                return
+            __tb.set_fileline(__tb_fl, 533, __tb_fn)
+            with __tb.ctx_with(__tb.rval('T', T).Kernel(__tb.rval('step1_grid_x', step1_grid_x), __tb.rval('step1_grid_y', step1_grid_y), threads=__tb.rval('threads', threads))) as (pid0, pid1):
+                __tb.set_fileline(__tb_fl, 534, __tb_fn)
+                for __1 in __tb.ctx_if(__tb.rval('use_step1_expert_grouped_grid', use_step1_expert_grouped_grid)):
+                    __tb.set_fileline(__tb_fl, 534, __tb_fn)
+                    for _ in __tb.ctx_then(__1):
+                        __tb.set_fileline(__tb_fl, 535, __tb_fn)
+                        cta_mapping = __tb.bind('cta_mapping', __tb.rval('T', T).alloc_local((2,), dtype=__tb.rval('T', T).int32))
+                        __tb.set_fileline(__tb_fl, 536, __tb_fn)
+                        for __0 in __tb.ctx_if(__tb.rval('pid1', pid1) < __tb.rval('num_experts', num_experts) // 2):
+                            __tb.set_fileline(__tb_fl, 536, __tb_fn)
+                            for _ in __tb.ctx_then(__0):
+                                __tb.set_fileline(__tb_fl, 537, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 0, __tb.rval('pid1', pid1))
+                                __tb.set_fileline(__tb_fl, 538, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 1, __tb.rval('pid0', pid0))
+                            __tb.set_fileline(__tb_fl, 536, __tb_fn)
+                            for _ in __tb.ctx_else(__0):
+                                __tb.set_fileline(__tb_fl, 540, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 0, __tb.rval('pid1', pid1) // 2 * 2 + __tb.rval('pid0', pid0) % 2)
+                                __tb.set_fileline(__tb_fl, 541, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 1, __tb.rval('pid1', pid1) % 2 * (__tb.rval('step1_col_tiles', step1_col_tiles) // 2) + __tb.rval('pid0', pid0) // 2)
+                        __tb.set_fileline(__tb_fl, 544, __tb_fn)
+                        bx = __tb.bind('bx', __tb.rval('cta_mapping', cta_mapping)[0])
+                        __tb.set_fileline(__tb_fl, 545, __tb_fn)
+                        by = __tb.bind('by', __tb.rval('cta_mapping', cta_mapping)[1])
+                    __tb.set_fileline(__tb_fl, 534, __tb_fn)
+                    for _ in __tb.ctx_else(__1):
+                        __tb.set_fileline(__tb_fl, 547, __tb_fn)
+                        bx = __tb.bind('bx', __tb.ifexp(__tb.rval('use_grid_transpose_step1', use_grid_transpose_step1), lambda: __tb.rval('pid1', pid1), lambda: __tb.rval('pid0', pid0)))
+                        __tb.set_fileline(__tb_fl, 548, __tb_fn)
+                        by = __tb.bind('by', __tb.ifexp(__tb.rval('use_grid_transpose_step1', use_grid_transpose_step1), lambda: __tb.rval('pid0', pid0), lambda: __tb.rval('pid1', pid1)))
+                __tb.set_fileline(__tb_fl, 549, __tb_fn)
+                input_shared = __tb.bind('input_shared', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dhidden_step1', block_dhidden_step1)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 550, __tb_fn)
+                input_prefetch = __tb.bind('input_prefetch', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dhidden_step1', block_dhidden_step1)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 551, __tb_fn)
+                gate_shared = __tb.bind('gate_shared', __tb.rval('T', T).alloc_shared((__tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('block_dhidden_step1', block_dhidden_step1)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 552, __tb_fn)
+                up_shared = __tb.bind('up_shared', __tb.rval('T', T).alloc_shared((__tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('block_dhidden_step1', block_dhidden_step1)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 553, __tb_fn)
+                gate_local = __tb.bind('gate_local', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dexpert_step1', block_dexpert_step1)), dtype=__tb.rval('accum_dtype', accum_dtype)))
+                __tb.set_fileline(__tb_fl, 554, __tb_fn)
+                up_local = __tb.bind('up_local', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dexpert_step1', block_dexpert_step1)), dtype=__tb.rval('accum_dtype', accum_dtype)))
+                __tb.set_fileline(__tb_fl, 555, __tb_fn)
+                weight_local = __tb.bind('weight_local', __tb.rval('T', T).alloc_local(__tb.rval('step1_mma', step1_mma).warp_cols * __tb.rval('step1_mma', step1_mma).k_pack * __tb.rval('step1_mma', step1_mma).local_size_b, dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 557, __tb_fn)
+                __tb.eval(__tb.rval('T', T).annotate_layout({__tb.rval('input_shared', input_shared): __tb.rval('step1_mma', step1_mma).make_mma_load_layout(__tb.rval('input_shared', input_shared), matrix='A'), __tb.rval('input_prefetch', input_prefetch): __tb.rval('step1_mma', step1_mma).make_mma_load_layout(__tb.rval('input_prefetch', input_prefetch), matrix='A'), __tb.rval('gate_shared', gate_shared): __tb.rval('make_swizzled_layout', make_swizzled_layout)(__tb.rval('gate_shared', gate_shared)), __tb.rval('up_shared', up_shared): __tb.rval('make_swizzled_layout', make_swizzled_layout)(__tb.rval('up_shared', up_shared)), __tb.rval('gate_local', gate_local): __tb.rval('step1_mma', step1_mma).make_mma_store_layout(__tb.rval('gate_local', gate_local)), __tb.rval('up_local', up_local): __tb.rval('step1_mma', step1_mma).make_mma_store_layout(__tb.rval('up_local', up_local))}))
+                __tb.set_fileline(__tb_fl, 567, __tb_fn)
+                __tb.eval(__tb.rval('T', T).use_swizzle(10, enable=False))
+                __tb.set_fileline(__tb_fl, 569, __tb_fn)
+                expert_id = __tb.bind('expert_id', __tb.rval('group_idx_for_bx', group_idx_for_bx)[__tb.rval('bx', bx)])
+                __tb.set_fileline(__tb_fl, 570, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(0 <= __tb.rval('expert_id', expert_id)))
+                __tb.set_fileline(__tb_fl, 571, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(__tb.rval('expert_id', expert_id) < __tb.rval('num_experts', num_experts)))
+                __tb.set_fileline(__tb_fl, 572, __tb_fn)
+                block_start = __tb.bind('block_start', __tb.rval('bx', bx) * __tb.rval('block_token', block_token))
+                __tb.set_fileline(__tb_fl, 573, __tb_fn)
+                group_size = __tb.bind('group_size', __tb.rval('group_sizes', group_sizes)[__tb.rval('expert_id', expert_id)])
+                __tb.set_fileline(__tb_fl, 574, __tb_fn)
+                padded_start = __tb.bind('padded_start', __tb.rval('group_padded_offsets', group_padded_offsets)[__tb.rval('expert_id', expert_id)])
+                __tb.set_fileline(__tb_fl, 575, __tb_fn)
+                token_offset = __tb.bind('token_offset', __tb.rval('block_start', block_start) - __tb.rval('padded_start', padded_start))
+                __tb.set_fileline(__tb_fl, 576, __tb_fn)
+                actual_rows = __tb.bind('actual_rows', __tb.rval('T', T).max(0, __tb.rval('T', T).min(__tb.rval('block_token', block_token), __tb.rval('group_size', group_size) - __tb.rval('token_offset', token_offset))))
+                __tb.set_fileline(__tb_fl, 578, __tb_fn)
+                __tb.eval(__tb.rval('T', T).clear(__tb.rval('gate_local', gate_local)))
+                __tb.set_fileline(__tb_fl, 579, __tb_fn)
+                __tb.eval(__tb.rval('T', T).clear(__tb.rval('up_local', up_local)))
+                __tb.set_fileline(__tb_fl, 580, __tb_fn)
+                for __21 in __tb.ctx_if(__tb.rval('use_step1_split_wave_async', use_step1_split_wave_async)):
+                    __tb.set_fileline(__tb_fl, 580, __tb_fn)
+                    for _ in __tb.ctx_then(__21):
+                        __tb.set_fileline(__tb_fl, 581, __tb_fn)
+                        __tb.eval(__tb.rval('T', T).import_source(__tb.rval('_MOE_ASYNC_COPY_SOURCE', _MOE_ASYNC_COPY_SOURCE)))
+                        __tb.set_fileline(__tb_fl, 582, __tb_fn)
+                        for __2 in __tb.ctx_if(__tb.rval('num_experts', num_experts) == 64):
+                            __tb.set_fileline(__tb_fl, 582, __tb_fn)
+                            for _ in __tb.ctx_then(__2):
+                                __tb.set_fileline(__tb_fl, 583, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).import_source(__tb.rval('_MOE_ASYNC_COPY_7168_SOURCE', _MOE_ASYNC_COPY_7168_SOURCE)))
+                        __tb.set_fileline(__tb_fl, 584, __tb_fn)
+                        async_tx_step1 = __tb.bind('async_tx_step1', __tb.rval('T', T).get_thread_binding())
+                        __tb.set_fileline(__tb_fl, 588, __tb_fn)
+                        for __3 in __tb.ctx_for(__tb.rval('T', T).serial(8)):
+                            __tb.set_fileline(__tb_fl, 588, __tb_fn)
+                            row_batch_step1_init = __tb.bind('row_batch_step1_init', __3)
+                            __tb.set_fileline(__tb_fl, 589, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', __tb.ifexp(__tb.rval('num_experts', num_experts) == 64, lambda: 'moe_stage_gate_up_one_wave_2rows_7168', lambda: 'moe_stage_gate_up_one_wave_2rows'), __tb.rval('T', T).address_of(__tb.rval('gate_shared', gate_shared)[0, 0]), __tb.rval('T', T).address_of(__tb.rval('up_shared', up_shared)[0, 0]), __tb.rval('T', T).address_of(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1), 0]), __tb.rval('T', T).address_of(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1), 0]), __tb.rval('row_batch_step1_init', row_batch_step1_init), __tb.rval('async_tx_step1', async_tx_step1))))
+                        __tb.set_fileline(__tb_fl, 604, __tb_fn)
+                        for __7 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.rval('step1_k_tiles', step1_k_tiles))):
+                            __tb.set_fileline(__tb_fl, 604, __tb_fn)
+                            k_step1_async = __tb.bind('k_step1_async', __7)
+                            __tb.set_fileline(__tb_fl, 605, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_step1_async', k_step1_async) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_step1_async', k_step1_async) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_shared', input_shared)))
+                            __tb.set_fileline(__tb_fl, 612, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).sync_threads())
+                            __tb.set_fileline(__tb_fl, 613, __tb_fn)
+                            for __4 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dhidden_step1', block_dhidden_step1) // 32)):
+                                __tb.set_fileline(__tb_fl, 613, __tb_fn)
+                                ki_step1_async = __tb.bind('ki_step1_async', __4)
+                                __tb.set_fileline(__tb_fl, 614, __tb_fn)
+                                __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('gate_shared', gate_shared), __tb.rval('ki_step1_async', ki_step1_async)))
+                                __tb.set_fileline(__tb_fl, 615, __tb_fn)
+                                __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_shared', input_shared), __tb.rval('weight_local', weight_local), __tb.rval('gate_local', gate_local), __tb.rval('ki_step1_async', ki_step1_async)))
+                                __tb.set_fileline(__tb_fl, 616, __tb_fn)
+                                __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('up_shared', up_shared), __tb.rval('ki_step1_async', ki_step1_async)))
+                                __tb.set_fileline(__tb_fl, 617, __tb_fn)
+                                __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_shared', input_shared), __tb.rval('weight_local', weight_local), __tb.rval('up_local', up_local), __tb.rval('ki_step1_async', ki_step1_async)))
+                            __tb.set_fileline(__tb_fl, 618, __tb_fn)
+                            for __6 in __tb.ctx_if(__tb.rval('k_step1_async', k_step1_async) + 1 < __tb.rval('step1_k_tiles', step1_k_tiles)):
+                                __tb.set_fileline(__tb_fl, 618, __tb_fn)
+                                for _ in __tb.ctx_then(__6):
+                                    __tb.set_fileline(__tb_fl, 619, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 620, __tb_fn)
+                                    for __5 in __tb.ctx_for(__tb.rval('T', T).serial(8)):
+                                        __tb.set_fileline(__tb_fl, 620, __tb_fn)
+                                        row_batch_step1_next = __tb.bind('row_batch_step1_next', __5)
+                                        __tb.set_fileline(__tb_fl, 621, __tb_fn)
+                                        __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', __tb.ifexp(__tb.rval('num_experts', num_experts) == 64, lambda: 'moe_stage_gate_up_one_wave_2rows_7168', lambda: 'moe_stage_gate_up_one_wave_2rows'), __tb.rval('T', T).address_of(__tb.rval('gate_shared', gate_shared)[0, 0]), __tb.rval('T', T).address_of(__tb.rval('up_shared', up_shared)[0, 0]), __tb.rval('T', T).address_of(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1), (__tb.rval('k_step1_async', k_step1_async) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)]), __tb.rval('T', T).address_of(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1), (__tb.rval('k_step1_async', k_step1_async) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)]), __tb.rval('row_batch_step1_next', row_batch_step1_next), __tb.rval('async_tx_step1', async_tx_step1))))
+                    __tb.set_fileline(__tb_fl, 580, __tb_fn)
+                    for _ in __tb.ctx_else(__21):
+                        __tb.set_fileline(__tb_fl, 647, __tb_fn)
+                        for __20 in __tb.ctx_if(__tb.rval('use_step1_input_prefetch', use_step1_input_prefetch)):
+                            __tb.set_fileline(__tb_fl, 647, __tb_fn)
+                            for _ in __tb.ctx_then(__20):
+                                __tb.set_fileline(__tb_fl, 648, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_shared', input_shared)))
+                                __tb.set_fileline(__tb_fl, 652, __tb_fn)
+                                for __17 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.rval('step1_k_tiles', step1_k_tiles) // 2)):
+                                    __tb.set_fileline(__tb_fl, 652, __tb_fn)
+                                    k_pair = __tb.bind('k_pair', __17)
+                                    __tb.set_fileline(__tb_fl, 653, __tb_fn)
+                                    k_even = __tb.bind('k_even', __tb.rval('k_pair', k_pair) * 2)
+                                    __tb.set_fileline(__tb_fl, 654, __tb_fn)
+                                    k_odd = __tb.bind('k_odd', __tb.rval('k_even', k_even) + 1)
+                                    __tb.set_fileline(__tb_fl, 655, __tb_fn)
+                                    for __8 in __tb.ctx_if(__tb.rval('use_step1_prefetch_before_barrier', use_step1_prefetch_before_barrier)):
+                                        __tb.set_fileline(__tb_fl, 655, __tb_fn)
+                                        for _ in __tb.ctx_then(__8):
+                                            __tb.set_fileline(__tb_fl, 656, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):__tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, __tb.rval('k_even', k_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)[0:__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 664, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token) // 2, __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_prefetch', input_prefetch)[0:__tb.rval('block_token', block_token) // 2, 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 671, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_even', k_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)[__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:__tb.rval('block_dexpert_step1', block_dexpert_step1), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 679, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):__tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, __tb.rval('k_even', k_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)[0:__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 687, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token) // 2:__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_prefetch', input_prefetch)[__tb.rval('block_token', block_token) // 2:__tb.rval('block_token', block_token), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 694, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_even', k_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)[__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:__tb.rval('block_dexpert_step1', block_dexpert_step1), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                        __tb.set_fileline(__tb_fl, 655, __tb_fn)
+                                        for _ in __tb.ctx_else(__8):
+                                            __tb.set_fileline(__tb_fl, 703, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_even', k_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)))
+                                            __tb.set_fileline(__tb_fl, 711, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_even', k_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)))
+                                    __tb.set_fileline(__tb_fl, 719, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 720, __tb_fn)
+                                    for __9 in __tb.ctx_if(__tb.boolop('Not', __tb.rval('use_step1_prefetch_before_barrier', use_step1_prefetch_before_barrier))):
+                                        __tb.set_fileline(__tb_fl, 720, __tb_fn)
+                                        for _ in __tb.ctx_then(__9):
+                                            __tb.set_fileline(__tb_fl, 721, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_prefetch', input_prefetch)))
+                                    __tb.set_fileline(__tb_fl, 728, __tb_fn)
+                                    for __10 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dhidden_step1', block_dhidden_step1) // 32)):
+                                        __tb.set_fileline(__tb_fl, 728, __tb_fn)
+                                        ki = __tb.bind('ki', __10)
+                                        __tb.set_fileline(__tb_fl, 729, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('gate_shared', gate_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 730, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_shared', input_shared), __tb.rval('weight_local', weight_local), __tb.rval('gate_local', gate_local), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 731, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('up_shared', up_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 732, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_shared', input_shared), __tb.rval('weight_local', weight_local), __tb.rval('up_local', up_local), __tb.rval('ki', ki)))
+                                    __tb.set_fileline(__tb_fl, 733, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 734, __tb_fn)
+                                    for __13 in __tb.ctx_if(__tb.rval('use_step1_prefetch_before_barrier', use_step1_prefetch_before_barrier)):
+                                        __tb.set_fileline(__tb_fl, 734, __tb_fn)
+                                        for _ in __tb.ctx_then(__13):
+                                            __tb.set_fileline(__tb_fl, 735, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):__tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)[0:__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 743, __tb_fn)
+                                            for __11 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step1_k_tiles', step1_k_tiles) // 2):
+                                                __tb.set_fileline(__tb_fl, 743, __tb_fn)
+                                                for _ in __tb.ctx_then(__11):
+                                                    __tb.set_fileline(__tb_fl, 744, __tb_fn)
+                                                    k_next_even = __tb.bind('k_next_even', __tb.rval('k_odd', k_odd) + 1)
+                                                    __tb.set_fileline(__tb_fl, 745, __tb_fn)
+                                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token) // 2, __tb.rval('k_next_even', k_next_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_next_even', k_next_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_shared', input_shared)[0:__tb.rval('block_token', block_token) // 2, 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 752, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)[__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:__tb.rval('block_dexpert_step1', block_dexpert_step1), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 760, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):__tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)[0:__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2, 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 768, __tb_fn)
+                                            for __12 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step1_k_tiles', step1_k_tiles) // 2):
+                                                __tb.set_fileline(__tb_fl, 768, __tb_fn)
+                                                for _ in __tb.ctx_then(__12):
+                                                    __tb.set_fileline(__tb_fl, 769, __tb_fn)
+                                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token) // 2:__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), (__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 2) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_shared', input_shared)[__tb.rval('block_token', block_token) // 2:__tb.rval('block_token', block_token), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                            __tb.set_fileline(__tb_fl, 776, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)[__tb.rval('block_dexpert_step1', block_dexpert_step1) // 2:__tb.rval('block_dexpert_step1', block_dexpert_step1), 0:__tb.rval('block_dhidden_step1', block_dhidden_step1)]))
+                                        __tb.set_fileline(__tb_fl, 734, __tb_fn)
+                                        for _ in __tb.ctx_else(__13):
+                                            __tb.set_fileline(__tb_fl, 785, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)))
+                                            __tb.set_fileline(__tb_fl, 793, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k_odd', k_odd) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)))
+                                    __tb.set_fileline(__tb_fl, 801, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 802, __tb_fn)
+                                    for __14 in __tb.ctx_if(__tb.boolop('And', __tb.boolop('Not', __tb.rval('use_step1_prefetch_before_barrier', use_step1_prefetch_before_barrier)), lambda: __tb.rval('k_pair', k_pair) + 1 < __tb.rval('step1_k_tiles', step1_k_tiles) // 2)):
+                                        __tb.set_fileline(__tb_fl, 802, __tb_fn)
+                                        for _ in __tb.ctx_then(__14):
+                                            __tb.set_fileline(__tb_fl, 803, __tb_fn)
+                                            k_next_even = __tb.bind('k_next_even', __tb.rval('k_odd', k_odd) + 1)
+                                            __tb.set_fileline(__tb_fl, 804, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_next_even', k_next_even) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k_next_even', k_next_even) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_shared', input_shared)))
+                                    __tb.set_fileline(__tb_fl, 811, __tb_fn)
+                                    for __15 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dhidden_step1', block_dhidden_step1) // 32)):
+                                        __tb.set_fileline(__tb_fl, 811, __tb_fn)
+                                        ki = __tb.bind('ki', __15)
+                                        __tb.set_fileline(__tb_fl, 812, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('gate_shared', gate_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 813, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_prefetch', input_prefetch), __tb.rval('weight_local', weight_local), __tb.rval('gate_local', gate_local), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 814, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('up_shared', up_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 815, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_prefetch', input_prefetch), __tb.rval('weight_local', weight_local), __tb.rval('up_local', up_local), __tb.rval('ki', ki)))
+                                    __tb.set_fileline(__tb_fl, 816, __tb_fn)
+                                    for __16 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step1_k_tiles', step1_k_tiles) // 2):
+                                        __tb.set_fileline(__tb_fl, 816, __tb_fn)
+                                        for _ in __tb.ctx_then(__16):
+                                            __tb.set_fileline(__tb_fl, 817, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).sync_threads())
+                            __tb.set_fileline(__tb_fl, 647, __tb_fn)
+                            for _ in __tb.ctx_else(__20):
+                                __tb.set_fileline(__tb_fl, 819, __tb_fn)
+                                for __19 in __tb.ctx_for(__tb.rval('T', T).Pipelined(__tb.rval('T', T).ceildiv(__tb.rval('hidden', hidden), __tb.rval('block_dhidden_step1', block_dhidden_step1)), num_stages=__tb.rval('num_stages', num_stages))):
+                                    __tb.set_fileline(__tb_fl, 819, __tb_fn)
+                                    k = __tb.bind('k', __19)
+                                    __tb.set_fileline(__tb_fl, 820, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('input', input)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k', k) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k', k) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('input_shared', input_shared)))
+                                    __tb.set_fileline(__tb_fl, 827, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('gate', gate)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k', k) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k', k) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('gate_shared', gate_shared)))
+                                    __tb.set_fileline(__tb_fl, 835, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('up', up)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1):(__tb.rval('by', by) + 1) * __tb.rval('block_dexpert_step1', block_dexpert_step1), __tb.rval('k', k) * __tb.rval('block_dhidden_step1', block_dhidden_step1):(__tb.rval('k', k) + 1) * __tb.rval('block_dhidden_step1', block_dhidden_step1)], __tb.rval('up_shared', up_shared)))
+                                    __tb.set_fileline(__tb_fl, 843, __tb_fn)
+                                    for __18 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dhidden_step1', block_dhidden_step1) // 32)):
+                                        __tb.set_fileline(__tb_fl, 843, __tb_fn)
+                                        ki = __tb.bind('ki', __18)
+                                        __tb.set_fileline(__tb_fl, 844, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('gate_shared', gate_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 845, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_shared', input_shared), __tb.rval('weight_local', weight_local), __tb.rval('gate_local', gate_local), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 846, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).ldmatrix_b(__tb.rval('weight_local', weight_local), __tb.rval('up_shared', up_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 847, __tb_fn)
+                                        __tb.eval(__tb.rval('step1_mma', step1_mma).mma(__tb.rval('input_shared', input_shared), __tb.rval('weight_local', weight_local), __tb.rval('up_local', up_local), __tb.rval('ki', ki)))
+                __tb.set_fileline(__tb_fl, 849, __tb_fn)
+                for __22 in __tb.ctx_if(__tb.boolop('And', __tb.rval('use_step1_split_wave_async', use_step1_split_wave_async), lambda: __tb.rval('num_experts', num_experts) == 16)):
+                    __tb.set_fileline(__tb_fl, 849, __tb_fn)
+                    for _ in __tb.ctx_then(__22):
+                        __tb.set_fileline(__tb_fl, 850, __tb_fn)
+                        __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_silu_fast_rcp_float4x16', __tb.rval('gate_local', gate_local).data)))
+                __tb.set_fileline(__tb_fl, 857, __tb_fn)
+                for __25 in __tb.ctx_for(__tb.rval('T', T).Parallel(__tb.rval('block_token', block_token), __tb.rval('block_dexpert_step1', block_dexpert_step1))):
+                    __26, __27 = __tb.unwrap_value(__25)
+                    __tb.set_fileline(__tb_fl, 857, __tb_fn)
+                    __26, __27 = (__tb.bind('_', __26), __tb.bind('_', __27))
+                    __tb.set_fileline(__tb_fl, 857, __tb_fn)
+                    i, j = (__tb.bind('i', __26), __tb.bind('j', __27))
+                    __tb.set_fileline(__tb_fl, 858, __tb_fn)
+                    for __23 in __tb.ctx_if(__tb.boolop('Not', __tb.boolop('And', __tb.rval('use_step1_split_wave_async', use_step1_split_wave_async), lambda: __tb.rval('num_experts', num_experts) == 16))):
+                        __tb.set_fileline(__tb_fl, 858, __tb_fn)
+                        for _ in __tb.ctx_then(__23):
+                            __tb.set_fileline(__tb_fl, 859, __tb_fn)
+                            __tb.assign_slice(__tb.rval('gate_local', gate_local), (__tb.rval('i', i), __tb.rval('j', j)), __tb.rval('gate_local', gate_local)[__tb.rval('i', i), __tb.rval('j', j)] * (1.0 / (1.0 + __tb.rval('T', T).exp2(-__tb.rval('gate_local', gate_local)[__tb.rval('i', i), __tb.rval('j', j)] * __tb.rval('scale', scale)))))
+                    __tb.set_fileline(__tb_fl, 860, __tb_fn)
+                    for __24 in __tb.ctx_if(__tb.rval('i', i) < __tb.rval('actual_rows', actual_rows)):
+                        __tb.set_fileline(__tb_fl, 860, __tb_fn)
+                        for _ in __tb.ctx_then(__24):
+                            __tb.set_fileline(__tb_fl, 861, __tb_fn)
+                            __tb.assign_slice(__tb.rval('up_logits', up_logits), (__tb.rval('block_start', block_start) + __tb.rval('i', i), __tb.rval('by', by) * __tb.rval('block_dexpert_step1', block_dexpert_step1) + __tb.rval('j', j)), __tb.rval('up_local', up_local)[__tb.rval('i', i), __tb.rval('j', j)] * __tb.rval('gate_local', gate_local)[__tb.rval('i', i), __tb.rval('j', j)])
+            __tb.set_fileline(__tb_fl, 1, __tb_fn)
+            if __tb.skip_kernel_ctx():
+                __tb.set_fileline(__tb_fl, 1, __tb_fn)
+                return
+            __tb.set_fileline(__tb_fl, 863, __tb_fn)
+            with __tb.ctx_with(__tb.rval('T', T).Kernel(__tb.rval('step2_grid_x', step2_grid_x), __tb.rval('step2_grid_y', step2_grid_y), threads=__tb.rval('threads', threads))) as (pid0, pid1):
+                __tb.set_fileline(__tb_fl, 864, __tb_fn)
+                for __29 in __tb.ctx_if(__tb.rval('use_step2_expert_grouped_grid', use_step2_expert_grouped_grid)):
+                    __tb.set_fileline(__tb_fl, 864, __tb_fn)
+                    for _ in __tb.ctx_then(__29):
+                        __tb.set_fileline(__tb_fl, 865, __tb_fn)
+                        cta_mapping = __tb.bind('cta_mapping', __tb.rval('T', T).alloc_local((2,), dtype=__tb.rval('T', T).int32))
+                        __tb.set_fileline(__tb_fl, 866, __tb_fn)
+                        for __28 in __tb.ctx_if(__tb.rval('pid1', pid1) < __tb.rval('num_experts', num_experts) // 2):
+                            __tb.set_fileline(__tb_fl, 866, __tb_fn)
+                            for _ in __tb.ctx_then(__28):
+                                __tb.set_fileline(__tb_fl, 867, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 0, __tb.rval('pid1', pid1))
+                                __tb.set_fileline(__tb_fl, 868, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 1, __tb.rval('pid0', pid0))
+                            __tb.set_fileline(__tb_fl, 866, __tb_fn)
+                            for _ in __tb.ctx_else(__28):
+                                __tb.set_fileline(__tb_fl, 870, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 0, __tb.rval('pid1', pid1) // 2 * 2 + __tb.rval('pid0', pid0) % 2)
+                                __tb.set_fileline(__tb_fl, 871, __tb_fn)
+                                __tb.assign_slice(__tb.rval('cta_mapping', cta_mapping), 1, __tb.rval('pid1', pid1) % 2 * (__tb.rval('step2_col_tiles', step2_col_tiles) // 2) + __tb.rval('pid0', pid0) // 2)
+                        __tb.set_fileline(__tb_fl, 874, __tb_fn)
+                        bx = __tb.bind('bx', __tb.rval('cta_mapping', cta_mapping)[0])
+                        __tb.set_fileline(__tb_fl, 875, __tb_fn)
+                        by = __tb.bind('by', __tb.rval('cta_mapping', cta_mapping)[1])
+                    __tb.set_fileline(__tb_fl, 864, __tb_fn)
+                    for _ in __tb.ctx_else(__29):
+                        __tb.set_fileline(__tb_fl, 877, __tb_fn)
+                        bx = __tb.bind('bx', __tb.ifexp(__tb.rval('use_grid_transpose_step2', use_grid_transpose_step2), lambda: __tb.rval('pid1', pid1), lambda: __tb.rval('pid0', pid0)))
+                        __tb.set_fileline(__tb_fl, 878, __tb_fn)
+                        by = __tb.bind('by', __tb.ifexp(__tb.rval('use_grid_transpose_step2', use_grid_transpose_step2), lambda: __tb.rval('pid0', pid0), lambda: __tb.rval('pid1', pid1)))
+                __tb.set_fileline(__tb_fl, 879, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(0 <= __tb.rval('bx', bx)))
+                __tb.set_fileline(__tb_fl, 880, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(__tb.rval('bx', bx) < __tb.rval('num_blocks_m', num_blocks_m)))
+                __tb.set_fileline(__tb_fl, 881, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(0 <= __tb.rval('by', by)))
+                __tb.set_fileline(__tb_fl, 882, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(__tb.rval('by', by) < __tb.rval('step2_col_tiles', step2_col_tiles)))
+                __tb.set_fileline(__tb_fl, 883, __tb_fn)
+                up_logits_shared = __tb.bind('up_logits_shared', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dexpert_step2', block_dexpert_step2)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 884, __tb_fn)
+                up_logits_prefetch = __tb.bind('up_logits_prefetch', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dexpert_step2', block_dexpert_step2)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 885, __tb_fn)
+                down_shared = __tb.bind('down_shared', __tb.rval('T', T).alloc_shared((__tb.rval('step2_output_tile', step2_output_tile), __tb.rval('block_dexpert_step2', block_dexpert_step2)), dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 886, __tb_fn)
+                out_local_0 = __tb.bind('out_local_0', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dhidden_step2', block_dhidden_step2)), dtype=__tb.rval('accum_dtype', accum_dtype)))
+                __tb.set_fileline(__tb_fl, 887, __tb_fn)
+                out_local_1 = __tb.bind('out_local_1', __tb.rval('T', T).alloc_fragment((__tb.rval('block_token', block_token), __tb.rval('block_dhidden_step2', block_dhidden_step2)), dtype=__tb.rval('accum_dtype', accum_dtype)))
+                __tb.set_fileline(__tb_fl, 888, __tb_fn)
+                down_local = __tb.bind('down_local', __tb.rval('T', T).alloc_local(__tb.rval('step2_mma', step2_mma).warp_cols * __tb.rval('step2_mma', step2_mma).k_pack * __tb.rval('step2_mma', step2_mma).local_size_b, dtype=__tb.rval('dtype', dtype)))
+                __tb.set_fileline(__tb_fl, 889, __tb_fn)
+                routed_weight_local = __tb.bind('routed_weight_local', __tb.rval('T', T).alloc_local((2,), dtype=__tb.rval('T', T).float32))
+                __tb.set_fileline(__tb_fl, 890, __tb_fn)
+                down_copy_barrier = __tb.bind('down_copy_barrier', __tb.rval('T', T).alloc_local((16,), dtype=__tb.rval('T', T).uint32))
+                __tb.set_fileline(__tb_fl, 892, __tb_fn)
+                __tb.eval(__tb.rval('T', T).annotate_layout({__tb.rval('up_logits_shared', up_logits_shared): __tb.rval('step2_mma', step2_mma).make_mma_load_layout(__tb.rval('up_logits_shared', up_logits_shared), matrix='A'), __tb.rval('up_logits_prefetch', up_logits_prefetch): __tb.rval('step2_mma', step2_mma).make_mma_load_layout(__tb.rval('up_logits_prefetch', up_logits_prefetch), matrix='A'), __tb.rval('down_shared', down_shared): __tb.rval('make_swizzled_layout', make_swizzled_layout)(__tb.rval('down_shared', down_shared)), __tb.rval('out_local_0', out_local_0): __tb.rval('step2_mma', step2_mma).make_mma_store_layout(__tb.rval('out_local_0', out_local_0)), __tb.rval('out_local_1', out_local_1): __tb.rval('step2_mma', step2_mma).make_mma_store_layout(__tb.rval('out_local_1', out_local_1))}))
+                __tb.set_fileline(__tb_fl, 901, __tb_fn)
+                __tb.eval(__tb.rval('T', T).use_swizzle(10, enable=False))
+                __tb.set_fileline(__tb_fl, 903, __tb_fn)
+                expert_id = __tb.bind('expert_id', __tb.rval('group_idx_for_bx', group_idx_for_bx)[__tb.rval('bx', bx)])
+                __tb.set_fileline(__tb_fl, 904, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(0 <= __tb.rval('expert_id', expert_id)))
+                __tb.set_fileline(__tb_fl, 905, __tb_fn)
+                __tb.eval(__tb.rval('T', T).assume(__tb.rval('expert_id', expert_id) < __tb.rval('num_experts', num_experts)))
+                __tb.set_fileline(__tb_fl, 906, __tb_fn)
+                block_start = __tb.bind('block_start', __tb.rval('bx', bx) * __tb.rval('block_token', block_token))
+                __tb.set_fileline(__tb_fl, 907, __tb_fn)
+                group_size = __tb.bind('group_size', __tb.rval('group_sizes', group_sizes)[__tb.rval('expert_id', expert_id)])
+                __tb.set_fileline(__tb_fl, 908, __tb_fn)
+                raw_start = __tb.bind('raw_start', __tb.rval('group_offsets', group_offsets)[__tb.rval('expert_id', expert_id)])
+                __tb.set_fileline(__tb_fl, 909, __tb_fn)
+                padded_start = __tb.bind('padded_start', __tb.rval('group_padded_offsets', group_padded_offsets)[__tb.rval('expert_id', expert_id)])
+                __tb.set_fileline(__tb_fl, 910, __tb_fn)
+                token_offset = __tb.bind('token_offset', __tb.rval('block_start', block_start) - __tb.rval('padded_start', padded_start))
+                __tb.set_fileline(__tb_fl, 911, __tb_fn)
+                actual_rows = __tb.bind('actual_rows', __tb.rval('T', T).max(0, __tb.rval('T', T).min(__tb.rval('block_token', block_token), __tb.rval('group_size', group_size) - __tb.rval('token_offset', token_offset))))
+                __tb.set_fileline(__tb_fl, 913, __tb_fn)
+                __tb.eval(__tb.rval('T', T).clear(__tb.rval('out_local_0', out_local_0)))
+                __tb.set_fileline(__tb_fl, 914, __tb_fn)
+                __tb.eval(__tb.rval('T', T).clear(__tb.rval('out_local_1', out_local_1)))
+                __tb.set_fileline(__tb_fl, 915, __tb_fn)
+                for __59 in __tb.ctx_if(__tb.rval('use_step2_half_b_pingpong', use_step2_half_b_pingpong)):
+                    __tb.set_fileline(__tb_fl, 915, __tb_fn)
+                    for _ in __tb.ctx_then(__59):
+                        __tb.set_fileline(__tb_fl, 916, __tb_fn)
+                        for __30 in __tb.ctx_if(__tb.boolop('Not', __tb.rval('use_step1_split_wave_async', use_step1_split_wave_async))):
+                            __tb.set_fileline(__tb_fl, 916, __tb_fn)
+                            for _ in __tb.ctx_then(__30):
+                                __tb.set_fileline(__tb_fl, 917, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).import_source(__tb.rval('_MOE_ASYNC_COPY_SOURCE', _MOE_ASYNC_COPY_SOURCE)))
+                        __tb.set_fileline(__tb_fl, 922, __tb_fn)
+                        __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), 0:__tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_shared', up_logits_shared)))
+                        __tb.set_fileline(__tb_fl, 926, __tb_fn)
+                        __tb.eval(__tb.rval('T', T).copy(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile):__tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('block_dhidden_step2', block_dhidden_step2), 0:__tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('down_shared', down_shared)[__tb.rval('block_dhidden_step2', block_dhidden_step2):2 * __tb.rval('block_dhidden_step2', block_dhidden_step2), 0:__tb.rval('block_dexpert_step2', block_dexpert_step2)]))
+                        __tb.set_fileline(__tb_fl, 937, __tb_fn)
+                        __tb.eval(__tb.rval('T', T).sync_threads())
+                        __tb.set_fileline(__tb_fl, 938, __tb_fn)
+                        for __50 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.rval('step2_k_tiles', step2_k_tiles) // 2)):
+                            __tb.set_fileline(__tb_fl, 938, __tb_fn)
+                            k_pair = __tb.bind('k_pair', __50)
+                            __tb.set_fileline(__tb_fl, 939, __tb_fn)
+                            k_even = __tb.bind('k_even', __tb.rval('k_pair', k_pair) * 2)
+                            __tb.set_fileline(__tb_fl, 940, __tb_fn)
+                            k_odd = __tb.bind('k_odd', __tb.rval('k_even', k_even) + 1)
+                            __tb.set_fileline(__tb_fl, 941, __tb_fn)
+                            async_tx = __tb.bind('async_tx', __tb.rval('T', T).get_thread_binding())
+                            __tb.set_fileline(__tb_fl, 949, __tb_fn)
+                            for __32 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.ifexp(__tb.rval('use_step2_continuous_async', use_step2_continuous_async), lambda: 8, lambda: __tb.rval('block_dhidden_step2', block_dhidden_step2) // (__tb.rval('threads', threads) // 8)))):
+                                __tb.set_fileline(__tb_fl, 949, __tb_fn)
+                                row_batch_0 = __tb.bind('row_batch_0', __32)
+                                __tb.set_fileline(__tb_fl, 952, __tb_fn)
+                                for __31 in __tb.ctx_if(__tb.boolop('Or', __tb.boolop('Not', __tb.rval('use_step2_continuous_async', use_step2_continuous_async)), lambda: __tb.rval('async_tx', async_tx) < 128)):
+                                    __tb.set_fileline(__tb_fl, 952, __tb_fn)
+                                    for _ in __tb.ctx_then(__31):
+                                        __tb.set_fileline(__tb_fl, 953, __tb_fn)
+                                        logical_row_0 = __tb.bind('logical_row_0', __tb.rval('row_batch_0', row_batch_0) * __tb.ifexp(__tb.rval('use_step2_continuous_async', use_step2_continuous_async), lambda: 16, lambda: __tb.rval('threads', threads) // 8) + __tb.rval('async_tx', async_tx) // 8)
+                                        __tb.set_fileline(__tb_fl, 956, __tb_fn)
+                                        physical_group_0 = __tb.bind('physical_group_0', __tb.rval('async_tx', async_tx) % 8)
+                                        __tb.set_fileline(__tb_fl, 957, __tb_fn)
+                                        logical_group_0 = __tb.bind('logical_group_0', __tb.rval('physical_group_0', physical_group_0) ^ __tb.rval('logical_row_0', logical_row_0) % 8)
+                                        __tb.set_fileline(__tb_fl, 958, __tb_fn)
+                                        logical_col_0 = __tb.bind('logical_col_0', __tb.rval('logical_group_0', logical_group_0) * 8)
+                                        __tb.set_fileline(__tb_fl, 959, __tb_fn)
+                                        __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_memcpy_async_16', __tb.rval('T', T).address_of(__tb.rval('down_shared', down_shared)[__tb.rval('logical_row_0', logical_row_0), __tb.rval('logical_col_0', logical_col_0)]), __tb.rval('T', T).address_of(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('logical_row_0', logical_row_0), __tb.rval('k_even', k_even) * __tb.rval('block_dexpert_step2', block_dexpert_step2) + __tb.rval('logical_col_0', logical_col_0)]), __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('row_batch_0', row_batch_0) * 4], 'w', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 977, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_prefetch', up_logits_prefetch)))
+                            __tb.set_fileline(__tb_fl, 984, __tb_fn)
+                            for __33 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                __tb.set_fileline(__tb_fl, 984, __tb_fn)
+                                ki = __tb.bind('ki', __33)
+                                __tb.set_fileline(__tb_fl, 985, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=__tb.rval('block_dhidden_step2', block_dhidden_step2)))
+                                __tb.set_fileline(__tb_fl, 991, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_shared', up_logits_shared), __tb.rval('down_local', down_local), __tb.rval('out_local_0', out_local_0), __tb.rval('ki', ki)))
+                            __tb.set_fileline(__tb_fl, 992, __tb_fn)
+                            for __34 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.ifexp(__tb.rval('use_step2_continuous_async', use_step2_continuous_async), lambda: 0, lambda: 4))):
+                                __tb.set_fileline(__tb_fl, 992, __tb_fn)
+                                wait_slot_0 = __tb.bind('wait_slot_0', __34)
+                                __tb.set_fileline(__tb_fl, 995, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_wait_async_16', __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('wait_slot_0', wait_slot_0) * 4], 'r', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1003, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).sync_threads())
+                            __tb.set_fileline(__tb_fl, 1012, __tb_fn)
+                            for __36 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.ifexp(__tb.rval('use_step2_row1_tail_async', use_step2_row1_tail_async), lambda: 2, lambda: 0))):
+                                __tb.set_fileline(__tb_fl, 1012, __tb_fn)
+                                double_issue_1 = __tb.bind('double_issue_1', __36)
+                                __tb.set_fileline(__tb_fl, 1015, __tb_fn)
+                                for __35 in __tb.ctx_if(__tb.rval('async_tx', async_tx) < 128):
+                                    __tb.set_fileline(__tb_fl, 1015, __tb_fn)
+                                    for _ in __tb.ctx_then(__35):
+                                        __tb.set_fileline(__tb_fl, 1016, __tb_fn)
+                                        logical_row_1_double = __tb.bind('logical_row_1_double', __tb.rval('double_issue_1', double_issue_1) * 16 + __tb.rval('async_tx', async_tx) // 8)
+                                        __tb.set_fileline(__tb_fl, 1019, __tb_fn)
+                                        physical_group_1_double = __tb.bind('physical_group_1_double', __tb.rval('async_tx', async_tx) % 8)
+                                        __tb.set_fileline(__tb_fl, 1020, __tb_fn)
+                                        logical_group_1_double = __tb.bind('logical_group_1_double', __tb.rval('physical_group_1_double', physical_group_1_double) ^ __tb.rval('logical_row_1_double', logical_row_1_double) % 8)
+                                        __tb.set_fileline(__tb_fl, 1024, __tb_fn)
+                                        logical_col_1_double = __tb.bind('logical_col_1_double', __tb.rval('logical_group_1_double', logical_group_1_double) * 8)
+                                        __tb.set_fileline(__tb_fl, 1025, __tb_fn)
+                                        __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_memcpy_async_16', __tb.rval('T', T).address_of(__tb.rval('down_shared', down_shared)[__tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('logical_row_1_double', logical_row_1_double), __tb.rval('logical_col_1_double', logical_col_1_double)]), __tb.rval('T', T).address_of(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('logical_row_1_double', logical_row_1_double), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2) + __tb.rval('logical_col_1_double', logical_col_1_double)]), __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('double_issue_1', double_issue_1) * 4], 'w', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1053, __tb_fn)
+                            for __37 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.ifexp(__tb.rval('use_step2_row1_tail_async', use_step2_row1_tail_async), lambda: 1, lambda: 0), __tb.ifexp(__tb.rval('use_step2_row1_tail_async', use_step2_row1_tail_async), lambda: 2, lambda: __tb.rval('block_dhidden_step2', block_dhidden_step2) // (__tb.rval('threads', threads) // 8)))):
+                                __tb.set_fileline(__tb_fl, 1053, __tb_fn)
+                                row_batch_1 = __tb.bind('row_batch_1', __37)
+                                __tb.set_fileline(__tb_fl, 1059, __tb_fn)
+                                logical_row_1 = __tb.bind('logical_row_1', __tb.rval('row_batch_1', row_batch_1) * (__tb.rval('threads', threads) // 8) + __tb.rval('async_tx', async_tx) // 8)
+                                __tb.set_fileline(__tb_fl, 1060, __tb_fn)
+                                physical_group_1 = __tb.bind('physical_group_1', __tb.rval('async_tx', async_tx) % 8)
+                                __tb.set_fileline(__tb_fl, 1061, __tb_fn)
+                                logical_group_1 = __tb.bind('logical_group_1', __tb.rval('physical_group_1', physical_group_1) ^ __tb.rval('logical_row_1', logical_row_1) % 8)
+                                __tb.set_fileline(__tb_fl, 1062, __tb_fn)
+                                logical_col_1 = __tb.bind('logical_col_1', __tb.rval('logical_group_1', logical_group_1) * 8)
+                                __tb.set_fileline(__tb_fl, 1063, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_memcpy_sync_16', __tb.rval('T', T).address_of(__tb.rval('down_shared', down_shared)[__tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('logical_row_1', logical_row_1), __tb.rval('logical_col_1', logical_col_1)]), __tb.rval('T', T).address_of(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('logical_row_1', logical_row_1), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2) + __tb.rval('logical_col_1', logical_col_1)]), __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('row_batch_1', row_batch_1) * 4], 'w', extent=4))))
+                            __tb.set_fileline(__tb_fl, 1083, __tb_fn)
+                            for __38 in __tb.ctx_for(__tb.rval('T', T).serial(2, __tb.ifexp(__tb.rval('use_step2_row1_tail_async', use_step2_row1_tail_async), lambda: __tb.rval('block_dhidden_step2', block_dhidden_step2) // (__tb.rval('threads', threads) // 8), lambda: 1))):
+                                __tb.set_fileline(__tb_fl, 1083, __tb_fn)
+                                row_batch_1_async = __tb.bind('row_batch_1_async', __38)
+                                __tb.set_fileline(__tb_fl, 1089, __tb_fn)
+                                logical_row_1_async = __tb.bind('logical_row_1_async', __tb.rval('row_batch_1_async', row_batch_1_async) * (__tb.rval('threads', threads) // 8) + __tb.rval('async_tx', async_tx) // 8)
+                                __tb.set_fileline(__tb_fl, 1092, __tb_fn)
+                                physical_group_1_async = __tb.bind('physical_group_1_async', __tb.rval('async_tx', async_tx) % 8)
+                                __tb.set_fileline(__tb_fl, 1093, __tb_fn)
+                                logical_group_1_async = __tb.bind('logical_group_1_async', __tb.rval('physical_group_1_async', physical_group_1_async) ^ __tb.rval('logical_row_1_async', logical_row_1_async) % 8)
+                                __tb.set_fileline(__tb_fl, 1096, __tb_fn)
+                                logical_col_1_async = __tb.bind('logical_col_1_async', __tb.rval('logical_group_1_async', logical_group_1_async) * 8)
+                                __tb.set_fileline(__tb_fl, 1097, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_memcpy_async_16', __tb.rval('T', T).address_of(__tb.rval('down_shared', down_shared)[__tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('logical_row_1_async', logical_row_1_async), __tb.rval('logical_col_1_async', logical_col_1_async)]), __tb.rval('T', T).address_of(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('logical_row_1_async', logical_row_1_async), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2) + __tb.rval('logical_col_1_async', logical_col_1_async)]), __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('row_batch_1_async', row_batch_1_async) * 4], 'w', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1123, __tb_fn)
+                            for __39 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                __tb.set_fileline(__tb_fl, 1123, __tb_fn)
+                                ki = __tb.bind('ki', __39)
+                                __tb.set_fileline(__tb_fl, 1124, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=0))
+                                __tb.set_fileline(__tb_fl, 1130, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_shared', up_logits_shared), __tb.rval('down_local', down_local), __tb.rval('out_local_1', out_local_1), __tb.rval('ki', ki)))
+                            __tb.set_fileline(__tb_fl, 1131, __tb_fn)
+                            for __40 in __tb.ctx_for(__tb.rval('T', T).serial(2, __tb.ifexp(__tb.rval('use_step2_row1_tail_async', use_step2_row1_tail_async), lambda: 2, lambda: 1))):
+                                __tb.set_fileline(__tb_fl, 1131, __tb_fn)
+                                wait_slot_1 = __tb.bind('wait_slot_1', __40)
+                                __tb.set_fileline(__tb_fl, 1137, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_wait_async_16', __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('wait_slot_1', wait_slot_1) * 4], 'r', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1147, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).sync_threads())
+                            __tb.set_fileline(__tb_fl, 1151, __tb_fn)
+                            for __41 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.rval('block_dhidden_step2', block_dhidden_step2) // (__tb.rval('threads', threads) // 8))):
+                                __tb.set_fileline(__tb_fl, 1151, __tb_fn)
+                                row_batch_2 = __tb.bind('row_batch_2', __41)
+                                __tb.set_fileline(__tb_fl, 1152, __tb_fn)
+                                logical_row_2 = __tb.bind('logical_row_2', __tb.rval('row_batch_2', row_batch_2) * (__tb.rval('threads', threads) // 8) + __tb.rval('async_tx', async_tx) // 8)
+                                __tb.set_fileline(__tb_fl, 1153, __tb_fn)
+                                physical_group_2 = __tb.bind('physical_group_2', __tb.rval('async_tx', async_tx) % 8)
+                                __tb.set_fileline(__tb_fl, 1154, __tb_fn)
+                                logical_group_2 = __tb.bind('logical_group_2', __tb.rval('physical_group_2', physical_group_2) ^ __tb.rval('logical_row_2', logical_row_2) % 8)
+                                __tb.set_fileline(__tb_fl, 1155, __tb_fn)
+                                logical_col_2 = __tb.bind('logical_col_2', __tb.rval('logical_group_2', logical_group_2) * 8)
+                                __tb.set_fileline(__tb_fl, 1156, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_memcpy_async_16', __tb.rval('T', T).address_of(__tb.rval('down_shared', down_shared)[__tb.rval('logical_row_2', logical_row_2), __tb.rval('logical_col_2', logical_col_2)]), __tb.rval('T', T).address_of(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('logical_row_2', logical_row_2), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2) + __tb.rval('logical_col_2', logical_col_2)]), __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('row_batch_2', row_batch_2) * 4], 'w', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1174, __tb_fn)
+                            k_next_even = __tb.bind('k_next_even', __tb.rval('k_odd', k_odd) + 1)
+                            __tb.set_fileline(__tb_fl, 1175, __tb_fn)
+                            for __42 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step2_k_tiles', step2_k_tiles) // 2):
+                                __tb.set_fileline(__tb_fl, 1175, __tb_fn)
+                                for _ in __tb.ctx_then(__42):
+                                    __tb.set_fileline(__tb_fl, 1176, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_next_even', k_next_even) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k_next_even', k_next_even) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_shared', up_logits_shared)))
+                            __tb.set_fileline(__tb_fl, 1183, __tb_fn)
+                            for __43 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                __tb.set_fileline(__tb_fl, 1183, __tb_fn)
+                                ki = __tb.bind('ki', __43)
+                                __tb.set_fileline(__tb_fl, 1184, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=__tb.rval('block_dhidden_step2', block_dhidden_step2)))
+                                __tb.set_fileline(__tb_fl, 1190, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_prefetch', up_logits_prefetch), __tb.rval('down_local', down_local), __tb.rval('out_local_0', out_local_0), __tb.rval('ki', ki)))
+                            __tb.set_fileline(__tb_fl, 1191, __tb_fn)
+                            for __44 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.ifexp(__tb.rval('use_step2_continuous_async', use_step2_continuous_async), lambda: 0, lambda: 4))):
+                                __tb.set_fileline(__tb_fl, 1191, __tb_fn)
+                                wait_slot_2 = __tb.bind('wait_slot_2', __44)
+                                __tb.set_fileline(__tb_fl, 1194, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_wait_async_16', __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('wait_slot_2', wait_slot_2) * 4], 'r', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1202, __tb_fn)
+                            __tb.eval(__tb.rval('T', T).sync_threads())
+                            __tb.set_fileline(__tb_fl, 1205, __tb_fn)
+                            for __46 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step2_k_tiles', step2_k_tiles) // 2):
+                                __tb.set_fileline(__tb_fl, 1205, __tb_fn)
+                                for _ in __tb.ctx_then(__46):
+                                    __tb.set_fileline(__tb_fl, 1206, __tb_fn)
+                                    for __45 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.rval('block_dhidden_step2', block_dhidden_step2) // (__tb.rval('threads', threads) // 8))):
+                                        __tb.set_fileline(__tb_fl, 1206, __tb_fn)
+                                        row_batch_3 = __tb.bind('row_batch_3', __45)
+                                        __tb.set_fileline(__tb_fl, 1207, __tb_fn)
+                                        logical_row_3 = __tb.bind('logical_row_3', __tb.rval('row_batch_3', row_batch_3) * (__tb.rval('threads', threads) // 8) + __tb.rval('async_tx', async_tx) // 8)
+                                        __tb.set_fileline(__tb_fl, 1208, __tb_fn)
+                                        physical_group_3 = __tb.bind('physical_group_3', __tb.rval('async_tx', async_tx) % 8)
+                                        __tb.set_fileline(__tb_fl, 1209, __tb_fn)
+                                        logical_group_3 = __tb.bind('logical_group_3', __tb.rval('physical_group_3', physical_group_3) ^ __tb.rval('logical_row_3', logical_row_3) % 8)
+                                        __tb.set_fileline(__tb_fl, 1210, __tb_fn)
+                                        logical_col_3 = __tb.bind('logical_col_3', __tb.rval('logical_group_3', logical_group_3) * 8)
+                                        __tb.set_fileline(__tb_fl, 1211, __tb_fn)
+                                        __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_memcpy_async_16', __tb.rval('T', T).address_of(__tb.rval('down_shared', down_shared)[__tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('logical_row_3', logical_row_3), __tb.rval('logical_col_3', logical_col_3)]), __tb.rval('T', T).address_of(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('logical_row_3', logical_row_3), __tb.rval('k_next_even', k_next_even) * __tb.rval('block_dexpert_step2', block_dexpert_step2) + __tb.rval('logical_col_3', logical_col_3)]), __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('row_batch_3', row_batch_3) * 4], 'w', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                            __tb.set_fileline(__tb_fl, 1232, __tb_fn)
+                            for __47 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                __tb.set_fileline(__tb_fl, 1232, __tb_fn)
+                                ki = __tb.bind('ki', __47)
+                                __tb.set_fileline(__tb_fl, 1233, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=0))
+                                __tb.set_fileline(__tb_fl, 1239, __tb_fn)
+                                __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_prefetch', up_logits_prefetch), __tb.rval('down_local', down_local), __tb.rval('out_local_1', out_local_1), __tb.rval('ki', ki)))
+                            __tb.set_fileline(__tb_fl, 1240, __tb_fn)
+                            for __49 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step2_k_tiles', step2_k_tiles) // 2):
+                                __tb.set_fileline(__tb_fl, 1240, __tb_fn)
+                                for _ in __tb.ctx_then(__49):
+                                    __tb.set_fileline(__tb_fl, 1241, __tb_fn)
+                                    for __48 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.ifexp(__tb.rval('use_step2_continuous_async', use_step2_continuous_async), lambda: 0, lambda: 4))):
+                                        __tb.set_fileline(__tb_fl, 1241, __tb_fn)
+                                        wait_slot_3 = __tb.bind('wait_slot_3', __48)
+                                        __tb.set_fileline(__tb_fl, 1244, __tb_fn)
+                                        __tb.eval(__tb.rval('T', T).evaluate(__tb.rval('T', T).call_extern('handle', 'moe_select_wait_async_16', __tb.rval('T', T).access_ptr(__tb.rval('down_copy_barrier', down_copy_barrier)[__tb.rval('wait_slot_3', wait_slot_3) * 4], 'r', extent=4), __tb.rval('use_step2_continuous_async', use_step2_continuous_async))))
+                                    __tb.set_fileline(__tb_fl, 1254, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                    __tb.set_fileline(__tb_fl, 915, __tb_fn)
+                    for _ in __tb.ctx_else(__59):
+                        __tb.set_fileline(__tb_fl, 1255, __tb_fn)
+                        for __58 in __tb.ctx_if(__tb.rval('use_step2_input_prefetch', use_step2_input_prefetch)):
+                            __tb.set_fileline(__tb_fl, 1255, __tb_fn)
+                            for _ in __tb.ctx_then(__58):
+                                __tb.set_fileline(__tb_fl, 1256, __tb_fn)
+                                __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), 0:__tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_shared', up_logits_shared)))
+                                __tb.set_fileline(__tb_fl, 1260, __tb_fn)
+                                for __55 in __tb.ctx_for(__tb.rval('T', T).serial(__tb.rval('step2_k_tiles', step2_k_tiles) // 2)):
+                                    __tb.set_fileline(__tb_fl, 1260, __tb_fn)
+                                    k_pair = __tb.bind('k_pair', __55)
+                                    __tb.set_fileline(__tb_fl, 1261, __tb_fn)
+                                    k_even = __tb.bind('k_even', __tb.rval('k_pair', k_pair) * 2)
+                                    __tb.set_fileline(__tb_fl, 1262, __tb_fn)
+                                    k_odd = __tb.bind('k_odd', __tb.rval('k_even', k_even) + 1)
+                                    __tb.set_fileline(__tb_fl, 1263, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile):(__tb.rval('by', by) + 1) * __tb.rval('step2_output_tile', step2_output_tile), __tb.rval('k_even', k_even) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k_even', k_even) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('down_shared', down_shared)))
+                                    __tb.set_fileline(__tb_fl, 1271, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 1272, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_prefetch', up_logits_prefetch)))
+                                    __tb.set_fileline(__tb_fl, 1279, __tb_fn)
+                                    for __51 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                        __tb.set_fileline(__tb_fl, 1279, __tb_fn)
+                                        ki = __tb.bind('ki', __51)
+                                        __tb.set_fileline(__tb_fl, 1280, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 1285, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_shared', up_logits_shared), __tb.rval('down_local', down_local), __tb.rval('out_local_0', out_local_0), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 1286, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=__tb.rval('block_dhidden_step2', block_dhidden_step2)))
+                                        __tb.set_fileline(__tb_fl, 1292, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_shared', up_logits_shared), __tb.rval('down_local', down_local), __tb.rval('out_local_1', out_local_1), __tb.rval('ki', ki)))
+                                    __tb.set_fileline(__tb_fl, 1293, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 1294, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile):(__tb.rval('by', by) + 1) * __tb.rval('step2_output_tile', step2_output_tile), __tb.rval('k_odd', k_odd) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k_odd', k_odd) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('down_shared', down_shared)))
+                                    __tb.set_fileline(__tb_fl, 1302, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).sync_threads())
+                                    __tb.set_fileline(__tb_fl, 1303, __tb_fn)
+                                    for __52 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step2_k_tiles', step2_k_tiles) // 2):
+                                        __tb.set_fileline(__tb_fl, 1303, __tb_fn)
+                                        for _ in __tb.ctx_then(__52):
+                                            __tb.set_fileline(__tb_fl, 1304, __tb_fn)
+                                            k_next_even = __tb.bind('k_next_even', __tb.rval('k_odd', k_odd) + 1)
+                                            __tb.set_fileline(__tb_fl, 1305, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k_next_even', k_next_even) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k_next_even', k_next_even) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_shared', up_logits_shared)))
+                                    __tb.set_fileline(__tb_fl, 1312, __tb_fn)
+                                    for __53 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                        __tb.set_fileline(__tb_fl, 1312, __tb_fn)
+                                        ki = __tb.bind('ki', __53)
+                                        __tb.set_fileline(__tb_fl, 1313, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 1318, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_prefetch', up_logits_prefetch), __tb.rval('down_local', down_local), __tb.rval('out_local_0', out_local_0), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 1319, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=__tb.rval('block_dhidden_step2', block_dhidden_step2)))
+                                        __tb.set_fileline(__tb_fl, 1325, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_prefetch', up_logits_prefetch), __tb.rval('down_local', down_local), __tb.rval('out_local_1', out_local_1), __tb.rval('ki', ki)))
+                                    __tb.set_fileline(__tb_fl, 1326, __tb_fn)
+                                    for __54 in __tb.ctx_if(__tb.rval('k_pair', k_pair) + 1 < __tb.rval('step2_k_tiles', step2_k_tiles) // 2):
+                                        __tb.set_fileline(__tb_fl, 1326, __tb_fn)
+                                        for _ in __tb.ctx_then(__54):
+                                            __tb.set_fileline(__tb_fl, 1327, __tb_fn)
+                                            __tb.eval(__tb.rval('T', T).sync_threads())
+                            __tb.set_fileline(__tb_fl, 1255, __tb_fn)
+                            for _ in __tb.ctx_else(__58):
+                                __tb.set_fileline(__tb_fl, 1329, __tb_fn)
+                                for __57 in __tb.ctx_for(__tb.rval('T', T).Pipelined(__tb.rval('T', T).ceildiv(__tb.rval('intermediate', intermediate), __tb.rval('block_dexpert_step2', block_dexpert_step2)), num_stages=__tb.rval('num_stages', num_stages))):
+                                    __tb.set_fileline(__tb_fl, 1329, __tb_fn)
+                                    k = __tb.bind('k', __57)
+                                    __tb.set_fileline(__tb_fl, 1330, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('up_logits', up_logits)[__tb.rval('block_start', block_start):__tb.rval('block_start', block_start) + __tb.rval('block_token', block_token), __tb.rval('k', k) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k', k) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('up_logits_shared', up_logits_shared)))
+                                    __tb.set_fileline(__tb_fl, 1337, __tb_fn)
+                                    __tb.eval(__tb.rval('T', T).copy(__tb.rval('down', down)[__tb.rval('expert_id', expert_id), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile):(__tb.rval('by', by) + 1) * __tb.rval('step2_output_tile', step2_output_tile), __tb.rval('k', k) * __tb.rval('block_dexpert_step2', block_dexpert_step2):(__tb.rval('k', k) + 1) * __tb.rval('block_dexpert_step2', block_dexpert_step2)], __tb.rval('down_shared', down_shared)))
+                                    __tb.set_fileline(__tb_fl, 1345, __tb_fn)
+                                    for __56 in __tb.ctx_for(__tb.rval('T', T).serial(0, __tb.rval('block_dexpert_step2', block_dexpert_step2) // 32)):
+                                        __tb.set_fileline(__tb_fl, 1345, __tb_fn)
+                                        ki = __tb.bind('ki', __56)
+                                        __tb.set_fileline(__tb_fl, 1346, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 1351, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_shared', up_logits_shared), __tb.rval('down_local', down_local), __tb.rval('out_local_0', out_local_0), __tb.rval('ki', ki)))
+                                        __tb.set_fileline(__tb_fl, 1352, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).ldmatrix_b(__tb.rval('down_local', down_local), __tb.rval('down_shared', down_shared), __tb.rval('ki', ki), row_offset=__tb.rval('block_dhidden_step2', block_dhidden_step2)))
+                                        __tb.set_fileline(__tb_fl, 1358, __tb_fn)
+                                        __tb.eval(__tb.rval('step2_mma', step2_mma).mma(__tb.rval('up_logits_shared', up_logits_shared), __tb.rval('down_local', down_local), __tb.rval('out_local_1', out_local_1), __tb.rval('ki', ki)))
+                __tb.set_fileline(__tb_fl, 1360, __tb_fn)
+                tx = __tb.bind('tx', __tb.rval('T', T).get_thread_binding())
+                __tb.set_fileline(__tb_fl, 1361, __tb_fn)
+                for __61 in __tb.ctx_for(__tb.rval('T', T).serial(2)):
+                    __tb.set_fileline(__tb_fl, 1361, __tb_fn)
+                    row_slot = __tb.bind('row_slot', __61)
+                    __tb.set_fileline(__tb_fl, 1362, __tb_fn)
+                    routed_row = __tb.bind('routed_row', __tb.rval('tx', tx) // 64 * 32 + __tb.rval('row_slot', row_slot) * 16 + __tb.rval('tx', tx) % 16)
+                    __tb.set_fileline(__tb_fl, 1363, __tb_fn)
+                    __tb.assign_slice(__tb.rval('routed_weight_local', routed_weight_local), __tb.rval('row_slot', row_slot), 0.0)
+                    __tb.set_fileline(__tb_fl, 1364, __tb_fn)
+                    for __60 in __tb.ctx_if(__tb.rval('routed_row', routed_row) < __tb.rval('actual_rows', actual_rows)):
+                        __tb.set_fileline(__tb_fl, 1364, __tb_fn)
+                        for _ in __tb.ctx_then(__60):
+                            __tb.set_fileline(__tb_fl, 1365, __tb_fn)
+                            __tb.assign_slice(__tb.rval('routed_weight_local', routed_weight_local), __tb.rval('row_slot', row_slot), __tb.rval('routed_weights', routed_weights)[__tb.rval('raw_start', raw_start) + __tb.rval('token_offset', token_offset) + __tb.rval('routed_row', routed_row)])
+                __tb.set_fileline(__tb_fl, 1367, __tb_fn)
+                for __63 in __tb.ctx_for(__tb.rval('T', T).Parallel(__tb.rval('block_token', block_token), __tb.rval('block_dhidden_step2', block_dhidden_step2))):
+                    __64, __65 = __tb.unwrap_value(__63)
+                    __tb.set_fileline(__tb_fl, 1367, __tb_fn)
+                    __64, __65 = (__tb.bind('_', __64), __tb.bind('_', __65))
+                    __tb.set_fileline(__tb_fl, 1367, __tb_fn)
+                    i, j = (__tb.bind('i', __64), __tb.bind('j', __65))
+                    __tb.set_fileline(__tb_fl, 1368, __tb_fn)
+                    for __62 in __tb.ctx_if(__tb.rval('i', i) < __tb.rval('actual_rows', actual_rows)):
+                        __tb.set_fileline(__tb_fl, 1368, __tb_fn)
+                        for _ in __tb.ctx_then(__62):
+                            __tb.set_fileline(__tb_fl, 1369, __tb_fn)
+                            __tb.assign_slice(__tb.rval('output', output), (__tb.rval('block_start', block_start) + __tb.rval('i', i), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('j', j)), __tb.rval('out_local_0', out_local_0)[__tb.rval('i', i), __tb.rval('j', j)] * __tb.rval('routed_weight_local', routed_weight_local)[__tb.rval('i', i) // 16 % 2])
+                        __tb.set_fileline(__tb_fl, 1368, __tb_fn)
+                        for _ in __tb.ctx_else(__62):
+                            __tb.set_fileline(__tb_fl, 1373, __tb_fn)
+                            __tb.assign_slice(__tb.rval('output', output), (__tb.rval('block_start', block_start) + __tb.rval('i', i), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('j', j)), 0.0)
+                __tb.set_fileline(__tb_fl, 1374, __tb_fn)
+                for __67 in __tb.ctx_for(__tb.rval('T', T).Parallel(__tb.rval('block_token', block_token), __tb.rval('block_dhidden_step2', block_dhidden_step2))):
+                    __68, __69 = __tb.unwrap_value(__67)
+                    __tb.set_fileline(__tb_fl, 1374, __tb_fn)
+                    __68, __69 = (__tb.bind('_', __68), __tb.bind('_', __69))
+                    __tb.set_fileline(__tb_fl, 1374, __tb_fn)
+                    i, j = (__tb.bind('i', __68), __tb.bind('j', __69))
+                    __tb.set_fileline(__tb_fl, 1375, __tb_fn)
+                    for __66 in __tb.ctx_if(__tb.rval('i', i) < __tb.rval('actual_rows', actual_rows)):
+                        __tb.set_fileline(__tb_fl, 1375, __tb_fn)
+                        for _ in __tb.ctx_then(__66):
+                            __tb.set_fileline(__tb_fl, 1376, __tb_fn)
+                            __tb.assign_slice(__tb.rval('output', output), (__tb.rval('block_start', block_start) + __tb.rval('i', i), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('j', j)), __tb.rval('out_local_1', out_local_1)[__tb.rval('i', i), __tb.rval('j', j)] * __tb.rval('routed_weight_local', routed_weight_local)[__tb.rval('i', i) // 16 % 2])
+                        __tb.set_fileline(__tb_fl, 1375, __tb_fn)
+                        for _ in __tb.ctx_else(__66):
+                            __tb.set_fileline(__tb_fl, 1380, __tb_fn)
+                            __tb.assign_slice(__tb.rval('output', output), (__tb.rval('block_start', block_start) + __tb.rval('i', i), __tb.rval('by', by) * __tb.rval('step2_output_tile', step2_output_tile) + __tb.rval('block_dhidden_step2', block_dhidden_step2) + __tb.rval('j', j)), 0.0)
+        return kernel
+    return kernel
+Traceback (most recent call last):
+  File "/root/tilelang-metax/race_tests/moe/restart-scripts/v051_step1_case3_mapping_bounds_assume_sc-16g/validate_submission.py", line 142, in <module>
+    main()
+  File "/root/tilelang-metax/race_tests/moe/restart-scripts/v051_step1_case3_mapping_bounds_assume_sc-16g/validate_submission.py", line 137, in main
+    results = [run_case(int(case_id), run_kernel) for case_id in args.cases.split(",") if case_id]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/race_tests/moe/restart-scripts/v051_step1_case3_mapping_bounds_assume_sc-16g/validate_submission.py", line 107, in run_case
+    run_kernel(*args[:9], args[9])
+  File "/tmp/tile-moe-scratch-20260814/v052-work/v052_submission.py", line 1384, in run_kernel
+    kernel = make_kernel(*key)
+             ^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/__init__.py", line 465, in __call__
+    kernel = self.compile(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/__init__.py", line 394, in compile
+    prim_func = self.get_tir(*args, **kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/jit/__init__.py", line 315, in get_tir
+    tir = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/language/eager/builder.py", line 1203, in __call__
+    return self.get_tir(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/language/eager/builder.py", line 1199, in get_tir
+    self.p1_cache[p1_key] = self._build_tir_template(**kwargs)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/language/eager/builder.py", line 1169, in _build_tir_template
+    return TirTemplate.from_lazy_style(self.orig_func.__name__, self.orig_func(*args, **kwargs))
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tile-moe-scratch-20260814/v052-work/v052_submission.py", line 519, in make_kernel
+    @T.prim_func
+     ^^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/language/eager/builder.py", line 1284, in prim_func
+    return impl(func) if func is not None else impl
+           ^^^^^^^^^^
+  File "/root/tilelang-metax/tilelang/language/eager/builder.py", line 1282, in impl
+    raise e
+  File "/root/tilelang-metax/tilelang/language/eager/builder.py", line 1275, in impl
+    ir_gen.gen(builder)(**annot)
+  File "/tmp/tile-moe-scratch-20260814/v052-work/v052_submission.py", line 583, in kernel
+    T.import_source(_MOE_ASYNC_COPY_7168_SOURCE)
+  File "/root/tilelang-metax/tilelang/language/__init__.py", line 158, in import_source
+    return block_attr({"pragma_import_c": source}) if source is not None else None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/tilelang-metax/3rdparty/tvm/python/tvm/script/ir_builder/tir/ir.py", line 469, in block_attr
+    return _ffi_api.BlockAttrs(attrs)  # type: ignore[attr-defined] # pylint: disable=no-member
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "python/tvm_ffi/cython/function.pxi", line 968, in tvm_ffi.core.Function.__call__
+  File "<unknown>", line 0, in tvm::script::ir_builder::tir::BlockAttrs(tvm::ffi::Map<tvm::ffi::String, tvm::ffi::Any, void>)
+  File "<unknown>", line 0, in tvm::script::ir_builder::tir::MergeAnnotations(tvm::ffi::Map<tvm::ffi::Any, tvm::ffi::Any, void> const&, tvm::ffi::Map<tvm::ffi::Any, tvm::ffi::Any, void> const&) [clone .localalias]
+  File "<unknown>", line 0, in tvm::runtime::detail::LogFatal::~LogFatal()
+  File "<unknown>", line 0, in tvm::runtime::detail::LogFatalImpl(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+ValueError: Try to merge two annotations with different values for key `"pragma_import_c"`, previous one is "\n#include <maca_async.h>\n__device__ __forceinline__ void moe_silu_fast_rcp_float4x16(float* values) {\n#pragma unroll\n  for (int i = 0; i < 16; ++i) {\n    float4 v = reinterpret_cast<float4*>(values)[i];\n    v.x *= __builtin_mxc_rcpf(1.0f + exp2f(-v.x * 1.44269504f));\n    v.y *= __builtin_mxc_rcpf(1.0f + exp2f(-v.y * 1.44269504f));\n    v.z *= __builtin_mxc_rcpf(1.0f + exp2f(-v.z * 1.44269504f));\n    v.w *= __builtin_mxc_rcpf(1.0f + exp2f(-v.w * 1.44269504f));\n    reinterpret_cast<float4*>(values)[i] = v;\n  }\n}\n__device__ __forceinline__ void moe_memcpy_async_16(\n    void* dst_shared, const void* src_global, void* barrier_storage) {\n  *reinterpret_cast<b128vectype*>(barrier_storage) =\n      memcpy_async<16>(dst_shared, const_cast<void*>(src_global));\n}\n__device__ __forceinline__ void moe_memcpy_sync_16(\n    void* dst_shared, const void* src_global, void* barrier_storage) {\n  *reinterpret_cast<uint4*>(dst_shared) =\n      *reinterpret_cast<const uint4*>(src_global);\n}\n__device__ __forceinline__ void moe_wait_async_16(const void* barrier_storage) {\n  barrier_arrive_and_wait(\n      *reinterpret_cast<const b128vectype*>(barrier_storage));\n}\n__device__ __forceinline__ void moe_continuous_memcpy_async_16(\n    void* dst_shared, const void* src_global, void* barrier_storage) {\n  cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n      dst_shared, src_global);\n}\n__device__ __forceinline__ void moe_stage_gate_up_one_wave(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_batch, int lane) {\n  const int local_lane = lane & 63;\n  const int lane_row = local_lane >> 3;\n  const int row = (row_batch << 3) + lane_row;\n  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;\n  // The swizzled logical column lowers to the unswizzled lane group in\n  // physical shared storage: physical_col = (local_lane & 7) * 8.\n  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);\n  const int global_byte_offset = (row << 12) + (logical_col << 1);\n  if (lane < 64) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);\n  } else if (lane < 128) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);\n  }\n}\n__device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_pair, int lane) {\n  moe_stage_gate_up_one_wave(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, row_pair << 1, lane);\n  moe_stage_gate_up_one_wave(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, (row_pair << 1) + 1, lane);\n}\n__device__ __forceinline__ void moe_continuous_wait_all(\n    const void* barrier_storage) {\n  cooperative_groups::details::__pipeline_wait_prior(0);\n}\n__device__ __forceinline__ void moe_select_memcpy_async_16(\n    void* dst_shared, const void* src_global, void* barrier_storage,\n    int use_continuous) {\n  if (use_continuous) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        dst_shared, src_global);\n  } else {\n    *reinterpret_cast<b128vectype*>(barrier_storage) =\n        memcpy_async<16>(dst_shared, const_cast<void*>(src_global));\n  }\n}\n__device__ __forceinline__ void moe_select_wait_async_16(\n    const void* barrier_storage, int use_continuous) {\n  if (use_continuous) {\n    cooperative_groups::details::__pipeline_wait_prior(0);\n  } else {\n    barrier_arrive_and_wait(\n        *reinterpret_cast<const b128vectype*>(barrier_storage));\n  }\n}\n", new one is "\n__device__ __forceinline__ void moe_stage_gate_up_one_wave_7168(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_batch, int lane) {\n  const int local_lane = lane & 63;\n  const int lane_row = local_lane >> 3;\n  const int row = (row_batch << 3) + lane_row;\n  const int logical_col = ((local_lane & 7) ^ lane_row) << 3;\n  const int shared_byte_offset = (row << 7) + ((local_lane & 7) << 4);\n  const int global_byte_offset = row * 14336 + (logical_col << 1);\n  if (lane < 64) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(gate_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(gate_global_base) + global_byte_offset);\n  } else if (lane < 128) {\n    cooperative_groups::details::continuous_pipeline_memcpy_async<16>(\n        reinterpret_cast<char*>(up_shared_base) + shared_byte_offset,\n        reinterpret_cast<const char*>(up_global_base) + global_byte_offset);\n  }\n}\n__device__ __forceinline__ void moe_stage_gate_up_one_wave_2rows_7168(\n    void* gate_shared_base, void* up_shared_base,\n    const void* gate_global_base, const void* up_global_base,\n    int row_pair, int lane) {\n  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, row_pair << 1, lane);\n  moe_stage_gate_up_one_wave_7168(gate_shared_base, up_shared_base,\n      gate_global_base, up_global_base, (row_pair << 1) + 1, lane);\n}\n"

@@ -1,0 +1,37 @@
+{
+  "submission_sha256": "774343051d2a9fb7cecdd635b971085b61b9ec973725524dfc0f2e4d26a93986",
+  "case1_generated_cpp_sha256": "c23e478d0238c5123dbe1858a671b7c9b7aa362069a42ad6f7d85fecfe230c50",
+  "case1_byte_identical_to_v050": true,
+  "case2_generated_cpp_sha256": "11594a94c119f41bc4b8756d73651c5fbb5bb73a1ac1567b224560d6b1796c73",
+  "case2_byte_identical_to_v050": true,
+  "case3_step2_body_sha256": "450bdd9c3e6206b2b94dca87d5b9ff8f6fe0732ddf5b421f487798b8fea2060e",
+  "case3_step2_byte_identical": true,
+  "case3_generated_cpp_bytes": {
+    "v050_parent": 34844,
+    "v052_candidate": 28902
+  },
+  "case3_step1_resources": {
+    "v050_parent": "210 MT / 52 ST / two static waves / zero stack-private",
+    "v052_candidate": "216 MT / 36 ST / two static waves / zero stack-private"
+  },
+  "case3_step2_resources": "unchanged at 234 MT / 52 ST / two static waves / zero stack-private",
+  "step1_cpp_static_sites": {
+    "syncthreads": {
+      "v050_parent": 4,
+      "v052_candidate": 2
+    },
+    "explicit_shared_uint4_stores": {
+      "v050_parent": 8,
+      "v052_candidate": 0
+    }
+  },
+  "step1_dynamic_syncthreads": {
+    "v050_parent": 223,
+    "v052_candidate": 223
+  },
+  "isa_static_instruction_count": {
+    "v050_parent": 3167,
+    "v052_candidate": 3966
+  },
+  "isa_interpretation": "Static ISA grows because the BSM helper is inlined while the K loop changes from 56x128 to 112x64; static MMA/barrier counts therefore halve but dynamic math/barrier work remains equal. Use wave-matched dynamic counters for traffic decisions."
+}
