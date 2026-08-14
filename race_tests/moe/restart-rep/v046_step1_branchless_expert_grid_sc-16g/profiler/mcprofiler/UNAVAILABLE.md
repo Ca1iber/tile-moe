@@ -1,0 +1,1 @@
+v046 changes only CTA-entry scalar control while preserving v045's exact logical order and memory locality. Clean timing rejects it; the wave-matched v045 memory counters remain the relevant locality evidence.

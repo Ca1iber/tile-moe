@@ -1,0 +1,28 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v045_step1_expert_grouped_grid_sc-16g/submission.py b/tmp/tile-moe-scratch-20260814/v046-work/v046_branchless_expert_grid.py
+index f0eb40d2..bac4fc4b 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v045_step1_expert_grouped_grid_sc-16g/submission.py
++++ b/tmp/tile-moe-scratch-20260814/v046-work/v046_branchless_expert_grid.py
+@@ -481,14 +481,15 @@ def run_kernel(
+                 with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
+                     if use_step1_expert_grouped_grid:
+                         cta_mapping = T.alloc_local((2,), dtype=T.int32)
+-                        if pid1 < 8:
+-                            cta_mapping[0] = pid1
+-                            cta_mapping[1] = pid0
+-                        else:
+-                            cta_mapping[0] = (pid1 // 2) * 2 + pid0 % 2
+-                            cta_mapping[1] = (
+-                                (pid1 % 2) * (step1_col_tiles // 2) + pid0 // 2
+-                            )
++                        grouped_tail = (pid1 + 16) // 24
++                        cta_mapping[0] = pid1 + grouped_tail * (
++                            pid0 % 2 - pid1 % 2
++                        )
++                        cta_mapping[1] = pid0 + grouped_tail * (
++                            (pid1 % 2) * (step1_col_tiles // 2)
++                            + pid0 // 2
++                            - pid0
++                        )
+                         bx = cta_mapping[0]
+                         by = cta_mapping[1]
+                     else:
