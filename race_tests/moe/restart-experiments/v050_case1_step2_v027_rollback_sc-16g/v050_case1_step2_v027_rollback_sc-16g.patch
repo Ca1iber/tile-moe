@@ -1,0 +1,18 @@
+--- race_tests/moe/restart-submission/v049_step2_case3_expert_grouped_grid_sc-16g/submission.py	2026-08-14 02:39:13.557922816 +0000
++++ race_tests/moe/restart-submission/v050_case1_step2_v027_rollback_sc-16g/submission.py	2026-08-14 03:39:34.434050246 +0000
+@@ -168,9 +168,12 @@
+         )
+         use_step1_split_wave_async = True
+         use_step2_input_prefetch = True
+-        use_step2_half_b_pingpong = True
+-        use_step2_row1_tail_async = True
+-        use_step2_continuous_async = True
++        # OJ-safe Case1 rollback: retain the v027 T.copy input ping-pong path.
++        # The later half-B/continuous path is not selected after an OJ-only
++        # correctness failure exposed a platform-sensitive timing hazard.
++        use_step2_half_b_pingpong = False
++        use_step2_row1_tail_async = False
++        use_step2_continuous_async = False
+     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
