@@ -1,0 +1,65 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v043_step1_vector_fast_rcp_sc-16g/submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v045_step1_expert_grouped_grid_sc-16g/submission.py
+index cced1716..f0eb40d2 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v043_step1_vector_fast_rcp_sc-16g/submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v045_step1_expert_grouped_grid_sc-16g/submission.py
+@@ -144,6 +144,7 @@ def run_kernel(
+     block_dexpert_step2 = 64
+     use_grid_transpose_step1 = False
+     use_grid_transpose_step2 = False
++    use_step1_expert_grouped_grid = False
+     use_step1_input_prefetch = False
+     use_step1_prefetch_before_barrier = False
+     use_step1_split_wave_async = False
+@@ -158,6 +159,12 @@ def run_kernel(
+     elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
++        use_step1_expert_grouped_grid = (
++            total_padded == 3072
++            and total_valid == 2272
++            and num_blocks_m == 24
++            and group_idx_len == 24
++        )
+         use_step1_split_wave_async = True
+         use_step2_input_prefetch = True
+         use_step2_half_b_pingpong = True
+@@ -193,6 +200,7 @@ def run_kernel(
+         block_dexpert_step2,
+         bool(use_grid_transpose_step1),
+         bool(use_grid_transpose_step2),
++        bool(use_step1_expert_grouped_grid),
+         bool(use_step1_input_prefetch),
+         bool(use_step1_prefetch_before_barrier),
+         bool(use_step1_split_wave_async),
+@@ -408,6 +416,7 @@ def run_kernel(
+             block_dexpert_step2,
+             use_grid_transpose_step1,
+             use_grid_transpose_step2,
++            use_step1_expert_grouped_grid,
+             use_step1_input_prefetch,
+             use_step1_prefetch_before_barrier,
+             use_step1_split_wave_async,
+@@ -470,8 +479,21 @@ def run_kernel(
+                 output: T.Tensor(input_shape, dtype),
+             ):
+                 with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
+-                    bx = pid1 if use_grid_transpose_step1 else pid0
+-                    by = pid0 if use_grid_transpose_step1 else pid1
++                    if use_step1_expert_grouped_grid:
++                        cta_mapping = T.alloc_local((2,), dtype=T.int32)
++                        if pid1 < 8:
++                            cta_mapping[0] = pid1
++                            cta_mapping[1] = pid0
++                        else:
++                            cta_mapping[0] = (pid1 // 2) * 2 + pid0 % 2
++                            cta_mapping[1] = (
++                                (pid1 % 2) * (step1_col_tiles // 2) + pid0 // 2
++                            )
++                        bx = cta_mapping[0]
++                        by = cta_mapping[1]
++                    else:
++                        bx = pid1 if use_grid_transpose_step1 else pid0
++                        by = pid0 if use_grid_transpose_step1 else pid1
+                     input_shared = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+                     input_prefetch = T.alloc_fragment((block_token, block_dhidden_step1), dtype=dtype)
+                     gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)

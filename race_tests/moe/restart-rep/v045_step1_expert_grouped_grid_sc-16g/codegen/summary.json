@@ -1,0 +1,31 @@
+{
+  "submission_sha256": "cd66baca76d1e33b046e3322bbf30f71a0b411310a2d22569b0a29913dca88de",
+  "case1": {
+    "mapping": "pid1<8 keeps bx=pid1/by=pid0; pid1>=8 interleaves each adjacent two-block expert across by",
+    "grid": "Step1 64x24 unchanged; Step2 8x24 unchanged",
+    "step1_resources": {
+      "parent": "222 MT / 36 ST / 2 static waves/PEU",
+      "candidate": "218 MT / 52 ST / 2 static waves/PEU",
+      "private_or_stack_spill": 0
+    },
+    "static_isa_unchanged": {
+      "mma_16x16x16f16": 128,
+      "ldg_b128": 51,
+      "lds_b128": 32,
+      "barrier": 2
+    },
+    "code_length_bytes": {
+      "parent": 24376,
+      "candidate": 24616
+    },
+    "interpretation": "The mapping adds one CTA-entry scalar branch and address remap. MMA and vector memory instruction counts are unchanged; the gain must come from execution/cache locality rather than less issued TileLang work."
+  },
+  "case2": {
+    "byte_identical_to_v043": true,
+    "device_cpp_sha256": "11594a94c119f41bc4b8756d73651c5fbb5bb73a1ac1567b224560d6b1796c73"
+  },
+  "case3": {
+    "byte_identical_to_v043": true,
+    "device_cpp_sha256": "5e4f97d2f96dcd1ea43c6c83300ee74c7d30cd36b1c70c2f1bb80bf41006eb11"
+  }
+}
