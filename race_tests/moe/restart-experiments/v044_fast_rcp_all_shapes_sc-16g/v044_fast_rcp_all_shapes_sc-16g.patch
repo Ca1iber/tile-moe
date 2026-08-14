@@ -1,0 +1,39 @@
+diff --git a/root/tilelang-metax/race_tests/moe/restart-submission/v043_step1_vector_fast_rcp_sc-16g/submission.py b/tmp/v044_fast_rcp_all_shapes.py
+index cced1716..1b2511d2 100644
+--- a/root/tilelang-metax/race_tests/moe/restart-submission/v043_step1_vector_fast_rcp_sc-16g/submission.py
++++ b/tmp/v044_fast_rcp_all_shapes.py
+@@ -766,17 +766,16 @@ def run_kernel(
+                                 step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                 step1_mma.mma(input_shared, weight_local, up_local, ki)
+ 
+-                    if use_step1_split_wave_async:
+-                        T.evaluate(
+-                            T.call_extern(
+-                                "handle",
+-                                "moe_silu_fast_rcp_float4x16",
+-                                gate_local.data,
+-                            )
++                    if not use_step1_split_wave_async:
++                        T.import_source(_MOE_ASYNC_COPY_SOURCE)
++                    T.evaluate(
++                        T.call_extern(
++                            "handle",
++                            "moe_silu_fast_rcp_float4x16",
++                            gate_local.data,
+                         )
++                    )
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+-                        if not use_step1_split_wave_async:
+-                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                         if i < actual_rows:
+                             up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+ 
+@@ -816,8 +815,6 @@ def run_kernel(
+                     T.clear(out_local_0)
+                     T.clear(out_local_1)
+                     if use_step2_half_b_pingpong:
+-                        if not use_step1_split_wave_async:
+-                            T.import_source(_MOE_ASYNC_COPY_SOURCE)
+                         # Split the 256x64 B tile into two 128x64 stages.  The
+                         # public TileLang extern hook emits MXMACA's 16-byte
+                         # global-to-shared BSM copy without importing TVM or a

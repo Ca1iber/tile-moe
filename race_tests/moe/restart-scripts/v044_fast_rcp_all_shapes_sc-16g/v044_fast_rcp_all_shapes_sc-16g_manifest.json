@@ -1,0 +1,585 @@
+{
+  "iteration_id": "v044_fast_rcp_all_shapes_sc-16g",
+  "status": "rejected",
+  "parent_iteration": "v043_step1_vector_fast_rcp_sc-16g",
+  "parent_commit": "cdbeb24ab52aa4686fe9b22d6de6a0cab07b68cf",
+  "current_best_iteration": "v043_step1_vector_fast_rcp_sc-16g",
+  "machine": "sc-16g",
+  "candidate_sha256": "24e279e5874c0d3568bad85af9f939c1863c4b79f49586530a50ea60704c1164",
+  "oj_submission_created": false,
+  "decision": "Reject all-shape fast reciprocal; retain v043 Case1-only specialization.",
+  "summarized_at_utc": "2026-08-14T00:30:07.240629+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "cdbeb24ab52aa4686fe9b22d6de6a0cab07b68cf",
+    "status_short": "m 3rdparty/tvm\n M race_tests/moe/submission.py\n?? .20260810032650.db\n?? .20260810032800.db\n?? .20260810162423.db\n?? .20260810162850.db\n?? .20260810162933.db\n?? .20260811052801.db\n?? .20260811235118.db\n?? .20260812020543.db\n?? .20260812030602.db\n?? .20260812052202.db\n?? .20260812052300.db\n?? .20260812060609.db\n?? .20260812060711.db\n?? .20260812072636.db\n?? .20260812094916.db\n?? race_tests/moe/moe-roofline/v044_fast_rcp_all_shapes_sc-16g/\n?? race_tests/moe/restart-experiments/v044_fast_rcp_all_shapes_sc-16g/\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.embedded.bc\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.llvmcmd\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.mcfb\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.text.bin\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/codegen/isa_v011b/v011_inverse_swizzle_bsm_sc-16g_case3_generated_device.xcore1000.elf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/case3_step2/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v011_inverse_swizzle_bsm_sc-16g/profiler/mcprofiler/raw/v011c_case3_step1/mcprofiler_output/report.pdf\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case1_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case2_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_generated_device.cpp\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_case3_resource_usage.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/codegen/v012_step1_wide_cta_async_sc-16g_codegen_summary.json\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case1/\n?? race_tests/moe/restart-rep/v012_step1_wide_cta_async_sc-16g/profiler/mctracer/case3/\n?? race_tests/moe/restart-rep/v028_step2_half_b_pipeline_sc-16g/\n?? race_tests/moe/restart-rep/v044_fast_rcp_all_shapes_sc-16g/\n?? race_tests/moe/restart-scripts/v044_fast_rcp_all_shapes_sc-16g/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v044_fast_rcp_all_shapes_sc-16g/UNAVAILABLE.md",
+      "bytes": 466,
+      "sha256": "c72dcd8d15ed8d3de930bd876c5267ba105f2cf98738051952067a9910e51ba8"
+    },
+    {
+      "path": "moe-roofline/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_manifest.json",
+      "bytes": 504,
+      "sha256": "17a77ebe848e988fca179116a3e3fac2f95dbc3edcbef07b398c88a711814ee5"
+    },
+    {
+      "path": "restart-experiments/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g.patch",
+      "bytes": 2212,
+      "sha256": "ffd59b2405352ee1ebaef501bbfe40078595f468d80ed72cdc987826c1ef5a03"
+    },
+    {
+      "path": "restart-experiments/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_custom_fusedmoe.py",
+      "bytes": 68760,
+      "sha256": "24e279e5874c0d3568bad85af9f939c1863c4b79f49586530a50ea60704c1164"
+    },
+    {
+      "path": "restart-experiments/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_experiment.md",
+      "bytes": 1168,
+      "sha256": "30917284d2e1d700084957d0a332c2cc803d6ab9cad82c3cd5876c67b4509637"
+    },
+    {
+      "path": "restart-experiments/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_manifest.json",
+      "bytes": 504,
+      "sha256": "17a77ebe848e988fca179116a3e3fac2f95dbc3edcbef07b398c88a711814ee5"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/.gitattributes",
+      "bytes": 125,
+      "sha256": "57778abd2582143fa9f55289962fbd65c66807cbcbef35e6cec5bc76cf992db6"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/benchmark/candidate.sha256",
+      "bytes": 94,
+      "sha256": "e02b3b5a42d527fffd33a02a600f994043c7ea7f3a4a72330c586ef1d2650b17"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/benchmark/case2_pair7_w20_r100.log",
+      "bytes": 8858,
+      "sha256": "e96af54b39abe0b97eff9f2547c1cab37673b9d2bcfeef8f5d5640a5161c77f2"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/benchmark/case3_pair7_w20_r100.log",
+      "bytes": 9252,
+      "sha256": "bff936923ca0963a1b67c893abe77bd43984181dbb46ca898ccfa513d3ed9d55"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/benchmark/oj_w20_r100.jsonl",
+      "bytes": 6060,
+      "sha256": "bb2750ac925500eaef806299869b80c2f4e8d5525c1f7ad16915fea1b27e7dec"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_case2/v044_candidate_case2_compiler.log",
+      "bytes": 10409,
+      "sha256": "d2052f47ff54bf25a240cbc316963dda12d6937d0779ddb33b22c965c87cff7b"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_case2/v044_candidate_case2_generated_device.cpp",
+      "bytes": 32235,
+      "sha256": "d737638b5254bb2ca1b08f9159879ee4ef98a98491a9241432903b40bd8c938a"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_case2/v044_candidate_case2_resource_usage.json",
+      "bytes": 649,
+      "sha256": "54b0c0587bd55dffff3767d1241b244a9290abfe6e6ed6cebf95c72ca145d33b"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_case3/v044_candidate_case3_compiler.log",
+      "bytes": 10409,
+      "sha256": "1dac90561e9255a668d90eb4fe22a8618d4fc90ecd9599c89ccc0756cbd42909"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_case3/v044_candidate_case3_generated_device.cpp",
+      "bytes": 28718,
+      "sha256": "3f115dc26f5e6eb6f53c01d3abfbd5e2956172569a484488bf6ad3e082e7ba2b"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_case3/v044_candidate_case3_resource_usage.json",
+      "bytes": 649,
+      "sha256": "3d798f069460c943d86bb7033f28dc164bde39fc3747567d46af857a028ee493"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.device_obj.log",
+      "bytes": 10435,
+      "sha256": "f7a07501cefa95b2bc5518995c9a6b278c32ac44a2522150fafe793d698a3cf0"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.embedded.bc",
+      "bytes": 128448,
+      "sha256": "ae9f512284917d133a1ba882313d801461ea3f922f90453d9d35dd0869738837"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "a5b4dfbec9f7931328e52c3661a5fd598eb24e551da8183bcb74828836cb9013"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.llvmcmd",
+      "bytes": 713,
+      "sha256": "7a978f9bf3e911bff7c2456d518fdef0ce0a2842073080ac268fdda38faaf0b8"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.llvmcmd.txt",
+      "bytes": 709,
+      "sha256": "f3b5fcfcd0fd969c0e413a55d2692c34e70090b0e4e8d36da459ae6f4f0e7b6f"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.mcfb",
+      "bytes": 193104,
+      "sha256": "70218f51f2cb3c0a40694062f87f9c2b29d7c250b985f4f62288736ad6320915"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.metax.s",
+      "bytes": 428009,
+      "sha256": "613ef9aa74016052c49eb29ebae30a203d2c127f471ab5b60c05655c8db01dc5"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.sha256",
+      "bytes": 854,
+      "sha256": "d58bd8783bb81367ae1df91644c5fbddb50dee2f7a431c7efb5cbc3bfb169ddd"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.text.bin",
+      "bytes": 35824,
+      "sha256": "f5740d03316a5d01101b3866dac76f40534803dbe457b7aeb12ff996d62931bd"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case2/v044_candidate_case2_generated_device.xcore1000.elf",
+      "bytes": 193104,
+      "sha256": "70218f51f2cb3c0a40694062f87f9c2b29d7c250b985f4f62288736ad6320915"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.device_obj.log",
+      "bytes": 10435,
+      "sha256": "9db449957aedb4352c273c4e8a5fe0c14c156c96ce112c6abe03f14e5c533689"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.embedded.bc",
+      "bytes": 126560,
+      "sha256": "649a8905556cd9ae92ab87d39a29be48d4df52752c9c918e15fc4096ce6cbfc8"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "cd1329fffe8e7213ca44b8efbff889937389249a927a4bc46b5dbeb99925045c"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.llvmcmd",
+      "bytes": 713,
+      "sha256": "ff3b2e7a03c79945c4895343c987e5df99c5ac0cf0f9bb356fee5cc6580749eb"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.llvmcmd.txt",
+      "bytes": 709,
+      "sha256": "450e028284dfb7699375a339b657187d3f91919f5128ad389a18512e00819199"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.mcfb",
+      "bytes": 190640,
+      "sha256": "0629c78a257e11dd4fb686b879e9562ab790a3e73560ac8f4f7d301687efb2c9"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.metax.s",
+      "bytes": 423145,
+      "sha256": "ecb5b656793a7e7cb5bfbbb8ff5d2dfba806d8792a044f8e9e30db6857fd6320"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.sha256",
+      "bytes": 854,
+      "sha256": "1bad574fe7ba287e2dc93d7b65a4b25d58443a7333b80153d0be5bbf94d71ce2"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.text.bin",
+      "bytes": 35312,
+      "sha256": "5577f6370bcfb163e7d97c7447d9274d87c7d7f77d69dd13371c96672320498e"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/candidate_isa_case3/v044_candidate_case3_generated_device.xcore1000.elf",
+      "bytes": 190640,
+      "sha256": "0629c78a257e11dd4fb686b879e9562ab790a3e73560ac8f4f7d301687efb2c9"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/comparison.json",
+      "bytes": 1378,
+      "sha256": "2b3531625afd8bf09cd6213a815af97aa082dc95ec3e6dccb5e1e41549df9668"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.device_obj.log",
+      "bytes": 10607,
+      "sha256": "f33802389839832780890600358fe2a0044ce654ff27213e468d101531116ef9"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.embedded.bc",
+      "bytes": 128912,
+      "sha256": "befceca3eb33f794bb4937857962f44103b76cb023e8e1f96427310bb1ba3cc3"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "049df60da9c0d9330802ee6e89ae4b6fd871e8a402322aa75c18a9675079718c"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.llvmcmd",
+      "bytes": 716,
+      "sha256": "b8c2c66b703e8a623c0f457e1a392dc2b885cf5a679c3d35ba710b9d028a4650"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.llvmcmd.txt",
+      "bytes": 712,
+      "sha256": "f2e2ae4d7f2887db5649a037058fa1e6a112f30ca65516f8cfe3c8454dff22c5"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.mcfb",
+      "bytes": 197480,
+      "sha256": "7f716f34ae45fe57fdfc479dbe5508bcd9307ab32cb807c2e1aa9452eb03d125"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.metax.s",
+      "bytes": 454112,
+      "sha256": "118280d252322659b2f1adaa39dfbd81f81f9d0b94cf40fa88bbb42e140feebb"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.sha256",
+      "bytes": 909,
+      "sha256": "c8134c294963dc94ecaf413dafde7342c0e1c66e0adf00b9509887e48bd5c077"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.text.bin",
+      "bytes": 42480,
+      "sha256": "ac0e998120c360ed576b09c0cb10b12f1e663ef82591245f1fba4e300094235f"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case2/v043_final_case2_generated_device.xcore1000.elf",
+      "bytes": 197480,
+      "sha256": "7f716f34ae45fe57fdfc479dbe5508bcd9307ab32cb807c2e1aa9452eb03d125"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.device_obj.log",
+      "bytes": 10607,
+      "sha256": "715039a4e1c9f528bd7f6c4c2389c35326ea0ebbda323e68b6266bc23110d356"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.embedded.bc",
+      "bytes": 126960,
+      "sha256": "f870334b7d3b1c417405deae36580b02583b3bf31ad97ce3933491dd69d74f9b"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "cd1329fffe8e7213ca44b8efbff889937389249a927a4bc46b5dbeb99925045c"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.llvmcmd",
+      "bytes": 716,
+      "sha256": "7cd6ced3a1110150ec009e214f3897ab554527071b3ca58824cf5003596160d0"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.llvmcmd.txt",
+      "bytes": 712,
+      "sha256": "cd9b7b639f8f0889e3a12288a378c0812643684a5bee1913b3826b0115b61f44"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.mcfb",
+      "bytes": 195208,
+      "sha256": "8d104d92b551bd70fb741f04606dcb538989ff5b1b9103482b58667a69b836ab"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.metax.s",
+      "bytes": 449603,
+      "sha256": "1392399312ce049cd801cf9ebd446cff92860bf333de467db8e03b24dd3aefac"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.sha256",
+      "bytes": 909,
+      "sha256": "43667f2a9ce4a749e67e0a31900580252ff7498a92e8e27329eaceaee44e43be"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.text.bin",
+      "bytes": 41968,
+      "sha256": "84d3b4284282d62c122f6a1308b870686e44cbc5e3e55063d203747781fe669a"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/codegen/parent_isa_case3/v043_final_case3_generated_device.xcore1000.elf",
+      "bytes": 195208,
+      "sha256": "8d104d92b551bd70fb741f04606dcb538989ff5b1b9103482b58667a69b836ab"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/correctness/official_functional_0.log",
+      "bytes": 4744,
+      "sha256": "7649fe0877b8ca768b5d92de60dfbd3ae3e228dd48609317722e1699ac5ec9ab"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/correctness/official_functional_1.log",
+      "bytes": 4744,
+      "sha256": "e70f7fd0d15cf8ef16ee7073a2f4640e8a072db75864dc7024353f9c4a7f0875"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/correctness/oj_import_validation.log",
+      "bytes": 51,
+      "sha256": "e70b15d685cded6ee15dcc390454af5afe7424ad7ee01a758e3f6a549662b008"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/correctness/three_oj_shapes_reference.jsonl",
+      "bytes": 6119,
+      "sha256": "7526855659b3e36360f11b422d3c2ad3236e2713b8cab238f3ea8a2e5f29402f"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mcprofiler/UNAVAILABLE.md",
+      "bytes": 338,
+      "sha256": "930edde3f9d81a6d152f4e525850e6a606905ddcfd1184f7c9895f2a1c75b5b5"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/INTERPRETATION.md",
+      "bytes": 588,
+      "sha256": "d81763a895ee69475277353f4e205be0555a2525db6feee923bf805f4b71ba5d"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_1_v043/command.json",
+      "bytes": 518,
+      "sha256": "dc8462177176b77dc47fecbc5c4030c87b5c92967729e804c5e73358a48ad64c"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_1_v043/mctracer_console.log",
+      "bytes": 4998,
+      "sha256": "09fa70c1ef70f09d4d13318edf070ed4500de2eab460d96b976a1962e24ff76e"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_1_v043/summary.json",
+      "bytes": 703,
+      "sha256": "99bf7869e979031c7a6fe86cdb7e3b697ec9132f31d676da3f03169b8eee6d76"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_1_v043/v044_case2_pair1_1_v043-561450.json",
+      "bytes": 105110,
+      "sha256": "8477af44dc04d57d61b611df408244d90ae15ae18e0197f61a365b072f707a23"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_2_v044/command.json",
+      "bytes": 448,
+      "sha256": "7b2dac90855101f8fd6cd250358823a6f82da90f9d0c9fb913f2b976d239c1a3"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_2_v044/mctracer_console.log",
+      "bytes": 4928,
+      "sha256": "eb7599d6271b1e670098bb6f4eed3b7d508b542185ee8a9f1ca6f637c39afe4a"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_2_v044/summary.json",
+      "bytes": 702,
+      "sha256": "0de3db734040253720bcd776219b3b38c6394730691310266cf827497b041953"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair1_2_v044/v044_case2_pair1_2_v044-561577.json",
+      "bytes": 105108,
+      "sha256": "a67b5161793f2cc907877158e8579a8f66667f465ebb7c786e1039e62b481487"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_1_v044/command.json",
+      "bytes": 448,
+      "sha256": "968d714733800bdc78cf0e43619e4b3fdf25ec3d9a75e868a17094e96e8ef4fd"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_1_v044/mctracer_console.log",
+      "bytes": 4928,
+      "sha256": "d39ec287285c77159e5a750f4feba390ec8445d1f83f012f1dda6ce1f1ef286d"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_1_v044/summary.json",
+      "bytes": 703,
+      "sha256": "52d0b5c9141a9b0600e4db2d4e72b2acc14e771f47531687a98f24ffde9ce9b7"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_1_v044/v044_case2_pair2_1_v044-561705.json",
+      "bytes": 105111,
+      "sha256": "dffc1a876c8844410ac7c29898a325d4f5594c93089c6fd5042a8e8a27b8c7d1"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_2_v043/command.json",
+      "bytes": 518,
+      "sha256": "48ba942afa5e610be47ef936477d764359d7bab796019816ac154549d399a5c7"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_2_v043/mctracer_console.log",
+      "bytes": 4998,
+      "sha256": "cc7a85dc60bc35217b636b45e595ea0cb04e62a6a662e421a1375551875fb340"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_2_v043/summary.json",
+      "bytes": 702,
+      "sha256": "4bb49a3968b547695573f3a0a5ebb5e170914fa317ef4678e17743b33fa235a7"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair2_2_v043/v044_case2_pair2_2_v043-561832.json",
+      "bytes": 105107,
+      "sha256": "b5db24af4193fc281dfcdcec339aaded82ebc9eb1131011cca3564ae42556b7e"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_1_v043/command.json",
+      "bytes": 518,
+      "sha256": "3b4b7dc65e5c56b815082ce5f58c8a3c4d70572def549820accf4069ff02c245"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_1_v043/mctracer_console.log",
+      "bytes": 4998,
+      "sha256": "13b73f70995e16e0a3e2a4ee6203ff08f7363e31159f761f8671ddabfd77cd3d"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_1_v043/summary.json",
+      "bytes": 701,
+      "sha256": "a6bd772d496dc04f42a1f96797f60aedbfbb946c2956488900b52de368d51de7"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_1_v043/v044_case2_pair3_1_v043-562066.json",
+      "bytes": 105105,
+      "sha256": "88eee981cb5d8e87e9a0ea9b01c104193c3d8a0f7bd9e9f3e984c492e376cc34"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_2_v044/command.json",
+      "bytes": 448,
+      "sha256": "4086f46567e99a21ceb064eeda83f057eeca528128435ac21fef079d5f15d65c"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_2_v044/mctracer_console.log",
+      "bytes": 4928,
+      "sha256": "fad479050421bd2fe0e316f892a48b93c7bb25427afa22bd388afcf1652408e8"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_2_v044/summary.json",
+      "bytes": 703,
+      "sha256": "0afefb0795c6eceab4d5820d7271ea7b08cfde9996007af8f058d91e93a1e5b7"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/pair3_2_v044/v044_case2_pair3_2_v044-562193.json",
+      "bytes": 105041,
+      "sha256": "0b128ffc0a06aedc234942200e215b2d5e8e19a399ce5ae08bb634725a5089ee"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry/v044_vs_v043_case2_mctracer_summary.json",
+      "bytes": 7588,
+      "sha256": "ac3fe9416207fd9b4c52e6274ac4f61b4b1afd7cdcc307ffa68f0ef59075403a"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/case2_paired_retry_console.log",
+      "bytes": 7588,
+      "sha256": "ac3fe9416207fd9b4c52e6274ac4f61b4b1afd7cdcc307ffa68f0ef59075403a"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/failed_output_path_attempt/pair1_1_v043/command.json",
+      "bytes": 512,
+      "sha256": "33b6b4cf26e8ffd1d1fb17fa666f9b9c7eef6cfb22e24b08e7090bcf0321d079"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/failed_output_path_attempt/pair1_1_v043/mctracer_console.log",
+      "bytes": 5065,
+      "sha256": "39ce86cffbef40d9312da71f48c47cca939d8a9da5e5643588aef91633f18e97"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mctracer/failed_output_path_console.log",
+      "bytes": 393,
+      "sha256": "9ec335d5e07525237353267a7a4ba72f7fe854821221bf70279b9197bbc584cc"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/profiler/mxsmi/snapshot.txt",
+      "bytes": 2264,
+      "sha256": "098fdcfb1218fc1f3d84285cac4091207e6625a019ca4ff51b6ccacedd9b8971"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_report.md",
+      "bytes": 1774,
+      "sha256": "839dbbbf73e1835690f6fe5b65ad048923018cde96ad0c099ff03332bf61fab2"
+    },
+    {
+      "path": "restart-rep/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_source_hashes.sha256",
+      "bytes": 117,
+      "sha256": "3669c08ceb41530accbb7ba056f3f315cb9420a1c0707ddb3e638fa02cce0756"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/extract_metax_isa.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/official_submission_benchmark.py",
+      "bytes": 4562,
+      "sha256": "bbf39ff985597d4e6615b9eaffc00de5f7243d8d7b57b0a02d14603ecaffd134"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/oj_submission_benchmark.py",
+      "bytes": 5829,
+      "sha256": "bd4ceda15cbc9b6d3f729f97f54d403961698c695bcd4e9914ff4835770d0e1c"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/summarize_iteration.py",
+      "bytes": 3264,
+      "sha256": "ff56712eca6967f230166042b61b91003d133142c8e9866edf92726980cbcb0d"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/v044_capture_codegen.py",
+      "bytes": 5756,
+      "sha256": "d81be2f92b3538966d5504ed279c807db3a9c5182a052cc4557828c44658e10f"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_manifest.json",
+      "bytes": 504,
+      "sha256": "17a77ebe848e988fca179116a3e3fac2f95dbc3edcbef07b398c88a711814ee5"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/v044_fast_rcp_all_shapes_sc-16g_scripts.md",
+      "bytes": 936,
+      "sha256": "5b7b9b7e3f0beea6a08ef28874bfd61facb480a1ed49f4696d2e11b606edca5d"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/v044_finalize_iteration.py",
+      "bytes": 13739,
+      "sha256": "197d1c7caa7de80cc45f685a8d7bc474c2297616e742b31dec16a3f28c26f4bc"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/v044_pair_benchmark.py",
+      "bytes": 5711,
+      "sha256": "1b06b66a031dc824b61cad7960f7577644e096378bee289a86e1e2df126078ff"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/v044_run_paired_mctracer.py",
+      "bytes": 6550,
+      "sha256": "109854325e996ca3eeeb1ce07f3572673fb568be565dbb2e9b941e9efcc290cc"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/validate_iteration.py",
+      "bytes": 5281,
+      "sha256": "be9b9160e6865f1a6e4c660d501901960d624b79b6f9b59cd137759871191736"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/validate_oj_submission.py",
+      "bytes": 3566,
+      "sha256": "3856cf372b77edcef8b602df351745e38292bf528ead2a4a420746ec52123c51"
+    },
+    {
+      "path": "restart-scripts/v044_fast_rcp_all_shapes_sc-16g/validate_submission.py",
+      "bytes": 5232,
+      "sha256": "f94446c911d072e3b7251e4f32f4586cc1e8cb94f86c51d50c6ddf7ee5a9147d"
+    }
+  ]
+}

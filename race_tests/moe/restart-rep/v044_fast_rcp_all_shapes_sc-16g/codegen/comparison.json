@@ -1,0 +1,46 @@
+{
+  "candidate_sha256": "24e279e5874c0d3568bad85af9f939c1863c4b79f49586530a50ea60704c1164",
+  "case2": {
+    "parent_step1_resources": "210 MT / 36 ST / 2 static waves/PEU",
+    "candidate_step1_resources": "214 MT / 36 ST / 2 static waves/PEU",
+    "unchanged_step1_isa": {
+      "mma_16x16x16f16": 256,
+      "ldg_b128": 36,
+      "lds_b128": 64,
+      "sts_b128": 16,
+      "exp_f32": 64,
+      "rcp_f32": 64
+    },
+    "parent_removed_by_candidate": {
+      "div_scale_f32": 128,
+      "div_fmas_f32": 64,
+      "div_fixup_f32": 64
+    },
+    "snop": {
+      "parent": 346,
+      "candidate": 192
+    }
+  },
+  "case3": {
+    "parent_step1_resources": "230 MT / 26 ST / 2 static waves/PEU",
+    "candidate_step1_resources": "230 MT / 26 ST / 2 static waves/PEU",
+    "unchanged_step1_isa": {
+      "mma_16x16x16f16": 256,
+      "ldg_b128": 28,
+      "lds_b128": 64,
+      "sts_b128": 16,
+      "exp_f32": 64,
+      "rcp_f32": 64
+    },
+    "parent_removed_by_candidate": {
+      "div_scale_f32": 128,
+      "div_fmas_f32": 64,
+      "div_fixup_f32": 64
+    },
+    "snop": {
+      "parent": 341,
+      "candidate": 181
+    }
+  },
+  "interpretation": "The intended reciprocal simplification materialized. Static instruction reduction alone did not predict elapsed time; Case2 also raised MT register pressure. No spill/private traffic or occupancy-class change is reported."
+}
