@@ -1,0 +1,75 @@
+diff --git a/tmp/tile-moe-scratch-20260814/v056-work/v056_submission.py b/root/tilelang-metax/race_tests/moe/restart-submission/v056_step1_case3_half_a_gate_overlap_sc-16g/submission.py
+index b48e0011..0c24c7b8 100644
+--- a/tmp/tile-moe-scratch-20260814/v056-work/v056_submission.py
++++ b/root/tilelang-metax/race_tests/moe/restart-submission/v056_step1_case3_half_a_gate_overlap_sc-16g/submission.py
+@@ -615,10 +615,10 @@ def run_kernel(
+                             # wait for the current weights first, then issue the
+                             # odd A load before consuming the even A fragment.
+                             T.sync_threads()
+-                            # Split the next A tile into two 32-column loads and
+-                            # interleave them with the two current-tile MMA K
+-                            # fragments.  The current weight barrier remains
+-                            # ahead of both loads, preserving the v019 order.
++                            # Keep the compact ki loops while placing the two
++                            # halves of the next A tile on opposite sides of
++                            # the current gate MMA group.  This avoids the
++                            # register blow-up caused by manually expanding ki.
+                             T.copy(
+                                 input[
+                                     block_start : block_start + block_token,
+@@ -626,10 +626,9 @@ def run_kernel(
+                                 ],
+                                 input_prefetch[:, 0:32],
+                             )
+-                            step1_mma.ldmatrix_b(weight_local, gate_shared, 0)
+-                            step1_mma.mma(input_shared, weight_local, gate_local, 0)
+-                            step1_mma.ldmatrix_b(weight_local, up_shared, 0)
+-                            step1_mma.mma(input_shared, weight_local, up_local, 0)
++                            for ki_step1_even in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki_step1_even)
++                                step1_mma.mma(input_shared, weight_local, gate_local, ki_step1_even)
+                             T.copy(
+                                 input[
+                                     block_start : block_start + block_token,
+@@ -637,10 +636,9 @@ def run_kernel(
+                                 ],
+                                 input_prefetch[:, 32:block_dhidden_step1],
+                             )
+-                            step1_mma.ldmatrix_b(weight_local, gate_shared, 1)
+-                            step1_mma.mma(input_shared, weight_local, gate_local, 1)
+-                            step1_mma.ldmatrix_b(weight_local, up_shared, 1)
+-                            step1_mma.mma(input_shared, weight_local, up_local, 1)
++                            for ki_step1_even_up in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, up_shared, ki_step1_even_up)
++                                step1_mma.mma(input_shared, weight_local, up_local, ki_step1_even_up)
+
+                             T.sync_threads()
+                             for row_batch_step1_odd in T.serial(8):
+@@ -680,10 +678,9 @@ def run_kernel(
+                                     ],
+                                     input_shared[:, 0:32],
+                                 )
+-                            step1_mma.ldmatrix_b(weight_local, gate_shared, 0)
+-                            step1_mma.mma(input_prefetch, weight_local, gate_local, 0)
+-                            step1_mma.ldmatrix_b(weight_local, up_shared, 0)
+-                            step1_mma.mma(input_prefetch, weight_local, up_local, 0)
++                            for ki_step1_odd in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki_step1_odd)
++                                step1_mma.mma(input_prefetch, weight_local, gate_local, ki_step1_odd)
+                             if k_pair_step1_async + 1 < step1_k_tiles // 2:
+                                 T.copy(
+                                     input[
+@@ -692,10 +689,9 @@ def run_kernel(
+                                     ],
+                                     input_shared[:, 32:block_dhidden_step1],
+                                 )
+-                            step1_mma.ldmatrix_b(weight_local, gate_shared, 1)
+-                            step1_mma.mma(input_prefetch, weight_local, gate_local, 1)
+-                            step1_mma.ldmatrix_b(weight_local, up_shared, 1)
+-                            step1_mma.mma(input_prefetch, weight_local, up_local, 1)
++                            for ki_step1_odd_up in T.serial(0, block_dhidden_step1 // 32):
++                                step1_mma.ldmatrix_b(weight_local, up_shared, ki_step1_odd_up)
++                                step1_mma.mma(input_prefetch, weight_local, up_local, ki_step1_odd_up)
+
+                             if k_pair_step1_async + 1 < step1_k_tiles // 2:
+                                 T.sync_threads()

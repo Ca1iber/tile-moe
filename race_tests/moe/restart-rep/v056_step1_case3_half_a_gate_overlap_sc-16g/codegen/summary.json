@@ -1,0 +1,34 @@
+{
+  "submission_sha256": "2fca3dbf9224ed86a9d2b9d3854e7c6405ce175c6d1fdb893e627e0f27b481e3",
+  "case1_and_case2": "generated C++ differs from v055 only by a final blank line; resources and schedules unchanged",
+  "case3_step2_source_unchanged": true,
+  "rejected_primary": {
+    "resources": "256 MT / 40 ST / two static waves / 20-byte Step1 stack frame",
+    "paired_median_change_percent": 2.232717857506916,
+    "wins": "0/5",
+    "cause": "manual ki expansion raised live state to the register ceiling and introduced stack state"
+  },
+  "accepted_step1_resources": {
+    "v055_parent": "234 MT / 36 ST / two static waves / zero stack-private",
+    "v056_candidate": "234 MT / 40 ST / two static waves / zero stack-private"
+  },
+  "accepted_step2_resources": "234 MT / 52 ST / two static waves / zero stack-private; unchanged",
+  "dynamic_schedule": "A/weight bytes, MMA work, barriers, grids, and 32 KiB shared memory unchanged",
+  "case3_generated_cpp_bytes": {
+    "v055_parent": 33269,
+    "v056_candidate": 35216
+  },
+  "step1_static_isa_instructions": {
+    "v055_parent": 5004,
+    "v056_candidate": 4952
+  },
+  "selected_static_opcode_delta": {
+    "mma_16x16x16f16": 0,
+    "ldg_b128": 0,
+    "lds_b128": 0,
+    "barrier": 0,
+    "arrive": 0,
+    "snop": -7
+  },
+  "interpretation": "the gain is scheduling/issue overlap, not reduced dynamic work, bytes, or higher occupancy"
+}

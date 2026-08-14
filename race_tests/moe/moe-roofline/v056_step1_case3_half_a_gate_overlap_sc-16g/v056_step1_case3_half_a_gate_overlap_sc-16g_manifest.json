@@ -1,0 +1,40 @@
+{
+  "iteration_id": "v056_step1_case3_half_a_gate_overlap_sc-16g",
+  "status": "accepted",
+  "external_oj_status": "correctness-pass; Case1/2 about 3.8x, Case3 below 3.5x",
+  "decision": "accepted-new-local-best",
+  "machine": "sc-16g",
+  "parent_iteration": "v055_step1_case3_bsm_input_pingpong_sc-16g",
+  "parent_commit": "5072528d",
+  "submission_sha256": "2fca3dbf9224ed86a9d2b9d3854e7c6405ce175c6d1fdb893e627e0f27b481e3",
+  "change": "Case3 Step1 split next-A load around current gate MMA while retaining compact ki loops",
+  "correctness": "three OJ shapes pass, max_abs 0.001953125, zero padding; official 2/2; imports valid; external OJ correctness pass",
+  "primary_result": {
+    "case3_parent_median_ms": 9.961384887695312,
+    "case3_candidate_median_ms": 9.772922973632813,
+    "paired_median_change_percent": -1.9133728874300537,
+    "paired_mean_change_percent": -1.9053237016527427,
+    "wins": "13/13",
+    "mctracer_step1_median_ms": {
+      "v055_parent": 6.689536,
+      "v056_candidate": 6.40512
+    },
+    "mctracer_step1_paired_median_change_percent": -4.251655122268572
+  },
+  "rejected_primary_probe": {
+    "paired_median_change_percent": 2.232717857506916,
+    "wins": "0/5",
+    "resource_result": "256 MT / 40 ST / 20-byte Step1 stack frame"
+  },
+  "mcprofiler_wave_matched": {
+    "waves": 5758096,
+    "memory_instruction_change_percent": 0.0,
+    "global_read_byte_change_percent": -2.0587070785942907,
+    "total_cycle_change_percent": -9.294068801513422,
+    "mma_duty_change_percent": 1.6046966731898316,
+    "mte_duty_change_percent": 0.9835259404966878,
+    "interpretation": "diagnostic replay; clean paired timing is authoritative"
+  },
+  "resource_result": "Case3 Step1 234 MT/40 ST, two static waves, zero private/stack; Step2 unchanged 234 MT/52 ST",
+  "roofline": "Case3 Step1 fixed AI 224 FLOP/B; 107.8632 -> 112.6528 TFLOP/s; memory side under declared physical and conservative measured ridges"
+}

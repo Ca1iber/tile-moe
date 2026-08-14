@@ -1,0 +1,1761 @@
+ * Serving Flask app 'Profiler' (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+profiler http listen to 127.0.0.1:50123
+try to connect to server...
+connect to server success
+cmdline is: env MACA_PATH=/opt/maca LD_LIBRARY_PATH=/opt/maca/lib:/opt/maca/ompi/lib:/opt/maca/ucx/lib:/opt/mxdriver/lib MACA_CLANG_PATH=/opt/maca/mxgpu_llvm/bin PATH=/opt/conda/bin:/opt/maca/mxgpu_llvm/bin:/opt/maca/ompi/bin:/opt/maca/ucx/bin:/opt/mxdriver/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/root/tilelang-metax MCTX_TARGET_PROFILE_PATH=/tmp/tile-moe-scratch-20260814/v052-work/mcprofiler/mctx/case3/v056_candidate_for_v056 /opt/conda/bin/python /root/tilelang-metax/race_tests/moe/restart-scripts/v050_case1_step2_v027_rollback_sc-16g/profile_submission.py --case 3 --warmup 3 --source-tag v056_candidate_for_v056 --submission /tmp/tile-moe-scratch-20260814/v056-work/v056b_submission.py
+casename is: v056_candidate_for_v056
+metrics is: ['Total Cycles', 'AP active cycles', 'Achieved waves', 'Dispatched waves', 'Global Memory Read bytes', 'Global Memory Write bytes', 'Dnoc Read Req', 'Dnoc Write Req', 'L2C Read Instructions', 'L2C Write Instructions', 'L2C Hit Rate', 'Memory Instructions', 'AP MMA Duty ratio', 'AP MTE Duty ratio', 'Private Read Instructions', 'Private Write Instructions']
+start a local task...
+[info] start a new perf exec thread
+[info] start perf_exec
+[info] new exec 5e64e854-125c-4073-99bd-26a2805423bc:('env MACA_PATH=/opt/maca LD_LIBRARY_PATH=/opt/maca/lib:/opt/maca/ompi/lib:/opt/maca/ucx/lib:/opt/mxdriver/lib MACA_CLANG_PATH=/opt/maca/mxgpu_llvm/bin PATH=/opt/conda/bin:/opt/maca/mxgpu_llvm/bin:/opt/maca/ompi/bin:/opt/maca/ucx/bin:/opt/mxdriver/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/root/tilelang-metax MCTX_TARGET_PROFILE_PATH=/tmp/tile-moe-scratch-20260814/v052-work/mcprofiler/mctx/case3/v056_candidate_for_v056 /opt/conda/bin/python /root/tilelang-metax/race_tests/moe/restart-scripts/v050_case1_step2_v027_rollback_sc-16g/profile_submission.py --case 3 --warmup 3 --source-tag v056_candidate_for_v056 --submission /tmp/tile-moe-scratch-20260814/v056-work/v056b_submission.py', 'v056_candidate_for_v056', ['Total Cycles', 'AP active cycles', 'Achieved waves', 'Dispatched waves', 'Global Memory Read bytes', 'Global Memory Write bytes', 'Dnoc Read Req', 'Dnoc Write Req', 'L2C Read Instructions', 'L2C Write Instructions', 'L2C Hit Rate', 'Memory Instructions', 'AP MMA Duty ratio', 'AP MTE Duty ratio', 'Private Read Instructions', 'Private Write Instructions'])
+########## exec_id: 5e64e854-125c-4073-99bd-26a2805423bc ##########
+[info] start generate batch files
+[info] output path is: /opt/mcProfiler-ubuntu18.04/output20260814065855
+[info] generate event_batch_1.json successfully!
+[info] generate event_batch_2.json successfully!
+[info] generate event_batch_3.json successfully!
+[info] generate event_batch_4.json successfully!
+[info] generate batch files done
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[06:58:57.526][MXS][W]| MCTX_TARGET_INIT               | 1               | 0               |
+[06:58:57.529][MCR][I]mc_device.cpp            :562 : Signal SIGUSR1 now has a custom handler to enable mctx at runtime!
+[06:58:57.529][MCR][I]mc_device.cpp            :309 : mcSnapShotCtx: Attempting to open shared memory: /shm_snapshot_669352
+mctxAutoStart called!
+[06:58:57.529][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[06:58:57.529][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[06:58:57.529][MCTX][I]mctxTPImpl.cpp           :300 : profiler target ENV file[/opt/mcProfiler-ubuntu18.04/output20260814065855/mcProfiler.json] exist!
+[06:58:57.529][MCR][I]mc_device.cpp            :849 : Init enter!
+[06:58:57.529][MXC][I]MxcInit: entering
+[06:58:57.533][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[06:58:57.533][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[06:58:57.533][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[06:58:57.534][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[06:58:57.534][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[06:58:57.534][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[06:58:57.534][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[06:58:57.534][MXKW][I]topology.c              :1516: [topology_sysfs_init_gpu_page_size]XCORE_PAGE_SIZE: 0x200000, GPU_PAGE_SIZE: 0x200000
+[06:58:57.534][MXKW][I]topology.c              :954 : [find_pci_info]create pci_info_array. It has 34 element. directory_name is 0.
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:58:57.534][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:58:57.534][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 321 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :984 : [add_pci_info]added node 321 pci info , bdf_value:14080, domain_value:0
+[06:58:57.534][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[06:58:57.534][MXKW][I]fmm.c                   :2445: [init_mmap_apertures]Initialized unreserved SVM apertures: 0xa00000000 - 0x7fffffffffff
+[06:58:57.534][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[06:58:57.534][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[06:58:57.534][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[06:58:57.534][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[06:58:57.534][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[06:58:57.534][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[06:58:57.534][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:58:57.534][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:58:57.534][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:58:57.535][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:58:57.535][MXKW][I]topology.c              :2548: [topology_take_snapshot]node0 direct_links route:
+[06:58:57.535][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  0--->1
+[06:58:57.535][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:58:57.535][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:58:57.535][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:58:57.535][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:58:57.535][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:58:57.535][MXKW][I]topology.c              :2548: [topology_take_snapshot]node1 direct_links route:
+[06:58:57.535][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  1--->0
+[06:58:57.535][MXKW][I]topology.c              :2573: [topology_take_snapshot]node1 indirect_links route:
+[06:58:57.535][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[06:58:57.537][MXC][I]MxcInit: leaving
+[06:58:57.537][MXC][I]InitDma: Entering
+[06:58:57.538][MXC][I]InitDma: Leaving
+[06:58:57.538][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[06:58:57.538][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[06:58:57.538][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[06:58:57.538][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[06:58:57.538][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[06:58:57.538][MCR][I]mx_device.cpp            :1153: agent_handle=0x55ede5c27c40,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[06:58:57.538][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[06:58:57.538][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[06:58:57.538][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[06:58:57.538][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[06:58:57.538][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[06:58:57.539][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[06:58:57.539][MCR][I]mx_device.cpp            :1153: agent_handle=0x55ede5c27c40,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[06:58:57.539][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[06:58:57.539][MCR][I]mc_vpu_impl.cpp          :80  : mcVpuLoad mxvpu lib version: 1.0.20260512_081136
+
+[06:58:57.539][MCR][I]mc_vpu_impl.cpp          :86  : mcVpuLoad load mxvpu lib path: /opt/maca-3.7.1/lib/libmxvpu.so
+
+[06:58:57.539][MCC][I]AddDevice device_id:0, arch:xcore1000
+[06:58:57.539][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[06:59:19.137][MXS][I]                    Node0     Node1
+[06:59:19.137][MXS][I]Gpu0                X
+[06:59:19.137][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[06:59:19.137][MXS][I]MemBind             X         X
+[06:59:19.638][MXS][I]mcruntime           0%        100%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[06:59:20.131][MXS][I]mccompiler          0%        100%
+[06:59:20.617][MXS][I]mxc-runtime         1%        99%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[06:59:21.103][MXS][I]mxkw                          100%
+[06:59:21.103][PTI][I]mcpti_profiler.cpp       :618 : getModuleInfo:1,8,13,7,13,13,32,4,4
+
+[06:59:21.104][MCR][I]mx_device.cpp            :5792: agent_handle=0x55ede5c27c40
+[06:59:21.107][MCR][I]mx_device.cpp            :1446: created hardware queue 0x7f7bdac0b000(HWq=0x7f77e8001a90) with size 1024 with priority 0(L), cooperative: 0, is_exclusive: 0
+[06:59:21.107][MCR][I]mx_device.cpp            :1458: number of allocated hardware queues 0-0-1(H-N-L), number of users 0-0-1
+[06:59:21.111][MCR][W]mx_perf_counter.cpp      :568 : Perf is not exclusive, can not be disabled!
+[06:59:21.111][MCR][W]mx_perf_counter.cpp      :568 : Perf is not exclusive, can not be disabled!
+[06:59:21.115][MCTX][I]mctxTPImpl.cpp           :186 : Automatically acquire a port.
+[06:59:21.115][MCTX][I]mcRpcAsyncImpl.cpp       :421 : mcRpcServerAsyncInit 0x55ede5c14e70 0
+[06:59:21.116][MCTX][I]mcRpcAsyncImpl.cpp       :500 : mcRpcAsyncServerTask start!
+[06:59:21.116][MCTX][I]mcRpcAsyncImpl.cpp       :472 : mcRpcServerAsyncRun start
+[06:59:21.116][MCTX][I]server.cpp               :69  : Server thread num: 1, listening on: 38349.
+[info] MctxStreamProfilerCountDataGet Start
+[info] MctxStreamProfilerCountDataGet Loop
+mcToolsExtPid_UsedPort:669352-38349
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[06:59:24.726][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[06:59:24.726][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[06:59:24.726][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[06:59:24.727][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[06:59:24.727][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[06:59:24.727][MXC][I]GpuDevice 0xe5c27c40 enable profiling, sdm_counter:244976229766511, sys_time:1786690764727639000
+[06:59:24.757][MXC][I]raw dispatch ts:[22614417923596,22614417923988]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764757820400, 1786690764757824320]
+[06:59:24.757][MXC][I]raw async_copy ts:[244976268172689,244976268175095]
+[06:59:24.757][MXC][I]sdma_ts_.sdma_counter:244976229766511
+[06:59:24.757][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690764770312531, 1786690764770315204]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614414579966,22614414654428]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764724384256, 1786690764725128872]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614414802521,22614414825669]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764726609796, 1786690764726841274]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614414829071,22614415611867]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764726875294, 1786690764734703218]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614415612242,22614415858306]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764734706968, 1786690764737167596]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614415861920,22614416644754]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764737203736, 1786690764745032039]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614416645130,22614416893512]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764745035799, 1786690764747519608]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614416893825,22614417676397]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764747522738, 1786690764755348421]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614417676672,22614417922445]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764755351171, 1786690764757808890]
+[06:59:24.757][MXC][I]raw dispatch ts:[22614417922724,22614417923333]
+[06:59:24.757][MXC][I]dispatch ts translate ret [1786690764757811680, 1786690764757817770]
+[06:59:24.758][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[06:59:24.758][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[06:59:24.758][MXC][I]raw async_copy ts:[244976268471181,244976268473220]
+[06:59:24.758][MXC][I]sdma_ts_.sdma_counter:244976229766511
+[06:59:24.758][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690764770644188, 1786690764770646453]
+[06:59:24.758][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[06:59:24.758][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[06:59:24.758][MXC][I]raw async_copy ts:[244976268542213,244976268544222]
+[06:59:24.758][MXC][I]sdma_ts_.sdma_counter:244976229766511
+[06:59:24.758][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690764770723113, 1786690764770725345]
+[06:59:24.758][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[06:59:24.758][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[06:59:24.758][MXC][I]raw async_copy ts:[244976268614502,244976268616557]
+[06:59:24.758][MXC][I]sdma_ts_.sdma_counter:244976229766511
+[06:59:24.758][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690764770803434, 1786690764770805717]
+[06:59:25.591][MXS][I]                    Node0     Node1
+[06:59:25.591][MXS][I]Gpu0                X
+[06:59:25.591][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[06:59:25.591][MXS][I]MemBind             X         X
+[06:59:26.131][MXS][I]mcruntime           0%        100%
+[06:59:26.666][MXS][I]mccompiler          0%        100%
+[06:59:27.197][MXS][I]mxc-runtime         2%        98%
+[06:59:27.724][MXS][I]mxkw                2%        98%
+[06:59:27.725][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[06:59:27.725][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[06:59:27.758][MXC][I]raw dispatch ts:[22614715060371,22614715710352]
+[06:59:27.758][MXC][I]dispatch ts translate ret [1786690767729175686, 1786690767735675469]
+[06:59:27.758][MXC][I]raw dispatch ts:[22614715710715,22614716041896]
+[06:59:27.758][MXC][I]dispatch ts translate ret [1786690767735679099, 1786690767738990895]
+[06:59:27.758][MXC][I]raw dispatch ts:[22614716044910,22614716690895]
+[06:59:27.758][MXC][I]dispatch ts translate ret [1786690767739021035, 1786690767745480858]
+[06:59:27.758][MXC][I]raw dispatch ts:[22614716691170,22614717023333]
+[06:59:27.758][MXC][I]dispatch ts translate ret [1786690767745483608, 1786690767748805224]
+[06:59:27.758][MXC][I]raw dispatch ts:[22614717023604,22614717665817]
+[06:59:27.758][MXC][I]dispatch ts translate ret [1786690767748807934, 1786690767755230037]
+[06:59:27.758][MXC][I]raw dispatch ts:[22614717666085,22614717997777]
+[06:59:27.758][MXC][I]dispatch ts translate ret [1786690767755232717, 1786690767758549623]
+[06:59:27.772][MXC][I]raw dispatch ts:[22614718366048,22614719008726]
+[06:59:27.772][MXC][I]dispatch ts translate ret [1786690767762232315, 1786690767768659065]
+[06:59:27.772][MXC][I]raw dispatch ts:[22614719011602,22614719343231]
+[06:59:27.772][MXC][I]dispatch ts translate ret [1786690767768687825, 1786690767772004099]
+{"case": 3, "event": "PROFILE_DONE", "experts": 64, "hidden": 7168, "intermediate": 2048, "source_tag": "v056_candidate_for_v056", "submission": "/tmp/tile-moe-scratch-20260814/v056-work/v056b_submission.py", "total_padded": 12288, "valid_tokens": 9088, "warmup": 3}
+[info] MctxStreamProfilerCountDataGet Loop
+[06:59:27.989][MCR][I]mc_device.cpp            :1002: tearDown enter!
+
+[06:59:27.989][MCR][I]mx_device.cpp            :1578: deleting hardware queue 0x7f7bdac0b000 with refCount 0
+[06:59:27.990][MCR][I]mx_device.cpp            :1601: number of allocated hardware queues 0-0-0(H-N-L), number of users 0-0-0
+[06:59:27.990][MXC][I]~GpuDevice: Entering
+[06:59:27.990][MCTX][I]mcRpcAsyncImpl.cpp       :550 : callback mcRpcAsyncDone!
+[06:59:27.990][PTI][I]mcpti_tracer.hpp         :309 : stopProcessThread
+[06:59:27.990][MCTX][I]mcRpcAsyncImpl.cpp       :491 : mcRpcServerAsync TearDown!
+[06:59:27.990][MCTX][I]server.cpp               :116 : Server will tearDown[3].
+[06:59:27.995][MCTX][I]mcRpcAsyncImpl.cpp       :250 : ProfilerCountDataGet the last msg:[
+{
+"CE" : {
+"2" : {
+"dpcId0" : [ 50282190984526 ]
+}
+},
+"ISU" : {
+"1" : {
+"dpcId0" : [
+534686917130,
+531319747795,
+529768347515,
+528965890702,
+527281863356,
+521404187023,
+519430276127,
+516069551121,
+513644049183,
+509057884774,
+498335282777,
+499802155987,
+497844705891
+],
+"dpcId1" : [
+534608095380,
+534262036563,
+528780751343,
+530350034158,
+523771495261,
+526675558554,
+519828128387,
+513052416972,
+514516361674,
+507180626949,
+502145146857,
+500355279130,
+492836940103
+],
+"dpcId2" : [
+536465420135,
+531875552387,
+531940715424,
+525706386031,
+527738031212,
+520445764419,
+519634412052,
+517387929478,
+511697187260,
+507783967451,
+502034786696,
+503950027166,
+495486038009
+],
+"dpcId3" : [
+535674032019,
+531621716368,
+532469402985,
+528642224256,
+521922929050,
+523133166405,
+521252554821,
+516708128575,
+513575906397,
+510310368136,
+505981578841,
+499964907741,
+494970518348
+],
+"dpcId4" : [
+534527578384,
+533535151907,
+531483139915,
+529152224153,
+524890983328,
+[06:59:28.006][MCTX][I]server.cpp               :348 : HandleRpcs exit. thread_no=[0].
+[info] MctxStreamProfilerCountDataGet Loop
+[06:59:29.006][MCTX][I]server.cpp               :89  : Server Shutdown!
+[06:59:29.006][MCTX][I]mcRpcAsyncImpl.cpp       :477 : mcRpcServerAsyncRun stop
+[06:59:29.091][MCTX][I]mctxTPImpl.cpp           :433 : clear port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[06:59:39.781][MXS][W]| MCTX_TARGET_INIT               | 1               | 0               |
+[06:59:39.784][MCR][I]mc_device.cpp            :562 : Signal SIGUSR1 now has a custom handler to enable mctx at runtime!
+[06:59:39.784][MCR][I]mc_device.cpp            :309 : mcSnapShotCtx: Attempting to open shared memory: /shm_snapshot_669764
+mctxAutoStart called!
+[06:59:39.784][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[06:59:39.784][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[06:59:39.784][MCTX][I]mctxTPImpl.cpp           :300 : profiler target ENV file[/opt/mcProfiler-ubuntu18.04/output20260814065855/mcProfiler.json] exist!
+[06:59:39.784][MCR][I]mc_device.cpp            :849 : Init enter!
+[06:59:39.784][MXC][I]MxcInit: entering
+[06:59:39.788][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[06:59:39.788][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[06:59:39.788][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[06:59:39.788][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[06:59:39.788][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[06:59:39.788][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[06:59:39.788][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[06:59:39.789][MXKW][I]topology.c              :1516: [topology_sysfs_init_gpu_page_size]XCORE_PAGE_SIZE: 0x200000, GPU_PAGE_SIZE: 0x200000
+[06:59:39.789][MXKW][I]topology.c              :954 : [find_pci_info]create pci_info_array. It has 34 element. directory_name is 0.
+[06:59:39.789][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:59:39.789][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:59:39.789][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:59:39.789][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:59:39.789][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:59:39.789][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:59:39.789][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:59:39.789][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:59:39.789][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:59:39.789][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:59:39.789][MXKW][I]topology.c              :962 : [find_pci_info]node 321 's pci info is not found
+[06:59:39.789][MXKW][I]topology.c              :984 : [add_pci_info]added node 321 pci info , bdf_value:14080, domain_value:0
+[06:59:39.789][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[06:59:39.789][MXKW][I]fmm.c                   :2445: [init_mmap_apertures]Initialized unreserved SVM apertures: 0xa00000000 - 0x7fffffffffff
+[06:59:39.789][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[06:59:39.789][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[06:59:39.789][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[06:59:39.790][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[06:59:39.790][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[06:59:39.790][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[06:59:39.790][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[06:59:39.790][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[06:59:39.790][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[06:59:39.790][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[06:59:39.790][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:59:39.790][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:59:39.790][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[06:59:39.790][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[06:59:39.790][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:59:39.790][MXKW][I]topology.c              :2548: [topology_take_snapshot]node0 direct_links route:
+[06:59:39.790][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  0--->1
+[06:59:39.790][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:59:39.790][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:59:39.790][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[06:59:39.790][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[06:59:39.790][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[06:59:39.790][MXKW][I]topology.c              :2548: [topology_take_snapshot]node1 direct_links route:
+[06:59:39.790][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  1--->0
+[06:59:39.790][MXKW][I]topology.c              :2573: [topology_take_snapshot]node1 indirect_links route:
+[06:59:39.790][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[06:59:39.792][MXC][I]MxcInit: leaving
+[06:59:39.792][MXC][I]InitDma: Entering
+[06:59:39.793][MXC][I]InitDma: Leaving
+[06:59:39.793][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[06:59:39.793][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[06:59:39.793][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[06:59:39.793][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[06:59:39.793][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[06:59:39.793][MCR][I]mx_device.cpp            :1153: agent_handle=0x5646c861d420,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[06:59:39.793][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[06:59:39.793][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[06:59:39.793][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[06:59:39.793][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[06:59:39.793][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[06:59:39.794][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[06:59:39.794][MCR][I]mx_device.cpp            :1153: agent_handle=0x5646c861d420,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[06:59:39.794][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[06:59:39.794][MCR][I]mc_vpu_impl.cpp          :80  : mcVpuLoad mxvpu lib version: 1.0.20260512_081136
+
+[06:59:39.794][MCR][I]mc_vpu_impl.cpp          :86  : mcVpuLoad load mxvpu lib path: /opt/maca-3.7.1/lib/libmxvpu.so
+
+[06:59:39.794][MCC][I]AddDevice device_id:0, arch:xcore1000
+[06:59:39.794][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:00:01.459][MXS][I]                    Node0     Node1
+[07:00:01.459][MXS][I]Gpu0                X
+[07:00:01.459][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[07:00:01.459][MXS][I]MemBind             X         X
+[07:00:01.976][MXS][I]mcruntime           0%        100%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:00:02.489][MXS][I]mccompiler          0%        100%
+[07:00:03.001][MXS][I]mxc-runtime         1%        99%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:00:03.512][MXS][I]mxkw                          100%
+[07:00:03.512][PTI][I]mcpti_profiler.cpp       :618 : getModuleInfo:1,8,13,7,13,13,32,4,4
+
+[07:00:03.514][MCR][I]mx_device.cpp            :5792: agent_handle=0x5646c861d420
+[07:00:03.516][MCR][I]mx_device.cpp            :1446: created hardware queue 0x7f074660b000(HWq=0x7f0354001a90) with size 1024 with priority 0(L), cooperative: 0, is_exclusive: 0
+[07:00:03.516][MCR][I]mx_device.cpp            :1458: number of allocated hardware queues 0-0-1(H-N-L), number of users 0-0-1
+[07:00:03.520][MCR][W]mx_perf_counter.cpp      :568 : Perf is not exclusive, can not be disabled!
+[07:00:03.524][MCTX][I]mctxTPImpl.cpp           :186 : Automatically acquire a port.
+[07:00:03.524][MCTX][I]mcRpcAsyncImpl.cpp       :421 : mcRpcServerAsyncInit 0x5646c860a670 0
+[07:00:03.524][MCTX][I]mcRpcAsyncImpl.cpp       :500 : mcRpcAsyncServerTask start!
+[07:00:03.524][MCTX][I]mcRpcAsyncImpl.cpp       :472 : mcRpcServerAsyncRun start
+[07:00:03.525][MCTX][I]server.cpp               :69  : Server thread num: 1, listening on: 40491.
+[info] MctxStreamProfilerCountDataGet Start
+[info] MctxStreamProfilerCountDataGet Loop
+mcToolsExtPid_UsedPort:669764-40491
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[07:00:07.163][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:00:07.163][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:00:07.164][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:00:07.164][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:07.164][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:07.164][MXC][I]GpuDevice 0xc861d420 enable profiling, sdm_counter:245027165547078, sys_time:1786690807164602641
+[07:00:07.194][MXC][I]raw dispatch ts:[22618661648216,22618661648623]
+[07:00:07.194][MXC][I]dispatch ts translate ret [1786690807194891853, 1786690807194895923]
+[07:00:07.194][MXC][I]raw async_copy ts:[245027204329589,245027204331811]
+[07:00:07.194][MXC][I]sdma_ts_.sdma_counter:245027165547078
+[07:00:07.194][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690807207694319, 1786690807207696787]
+[07:00:07.194][MXC][I]raw dispatch ts:[22618658151352,22618658225852]
+[07:00:07.194][MXC][I]dispatch ts translate ret [1786690807159923375, 1786690807160668371]
+[07:00:07.194][MXC][I]raw dispatch ts:[22618658522478,22618658545682]
+[07:00:07.194][MXC][I]dispatch ts translate ret [1786690807163634618, 1786690807163866656]
+[07:00:07.194][MXC][I]raw dispatch ts:[22618658550184,22618659333180]
+[07:00:07.194][MXC][I]dispatch ts translate ret [1786690807163911676, 1786690807171741600]
+[07:00:07.194][MXC][I]raw dispatch ts:[22618659333554,22618659579768]
+[07:00:07.194][MXC][I]dispatch ts translate ret [1786690807171745340, 1786690807174207469]
+[07:00:07.195][MXC][I]raw dispatch ts:[22618659583645,22618660366375]
+[07:00:07.195][MXC][I]dispatch ts translate ret [1786690807174246238, 1786690807182073502]
+[07:00:07.195][MXC][I]raw dispatch ts:[22618660366749,22618660617987]
+[07:00:07.195][MXC][I]dispatch ts translate ret [1786690807182077242, 1786690807184589610]
+[07:00:07.195][MXC][I]raw dispatch ts:[22618660618290,22618661400942]
+[07:00:07.195][MXC][I]dispatch ts translate ret [1786690807184592640, 1786690807192419124]
+[07:00:07.195][MXC][I]raw dispatch ts:[22618661401212,22618661647067]
+[07:00:07.195][MXC][I]dispatch ts translate ret [1786690807192421824, 1786690807194880363]
+[07:00:07.195][MXC][I]raw dispatch ts:[22618661647336,22618661647961]
+[07:00:07.195][MXC][I]dispatch ts translate ret [1786690807194883053, 1786690807194889303]
+[07:00:07.195][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:07.195][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:07.195][MXC][I]raw async_copy ts:[245027204593632,245027204595494]
+[07:00:07.195][MXC][I]sdma_ts_.sdma_counter:245027165547078
+[07:00:07.195][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690807207987701, 1786690807207989769]
+[07:00:07.195][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:07.195][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:07.195][MXC][I]raw async_copy ts:[245027204657247,245027204659083]
+[07:00:07.195][MXC][I]sdma_ts_.sdma_counter:245027165547078
+[07:00:07.195][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690807208058384, 1786690807208060424]
+[07:00:07.195][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:07.195][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:07.195][MXC][I]raw async_copy ts:[245027204716761,245027204718612]
+[07:00:07.195][MXC][I]sdma_ts_.sdma_counter:245027165547078
+[07:00:07.195][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690807208124511, 1786690807208126567]
+[07:00:08.039][MXS][I]                    Node0     Node1
+[07:00:08.039][MXS][I]Gpu0                X
+[07:00:08.039][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[07:00:08.039][MXS][I]MemBind             X         X
+[07:00:08.599][MXS][I]mcruntime           0%        100%
+[07:00:09.153][MXS][I]mccompiler          0%        100%
+[07:00:09.711][MXS][I]mxc-runtime         2%        98%
+[07:00:10.263][MXS][I]mxkw                2%        98%
+[07:00:10.264][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[07:00:10.264][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[07:00:10.296][MXC][I]raw dispatch ts:[22618968898474,22618969533726]
+[07:00:10.296][MXC][I]dispatch ts translate ret [1786690810267381922, 1786690810273734416]
+[07:00:10.296][MXC][I]raw dispatch ts:[22618969534095,22618969865446]
+[07:00:10.296][MXC][I]dispatch ts translate ret [1786690810273738106, 1786690810277051603]
+[07:00:10.296][MXC][I]raw dispatch ts:[22618969868446,22618970509074]
+[07:00:10.296][MXC][I]dispatch ts translate ret [1786690810277081602, 1786690810283487856]
+[07:00:10.296][MXC][I]raw dispatch ts:[22618970509352,22618970841634]
+[07:00:10.296][MXC][I]dispatch ts translate ret [1786690810283490636, 1786690810286813443]
+[07:00:10.296][MXC][I]raw dispatch ts:[22618970841905,22618971491593]
+[07:00:10.296][MXC][I]dispatch ts translate ret [1786690810286816153, 1786690810293313006]
+[07:00:10.296][MXC][I]raw dispatch ts:[22618971491866,22618971824667]
+[07:00:10.296][MXC][I]dispatch ts translate ret [1786690810293315736, 1786690810296643733]
+[07:00:10.309][MXC][I]raw dispatch ts:[22618972182637,22618972820319]
+[07:00:10.309][MXC][I]dispatch ts translate ret [1786690810300223419, 1786690810306600215]
+[07:00:10.309][MXC][I]raw dispatch ts:[22618972823386,22618973154615]
+[07:00:10.309][MXC][I]dispatch ts translate ret [1786690810306630885, 1786690810309943163]
+{"case": 3, "event": "PROFILE_DONE", "experts": 64, "hidden": 7168, "intermediate": 2048, "source_tag": "v056_candidate_for_v056", "submission": "/tmp/tile-moe-scratch-20260814/v056-work/v056b_submission.py", "total_padded": 12288, "valid_tokens": 9088, "warmup": 3}
+[info] MctxStreamProfilerCountDataGet Loop
+[07:00:10.530][MCR][I]mc_device.cpp            :1002: tearDown enter!
+
+[07:00:10.530][MCR][I]mx_device.cpp            :1578: deleting hardware queue 0x7f074660b000 with refCount 0
+[07:00:10.530][MCR][I]mx_device.cpp            :1601: number of allocated hardware queues 0-0-0(H-N-L), number of users 0-0-0
+[07:00:10.531][MXC][I]~GpuDevice: Entering
+[07:00:10.532][MCTX][I]mcRpcAsyncImpl.cpp       :550 : callback mcRpcAsyncDone!
+[07:00:10.532][PTI][I]mcpti_tracer.hpp         :309 : stopProcessThread
+[07:00:10.532][MCTX][I]mcRpcAsyncImpl.cpp       :491 : mcRpcServerAsync TearDown!
+[07:00:10.532][MCTX][I]server.cpp               :116 : Server will tearDown[3].
+[07:00:10.533][MCTX][I]mcRpcAsyncImpl.cpp       :250 : ProfilerCountDataGet the last msg:[
+{
+"ISU" : {
+"101" : {
+"dpcId0" : [
+1223863626970,
+1224717509613,
+1223400719670,
+1222053856962,
+1218662535524,
+1216708819850,
+1216603779398,
+1212473837152,
+1209382365110,
+1198338817874,
+1164682622065,
+1159962763508,
+1151364018018
+],
+"dpcId1" : [
+1224501129365,
+1223302558726,
+1222548110124,
+1221130852718,
+1217579310922,
+1217826330700,
+1214391176368,
+1211683165629,
+1208694314638,
+1199899333722,
+1169481691256,
+1154075500864,
+1151793716081
+],
+"dpcId2" : [
+1224409623557,
+1222131473513,
+1222813710336,
+1219823790923,
+1215868709824,
+1219795190879,
+1214549580986,
+1211690452984,
+1203208129450,
+1204667531942,
+1168114716687,
+1159823606001,
+1155874662901
+],
+"dpcId3" : [
+1224499924340,
+1224962430939,
+1223471750537,
+1221666375264,
+1218946207356,
+1218244899615,
+1215095672417,
+1212507078011,
+1205403047398,
+1205147586391,
+1166857823813,
+1160333399006,
+1153688881199
+],
+"dpcId4" : [
+1224246355184,
+1224918447357,
+1223872339157,
+1222236238859,
+1220749009434,
+1220110154632,
+121[07:00:10.545][MCTX][I]server.cpp               :348 : HandleRpcs exit. thread_no=[0].
+[info] MctxStreamProfilerCountDataGet Loop
+[07:00:11.545][MCTX][I]server.cpp               :89  : Server Shutdown!
+[07:00:11.545][MCTX][I]mcRpcAsyncImpl.cpp       :477 : mcRpcServerAsyncRun stop
+[07:00:11.633][MCTX][I]mctxTPImpl.cpp           :433 : clear port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[07:00:22.135][MXS][W]| MCTX_TARGET_INIT               | 1               | 0               |
+[07:00:22.138][MCR][I]mc_device.cpp            :562 : Signal SIGUSR1 now has a custom handler to enable mctx at runtime!
+[07:00:22.138][MCR][I]mc_device.cpp            :309 : mcSnapShotCtx: Attempting to open shared memory: /shm_snapshot_670161
+mctxAutoStart called!
+[07:00:22.138][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[07:00:22.138][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[07:00:22.138][MCTX][I]mctxTPImpl.cpp           :300 : profiler target ENV file[/opt/mcProfiler-ubuntu18.04/output20260814065855/mcProfiler.json] exist!
+[07:00:22.138][MCR][I]mc_device.cpp            :849 : Init enter!
+[07:00:22.138][MXC][I]MxcInit: entering
+[07:00:22.142][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[07:00:22.142][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[07:00:22.142][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[07:00:22.142][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[07:00:22.142][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[07:00:22.142][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[07:00:22.142][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[07:00:22.142][MXKW][I]topology.c              :1516: [topology_sysfs_init_gpu_page_size]XCORE_PAGE_SIZE: 0x200000, GPU_PAGE_SIZE: 0x200000
+[07:00:22.142][MXKW][I]topology.c              :954 : [find_pci_info]create pci_info_array. It has 34 element. directory_name is 0.
+[07:00:22.142][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:00:22.142][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:00:22.142][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:00:22.142][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:00:22.142][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:00:22.142][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:00:22.142][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:00:22.142][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:00:22.142][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:00:22.142][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:00:22.142][MXKW][I]topology.c              :962 : [find_pci_info]node 321 's pci info is not found
+[07:00:22.142][MXKW][I]topology.c              :984 : [add_pci_info]added node 321 pci info , bdf_value:14080, domain_value:0
+[07:00:22.143][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[07:00:22.143][MXKW][I]fmm.c                   :2445: [init_mmap_apertures]Initialized unreserved SVM apertures: 0xa00000000 - 0x7fffffffffff
+[07:00:22.143][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[07:00:22.143][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[07:00:22.143][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[07:00:22.143][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[07:00:22.143][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[07:00:22.143][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[07:00:22.143][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[07:00:22.143][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:00:22.143][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:00:22.143][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:00:22.143][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:00:22.143][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:00:22.143][MXKW][I]topology.c              :2548: [topology_take_snapshot]node0 direct_links route:
+[07:00:22.143][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  0--->1
+[07:00:22.143][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:00:22.143][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:00:22.143][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:00:22.143][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:00:22.143][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:00:22.144][MXKW][I]topology.c              :2548: [topology_take_snapshot]node1 direct_links route:
+[07:00:22.144][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  1--->0
+[07:00:22.144][MXKW][I]topology.c              :2573: [topology_take_snapshot]node1 indirect_links route:
+[07:00:22.144][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[07:00:22.145][MXC][I]MxcInit: leaving
+[07:00:22.146][MXC][I]InitDma: Entering
+[07:00:22.146][MXC][I]InitDma: Leaving
+[07:00:22.146][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[07:00:22.146][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[07:00:22.146][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[07:00:22.146][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[07:00:22.147][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[07:00:22.147][MCR][I]mx_device.cpp            :1153: agent_handle=0x5639a1136800,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[07:00:22.147][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[07:00:22.147][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[07:00:22.147][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[07:00:22.147][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[07:00:22.147][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[07:00:22.147][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[07:00:22.147][MCR][I]mx_device.cpp            :1153: agent_handle=0x5639a1136800,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[07:00:22.147][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[07:00:22.148][MCR][I]mc_vpu_impl.cpp          :80  : mcVpuLoad mxvpu lib version: 1.0.20260512_081136
+
+[07:00:22.148][MCR][I]mc_vpu_impl.cpp          :86  : mcVpuLoad load mxvpu lib path: /opt/maca-3.7.1/lib/libmxvpu.so
+
+[07:00:22.148][MCC][I]AddDevice device_id:0, arch:xcore1000
+[07:00:22.148][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:00:43.681][MXS][I]                    Node0     Node1
+[07:00:43.681][MXS][I]Gpu0                X
+[07:00:43.681][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[07:00:43.681][MXS][I]MemBind             X         X
+[07:00:44.202][MXS][I]mcruntime           0%        100%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:00:44.717][MXS][I]mccompiler          0%        100%
+[07:00:45.234][MXS][I]mxc-runtime         1%        99%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:00:45.745][MXS][I]mxkw                          100%
+[07:00:45.745][PTI][I]mcpti_profiler.cpp       :618 : getModuleInfo:1,8,13,7,13,13,32,4,4
+
+[07:00:45.746][MCR][I]mx_device.cpp            :5792: agent_handle=0x5639a1136800
+[07:00:45.749][MCR][I]mx_device.cpp            :1446: created hardware queue 0x7f451300b000(HWq=0x7f4124001a90) with size 1024 with priority 0(L), cooperative: 0, is_exclusive: 0
+[07:00:45.749][MCR][I]mx_device.cpp            :1458: number of allocated hardware queues 0-0-1(H-N-L), number of users 0-0-1
+[07:00:45.753][MCTX][I]mctxTPImpl.cpp           :186 : Automatically acquire a port.
+[07:00:45.753][MCTX][I]mcRpcAsyncImpl.cpp       :421 : mcRpcServerAsyncInit 0x5639a1123a50 0
+[07:00:45.754][MCTX][I]mcRpcAsyncImpl.cpp       :500 : mcRpcAsyncServerTask start!
+[07:00:45.754][MCTX][I]mcRpcAsyncImpl.cpp       :472 : mcRpcServerAsyncRun start
+[07:00:45.754][MCTX][I]server.cpp               :69  : Server thread num: 1, listening on: 44509.
+[info] MctxStreamProfilerCountDataGet Start
+[info] MctxStreamProfilerCountDataGet Loop
+mcToolsExtPid_UsedPort:670161-44509
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[07:00:49.352][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:00:49.352][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:00:49.352][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:00:49.353][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:49.353][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:49.353][MXC][I]GpuDevice 0xa1136800 enable profiling, sdm_counter:245077803218125, sys_time:1786690849353294457
+[07:00:49.383][MXC][I]raw dispatch ts:[22622880526280,22622880526677]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849383502176, 1786690849383506146]
+[07:00:49.383][MXC][I]raw async_copy ts:[245077841678794,245077841681372]
+[07:00:49.383][MXC][I]sdma_ts_.sdma_counter:245077803218125
+[07:00:49.383][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690849396028533, 1786690849396031397]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622877169137,22622877243618]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849349930898, 1786690849350675705]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622877402965,22622877426314]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849352269168, 1786690849352502657]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622877429628,22622878212295]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849352535797, 1786690849360362431]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622878212668,22622878459046]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849360366161, 1786690849362829930]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622878462969,22622879245719]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849362869160, 1786690849370696624]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622879246090,22622879496249]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849370700334, 1786690849373201913]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622879496555,22622880279115]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849373204973, 1786690849381030537]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622880279381,22622880525148]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849381033197, 1786690849383490856]
+[07:00:49.383][MXC][I]raw dispatch ts:[22622880525417,22622880526025]
+[07:00:49.383][MXC][I]dispatch ts translate ret [1786690849383493546, 1786690849383499626]
+[07:00:49.383][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:49.383][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:49.383][MXC][I]raw async_copy ts:[245077841929221,245077841931093]
+[07:00:49.383][MXC][I]sdma_ts_.sdma_counter:245077803218125
+[07:00:49.383][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690849396306785, 1786690849396308865]
+[07:00:49.383][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:49.383][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:49.383][MXC][I]raw async_copy ts:[245077842033876,245077842035741]
+[07:00:49.383][MXC][I]sdma_ts_.sdma_counter:245077803218125
+[07:00:49.383][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690849396423069, 1786690849396425141]
+[07:00:49.383][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:00:49.383][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:00:49.383][MXC][I]raw async_copy ts:[245077842106282,245077842108153]
+[07:00:49.383][MXC][I]sdma_ts_.sdma_counter:245077803218125
+[07:00:49.383][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690849396503520, 1786690849396505598]
+[07:00:50.214][MXS][I]                    Node0     Node1
+[07:00:50.214][MXS][I]Gpu0                X
+[07:00:50.214][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[07:00:50.214][MXS][I]MemBind             X         X
+[07:00:50.776][MXS][I]mcruntime           0%        100%
+[07:00:51.330][MXS][I]mccompiler          0%        100%
+[07:00:51.887][MXS][I]mxc-runtime         2%        98%
+[07:00:52.440][MXS][I]mxkw                2%        98%
+[07:00:52.441][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[07:00:52.441][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[07:00:52.474][MXC][I]raw dispatch ts:[22623186655122,22623187304707]
+[07:00:52.474][MXC][I]dispatch ts translate ret [1786690852444778334, 1786690852451274158]
+[07:00:52.474][MXC][I]raw dispatch ts:[22623187305073,22623187636600]
+[07:00:52.474][MXC][I]dispatch ts translate ret [1786690852451277818, 1786690852454593074]
+[07:00:52.474][MXC][I]raw dispatch ts:[22623187639668,22623188275111]
+[07:00:52.474][MXC][I]dispatch ts translate ret [1786690852454623754, 1786690852460978159]
+[07:00:52.474][MXC][I]raw dispatch ts:[22623188275391,22623188606194]
+[07:00:52.474][MXC][I]dispatch ts translate ret [1786690852460980959, 1786690852464288976]
+[07:00:52.474][MXC][I]raw dispatch ts:[22623188606466,22623189241442]
+[07:00:52.474][MXC][I]dispatch ts translate ret [1786690852464291695, 1786690852470641430]
+[07:00:52.474][MXC][I]raw dispatch ts:[22623189241715,22623189574141]
+[07:00:52.474][MXC][I]dispatch ts translate ret [1786690852470644160, 1786690852473968407]
+[07:00:52.484][MXC][I]raw dispatch ts:[22623189666450,22623190316207]
+[07:00:52.484][MXC][I]dispatch ts translate ret [1786690852474891493, 1786690852481389034]
+[07:00:52.484][MXC][I]raw dispatch ts:[22623190319114,22623190649716]
+[07:00:52.484][MXC][I]dispatch ts translate ret [1786690852481418104, 1786690852484724110]
+{"case": 3, "event": "PROFILE_DONE", "experts": 64, "hidden": 7168, "intermediate": 2048, "source_tag": "v056_candidate_for_v056", "submission": "/tmp/tile-moe-scratch-20260814/v056-work/v056b_submission.py", "total_padded": 12288, "valid_tokens": 9088, "warmup": 3}
+[info] MctxStreamProfilerCountDataGet Loop
+[07:00:52.706][MCR][I]mc_device.cpp            :1002: tearDown enter!
+
+[07:00:52.706][MCR][I]mx_device.cpp            :1578: deleting hardware queue 0x7f451300b000 with refCount 0
+[07:00:52.706][MCR][I]mx_device.cpp            :1601: number of allocated hardware queues 0-0-0(H-N-L), number of users 0-0-0
+[07:00:52.707][MXC][I]~GpuDevice: Entering
+[07:00:52.707][MCTX][I]mcRpcAsyncImpl.cpp       :550 : callback mcRpcAsyncDone!
+[07:00:52.707][PTI][I]mcpti_tracer.hpp         :309 : stopProcessThread
+[07:00:52.707][MCTX][I]mcRpcAsyncImpl.cpp       :491 : mcRpcServerAsync TearDown!
+[07:00:52.707][MCTX][I]server.cpp               :116 : Server will tearDown[3].
+[07:00:52.717][MCTX][I]mcRpcAsyncImpl.cpp       :250 : ProfilerCountDataGet the last msg:[
+{
+"L2C" : {
+"19" : {
+"dpcId0" : [ 2569521384404, 2569289702865, 2569117486890, 2569129243293 ],
+"dpcId1" : [ 2569434649653, 2569443224050, 2569394306989, 2569356213722 ],
+"dpcId2" : [ 2569101853139, 2569121525532, 2569199044916, 2569239866715 ],
+"dpcId3" : [ 2569182794643, 2569150844184, 2569223613364, 2569049222677 ],
+"dpcId4" : [ 2569030238191, 2569229837709, 2568958578358, 2568941151573 ],
+"dpcId5" : [ 2568928190703, 2568928804326, 2569046056229, 2569075379153 ],
+"dpcId6" : [ 2569279820243, 2569251243491, 2569285303577, 2569222875531 ],
+"dpcId7" : [ 2569221753770, 2569184740862, 2569178341493, 2569142948040 ]
+},
+"271" : {
+"dpcId0" : [ 834781068362, 823737020025, 813954342212, 803160200236 ],
+"dpcId1" : [ 797091486196, 790919817837, 776414335208, 770289260085 ],
+"dpcId2" : [ 792399287815, 791288873641, 785771204167, 780038317716 ],
+"dpcId3" : [ 811347645714, 810025831352, 800021159799, 798672634392 ],
+"dpcId4" : [ 791647882180, 785520017904, 778506896901, 772112869566 ],
+"dpcId5" : [ 815166163571, 809381527151, 797446409634, 796220032097 ],
+"dpcId6" : [ 813719137776, 807697972742, 793461474829, 787546149895 ],
+"dpcId7" : [ 794861910163, 783737876097, 770315690281, 764065261969 ]
+},
+"47" : {
+"dpcId0" : [ 1395941280777, 1386512782143, 1378848119791, 1369583487425 ],
+"dpcId1" : [ 1364414642129, 1359464722872, 1346983188596, 1342192789975 ],
+"dpcId2" : [ 1361483053645, 1360647065890, 1355712006401, 1350883226172 ],
+"dpcId3" : [ 1377829366750, 1376311682996, 1368313065117, 1366776334195 ],
+"dpcId4" : [ 1360344397453, 1354945387028, 1348976638311, 1343835878055 ],
+[info] MctxStreamProfilerCountDataGet Loop
+"dpcId5" : [ 1379789937616, 1375482510557, 1365133856132, 1364297148631 ],[07:00:52.728][MCTX][I]server.cpp               :348 : HandleRpcs exit. thread_no=[0].
+[07:00:53.728][MCTX][I]server.cpp               :89  : Server Shutdown!
+[07:00:53.728][MCTX][I]mcRpcAsyncImpl.cpp       :477 : mcRpcServerAsyncRun stop
+[07:00:53.808][MCTX][I]mctxTPImpl.cpp           :433 : clear port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+Loading tilelang libs from dev root: /root/tilelang-metax/build
+[07:01:04.384][MXS][W]| MCTX_TARGET_INIT               | 1               | 0               |
+[07:01:04.386][MCR][I]mc_device.cpp            :562 : Signal SIGUSR1 now has a custom handler to enable mctx at runtime!
+[07:01:04.386][MCR][I]mc_device.cpp            :309 : mcSnapShotCtx: Attempting to open shared memory: /shm_snapshot_670559
+mctxAutoStart called!
+[07:01:04.386][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[07:01:04.386][MCTX][I]mctxTPImpl.cpp           :201 : MACA configuration file path redirected from ${MACA_PATH}/etc to MACA_ETC_PATH
+[07:01:04.386][MCTX][I]mctxTPImpl.cpp           :300 : profiler target ENV file[/opt/mcProfiler-ubuntu18.04/output20260814065855/mcProfiler.json] exist!
+[07:01:04.386][MCR][I]mc_device.cpp            :849 : Init enter!
+[07:01:04.386][MXC][I]MxcInit: entering
+[07:01:04.390][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[07:01:04.390][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[07:01:04.390][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[07:01:04.390][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[07:01:04.390][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[07:01:04.390][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[07:01:04.390][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[07:01:04.390][MXKW][I]topology.c              :1516: [topology_sysfs_init_gpu_page_size]XCORE_PAGE_SIZE: 0x200000, GPU_PAGE_SIZE: 0x200000
+[07:01:04.391][MXKW][I]topology.c              :954 : [find_pci_info]create pci_info_array. It has 34 element. directory_name is 0.
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:01:04.391][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:01:04.391][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 321 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :984 : [add_pci_info]added node 321 pci info , bdf_value:14080, domain_value:0
+[07:01:04.391][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[07:01:04.391][MXKW][I]fmm.c                   :2445: [init_mmap_apertures]Initialized unreserved SVM apertures: 0xa00000000 - 0x7fffffffffff
+[07:01:04.391][MXKW][I]topology.c              :1358: [topology_sysfs_get_system_props]PlatformCpuNodes:2 ,num_sysfs_nodes:34
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/2/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 1,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/3/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 2,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/4/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 3,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/5/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 4,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/6/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 5,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/7/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 6,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/8/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 7,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/9/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 8,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/300/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 9,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/301/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 10,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/302/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 11,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/303/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 12,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/304/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 13,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/305/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 14,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/306/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 15,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/307/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 16,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/308/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 17,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/309/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 18,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/310/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 19,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/311/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 20,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/312/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 21,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/313/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 22,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/314/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 23,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/315/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 24,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/316/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 25,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/317/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 26,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/318/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 27,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/319/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 28,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/320/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 29,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/322/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 30,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :283 : [get_directory_socket_id]fscanf path:/sys/devices/virtual/mxcd/mxcd/layout/nodes/323/gpu_id,res: 0,errno:1
+[07:01:04.391][MXKW][W]topology.c              :1424: [topology_sysfs_get_system_props]err_node_num is 31,ret is 0,is_node_supported is 0
+[07:01:04.391][MXKW][I]topology.c              :1460: [topology_sysfs_get_system_props]cpu total 2 nodes, map list:
+[07:01:04.391][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[0]:0
+[07:01:04.391][MXKW][I]topology.c              :1463: [topology_sysfs_get_system_props]map_cpu[1]:1
+[07:01:04.391][MXKW][I]topology.c              :1465: [topology_sysfs_get_system_props]gpu total 1 nodes, map list:
+[07:01:04.391][MXKW][I]topology.c              :1468: [topology_sysfs_get_system_props]map_gpu[0]:31
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:01:04.391][MXKW][I]topology.c              :962 : [find_pci_info]node 0 's pci info is not found
+[07:01:04.391][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/0/location file!
+[07:01:04.391][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:01:04.392][MXKW][I]topology.c              :2548: [topology_take_snapshot]node0 direct_links route:
+[07:01:04.392][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  0--->1
+[07:01:04.392][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:01:04.392][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:01:04.392][MXKW][I]topology.c              :962 : [find_pci_info]node 1 's pci info is not found
+[07:01:04.392][MXKW][I]topology.c              :911 : [read_pci_info_from_file]can't open /sys/devices/virtual/mxcd/mxcd/layout/nodes/1/location file!
+[07:01:04.392][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 0, isa_minor is 0, MXName is
+[07:01:04.392][MXKW][I]topology.c              :2548: [topology_take_snapshot]node1 direct_links route:
+[07:01:04.392][MXKW][I]topology.c              :2562: [topology_take_snapshot]link0 type:2,  1--->0
+[07:01:04.392][MXKW][I]topology.c              :2573: [topology_take_snapshot]node1 indirect_links route:
+[07:01:04.392][MXKW][I]topology.c              :1944: [topology_sysfs_get_node_props]Device isa_major is 10, isa_minor is 0, MXName is
+[07:01:04.394][MXC][I]MxcInit: leaving
+[07:01:04.394][MXC][I]InitDma: Entering
+[07:01:04.395][MXC][I]InitDma: Leaving
+[07:01:04.395][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[07:01:04.395][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[07:01:04.395][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[07:01:04.395][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[07:01:04.396][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[07:01:04.396][MCR][I]mx_device.cpp            :1153: agent_handle=0x562414784370,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[07:01:04.396][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[07:01:04.396][MCR][I]mx_device.cpp            :2294: Device xcore1000 create, major:10, minor:0
+[07:01:04.396][MCR][I]mx_device.cpp            :2795: private_mem:436207616, info_.globalMemSize_:16341008384, gpu_single_alloc_percent:0.990000
+[07:01:04.396][MCR][I]mx_device.cpp            :2865: get registersPerMtreg_:64,info_dpcNum_:8,info_wavePerDpc_:416, wavefrontWidth_:64
+[07:01:04.396][MCR][I]mx_device.cpp            :3042: rmNum_:8, isuNum_:13, sl1Num_:7, vlsNum_:13, vl1Num_:13, l2cNum_:32, l2aNum_:4, l2xNum_:4
+
+[07:01:04.396][MCR][I]mx_device.cpp            :1091: getQueueCnt hwQueueNum:16
+[07:01:04.396][MCR][I]mx_device.cpp            :1153: agent_handle=0x562414784370,hardware queues number:16, queue count configuration: 8-4-4(H-N-L), highForMccl:0
+[07:01:04.396][MCR][I]mx_device.cpp            :2445: Device xcore1000 create fininshed!
+
+[07:01:04.396][MCR][I]mc_vpu_impl.cpp          :80  : mcVpuLoad mxvpu lib version: 1.0.20260512_081136
+
+[07:01:04.396][MCR][I]mc_vpu_impl.cpp          :86  : mcVpuLoad load mxvpu lib path: /opt/maca-3.7.1/lib/libmxvpu.so
+
+[07:01:04.396][MCC][I]AddDevice device_id:0, arch:xcore1000
+[07:01:04.396][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:01:26.022][MXS][I]                    Node0     Node1
+[07:01:26.022][MXS][I]Gpu0                X
+[07:01:26.022][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[07:01:26.022][MXS][I]MemBind             X         X
+[07:01:26.678][MXS][I]mcruntime                     100%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:01:27.336][MXS][I]mccompiler                    100%
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[07:01:27.991][MXS][I]mxc-runtime                   100%
+[07:01:28.646][MXS][I]mxkw                          100%
+[07:01:28.646][PTI][I]mcpti_profiler.cpp       :618 : getModuleInfo:1,8,13,7,13,13,32,4,4
+
+[07:01:28.647][MCR][I]mx_device.cpp            :5792: agent_handle=0x562414784370
+[07:01:28.649][MCR][I]mx_device.cpp            :1446: created hardware queue 0x7f1196a0b000(HWq=0x7f0da4001a90) with size 1024 with priority 0(L), cooperative: 0, is_exclusive: 0
+[07:01:28.649][MCR][I]mx_device.cpp            :1458: number of allocated hardware queues 0-0-1(H-N-L), number of users 0-0-1
+[07:01:28.657][MCTX][I]mctxTPImpl.cpp           :186 : Automatically acquire a port.
+[07:01:28.657][MCTX][I]mcRpcAsyncImpl.cpp       :421 : mcRpcServerAsyncInit 0x562414771720 0
+[07:01:28.657][MCTX][I]mcRpcAsyncImpl.cpp       :500 : mcRpcAsyncServerTask start!
+[07:01:28.657][MCTX][I]mcRpcAsyncImpl.cpp       :472 : mcRpcServerAsyncRun start
+[07:01:28.657][MCTX][I]server.cpp               :69  : Server thread num: 1, listening on: 35371.
+[info] MctxStreamProfilerCountDataGet Start
+[info] MctxStreamProfilerCountDataGet Loop
+mcToolsExtPid_UsedPort:670559-35371
+[WARNING] Field "span" in type "ir.TupleType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.FuncType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "span" in type "ir.TensorMapType" duplicates an ancestor field in "ir.Type". Child types should not re-register inherited fields.
+[WARNING] Field "binding_blocks" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+[WARNING] Field "output" in type "script.ir_builder.relax.FunctionFrame" duplicates an ancestor field in "script.ir_builder.relax.SeqExprFrame". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TupleType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.FuncType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'span' in 'ir.TensorMapType' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'name' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'tag' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'attrs' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'shape' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'dtype' in 'relax.TEPlaceholderOp' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[WARNING] Field "policy_type" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "m_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+[WARNING] Field "n_warp" in type "tl.GemmSPWarpPolicy" duplicates an ancestor field in "tl.GemmWarpPolicy". Child types should not re-register inherited fields.
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'policy_type' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'm_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+/opt/conda/lib/python3.12/site-packages/tvm_ffi/registry.py:85: UserWarning: Field 'n_warp' in 'tl.GemmSPWarpPolicy' duplicates an ancestor field. Child types should not re-register inherited fields.
+info = core._register_object_by_index(type_index, cls)
+[07:01:32.239][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:01:32.239][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:01:32.239][MCR][W]mx_command.hpp           :2539: command get totalThreads 0
+[07:01:32.239][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:01:32.240][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:01:32.240][MXC][I]GpuDevice 0x14784370 enable profiling, sdm_counter:245129278365917, sys_time:1786690892240050636
+[07:01:32.270][MXC][I]raw dispatch ts:[22627169229129,22627169229533]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892270362356, 1786690892270366396]
+[07:01:32.270][MXC][I]raw async_copy ts:[245129316534353,245129316536771]
+[07:01:32.270][MXC][I]sdma_ts_.sdma_counter:245129278365917
+[07:01:32.270][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690892282460009, 1786690892282462695]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627165882536,22627165957022]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892236896573, 1786690892237641430]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627166104547,22627166127805]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892239116674, 1786690892239349253]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627166131304,22627166914057]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892239384242, 1786690892247211738]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627166914439,22627167161746]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892247215558, 1786690892249688617]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627167165257,22627167947996]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892249723727, 1786690892257551082]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627167948377,22627168198499]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892257554892, 1786690892260056101]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627168198814,22627168981448]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892260059251, 1786690892267885557]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627168981727,22627169227955]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892267888347, 1786690892270350616]
+[07:01:32.270][MXC][I]raw dispatch ts:[22627169228230,22627169228868]
+[07:01:32.270][MXC][I]dispatch ts translate ret [1786690892270353366, 1786690892270359746]
+[07:01:32.270][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:01:32.270][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1/tmp/_MEItfTqfg/phttp/http_server.py:89: UserWarning:
+
+The 'environ['werkzeug.server.shutdown']' function is deprecated and will be removed in Werkzeug 2.1.
+
+
+[07:01:32.270][MXC][I]raw async_copy ts:[245129316741203,245129316743203]
+[07:01:32.270][MXC][I]sdma_ts_.sdma_counter:245129278365917
+[07:01:32.270][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690892282689842, 1786690892282692064]
+[07:01:32.270][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:01:32.270][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:01:32.270][MXC][I]raw async_copy ts:[245129316800991,245129316803006]
+[07:01:32.270][MXC][I]sdma_ts_.sdma_counter:245129278365917
+[07:01:32.270][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690892282756273, 1786690892282758511]
+[07:01:32.270][MCR][I]mc_memory.cpp            :1671: copy strategy - H2DCpuCopy:0,D2HCpuCopy:0,cpuCopy:0,d2dCrossDevices:0,pageableHToDAsync:0
+[07:01:32.270][MCR][I]mc_memory.cpp            :1672: copy strategy - isAsync:0,waitComplete:1
+[07:01:32.270][MXC][I]raw async_copy ts:[245129316861975,245129316864088]
+[07:01:32.270][MXC][I]sdma_ts_.sdma_counter:245129278365917
+[07:01:32.270][MXC][I]DNOCfreq:900000000, async_copy ts translate ret [1786690892282824033, 1786690892282826380]
+[07:01:33.110][MXS][I]                    Node0     Node1
+[07:01:33.110][MXS][I]Gpu0                X
+[07:01:33.110][MXS][I]CpuBind             X         X
+get_mempolicy: Operation not permitted
+[07:01:33.110][MXS][I]MemBind             X         X
+[07:01:33.815][MXS][I]mcruntime                     100%
+[07:01:34.511][MXS][I]mccompiler                    100%
+[07:01:35.206][MXS][I]mxc-runtime                   100%
+[07:01:35.902][MXS][I]mxkw                          100%
+[07:01:35.902][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[07:01:35.902][MCC][I]Get compiler from environment variable MACA_CLANG_PATH: /opt/maca/mxgpu_llvm/bin.
+[07:01:35.935][MXC][I]raw dispatch ts:[22627532822859,22627533471074]
+[07:01:35.935][MXC][I]dispatch ts translate ret [1786690895906285647, 1786690895912767772]
+[07:01:35.935][MXC][I]raw dispatch ts:[22627533474445,22627533806267]
+[07:01:35.935][MXC][I]dispatch ts translate ret [1786690895912801482, 1786690895916119689]
+[07:01:35.935][MXC][I]raw dispatch ts:[22627533806552,22627534453842]
+[07:01:35.935][MXC][I]dispatch ts translate ret [1786690895916122539, 1786690895922595414]
+[07:01:35.935][MXC][I]raw dispatch ts:[22627534454121,22627534784863]
+[07:01:35.935][MXC][I]dispatch ts translate ret [1786690895922598204, 1786690895925905611]
+[07:01:35.935][MXC][I]raw dispatch ts:[22627534785139,22627535434948]
+[07:01:35.935][MXC][I]dispatch ts translate ret [1786690895925908371, 1786690895932406436]
+[07:01:35.935][MXC][I]raw dispatch ts:[22627535435231,22627535765844]
+[07:01:35.935][MXC][I]dispatch ts translate ret [1786690895932409266, 1786690895935715384]
+[07:01:35.946][MXC][I]raw dispatch ts:[22627535832876,22627536479532]
+[07:01:35.946][MXC][I]dispatch ts translate ret [1786690895936385701, 1786690895942852239]
+[07:01:35.946][MXC][I]raw dispatch ts:[22627536479851,22627536812800]
+[07:01:35.946][MXC][I]dispatch ts translate ret [1786690895942855429, 1786690895946184908]
+{"case": 3, "event": "PROFILE_DONE", "experts": 64, "hidden": 7168, "intermediate": 2048, "source_tag": "v056_candidate_for_v056", "submission": "/tmp/tile-moe-scratch-20260814/v056-work/v056b_submission.py", "total_padded": 12288, "valid_tokens": 9088, "warmup": 3}
+[info] MctxStreamProfilerCountDataGet Loop
+[07:01:36.145][MCR][I]mc_device.cpp            :1002: tearDown enter!
+
+[07:01:36.145][MCR][I]mx_device.cpp            :1578: deleting hardware queue 0x7f1196a0b000 with refCount 0
+[07:01:36.145][MCR][I]mx_device.cpp            :1601: number of allocated hardware queues 0-0-0(H-N-L), number of users 0-0-0
+[07:01:36.145][MXC][I]~GpuDevice: Entering
+[07:01:36.146][MCTX][I]mcRpcAsyncImpl.cpp       :550 : callback mcRpcAsyncDone!
+[07:01:36.146][PTI][I]mcpti_tracer.hpp         :309 : stopProcessThread
+[07:01:36.146][MCTX][I]mcRpcAsyncImpl.cpp       :491 : mcRpcServerAsync TearDown!
+[07:01:36.146][MCTX][I]server.cpp               :116 : Server will tearDown[3].
+[07:01:36.149][MCTX][I]mcRpcAsyncImpl.cpp       :250 : ProfilerCountDataGet the last msg:[
+{
+"L2C" : {
+"269" : {
+"dpcId0" : [ 1395941280788, 1386512782146, 1378848119798, 1369583487432 ],
+"dpcId1" : [ 1364414642141, 1359464722888, 1346983188604, 1342192789988 ],
+"dpcId2" : [ 1361483053652, 1360647065900, 1355712006414, 1350883226194 ],
+"dpcId3" : [ 1377829366758, 1376311683001, 1368313065140, 1366776334201 ],
+"dpcId4" : [ 1360344397487, 1354945387038, 1348976638330, 1343835878068 ],
+"dpcId5" : [ 1379789937626, 1375482510571, 1365133856135, 1364297148646 ],
+"dpcId6" : [ 1379643504276, 1374599016670, 1362921667536, 1358085377004 ],
+"dpcId7" : [ 1363897641886, 1354417356838, 1343719949563, 1338417061549 ]
+},
+"45" : {
+"dpcId0" : [ 2569530342577, 2569298659234, 2569126443320, 2569138197603 ],
+"dpcId1" : [ 2569443612650, 2569452184811, 2569403265984, 2569365172094 ],
+"dpcId2" : [ 2569110820075, 2569130488968, 2569208007698, 2569248827160 ],
+"dpcId3" : [ 2569191759162, 2569159806092, 2569232574664, 2569058178771 ],
+"dpcId4" : [ 2569039203048, 2569238797335, 2568967539888, 2568950108005 ],
+"dpcId5" : [ 2568937152166, 2568937761492, 2569055015163, 2569084334390 ],
+"dpcId6" : [ 2569288785827, 2569260206245, 2569294267141, 2569231835498 ],
+"dpcId7" : [ 2569230720443, 2569193705127, 2569187306896, 2569151909199 ]
+}
+}
+}
+]
+
+[info] MctxStreamProfilerCountDataGet Loop
+[07:01:36.160][MCTX][I]server.cpp               :348 : HandleRpcs exit. thread_no=[0].
+[07:01:37.161][MCTX][I]server.cpp               :89  : Server Shutdown!
+[07:01:37.161][MCTX][I]mcRpcAsyncImpl.cpp       :477 : mcRpcServerAsyncRun stop
+[07:01:37.246][MCTX][I]mctxTPImpl.cpp           :433 : clear port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+[warning] get_srvrpc_port get rpc server ports failed: cannot retrieve rpc server port.
+
+[info] profiling task 5e64e854-125c-4073-99bd-26a2805423bc
+[info] complete task 5e64e854-125c-4073-99bd-26a2805423bc
+stop server
+perf done, please check report file /opt/mcProfiler-ubuntu18.04/output20260814065855
