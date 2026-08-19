@@ -41,3 +41,33 @@ For the valid screens, each source was loaded in a separate module-local cache, 
 ## Next direction
 
 Keep the 79.33 source as the reference and investigate a different causal family: the Case2/Case3 vector-load pipeline stall, especially synchronous Step1/Step2 staging order and barrier placement. Any new rejected or inconclusive trial goes in this directory and remains unversioned.
+
+## Additional screens (same incumbent, 2026-08-19)
+
+These candidates were generated directly from the incumbent source above and were kept outside the repository during screening.
+
+The fused-store row was rerun after correcting an initial no-op text replacement; only the `3c35ed7f...` measurements below are valid for that direction.
+
+| Direction | Case | Candidate SHA-256 | Correctness | Median change | Decision |
+|---|---:|---|---|---:|---|
+| Fuse the two Step2 output-half store loops | 1 | `3c35ed7f...` | PASS | `-0.021%` | reject: noise |
+| Fuse the two Step2 output-half store loops | 2 | `3c35ed7f...` | PASS | `+0.582%` | reject: below 1.2% |
+| Fuse the two Step2 output-half store loops | 3 | `3c35ed7f...` | PASS | `+0.558%` | reject: below 1.2% |
+| Remove Step2 `down_shared` swizzled layout | 2 | `8a82be52...` | PASS | `+34.978%` | reject: regression |
+| Remove Step2 `down_shared` swizzled layout | 3 | `8a82be52...` | PASS | `+34.724%` | reject: regression; Case1 compile killed |
+| Remove Step1 gate/up shared layouts | 1 | `3c424fe4...` | PASS | `+69.098%` | reject: regression |
+| Enable Step2 `use_swizzle` | 3 | `4731bd06...` | PASS | `+2.683%` | reject: regression |
+| Enable Step1 `use_swizzle` | 2 | `c29292fc...` | PASS | `+2.886%` | reject: regression |
+| Disable Step1/Step2 tail pruning | 3 | `43e5964f...` | PASS | `+9.981%` | reject: regression |
+| Increase `num_stages` from 1 to 2 | 1 | `3e5e5dcc...` | PASS | `+0.025%` | reject: noise |
+| Remove Step2 MMA-to-down-copy barrier | 3 | `b127ca5f...` | PASS | `-0.011%` | reject: noise |
+
+### Additional conclusions
+
+8. Combining the two output-half stores does not materially reduce epilogue cost; the store loops are not the bottleneck.
+9. The incumbent swizzled shared layouts are essential: default layouts cause large vector-load/occupancy regressions (or compilation resource failure in Case1).
+10. Enabling hardware swizzle at either kernel boundary is harmful on this shape mix; the incumbent explicit layout plus disabled launch swizzle is the better combination.
+11. Tail pruning is worth far more than the small padding fraction: removing it costs about 10% in Case3.
+12. Doubling pipeline stages and removing the first Step2 barrier are both noise-level changes, not promotable improvements; the latter passed the paired correctness check but gives no stable gain.
+
+All additional candidates remain research-only; `dorm`, the submission, and version history are unchanged because no stable candidate clears the 1.2% floor.
