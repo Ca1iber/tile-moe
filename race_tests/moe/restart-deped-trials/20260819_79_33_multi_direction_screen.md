@@ -99,5 +99,7 @@ The prescribed mcProfiler invocation was also attempted for Case3. The profiler 
 | Direction | Case | Candidate SHA-256 | Correctness | Median change | Resource observation | Decision |
 |---|---:|---|---|---:|---|---|
 | Reduce CTA threads from 256 to 128 | 3 | `1646eb66...` | PASS | `+16.760%` | Step1 MT registers rise 216→254; both kernels remain at 2 warps/PEU | reject: regression |
+| Change both MMA accumulators from FP32 to FP16 | 3 | `b34db050...` | FAIL | n/a | 72.5% output mismatch with NaNs | reject: correctness |
 
 The 128-thread experiment closes the simplest occupancy hypothesis: fewer threads do not unlock another resident warp and instead make the Step1 register footprint worse while underfeeding the fixed MMA layout.
+The FP16 accumulator experiment closes the obvious register-width shortcut: it produces NaNs and large numerical divergence, so the FP32 accumulation is required by the current correctness contract.
