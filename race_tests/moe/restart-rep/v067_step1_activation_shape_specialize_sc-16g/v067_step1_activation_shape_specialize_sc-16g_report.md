@@ -27,12 +27,12 @@ Case1 在 v066 为 10/13 正向、本轮为 5/13 反向，说明该 shape 的效
 ## Generated code and resources
 
 - Case2：v062/v067 generated C++ SHA 均为 `6fdee4ae...`，确认无运行时分支和代码扰动。
-- Case1：v067 SHA `fc98c341...`，Step1 ST registers 54 -> 52，MT registers 222 不变。
+- Case1：v067 SHA `fc98c341...`，生成表达式改变；Step1 资源与 v062 同为 MT/ST registers 222/52。
 - Case3：v067 SHA `50a89952...`，代码确实变化；资源仍为 Step1 216/54、Step2 230/52，静态最大 2 waves/PEU。
 - 因 benchmark 门禁失败，不继续采集 profiler/Roofline。
 
 ## Interpretation
 
 - 编译期 shape 隔离机制有效；Case2 的测量为预期噪声。
-- Case1 register 改善没有转化成稳定端到端收益；下一版恢复 Case1 原码，只保留 64 experts 的 Case3 直接写回。
+- Case1 generated expression 变化没有转化成稳定端到端收益；下一版恢复 Case1 原码，只保留 64 experts 的 Case3 直接写回。
 - 本轮不创建 `restart-submission/v067...`。

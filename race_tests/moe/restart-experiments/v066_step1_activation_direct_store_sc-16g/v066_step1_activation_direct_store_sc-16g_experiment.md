@@ -21,7 +21,7 @@
 
 - 实际改动：移除 `gate_local[i,j] = ...` 写回，直接计算最终值。
 - 正确性：三 Case PASS，最大误差与 v062 门限一致。
-- 资源：Case1 Step1 ST registers 54 -> 52，MT registers 222 不变。
+- 资源：Case1 Step1 与 v062 相同，MT/ST registers 均为 222/52；先前的 54 -> 52 记录是误读，现据原始 JSON 更正。
 - 正式结果：Case1/3 微幅改善；Case2 仅 5/13 胜且配对中位回退 0.001764 ms。
 - 结论：rejected；不更新 submission。下一步做 compile-time shape specialization。
 - 证据报告：`../../restart-rep/v066_step1_activation_direct_store_sc-16g/v066_step1_activation_direct_store_sc-16g_report.md`
