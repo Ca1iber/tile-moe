@@ -64,6 +64,7 @@ The fused-store row was rerun after correcting an initial no-op text replacement
 | Increase Step1 K tile from 64 to 128 | 3 | `0d37b444...` | PASS | `+156.251%` | reject: regression |
 | Increase Step2 expert-K tile from 64 to 128 | 3 | `75029916...` | PASS | `+80.050%` | reject: regression |
 | Disable Step2 input prefetch | 3 | `cfc98015...` | PASS | `+4.092%` | reject: regression |
+| Scale fragments then use `T.copy` for Step2 epilogue stores | 3 | `c2fd140c...` | PASS | `+0.250%` | reject: below 1.2% |
 
 ### Additional conclusions
 
@@ -74,5 +75,6 @@ The fused-store row was rerun after correcting an initial no-op text replacement
 12. Doubling pipeline stages and removing the first Step2 barrier are both noise-level changes, not promotable improvements; the latter passed the paired correctness check but gives no stable gain.
 13. The incumbent 64-wide K tiles are strongly tuned to the MMA/shared-memory layout: widening Step1 or Step2 K tiles creates severe resource/occupancy regressions (about 156% and 80% slower respectively), despite passing correctness.
 14. Step2 input prefetch is also a material win: disabling it makes Case3 about 4.09% slower, confirming that the synchronous prefetch path is hiding useful latency rather than adding overhead.
+15. Replacing the two predicated global-store loops with fragment scaling plus `T.copy` is legal and correct, but slightly slower (`0.25%`); the epilogue store path has little headroom and is not a promotion target.
 
 All additional candidates remain research-only; `dorm`, the submission, and version history are unchanged because no stable candidate clears the 1.2% floor.
