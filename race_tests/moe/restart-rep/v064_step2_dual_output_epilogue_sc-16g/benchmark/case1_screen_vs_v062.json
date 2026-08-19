@@ -1,0 +1,117 @@
+{
+  "protocol": {
+    "same_process": true,
+    "order": "AB/BA alternating",
+    "rounds": 7,
+    "warmup_per_window": 5,
+    "repeat_per_window": 30
+  },
+  "sources": {
+    "baseline": "/root/tilelang-metax/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py",
+    "candidate": "/root/tilelang-metax/race_tests/moe/restart-experiments/v064_step2_dual_output_epilogue_sc-16g/candidate_submission.py"
+  },
+  "results": [
+    {
+      "case": 1,
+      "experts": 16,
+      "hidden": 2048,
+      "intermediate": 8192,
+      "valid_tokens": 2272,
+      "total_padded": 3072,
+      "baseline": {
+        "samples_ms": [
+          2.778154754638672,
+          2.780066172281901,
+          2.779929606119792,
+          2.780492909749349,
+          2.7784703572591147,
+          2.7784192403157553,
+          2.777301279703776
+        ],
+        "mean_ms": 2.778976331438337,
+        "median_ms": 2.7784703572591147,
+        "pstdev_ms": 0.0010982871466929775
+      },
+      "candidate": {
+        "samples_ms": [
+          2.777813212076823,
+          2.7771817525227864,
+          2.779571278889974,
+          2.776746622721354,
+          2.7785130818684896,
+          2.77758305867513,
+          2.7782315572102863
+        ],
+        "mean_ms": 2.777948651994978,
+        "median_ms": 2.777813212076823,
+        "pstdev_ms": 0.0008632617634272706
+      },
+      "speedup": 1.0002365692478654,
+      "rows": [
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 2.778154754638672,
+          "candidate_ms": 2.777813212076823
+        },
+        {
+          "round": 2,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_ms": 2.7771817525227864,
+          "baseline_ms": 2.780066172281901
+        },
+        {
+          "round": 3,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 2.779929606119792,
+          "candidate_ms": 2.779571278889974
+        },
+        {
+          "round": 4,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_ms": 2.776746622721354,
+          "baseline_ms": 2.780492909749349
+        },
+        {
+          "round": 5,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 2.7784703572591147,
+          "candidate_ms": 2.7785130818684896
+        },
+        {
+          "round": 6,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_ms": 2.77758305867513,
+          "baseline_ms": 2.7784192403157553
+        },
+        {
+          "round": 7,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 2.777301279703776,
+          "candidate_ms": 2.7782315572102863
+        }
+      ]
+    }
+  ]
+}
