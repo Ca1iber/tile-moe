@@ -1,0 +1,22 @@
+diff --git a/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py b/race_tests/moe/restart-experiments/v067_step1_activation_shape_specialize_sc-16g/candidate_submission.py
+--- a/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py
++++ b/race_tests/moe/restart-experiments/v067_step1_activation_shape_specialize_sc-16g/candidate_submission.py
+@@ -705,10 +705,21 @@ def run_kernel(
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+                         if i < actual_rows:
+-                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+-                            up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
++                            if num_experts == 32:
++                                gate_local[i, j] = gate_local[i, j] * (
++                                    1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale))
++                                )
++                                up_logits[block_start + i, by * block_dexpert_step1 + j] = (
++                                    up_local[i, j] * gate_local[i, j]
++                                )
++                            else:
++                                gate_value = gate_local[i, j]
++                                up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * (
++                                    gate_value * (1.0 / (1.0 + T.exp2(-gate_value * scale)))
++                                )
+ 
+                 with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
