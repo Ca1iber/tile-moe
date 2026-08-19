@@ -93,3 +93,11 @@ The incumbent was lowered with `capture_codegen.py` and the final xcore1000 ISA 
 This confirms that the current bottleneck is the synchronous shared-memory/MMA pipeline under high register pressure and only two resident warps/PEU. It is not primarily the final padded-row store.
 
 The prescribed mcProfiler invocation was also attempted for Case3. The profiler created its event batches but hung during the RPC/device-counter phase and produced no structured output; the process was terminated and no counter claim is made from that run.
+
+## Additional bottom-up screen
+
+| Direction | Case | Candidate SHA-256 | Correctness | Median change | Resource observation | Decision |
+|---|---:|---|---|---:|---|---|
+| Reduce CTA threads from 256 to 128 | 3 | `1646eb66...` | PASS | `+16.760%` | Step1 MT registers rise 216→254; both kernels remain at 2 warps/PEU | reject: regression |
+
+The 128-thread experiment closes the simplest occupancy hypothesis: fewer threads do not unlock another resident warp and instead make the Step1 register footprint worse while underfeeding the fixed MMA layout.
