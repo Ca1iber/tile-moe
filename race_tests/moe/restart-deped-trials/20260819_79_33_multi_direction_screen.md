@@ -24,6 +24,7 @@ For the valid screens, each source was loaded in a separate module-local cache, 
 | Predicate Step1 initial input tile by `actual_rows` | 3 | `2607bd8f...` | PASS | **-0.110%** | reject: below 1.2% |
 | Predicate Step1 activation (`exp2/sigmoid`) by `actual_rows` | 3 | `9d517c01...` | PASS | **-0.027%** | reject: below 1.2% |
 | Reorder Case2/3 Step2 synchronous staging: up-logits copy before down-weight copy | 3 | `ccc88632...` | PASS | **+1.382%** | reject: regression |
+| Reorder Case3 staging: next up-logits before odd down-weight copy | 3 | `d2ee5ec7...` | PASS | **+1.373%** | reject: regression |
 | Disable Case1 grouped Step2 CTA mapping | 1 | `0efb9308...` | PASS | **+3.442%** | reject: regression |
 | Apply grouped Step2 CTA mapping to Case2/3 | 3 | `f983b2b3...` | PASS | **+2.176%** | reject: regression |
 
@@ -35,6 +36,7 @@ For the valid screens, each source was loaded in a separate module-local cache, 
 4. The current tail-pruning and grouped-grid mechanisms are already close to their useful local limits. None of the tested mechanisms clears the 1.2% floor, so no source is promoted and `dorm` is unchanged.
 5. Moving the `actual_rows` predicate inward through the Step1 epilogue saves essentially no time (`0.027%` in Case3); the GEMM and vector-load pipeline dominate the tail epilogue.
 6. Reordering the synchronous Step2 producer sequence is directionally harmful: the incumbent order is about `1.38%` faster, so the current ordering is not an accidental load-order artifact.
+7. The complementary producer order is equally harmful (`1.37%` slower), closing this simple two-way reorder family without a viable candidate.
 
 ## Next direction
 
