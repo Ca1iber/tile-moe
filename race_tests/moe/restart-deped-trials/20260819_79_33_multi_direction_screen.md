@@ -103,3 +103,9 @@ The prescribed mcProfiler invocation was also attempted for Case3. The profiler 
 
 The 128-thread experiment closes the simplest occupancy hypothesis: fewer threads do not unlock another resident warp and instead make the Step1 register footprint worse while underfeeding the fixed MMA layout.
 The FP16 accumulator experiment closes the obvious register-width shortcut: it produces NaNs and large numerical divergence, so the FP32 accumulation is required by the current correctness contract.
+
+| Direction | Case | Candidate SHA-256 | Correctness | Median change | Decision |
+|---|---:|---|---|---:|---|
+| Keep down-weight copy first, move up-odd load before its visibility barrier | 3 | `983a331c...` | PASS | `+1.095%` | reject: below 1.2% |
+
+This safe overlap variant is close but still below the promotion floor and slower than the incumbent, so the current ordering remains preferred.
