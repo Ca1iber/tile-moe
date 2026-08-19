@@ -22,6 +22,7 @@ For the valid screens, each source was loaded in a separate module-local cache, 
 | Remove explicit zero stores for padded output rows | 1 | `a176f127...` | valid rows PASS; sentinel full-padding check FAIL (26.0% rows unchanged) | -0.221% in invalid partial check | reject: correctness |
 | Predicate Step1 initial input tile by `actual_rows` | 2 | `2607bd8f...` | PASS | **-0.069%** | reject: below 1.2% |
 | Predicate Step1 initial input tile by `actual_rows` | 3 | `2607bd8f...` | PASS | **-0.110%** | reject: below 1.2% |
+| Predicate Step1 activation (`exp2/sigmoid`) by `actual_rows` | 3 | `9d517c01...` | PASS | **-0.027%** | reject: below 1.2% |
 | Disable Case1 grouped Step2 CTA mapping | 1 | `0efb9308...` | PASS | **+3.442%** | reject: regression |
 | Apply grouped Step2 CTA mapping to Case2/3 | 3 | `f983b2b3...` | PASS | **+2.176%** | reject: regression |
 
@@ -31,6 +32,7 @@ For the valid screens, each source was loaded in a separate module-local cache, 
 2. Case1's existing grouped CTA mapping is locally meaningful. Removing it costs about 3.4%; applying the same mapping to the 64-expert shape costs about 2.2%, so the mapping is shape-specific rather than a general rule.
 3. Padding zero stores cannot be removed under the current output contract. A valid-row-only screen looked 0.22% faster, but a sentinel run showed that padded rows remain untouched; this is a correctness failure, not an optimization.
 4. The current tail-pruning and grouped-grid mechanisms are already close to their useful local limits. None of the tested mechanisms clears the 1.2% floor, so no source is promoted and `dorm` is unchanged.
+5. Moving the `actual_rows` predicate inward through the Step1 epilogue saves essentially no time (`0.027%` in Case3); the GEMM and vector-load pipeline dominate the tail epilogue.
 
 ## Next direction
 
