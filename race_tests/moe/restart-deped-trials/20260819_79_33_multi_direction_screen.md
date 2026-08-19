@@ -61,6 +61,8 @@ The fused-store row was rerun after correcting an initial no-op text replacement
 | Disable Step1/Step2 tail pruning | 3 | `43e5964f...` | PASS | `+9.981%` | reject: regression |
 | Increase `num_stages` from 1 to 2 | 1 | `3e5e5dcc...` | PASS | `+0.025%` | reject: noise |
 | Remove Step2 MMA-to-down-copy barrier | 3 | `b127ca5f...` | PASS | `-0.011%` | reject: noise |
+| Increase Step1 K tile from 64 to 128 | 3 | `0d37b444...` | PASS | `+156.251%` | reject: regression |
+| Increase Step2 expert-K tile from 64 to 128 | 3 | `75029916...` | PASS | `+80.050%` | reject: regression |
 
 ### Additional conclusions
 
@@ -69,5 +71,6 @@ The fused-store row was rerun after correcting an initial no-op text replacement
 10. Enabling hardware swizzle at either kernel boundary is harmful on this shape mix; the incumbent explicit layout plus disabled launch swizzle is the better combination.
 11. Tail pruning is worth far more than the small padding fraction: removing it costs about 10% in Case3.
 12. Doubling pipeline stages and removing the first Step2 barrier are both noise-level changes, not promotable improvements; the latter passed the paired correctness check but gives no stable gain.
+13. The incumbent 64-wide K tiles are strongly tuned to the MMA/shared-memory layout: widening Step1 or Step2 K tiles creates severe resource/occupancy regressions (about 156% and 80% slower respectively), despite passing correctness.
 
 All additional candidates remain research-only; `dorm`, the submission, and version history are unchanged because no stable candidate clears the 1.2% floor.
