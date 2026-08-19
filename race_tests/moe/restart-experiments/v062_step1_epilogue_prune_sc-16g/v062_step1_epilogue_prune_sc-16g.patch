@@ -1,0 +1,21 @@
+diff --git a/race_tests/moe/restart-experiments/v059_teammate_79_33_case1_grid_sc-16g/candidate_submission.py b/race_tests/moe/restart-experiments/v062_step1_epilogue_prune_sc-16g/candidate_submission.py
+index 26711c1d..b2923c13 100755
+--- a/race_tests/moe/restart-experiments/v059_teammate_79_33_case1_grid_sc-16g/candidate_submission.py
++++ b/race_tests/moe/restart-experiments/v062_step1_epilogue_prune_sc-16g/candidate_submission.py
+@@ -706,8 +706,8 @@ def run_kernel(
+                                 step1_mma.mma(input_shared, weight_local, up_local, ki)
+ 
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+-                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                         if i < actual_rows:
++                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                             up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+ 
+                 with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
+@@ -938,4 +938,4 @@ def run_kernel(
+         group_idx_for_bx,
+         up_logits,
+         out,
+-    )
+\ No newline at end of file
++    )
