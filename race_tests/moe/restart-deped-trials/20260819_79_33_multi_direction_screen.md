@@ -78,3 +78,18 @@ The fused-store row was rerun after correcting an initial no-op text replacement
 15. Replacing the two predicated global-store loops with fragment scaling plus `T.copy` is legal and correct, but slightly slower (`0.25%`); the epilogue store path has little headroom and is not a promotion target.
 
 All additional candidates remain research-only; `dorm`, the submission, and version history are unchanged because no stable candidate clears the 1.2% floor.
+
+## Bottom-level audit of the incumbent (Case3)
+
+The incumbent was lowered with `capture_codegen.py` and the final xcore1000 ISA was extracted with `extract_metax_isa.sh`.
+
+| Artifact | Observation |
+|---|---|
+| Generated device C++ | 28,130 bytes; 8 MMA call sites; 8 `__syncthreads`; no `memcpy_async` |
+| `kernel_kernel` resources | 216 MT registers, 54 ST registers, static max 2 warps/PEU |
+| `kernel_kernel_1` resources | 230 MT registers, 52 ST registers, static max 2 warps/PEU |
+| Final ISA | 512 `mma_16x16x16f16`, 64 global `ldg_b128`, 128 shared `lds_b128`, 32 shared `sts_b128`, 9 barriers |
+
+This confirms that the current bottleneck is the synchronous shared-memory/MMA pipeline under high register pressure and only two resident warps/PEU. It is not primarily the final padded-row store.
+
+The prescribed mcProfiler invocation was also attempted for Case3. The profiler created its event batches but hung during the RPC/device-counter phase and produced no structured output; the process was terminated and no counter claim is made from that run.
