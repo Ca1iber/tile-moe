@@ -1,0 +1,22 @@
+diff --git a/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py b/race_tests/moe/restart-experiments/v065_actual_rows_nonnegative_sc-16g/candidate_submission.py
+index b2923c13..9bfc25f4 100755
+--- a/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py
++++ b/race_tests/moe/restart-experiments/v065_actual_rows_nonnegative_sc-16g/candidate_submission.py
+@@ -431,7 +431,7 @@ def run_kernel(
+                     group_size = group_sizes[expert_id]
+                     padded_start = group_padded_offsets[expert_id]
+                     token_offset = block_start - padded_start
+-                    actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
++                    actual_rows = T.min(block_token, group_size - token_offset)
+ 
+                     T.clear(gate_local)
+                     T.clear(up_local)
+@@ -752,7 +752,7 @@ def run_kernel(
+                     raw_start = group_offsets[expert_id]
+                     padded_start = group_padded_offsets[expert_id]
+                     token_offset = block_start - padded_start
+-                    actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
++                    actual_rows = T.min(block_token, group_size - token_offset)
+ 
+                     T.clear(out_local_0)
+                     T.clear(out_local_1)
