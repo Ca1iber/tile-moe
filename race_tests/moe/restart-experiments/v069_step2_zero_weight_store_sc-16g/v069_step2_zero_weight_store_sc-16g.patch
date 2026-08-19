@@ -1,0 +1,24 @@
+diff --git a/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py b/race_tests/moe/restart-experiments/v069_step2_zero_weight_store_sc-16g/candidate_submission.py
+--- a/race_tests/moe/restart-submission/v062_step1_epilogue_prune_sc-16g/submission.py
++++ b/race_tests/moe/restart-experiments/v069_step2_zero_weight_store_sc-16g/candidate_submission.py
+@@ -908,19 +908,11 @@ def run_kernel(
+                     for i, j in T.Parallel(block_token, block_dhidden_step2):
+-                        if i < actual_rows:
+-                            output[block_start + i, by * step2_output_tile + j] = (
+-                                out_local_0[i, j] * routed_weight_local[(i // 16) % 2]
+-                            )
+-                        else:
+-                            output[block_start + i, by * step2_output_tile + j] = 0.0
++                        output[block_start + i, by * step2_output_tile + j] = (
++                            out_local_0[i, j] * routed_weight_local[(i // 16) % 2]
++                        )
+                     for i, j in T.Parallel(block_token, block_dhidden_step2):
+-                        if i < actual_rows:
+-                            output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = (
+-                                out_local_1[i, j] * routed_weight_local[(i // 16) % 2]
+-                            )
+-                        else:
+-                            output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = 0.0
++                        output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = (
++                            out_local_1[i, j] * routed_weight_local[(i // 16) % 2]
++                        )
