@@ -243,3 +243,64 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 5. 本批没有候选达到 1.2% promotion gate；不创建 v085、不改 submission、不移动 `dorm` 性能 HEAD。
 
 本批 hypothesis、源码、screen JSON 与 codegen 位于远端 `/tmp/v084-step2-hybrid-bm*`、`/tmp/v084-step2-quarter*`、`/tmp/v084-step2-fp16-route*`、`/tmp/v084-step2-route-shuffle*`、`/tmp/v084-step2-route-scale-a*` 及对应 `/tmp/v084_step2_*` 目录。
+
+## v084 转换尾声、BK32 与同步 load/MMA 重叠复核
+
+### 上版本遗留问题与假设
+
+Case3 最终 ISA 揭示两个此前没有量化的结构：Step1/Step2 的普通
+FP32→FP16 cast 分别生成 `64/128` 次 `get_hwreg` 和 `128/256` 次
+`set_hwreg`，而 Step2 的 K tile 只验证过向 128 扩大、没有验证向 32
+缩小。与此同时，v084 的主要收益来自同步 producer 的 A/B 邻接顺序，
+因此本批分别检验：消除舍入模式切换、缩小 producer K 粒度、以及把
+下一 A tile 的后 32-K load 移入当前 MMA 窗口。
+
+### 落地与 Benchmark 对比
+
+仍以归档 v084（SHA-256 `32e50bbb...`）为 previous 与 baseline。进入计时
+的候选均通过完整输出正确性，协议为 Case3 三轮同进程 AB/BA、warmup
+10、repeat 200；正值表示候选更慢。没有单独运行 mcProfiler，因为所有
+候选均未接近 1.2% gate；资源与指令证据来自最终 xcore1000 ISA。
+
+| 方向 | SHA-256 | Case3 中位变化 vs v084 | 资源 / ISA 证据 | 决策 |
+|---|---|---:|---|---|
+| Step2 `T.call_pure_extern(__builtin_mxc_f32_to_f16)` 直接写 global | `e6941849...` | 未计时 | `set/get_hwreg=0`，但 32 个向量写退化为 `256×stg_b16`，`snop 378→576` | codegen reject |
+| Step2 直接转换到复用 FP16 fragment，再 `T.copy` | `7b49ceda...` | `+0.203%`（mean `+0.201%`） | `222/52`、2 waves；`set/get=0`、`32×stg_b64`、`snop=64` | reject / stable regression |
+| Step1 同样的直接转换 + FP16 fragment | `7afb2871...` | `+0.807%`（mean `+0.811%`） | `216/54`、2 waves；`set/get=0`、`16×stg_b64`、`snop 406→338` | reject |
+| Case3 Step2 `BK64→BK32` | `404e4aab...` | `+15.960%` | Step2 `222→182 MT`，但仍 2 waves；K phase/barrier 动态次数翻倍 | reject |
+| 184-row expert 使用两个 BM96/192-thread CTA | `08374056...` | 未计时 | `LayoutInference: no available layout found`，3-row-wave CTA 不能表达 | compile reject |
+| 下一 A tile 后 32-K load 延后到当前 `ki=0/1` MMA 之间 | `1555ba66...` | `+2.405%` | correctness PASS；Step2 `222→224 MT`，generated C++ `29,152→34,364 B` | reject |
+
+### Profile / ISA 指标变化
+
+| 指标 | v084 Case3 | Step2 直接转换+copy | Step1 直接转换+copy | 解释 |
+|---|---:|---:|---:|---|
+| MT/ST registers | Step1 `216/54`；Step2 `222/52` | Step2 `222/52` | Step1 `216/54` | 没有 occupancy 或 spill cliff |
+| `get_hwreg` | Step1 64；Step2 128 | Step2 0 | Step1 0 | vendor direct conversion 确实消除了 mode save |
+| `set_hwreg` | Step1 128；Step2 256 | Step2 0 | Step1 0 | 机制已物化 |
+| vector global stores | Step1 `16×stg_b64`；Step2 `32×stg_b64`（输出路径） | `32×stg_b64` | `16×stg_b64` | fragment+`T.copy` 保住向量写 |
+| `snop` | Step1 406；Step2 378 | Step2 64 | Step1 338 | 静态代码显著缩短但运行时间仍回退 |
+
+TODO: 本批没有候选越过性能 gate，因此不采集额外 mcProfiler counter；若
+未来出现至少 1.2% 的配对候选，再按 kernel-name filter 采集 MTE/MMA duty、
+VLS/VL1 stall 与实际 global bytes。
+
+### 实验总结
+
+1. FP32→FP16 舍入模式切换是醒目的静态开销，但不是动态关键路径。即使
+   在不改变 occupancy、向量写和 MFMA 工作的情况下删除全部 mode traffic，
+   Step1/Step2 仍分别回退约 0.81%/0.20%；原调度能隐藏这些尾声指令。
+2. K=64 是同步 producer 的实测甜点。BK32 虽减少 40 个 MT registers，
+   但没有跨到更高 occupancy，翻倍的 phase/barrier 令端到端回退约 16%。
+3. 非 2 次幂 row-wave 仍是当前 TileLang layout 的硬限制；BM96 与此前
+   BM192 一样无法 lowering，不能作为单文件 submission 方向。
+4. 普通同步 global load 插入 MMA 之间不会自动与计算并发；它会阻塞 issue、
+   增加 code size/live state。没有 async copy 时，不继续做同类跨-MMA load
+   搬移。
+5. 本批没有候选达到 1.2% promotion gate；不创建 v085、不修改 submission、
+   不移动 `dorm` 性能 HEAD。
+
+本批 hypothesis、源码、screen JSON、codegen 与 ISA 位于远端
+`/tmp/v084-*f32-to-f16*`、`/tmp/v084-step1-direct-copy*`、
+`/tmp/v084-step2-bk32*`、`/tmp/v084-step2-hybrid-bm96*`、
+`/tmp/v084-step2-late-a-khalf*` 及对应下划线命名的输出目录。
