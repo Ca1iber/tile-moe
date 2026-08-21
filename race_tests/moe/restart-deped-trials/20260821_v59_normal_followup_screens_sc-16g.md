@@ -1017,3 +1017,70 @@ scratch 证据位于 `/tmp/v085_{hbm,ap}_aligned.log`、
 `/tmp/v085_case3_step1_mcprof/`、`/tmp/v085-step1-bcol-stream-*`、
 `/tmp/v085-step1-{wave,row*}-rounded-input*`、`/tmp/v085-step2-a-split*` 及对应
 `*_codegen/`、`*_smoke.json` 与 hypothesis cards。
+
+## v085 epilogue、shared 绕行与 workspace 压缩边界（2026-08-22）
+
+继续以归档 v085（SHA-256 `6d4aa3a6...`）为唯一 promotion parent。本批候选
+全部是正常/OJ allowlist 内 TileLang，无 async copy、foreign helper、输出缓存或
+预计算；错误候选一律不计时。历史 v028 的 `sync only` 名称也重新审计：它只是
+删除 double-wait，核心仍含 4 个 `memcpy_async<16>` 静态站点和 16 条 BSM load，
+因此不满足当前禁用异步拷贝的约束，不能复用。
+
+### 低风险 epilogue 与 workspace phase 控制
+
+| 方向 | SHA-256 | Case3 / 结果 | 决策 |
+|---|---|---:|---|
+| Step1 仅对 active wave 做 SwiGLU/store 尾声 | `c1b1ed9a...` | 三轮 `-0.093% / +0.068% / +0.064%` | noise |
+| `up_logits` 每 wave 额外错位 64B | `503d0781...` | `+1.400%` | reject |
+| `up_logits` 每 wave 额外错位 32B | `5836932a...` | `+2.721%` | reject |
+| Step2 两个 128-column store loop 合为 256-column loop | `9ebc941f...` | `+0.020% / +0.049% / +0.100%`，median `+0.049%` | noise |
+
+固定 +256B row pitch 已经提供有效的跨行/partition phase；再在行内按 wave 错位会
+破坏连续访问，且错位越细回退越大。合并 epilogue 虽保持 Step2 `222/54`、2 waves
+和完整正确性，也只去掉源码控制骨架，运行时没有可测收益。
+
+### Step2 绕过 shared 与 producer 四分粒度
+
+direct-B 候选（`9c590272...`）让每个 wave 直接以 16B `uint4` global load 装入
+MFMA B 寄存器，删除 32 KiB Down shared 以及 Step2 全部 phase barrier。生成代码
+如预测把 Step2 从 `222/54` 降到 `204/52`，整文件静态 `syncthreads` 从 8 降到
+4，无 spill、完整正确；但四个 wave 重复请求同一 B tile 后，Case3 三轮稳定
+`+108.934% / +108.870% / +108.832%`。C500 的 cache 不能把这种 wave 级重复
+请求变成廉价替代，Down 权重必须由 CTA shared 协作 staging。
+
+旧 `A32/B64` 四阶段使用动态 stage 变量时资源为 `256/108`。本批把四阶段地址
+全部手工常量化（`5614afe8...`），仍得到 Step2 `246/82`、2 waves，代码体积从
+约 28.5 KiB 增至 35.7 KiB，未跨 occupancy 档。按预注册资源门禁拒绝且不计时；
+现有 `A64 -> B128 -> A64 -> B128` 是正常同步 producer 的最小可行粒度。
+
+### 低位宽 `up_logits` 精度/资源终局
+
+目标是减少 Step1→Step2 workspace 真实字节，所有版本都保留 FP32 MMA 累加和
+完整 padding 语义：
+
+| 表示 | SHA-256 | Step1/Step2 MT | 完整 Case3 correctness | 决策 |
+|---|---|---:|---:|---|
+| 静态 scale=24 INT8 | `1c3f9a02...` | `218/222` | 16.3% mismatch，max abs `0.565918` | reject |
+| 每 token 动态 scale INT8 | `d40b2104...` | `220/228` | 1.4% mismatch，max abs `0.044922` | reject |
+| 每 32 列动态 scale INT8 | `0cc7adb0...` | `220/236` | 0.2% mismatch，max abs `0.030518` | reject |
+| 每 16 列动态 scale INT8 | `c1ab8dcb...` | `220/246` | `22405/88080384`（0.0254%）超容差，max abs `0.021606` | reject |
+| 每 8 列动态 scale INT8 | `6fe3ad38...` | `220/256` | 按资源门禁不执行 | resource reject |
+| group32 8-bit 主值 + packed 4-bit residual | `c7cc19dc...` | 未生成 | layout inference 拒绝同一 parallel iteration 读取 `gate_local[i,2p]` 与 `[i,2p+1]` | compile reject |
+
+INT8 精度随 group 缩小单调改善，但在达到正确性前 Step2 已精确撞到 256 MT；
+12-bit 方案理论 payload 约 1.5625 B/value 且误差可再降约 16 倍，但正常 TileLang
+fragment layout 无法表达相邻 nibble packing。绕过 `.data`/私有物理映射将越过
+本轮非 hack 边界，因此不做。低位宽 workspace 家族至此关闭。
+
+### 本批结论
+
+1. Step2 shared staging 和当前两阶段 producer 都是实测必要结构；删除 barrier
+   但复制权重请求会终止性回退，继续细分 producer 又逼近寄存器上限。
+2. workspace 的进一步正常收益不能来自简单 INT8/group scaling；精度与寄存器
+   约束在 group8 处交叉，packed residual 又受公开 fragment 映射能力限制。
+3. 本批无候选达到 `1.2%` promotion gate；不创建 v086、不修改 submission、
+   不移动 `dorm` 性能源码。
+
+scratch 证据位于 `/tmp/v085-step1-wave-epilogue-prune*`、
+`/tmp/v085-up-logits-wave-skew*`、`/tmp/v085-step2-{unified-epilogue,direct-b,
+static-quarter}*`、`/tmp/v085-up-logits-int{8,12}-*` 及对应 codegen/JSON/hypothesis。
