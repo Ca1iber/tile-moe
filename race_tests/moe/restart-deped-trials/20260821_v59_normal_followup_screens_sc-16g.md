@@ -455,3 +455,70 @@ load/compute/store；每组内部的 `exp2f` 与除法仍是四路标量算术�
 `/tmp/v084-fastmath-tanh-silu*`、`/tmp/v084-step{1,12}-kp-split*`、
 `/tmp/v084-{storage-inplace,force-let-inline,disable-let-inline,disable-loop-unswitch,simplify-knowns}*`。
 没有候选达到 1.2%；不创建 v085、不修改 submission、不移动 `dorm` 性能 HEAD。
+
+## v084 consumer 排程、MXCC 正式调度器与 ISA 驱动请求粒度筛选
+
+继续以归档 v084 为唯一 promotion baseline。所有进入运行的候选均通过 OJ
+source gate 与完整 padded-output correctness；Case3 smoke 使用同进程 AB/BA、
+warmup 5、repeat 50，只有出现接近 `-1.2%` 的信号才允许扩成长测。正值表示
+候选更慢。
+
+### Consumer 与固定展开
+
+| 方向 | Case3 变化 vs v084 | 资源 / 结论 | 决策 |
+|---|---:|---|---|
+| Step1 同一 `ki` 双 B 预载 | `+0.038%` | Step1 `216/54`，无资源变化 | noise |
+| Step1 跨 `ki` 两 B 预载 | `+0.509%` | Step1 `224/54` | reject |
+| Step1 跨 `ki` Up-first | `+0.549%` | Step1 `224/54` | reject |
+| Step1 三 B、提前 `Up1` | 稳健三轮 mean `+0.447%` | Case1/2 也分别 `+0.140%/+0.291%` | reject |
+| Step1 四 B batch | `+0.470%` | Step1 `224/54` | reject |
+| Step1 固定 `ki` 单 B 展开 | `-0.053%` | Step1 `224/54` | below gate / noise |
+| Step2 固定 `ki` 单 B 展开 | `+0.195%` | Step2 `232/52` | reject |
+| Step2 跨 `ki` 两 B 预载 | `+0.346%` | Step2 `232/52` | reject |
+
+这些结果关闭了 consumer 侧的跨 `ki` B-fragment 重叠：额外 live B 状态没有
+隐藏 shared-load latency，反而增加寄存器或稳定回退。C500 头文件同时确认，
+同精度 FP16 只暴露 `16x16x16f16` MFMA；其余更大/不同 shape 是 BF16、FP8、
+INT8、FP32 或 TF32，因而不存在可直接替换的更大 FP16 MFMA。
+
+### MXCC 调度与后端选项
+
+- 直接通过 `T.call_extern` 调用官方 `__builtin_mxc_igroup_config` 被 OJ gate
+  作为 foreign-code escape hatch 拒绝；没有绕过。使用允许的
+  `TL_DEVICE_COMPILE_FLAGS` 开启全局 igroup 虽合规，但资源增至
+  `250/256 MT`，Case3 回退 `+19.642%`。
+- 正式 machine scheduler 的正确接口为
+  `-mllvm -misched=metaxgpu-<name>`。`minreg` 把 Step1/2 降至 `206/212 MT`
+  但仍未跨 3-wave，Case3 回退 `+41.586%`；`ilp` 为 `+15.118%`；
+  `maxocc` 为 `+0.061%` 噪声；`maxocc-iter` 为 `+2.057%`；`listall`
+  编译超过资源限制并被 kill。寄存器下降不等于吞吐提高，v084 的手工顺序
+  保留了通用调度器会破坏的访存/MMA ILP。
+- 保守单项结果：`load-use-order +0.011%`、`PostRA -0.096%`、
+  `PostRA+bundler +0.110%`、动态 reg-pressure `-0.037%`、
+  `bsm-store-back -0.022%`、aggressive register WAW `-0.020%`、
+  aggressive STS merging `+0.009%`、`mma-sched -0.111%`、
+  `const-KArgs-LDU=1 +0.066%`。全部处于噪声区，不组合、不晋级。
+- `warp-split` 虽只让 ST registers 增加 2，仍完整正确，却使 Case3 回退
+  `+144.820%`。把已合并的 wave 请求硬拆成 sub-wave 会摧毁有效带宽；
+  “增加并发请求”不能等价为增加碎片请求。
+
+### 最终 ISA 复核与源码粒度实验
+
+新提取的 v084 Case3 最终 `metax.s` 显示：Step1 与 v59 的主要静态指令计数
+逐项相同（`256 MMA / 36 LDG_b128 / 64 LDS_b128 / 406 snop`）；v084 的真实
+变化只在 Step2。Step2 的 `MMA/LDS` 保持 `256/64`，静态 `LDG_b128` 却从
+v59 的 `28` 增至 `36`，同时既有 trace 已证明 Step2 快约 9.45%。这再次说明
+v084 的收益来自 A/Down 半块请求的发射邻接，而不是少发 load。
+
+据此尝试仅在 Case3 把 Step1 关键 `G1 -> U0` 两个 8 KiB 权重半块拆成
+4 KiB quarters，顺序为 `G1a -> U0a -> G1b -> U0b`；总流量、MMA、barrier
+均不变，Case1/2 保持原路径。机制成功物化，但 Step1 从 `216/54` 增至
+`232/50`，Case3 回退 `+8.460%`。与已有 32-row input-quarter 的 `+6.677%`
+一致，Step1 的三数据流控制/address live state 无法承受更细源码分段；当前
+64-row bundle 是实测甜点。
+
+本批没有候选达到 1.2% promotion gate；不创建 v085、不修改根 submission、
+不移动 `dorm` 性能 HEAD。scratch 位于远端 `/tmp/v084-step1-*b-prefetch*`、
+`/tmp/v084-sched-*`、`/tmp/v084-{igroup,flag,bsm,aggressive,mma,const,warp}*`、
+`/tmp/v084-step1-middle-weight-quarter*`、`/tmp/v084_isa_case3/` 及对应 JSON/
+codegen 目录。
