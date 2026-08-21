@@ -81,6 +81,7 @@ def run_kernel(
             and total_padded == 3072
             and num_blocks_m == 24
         )
+        use_step2_half_interleave = use_step2_expert_grouped_grid
         use_step1_input_prefetch = True
         use_step1_prefetch_before_barrier = True
         use_step1_tail_pruning = True
@@ -94,10 +95,18 @@ def run_kernel(
         use_step2_tail_pruning = num_experts >= 32
         use_step2_input_prefetch = True
         use_step2_half_interleave = (
-            num_experts == 64
-            and total_padded == 12288
-            and total_valid == 9088
-            and num_blocks_m == 96
+            (
+                num_experts == 64
+                and total_padded == 12288
+                and total_valid == 9088
+                and num_blocks_m == 96
+            )
+            or (
+                num_experts == 32
+                and total_padded == 6144
+                and total_valid == 4544
+                and num_blocks_m == 48
+            )
         )
     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
         use_grid_transpose_step1 = True

@@ -107,3 +107,24 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 - mcTracer 三组配对把收益定位到 Step2：中位 `3.343104 -> 3.027712 ms`，paired median `-9.448%`；Step1 仅 `+0.277%` 噪声。
 - 最终 ISA 的 MMA/shared/store/barrier 工作量不变，global-load 静态 site 反而从 36 增至 44；收益来自 request issue order 与有效重叠，而不是少算少搬。
 - v083 为正常、非 hack 晋级版本；外部 OJ 尚待复核，不在本报告中预测新分数。
+
+## v083 邻接顺序复核与 v084 扩展
+
+在 v083 上继续改变半块顺序，确认收益依赖 stage-local 邻接，而不是只依赖低寄存器：
+
+| 方向 | Case | 相对 v083 中位变化 | Step2 MT regs | 决策 |
+|---|---:|---:|---:|---|
+| `A0 -> B1 -> A1 -> B0` | 3 | `+0.460%` | 214 | reject |
+| `A1 -> B1 -> A0 -> B0` | 3 | `+0.401%` | 214 | reject |
+
+两者寄存器都比 v083 的 222 更低，但性能回退，说明关键是 `A0/B0`、`A1/B1` 的相邻生产与消费关系。
+
+随后把 v083 的 `A0 -> B0 -> A1 -> B1` 精确扩展到 Case1/2：
+
+| Case | 5-round median vs v083 | pstdev | paired Step2 trace | Step2 regs | 决策 |
+|---|---:|---:|---:|---:|---|
+| 1 | `-2.816%` | `0.0338%` | `-8.955%` | 212 -> 206 | promote |
+| 2 | `-3.089%` | `0.0278%` | `-8.705%` | 230 -> 222 | promote |
+| 3 | generated C++ byte-identical | — | 沿用 v083 | 222 | retain |
+
+三 shape 的源码/generated-code OJ gate 通过，完整 padded correctness 通过。Case1/2 均越过相对当前 best 的 1.2% promotion gate，因此合并为单一正常版本 v084；没有为两个 shape 制造额外中间版本。外部 OJ 仍待复核。
