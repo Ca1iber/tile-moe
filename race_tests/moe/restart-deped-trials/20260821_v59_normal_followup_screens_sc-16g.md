@@ -128,3 +128,30 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 | 3 | generated C++ byte-identical | — | 沿用 v083 | 222 | retain |
 
 三 shape 的源码/generated-code OJ gate 通过，完整 padded correctness 通过。Case1/2 均越过相对当前 best 的 1.2% promotion gate，因此合并为单一正常版本 v084；没有为两个 shape 制造额外中间版本。外部 OJ 仍待复核。
+
+## v084 晋级后的正常合规后续筛选
+
+基线改为 `dorm@6c368258` / v084，根 submission SHA-256 为 `32e50bbb2b21683765702b920ee78aa2fff865db78fcc8da94d3e3debfa517a2`。所有候选均先写 hypothesis，只使用正常 TileLang，同进程 AB/BA、warmup 10、repeat 200；完整 padded correctness 与 OJ source gate 全部 PASS。正值表示候选更慢。
+
+| 方向 | Case | 三轮中位变化 vs v084 | codegen / 机制结论 | 决策 |
+|---|---:|---:|---|---|
+| Step1 `input0 -> Gate0`（两 phase） | 3 | `+1.838%` | 大 input 半块抢先暴露延迟 | reject |
+| Step1 grid swizzle panel=10 | 3 | `+3.980%` | 打散同一 input block 的 16-column CTA 连续复用 | reject |
+| Step1 grid serpentine panel=1 | 3 | `+0.478%` | 保留 row 内复用仍不抵索引/边界代价 | reject |
+| Step1 周期 `G0-X0-U0-G1-X1-U1` | 3 | `+1.919%` | 再次确认 incumbent 的 `G1-U0` 中间 bundle 更优 | reject |
+| Step2 双 B fragment：`LDS0-LDS1-MMA0-MMA1` | 3 | `+0.091%` | 222/52、2 waves 不变；噪声偏回退 | reject |
+| Step2 grid serpentine panel=1 | 3 | `+0.368%` | 保留 up_logits row 内复用仍稳定回退 | reject |
+| v084 A-first + expert-grouped grid + range proofs | 3 | `+1.372%` | Step2 222/52 -> 224/54，2 waves | reject |
+| v084 A-first + expert-grouped grid + range proofs | 2 | `+1.439%` | Step2 222/52 -> 224/54，2 waves | reject |
+| Case1 Step2 tail pruning / padding MMA 裁剪 | 1 | `+0.385%` | 旧 v59 同方向为 +0.102%；协同仍失败 | reject |
+
+### 新边界
+
+1. v084 的 A-first 规律不迁移到 Step1：Step1 需要小 Gate 半块先垫，并保持 `G0-X0-G1-U0-X1-U1` 的既有节奏。
+2. panel=10 和 panel=1 在 Step1/2 均无收益；当前 row-block-first 的完整 x-row连续性与直接索引更重要。
+3. consumer 侧同时预载两个 B fragment 没有改善，说明现有 `LDS-MMA-LDS-MMA` 已给后端足够的 latency hiding。
+4. Case2/3 expert grouping 与 v084 A-first 不存在正协同，且都增加寄存器；该组合家族封口。
+5. Case1 继续对 padding warp 做 MMA 是有意的实测选择：运行时 tail predicate 比省下的 padding work 更贵。
+6. 本批没有候选达到 1.2%，因此不创建 v085、不更新 submission、不移动 `dorm`。
+
+临时源码、hypothesis、screen JSON 和局部 codegen 保存在远端 `/tmp/v084-step1-*`、`/tmp/v084-step2-*`、`/tmp/v084_case1_step2_tail_pruning_screen.json` 与 `/tmp/v084_step2_*_codegen/`；仅本结论报告进入 Git。
