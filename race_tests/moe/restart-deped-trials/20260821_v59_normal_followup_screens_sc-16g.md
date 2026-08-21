@@ -355,3 +355,44 @@ factor-2 Step2 的第二轮 parent 出现约 `9.004 ms` 的慢样本，使 mean 
 `/tmp/v084-step2-granular-a-mma*`、`/tmp/v084-step{1,2}-kpair-unroll*`、
 `/tmp/v084-step2-serial-output-halves*`、`/tmp/v084-fast-math*`、
 `/tmp/v084-fastmath-native-sigmoid*` 及对应下划线命名的输出目录。
+
+## v084 顺序空间闭环、2x2 wave 拓扑与安全尾预取筛选
+
+继续以归档 v084 为唯一性能基线，只使用正常 OJ 合规 TileLang。本批所有
+进入运行筛选的候选均通过完整 padded-output reference check；正值表示候选
+更慢。明显终止性回退和低于门槛的短筛不扩成长测，也不创建版本。
+
+| 方向 | Case3 变化 vs v084 | 资源 / lowering 证据 | 决策 |
+|---|---:|---|---|
+| Step2 `A0-B0-B1-A1` | 三轮中位 `+2.181%` | Step2 `242/54`、2 waves；六种保持 A/B 内部先后关系的排列至此全部覆盖 | reject |
+| Step2 256-thread `2 row-wave x 2 col-wave` | smoke `+37.115%` | correctness PASS；Step2 `256/52`、2 waves；replicated A 的半片条件 copy 无法 layout，整片 copy 可 lower | reject |
+| Step1 `G0-X0-U0-G1-U1-X1` | smoke `+1.878%` | Step1 `224/54`、2 waves | reject |
+| Step1 `G0-U0-X0-G1-X1-U1` | smoke `+4.431%` | Step1虽降至 `214/54`，但 Gate/Input 首对邻接被破坏 | reject |
+| Step1 clamp 末轮 A 预取 + 无条件尾 barrier | smoke `+0.105%` | Step1 `214/52`；合法冗余末轮 A read | below gate / noise |
+| Step1 clamp 末轮 A 预取 + 保留尾 sync guard | smoke `+0.069%` | Step1 `214/52`；去两处 load guard、保留一处 barrier guard | below gate / noise |
+
+### 新因果边界
+
+1. Step2 在分别保持 `A0<A1`、`B0<B1` 时共有六种 producer 排列；最后缺失
+   的 `A0-B0-B1-A1` 也稳定回退约 2.18%。v084 的
+   `A0-B0-A1-B1` 因而是该受限顺序空间的实测最优点。
+2. 256-thread 的 2x2 wave 拓扑虽然保持每线程理论 accumulator 数量不变，
+   但 A fragment 必须跨两个 column-wave 复制，后端寄存器升至 256，并出现
+   约 37% 终止性回退。它与旧 512-thread 2-column-wave 结果共同关闭 column
+   wave 并行化方向。
+3. Step1 更远排列确认 `Gate0 -> input0` 首对邻接是必要条件；单看更低
+   registers 不能预测更快。无需穷举其余明显破坏该邻接的排列。
+4. 把末轮 next-A 地址 clamp 到合法 tile 能让 analyzer 将 Step1 资源从
+   `216/54` 降到 `214/52`，但动态性能仅在 `+0.07%--+0.11%` 噪声区间。
+   uniform 尾判断会影响 liveness，却不是 1.2% 级关键路径。
+5. `/opt/maca` 头文件确认 `__builtin_mxc_ldg_b128_bsm` 是带
+   `arrive_bsmcnt/wait` 协议的 global-to-shared 异步搬运，不是 wave 间寄存器
+   广播。v59 ISA 只有普通 `ldg_b128`；当前仓库已有 async+swizzle 正确性
+   失败证据，因此正常 submission 不尝试强行内联该 builtin。
+
+本批 scratch 位于远端 `/tmp/v084-step2-a0b0b1a1*`、
+`/tmp/v084-step2-topology-2x2*`、`/tmp/v084-step1-gxugux*`、
+`/tmp/v084-step1-guxgxu*`、`/tmp/v084-step1-clamped-final-prefetch*`、
+`/tmp/v084-step1-clamped-loads-guarded-sync*` 及对应 codegen/screen JSON。
+本批没有候选达到 1.2% promotion gate；不创建 v085、不修改 submission、
+不移动 `dorm` 性能 HEAD。
