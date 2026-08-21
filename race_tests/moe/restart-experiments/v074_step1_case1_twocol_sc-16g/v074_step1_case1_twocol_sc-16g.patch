@@ -1,0 +1,74 @@
+--- /tmp/v059_remote_baseline.py	2026-08-21 08:59:56.213377725 +0800
++++ /tmp/v074_step1_case1_twocol_sc16g.py	2026-08-21 09:17:49.649392264 +0800
+@@ -1,7 +1,7 @@
+-# GENERATED EXPERIMENT: S18
+-# PARENT: S13 / OJ Wrong Answer on sample challenge
+-# PRIMARY_CHANGE: preserve the schedule with non-aliasing one-element CTA coordinates
+-# E145_REFERENCE: scheduling idea only; no async/imported source copied
++# RESTART EXPERIMENT: v074
++# PARENT: v059 teammate 79.33 Case1 grid
++# PRIMARY_CHANGE: Case1 Step1 merges two N tiles in one 512-thread/two-column-warp CTA
++# No async copy, foreign call, injected source, or benchmark-semantic change.
+ import torch
+ import tilelang
+ import tilelang.language as T
+@@ -71,8 +71,9 @@
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+-    elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
+-        use_grid_transpose_step1 = True
++    elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
++        block_dexpert_step1 = 256
++        use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+         use_step1_expert_grouped_grid = False
+         use_step2_expert_grouped_grid = (
+@@ -338,15 +339,16 @@
+             scale = 1.44269504
+             dtype = T.float16
+             accum_dtype = T.float32
+-            threads = 256
++            threads_step1 = 512 if block_dexpert_step1 == 256 else 256
++            threads_step2 = 256
+             num_stages = 1
+             block_token = 128
+
+-            step1_mma = MinimalMacaMMA(
+-                block_row_warps=4,
+-                block_col_warps=1,
+-                warp_row_tiles=block_token // 4,
+-                warp_col_tiles=block_dexpert_step1,
++            step1_mma = MinimalMacaMMA(
++                block_row_warps=4,
++                block_col_warps=2 if block_dexpert_step1 == 256 else 1,
++                warp_row_tiles=block_token // 4,
++                warp_col_tiles=128,
+                 chunk=block_dhidden_step1,
+                 k_pack=2,
+             )
+@@ -388,7 +390,7 @@
+                 up_logits: T.Tensor(intermediate_shape, dtype),
+                 output: T.Tensor(input_shape, dtype),
+             ):
+-                with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
++                with T.Kernel(step1_grid_x, step1_grid_y, threads=threads_step1) as (pid0, pid1):
+                     if use_step1_expert_grouped_grid:
+                         cta_mapping = T.alloc_local((2,), dtype=T.int32)
+                         if pid1 < num_experts // 2:
+@@ -710,7 +712,7 @@
+                         if i < actual_rows:
+                             up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+
+-                with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
++                with T.Kernel(step2_grid_x, step2_grid_y, threads=threads_step2) as (pid0, pid1):
+                     if use_step2_expert_grouped_grid:
+                         bx_local = T.alloc_local((1,), dtype=T.int32)
+                         by_local = T.alloc_local((1,), dtype=T.int32)
+@@ -938,4 +940,4 @@
+         group_idx_for_bx,
+         up_logits,
+         out,
+-    )
+\ No newline at end of file
++    )
