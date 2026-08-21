@@ -726,3 +726,47 @@ explicit-tail-skip,branchless-output-select,alternate-half-priority}*`、
 `/tmp/v084-step1-empty-second-half-skip*`、`/tmp/v084-actual-rows-no-max*`、
 `/tmp/v084-{remove-short-bra-xmskz,hoist-arrive,xmsk-opt-postra,enable-coissue,
 use-hireg,enable-aa-sched-mi}*` 及对应 codegen/ISA/JSON。
+
+## v084 Step2 行类别拆核与后端地址/缓存策略筛选
+
+本批继续以 v084 为唯一 promotion baseline，只使用正常同步 TileLang。进入运行的
+候选均通过 OJ source gate 与完整 valid-row correctness，Case3 使用同进程
+AB/BA、warmup 5、repeat 50 的单轮 smoke；正值表示更慢。
+
+### Step2 full/tail 行类别拆核
+
+为避免在单 kernel 中复制 full/tail K-loop 后扩大 live state，本次把 Step2
+保持总 CTA 数不变地拆成两个 kernel：完整 128-row block 单独发射；100/56-row
+block 走保留 `actual_rows` 的 tail kernel。lowering 成功生成三个 kernel：Step1
+`216/54`，full Step2 `212/30`，tail Step2 `214/56` MT/ST，全部为 2 waves/PEU，
+无 async 或 spill。完整正确性 PASS，但 Case3 `8.935 -> 9.644 ms`，回退
+`+7.933%`。
+
+资源下降没有兑现为吞吐：额外 launch 之外，拆核把同一 184-row expert 的完整块
+和 56-row 尾块分到不同 dispatch，破坏了原本相邻 CTA 对 Gate/Up/Down 权重的
+cache locality。结合已有 single-kernel full/tail 分流 `+0.227%/+3.309%` 反例，
+该路线关闭；不再用更多 kernel 换掉 `actual_rows`。
+
+### 最终 ISA 门禁与短筛
+
+| 单项方向 | 最终 ISA / 资源 | Case3 | 决策 |
+|---|---|---:|---|
+| `close-loads-from-same-base-ptr` | 与 v084 `.metax.s` 字节相同 | 未计时 | no-op |
+| runtime load/store interleave | 字节相同 | 未计时 | no-op |
+| hoist-else-arrive | 字节相同 | 未计时 | no-op |
+| `CloseMergeLoadStoreAccess` | 标量 metadata/address prologue 重排，主要指令计数和 `216/222 MT` 不变 | `+0.015%` | noise |
+| `cc-read=hitl1/missl1` | 字节相同 | 未计时 | no-op |
+| residency `persisting/noreuse` | 字节相同 | 未计时 | no-op |
+| strong/non-contiguous merge、kernel-arg lowering、GVN load-clobber | 四项均字节相同 | 未计时 | no-op |
+| direct-address `all`、shift-add combine | 字节相同 | 未计时 | no-op/default |
+| direct-address `disall` | 汇编约少 113 行，但 Step1/2 MT `216/222 -> 234/240` | `+0.649%` | reject |
+| extended-TSP block placement | MT/ST 不变，`bra_xmskz 102 -> 114` | `+0.663%` | reject |
+
+本批证明这些全局 cache/residency override 没有覆盖当前普通 TileLang `ldg_b128`
+形态；地址模式和基本块 placement 虽能改变机器码，也只会增加寄存器、分支或
+稳定回退。后端隐藏开关轴至此停止盲扫，下一轮回到可解释的源码数据复用结构。
+
+没有候选达到 1.2% promotion gate；不创建 v085、不修改根 submission、不移动
+`dorm` 性能源码。scratch 位于 `/tmp/v084-step2-rowclass-split*`、
+`/tmp/v084-{close-same-base-loads,close-merge-loadstore,runtime-loadstore-interleave,
+hoist-else-arrive,cc-read-*,rp-*,direct-disall,exttsp}*` 及对应 codegen/ISA/JSON。
