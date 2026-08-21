@@ -304,3 +304,54 @@ VLS/VL1 stall 与实际 global bytes。
 `/tmp/v084-*f32-to-f16*`、`/tmp/v084-step1-direct-copy*`、
 `/tmp/v084-step2-bk32*`、`/tmp/v084-step2-hybrid-bm96*`、
 `/tmp/v084-step2-late-a-khalf*` 及对应下划线命名的输出目录。
+
+## v084 细粒度调度、部分展开、3-wave 串行半块与 fast-math 筛选
+
+继续以归档 v084（SHA-256 `32e50bbb...`）为唯一 promotion baseline。本批
+七份源码均通过 `/tmp/validate_oj_submission.py` source gate；进入计时的
+候选均通过完整输出正确性，使用三轮同进程 AB/BA、warmup 10、repeat 200。
+正值表示候选更慢，负值表示候选更快；任何低于 1.2% 的负值仍按噪声或
+低于门槛处理。
+
+### 结果
+
+| 方向 | Case | 三轮中位变化 vs v084 | 资源 / codegen 证据 | 决策 |
+|---|---:|---:|---|---|
+| 把下一 A tile 的单个 `ldg_b128/thread` 分别夹在 `out0/out1` MMA 之间 | 3 | `+2.300%` | 顺序真实物化；Step2 `222/52→228/56`、仍 2 waves；总 LDG/MMA 不变，`snop +20` | reject |
+| Step2 外层 `k_pair` factor-2 partial unroll | 3 | `-0.003%` | 生成 `#pragma unroll 2`；Step2 `224/52`、2 waves | below gate / noise |
+| Step2 外层 `k_pair` factor-4 partial unroll | 3 | `-0.052%` | 生成 `#pragma unroll 4`；Step2 `226/52`、2 waves | below gate |
+| Step1 外层 `k_pair` factor-4 partial unroll | 3 | `-0.057%` | Step1 `216/54→220/54`、仍 2 waves | below gate |
+| 同一 CTA 串行两个 128-column 输出半块 | 3 | `+10.896%` | CTA/wave/MFMA/Down 总 work 不变；Step2 `222/52/2 waves→156/46/3 waves`，Down shared `32→16 KiB`；A tile 重读 | reject |
+| 原生 `tl.enable_fast_math` | 3 | `-0.141%` | generated C++ 与资源不变；差异仅在 MXCC `-use-fast-math` 后端 | below gate |
+| 原生 `tl.enable_fast_math` | 1 | `-0.735%` | correctness PASS；Case1 激活占比更高但仍不足 1.2% | below gate |
+| fast-math + `T.sigmoid` 替代手写 `exp2` sigmoid | 1 | `-0.764%` | Step1/2 仍 `222/52`、`206/52`；C++ `30,700→31,854 B`，展开为 `expf`/divide float4 序列 | below gate |
+
+factor-2 Step2 的第二轮 parent 出现约 `9.004 ms` 的慢样本，使 mean 显示
+约 `-0.202%`；其余两轮分别为 `-0.003%/+0.014%`，因此使用预注册的
+中位数并判为噪声，不能把异常 parent 当成候选收益。
+
+### 新因果边界
+
+1. 把同步 A load 再细分并直接插入 MMA 之间仍然失败。即使每次只插入
+   一个 128-bit 请求 bundle，寄存器 live range、mask 控制与 issue 阻塞
+   仍会增加；上一批“两 bundle 连发”并不是失败的唯一原因。
+2. TileLang 的 `unroll_factor` 能正常传到生成 C++，但 factor-2/4 对两个
+   长 K 循环都只有约 0.00%--0.06% 的变化，同时增加 2--4 个 MT registers。
+   外层 partial-unroll 家族封口。
+3. “保持 CTA 数不变、串行输出半块”成功跨过 3-wave 驻留阶梯，并比旧
+   N=128 双 CTA 的 Step2 `+35.93%` 回退明显更小；但为了复用单 accumulator
+   而重读 A、串行两个完整 K sweep，最终仍稳定回退 10.90%。这证明当前
+   双 accumulator 的 A 复用价值大于额外驻留，不能只按 occupancy 选结构。
+4. 短 expert 的 BM64 不进入运行实验：100 rows 在 32-row wave 粒度下，
+   一个 BM128 是 4 waves，两个 BM64 仍是 2+2 waves，末尾 padding MFMA
+   也不减少，只会把 Gate/Up 或 Down 权重读取翻倍。
+5. 原生 MXCC fast-math 是本批唯一稳定的正常小收益：Case1 约 0.74%，
+   Case3 约 0.14%。`T.sigmoid` 只额外贡献约 0.03%，且扩大生成代码。
+   激活编译器家族明确低于 1.2% promotion gate，不组合成噪声版本。
+6. 本批没有候选达到 promotion gate；不创建 v085、不修改根 submission、
+   不移动 `dorm` 性能 HEAD。
+
+临时源码、hypothesis、codegen/ISA 与 AB/BA JSON 位于远端
+`/tmp/v084-step2-granular-a-mma*`、`/tmp/v084-step{1,2}-kpair-unroll*`、
+`/tmp/v084-step2-serial-output-halves*`、`/tmp/v084-fast-math*`、
+`/tmp/v084-fastmath-native-sigmoid*` 及对应下划线命名的输出目录。
