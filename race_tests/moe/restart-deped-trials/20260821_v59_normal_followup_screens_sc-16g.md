@@ -770,3 +770,20 @@ cache locality。结合已有 single-kernel full/tail 分流 `+0.227%/+3.309%` �
 `dorm` 性能源码。scratch 位于 `/tmp/v084-step2-rowclass-split*`、
 `/tmp/v084-{close-same-base-loads,close-merge-loadstore,runtime-loadstore-interleave,
 hoist-else-arrive,cc-read-*,rp-*,direct-disall,exttsp}*` 及对应 codegen/ISA/JSON。
+
+### `up_logits` 按 valid rows 物理压紧
+
+进一步使用运行时 `group_offsets + token_offset` 作为 Step1 workspace store 和
+Step2 load 的行地址，并把 workspace shape 从 `total_padded` 改为
+`total_valid`。Case3 的地址跨度由 12288 行缩到 9088 行；没有硬编码 counts，
+有效元素、数学和同步语义不变。
+
+OJ source gate 与完整正确性 PASS。资源从 Step1 `216/54`、Step2 `222/52`
+变为 `218/58`、`216/56`，仍为 2 waves/PEU。Case3 短 AB 为
+`8.953 -> 8.969 ms`，变化 `+0.185%`，处于噪声/慢侧。
+
+该结果确认原版 `actual_rows` 已经避免对 padding 行产生实际 global
+load/store；未触碰的地址洞只扩大虚拟跨度，不等价于 HBM 字节。压紧布局新增
+Step1 `group_offsets` 标量 load/address 链，未得到可测 cache 收益，因此不晋级。
+证据位于 `/tmp/v084-packed-up-logits*` 与
+`/tmp/v084_packed_up_logits_{codegen,case3_short.json}`。
