@@ -1,0 +1,1332 @@
+# RESTART EXPERIMENT: v070
+# PARENT: v059 teammate 79.33 Case1 grid
+# PRIMARY_CHANGE: Case1 long experts use an iso-area BM256xBN64 4-wave Step1 tile
+# The short-expert BM128xBN128 path and Step2 remain byte-for-byte equivalent.
+import torch
+import tilelang
+import tilelang.language as T
+from tilelang.layout import make_swizzled_layout
+
+
+_KERNEL_CACHE = {}
+_WORKSPACE_CACHE = {}
+
+
+def _workspace(stacked_expert_tokens, intermediate):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(stacked_expert_tokens.shape[0]),
+        int(intermediate),
+        str(stacked_expert_tokens.dtype),
+    )
+    buf = _WORKSPACE_CACHE.get(key)
+    if buf is None:
+        buf = torch.empty(
+            (int(stacked_expert_tokens.shape[0]), int(intermediate)),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def run_kernel(
+    stacked_expert_tokens,
+    gate_w,
+    up_w,
+    down_w,
+    routed_expert_weights,
+    group_sizes,
+    group_offsets,
+    group_padded_offsets,
+    group_idx_for_bx,
+    out,
+):
+    hidden = int(stacked_expert_tokens.shape[1])
+    intermediate = int(gate_w.shape[1])
+    num_experts = int(gate_w.shape[0])
+    total_padded = int(stacked_expert_tokens.shape[0])
+    total_valid = int(routed_expert_weights.shape[0])
+    group_offsets_len = int(group_offsets.shape[0])
+    group_padded_offsets_len = int(group_padded_offsets.shape[0])
+    group_idx_len = int(group_idx_for_bx.shape[0])
+    block_token = 128
+    num_blocks_m = (total_padded + block_token - 1) // block_token
+
+    block_dhidden_step1 = 64
+    block_dexpert_step1 = 128
+    block_dhidden_step2 = 128
+    block_dexpert_step2 = 64
+    use_grid_transpose_step1 = False
+    use_grid_transpose_step2 = False
+    use_step1_expert_grouped_grid = False
+    use_step1_hybrid_case1 = False
+    use_step2_expert_grouped_grid = False
+    use_step1_input_prefetch = False
+    use_step1_prefetch_before_barrier = False
+    use_step1_tail_pruning = False
+    use_step2_tail_pruning = False
+    use_step2_input_prefetch = False
+
+    if hidden == 3584 and intermediate == 1024:
+        use_grid_transpose_step1 = True
+        use_grid_transpose_step2 = True
+    elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
+        use_grid_transpose_step1 = True
+        use_grid_transpose_step2 = True
+        use_step1_expert_grouped_grid = False
+        use_step1_hybrid_case1 = (
+            total_valid == 2272
+            and total_padded == 3072
+            and num_blocks_m == 24
+        )
+        use_step2_expert_grouped_grid = (
+            total_valid == 2272
+            and total_padded == 3072
+            and num_blocks_m == 24
+        )
+        use_step1_input_prefetch = True
+        use_step1_prefetch_before_barrier = True
+        use_step1_tail_pruning = True
+        use_step2_input_prefetch = True
+    elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+        use_grid_transpose_step1 = True
+        use_grid_transpose_step2 = True
+        use_step1_input_prefetch = True
+        use_step1_prefetch_before_barrier = num_experts >= 32
+        use_step1_tail_pruning = num_experts >= 32
+        use_step2_tail_pruning = num_experts >= 32
+        use_step2_input_prefetch = True
+    elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+        use_grid_transpose_step1 = True
+        use_grid_transpose_step2 = True
+
+    key = (
+        hidden,
+        intermediate,
+        num_experts,
+        total_padded,
+        total_valid,
+        num_blocks_m,
+        group_offsets_len,
+        group_padded_offsets_len,
+        group_idx_len,
+        block_dhidden_step1,
+        block_dexpert_step1,
+        block_dhidden_step2,
+        block_dexpert_step2,
+        bool(use_grid_transpose_step1),
+        bool(use_grid_transpose_step2),
+        bool(use_step1_expert_grouped_grid),
+        bool(use_step1_hybrid_case1),
+        bool(use_step2_expert_grouped_grid),
+        bool(use_step1_input_prefetch),
+        bool(use_step1_prefetch_before_barrier),
+        bool(use_step1_tail_pruning),
+        bool(use_step2_tail_pruning),
+        bool(use_step2_input_prefetch),
+    )
+    kernel = _KERNEL_CACHE.get(key)
+
+    if kernel is None:
+        __metaclass__ = type
+
+        def shared_16x32_to_local_64x8_layout_a(i, j):
+            thread_id = i + 16 * (j // 8)
+            local_id = j % 8
+            return thread_id, local_id
+
+        def thread_id_shared_access_64x8_to_16x32_layout_a(thread_id, local_id):
+            i = thread_id % 16
+            j = (thread_id // 16) * 8 + local_id
+            return i, j
+
+        class MinimalMacaMMA:
+            WARP_SIZE = 64
+
+            def __init__(
+                self,
+                block_row_warps=4,
+                block_col_warps=1,
+                warp_row_tiles=32,
+                warp_col_tiles=128,
+                chunk=64,
+                k_pack=2,
+                is_m_first=False,
+                thread_var=None,
+            ):
+                self.block_row_warps = block_row_warps
+                self.block_col_warps = block_col_warps
+                self.warp_row_tiles = warp_row_tiles
+                self.warp_col_tiles = warp_col_tiles
+                self.chunk = chunk
+                self.k_pack = k_pack
+                self.is_m_first = is_m_first
+                self.thread_var = thread_var
+                self.micro_size_x = 16
+                self.micro_size_y = 16
+                self.micro_size_k = 16
+                self.local_size_a = 4
+                self.local_size_b = 4
+                self.local_size_out = 4
+                self.mma_suffix = "16x16x16f16"
+                self.warp_rows = warp_row_tiles // self.micro_size_x
+                self.warp_cols = warp_col_tiles // self.micro_size_y
+
+            def get_thread_binding(self):
+                if self.thread_var is None:
+                    current_frame = T.KernelLaunchFrame.Current()
+                    assert current_frame is not None
+                    return current_frame.get_thread_binding()
+                return self.thread_var
+
+            def extract_thread_binding(self, thread_id, is_m_first=None):
+                if is_m_first is None:
+                    is_m_first = self.is_m_first
+                if is_m_first:
+                    lane_id = thread_id % self.WARP_SIZE
+                    warp_n = (thread_id // self.WARP_SIZE) % self.block_col_warps
+                    warp_m = (thread_id // (self.WARP_SIZE * self.block_col_warps)) % self.block_row_warps
+                    return lane_id, warp_n, warp_m
+                lane_id = thread_id % self.WARP_SIZE
+                warp_m = (thread_id // self.WARP_SIZE) % self.block_row_warps
+                warp_n = (thread_id // (self.WARP_SIZE * self.block_row_warps)) % self.block_col_warps
+                return lane_id, warp_n, warp_m
+
+            def get_ldmatrix_b_index_map(self):
+                return thread_id_shared_access_64x8_to_16x32_layout_a
+
+            def ldmatrix_b(self, b_local_buf, b_shared_buf, ki, rk=0, row_offset=0):
+                warp_col_tiles = self.warp_col_tiles
+                warp_cols = self.warp_cols
+                chunk = self.chunk
+                micro_size_y = self.micro_size_y
+                micro_size_k = self.micro_size_k
+                local_size_b = self.local_size_b
+                k_pack = self.k_pack
+                thread_binding = self.get_thread_binding()
+                reverse_index_map = self.get_ldmatrix_b_index_map()
+
+                @T.macro
+                def warp_ldmatrix_b(
+                    b_local_buf,
+                    b_shared_buf,
+                    ki,
+                    thread_binding,
+                    rk=0,
+                    row_offset=0,
+                ):
+                    tx, warp_n, _ = self.extract_thread_binding(thread_binding)
+                    for j in T.serial(warp_cols):
+                        for local_id in T.vectorized(k_pack * local_size_b):
+                            row, col = T.meta_var(reverse_index_map(tx, local_id))
+                            l = warp_n * warp_col_tiles + j * micro_size_y
+                            r = rk * chunk + ki * (k_pack * micro_size_k)
+                            b_local_buf[j * k_pack * local_size_b + local_id] = b_shared_buf[
+                                row_offset + l + row,
+                                r + col,
+                            ]
+
+                return warp_ldmatrix_b(
+                    b_local_buf,
+                    b_shared_buf,
+                    ki,
+                    thread_binding,
+                    rk,
+                    row_offset,
+                )
+
+            def mma(self, a_local_buf, b_local_buf, c_local_buf, k_inner=0):
+                warp_rows = self.warp_rows
+                warp_cols = self.warp_cols
+                local_size_a = self.local_size_a
+                local_size_b = self.local_size_b
+                local_size_out = self.local_size_out
+                k_pack = self.k_pack
+                a_local_stride = k_inner * warp_rows * k_pack * local_size_a
+                b_local_stride = 0
+
+                @T.macro
+                def warp_mma(a_local_buf, b_local_buf, c_local_buf):
+                    for kp, i, j in T.grid(k_pack, warp_rows, warp_cols):
+                        T.tvm_mfma(
+                            self.mma_suffix,
+                            "row",
+                            "row",
+                            "float16x4",
+                            "float16x4",
+                            "float32x4",
+                            b_local_buf.data,
+                            (b_local_stride + (j * k_pack + kp) * local_size_b) // local_size_b,
+                            a_local_buf.data,
+                            (a_local_stride + (i * k_pack + kp) * local_size_a) // local_size_a,
+                            c_local_buf.data,
+                            (i * warp_cols * local_size_out + j * local_size_out) // local_size_out,
+                            dtype="float32x4",
+                        )
+
+                return warp_mma(a_local_buf, b_local_buf, c_local_buf)
+
+            def make_mma_load_layout(self, local_buf, matrix="A"):
+                def forward_thread(i, j):
+                    lane_id, _ = shared_16x32_to_local_64x8_layout_a(i, j)
+                    return lane_id
+
+                def forward_index(i, j):
+                    _, local_id = shared_16x32_to_local_64x8_layout_a(i, j)
+                    return local_id
+
+                base_fragment = T.Fragment(
+                    [self.micro_size_x, self.micro_size_k * self.k_pack],
+                    forward_thread_fn=forward_thread,
+                    forward_index_fn=forward_index,
+                )
+                warp_fragment = base_fragment.repeat(
+                    [self.warp_rows, self.chunk // (self.micro_size_k * self.k_pack)],
+                    repeat_on_thread=False,
+                    lower_dim_first=False,
+                )
+                return warp_fragment.repeat(
+                    [self.block_row_warps, 1],
+                    repeat_on_thread=True,
+                    lower_dim_first=True,
+                ).replicate(self.block_col_warps)
+
+            def make_mma_store_layout(self, local_buf):
+                def forward_thread(i, j):
+                    block_i = (i // self.micro_size_x) // self.warp_rows
+                    block_j = (j // self.micro_size_y) // self.warp_cols
+                    mma_i = i % self.micro_size_x
+                    mma_j = j % self.micro_size_y
+                    lane_id = mma_i + (mma_j // 4) * 16
+                    if self.is_m_first:
+                        return block_i * (self.block_col_warps * self.WARP_SIZE) + block_j * self.WARP_SIZE + lane_id
+                    return block_j * (self.block_row_warps * self.WARP_SIZE) + block_i * self.WARP_SIZE + lane_id
+
+                def forward_index(i, j):
+                    warp_i = (i // self.micro_size_x) % self.warp_rows
+                    warp_j = (j // self.micro_size_y) % self.warp_cols
+                    mma_j = j % self.micro_size_y
+                    local_id = mma_j % 4
+                    return warp_i * (self.warp_cols * self.local_size_out) + warp_j * self.local_size_out + local_id
+
+                return T.Fragment(
+                    local_buf.shape,
+                    forward_thread_fn=forward_thread,
+                    forward_index_fn=forward_index,
+                )
+
+        @tilelang.jit(pass_configs={tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True})
+        def make_kernel(
+            hidden,
+            intermediate,
+            num_experts,
+            total_padded,
+            total_valid,
+            num_blocks_m,
+            group_offsets_len,
+            group_padded_offsets_len,
+            group_idx_len,
+            block_dhidden_step1,
+            block_dexpert_step1,
+            block_dhidden_step2,
+            block_dexpert_step2,
+            use_grid_transpose_step1,
+            use_grid_transpose_step2,
+            use_step1_expert_grouped_grid,
+            use_step1_hybrid_case1,
+            use_step2_expert_grouped_grid,
+            use_step1_input_prefetch,
+            use_step1_prefetch_before_barrier,
+            use_step1_tail_pruning,
+            use_step2_tail_pruning,
+            use_step2_input_prefetch,
+        ):
+            scale = 1.44269504
+            dtype = T.float16
+            accum_dtype = T.float32
+            threads_step1 = 256
+            threads_step2 = 256
+            num_stages = 1
+            block_token_step1 = 256 if use_step1_hybrid_case1 else 128
+            block_token_step2 = 128
+            step1_block_row_warps = 4
+            block_dexpert_step1_long = 64 if use_step1_hybrid_case1 else block_dexpert_step1
+
+            step1_mma = MinimalMacaMMA(
+                block_row_warps=step1_block_row_warps,
+                block_col_warps=1,
+                warp_row_tiles=block_token_step1 // step1_block_row_warps,
+                warp_col_tiles=block_dexpert_step1_long,
+                chunk=block_dhidden_step1,
+                k_pack=2,
+            )
+            block_token_short = 128
+            step1_short_mma = MinimalMacaMMA(
+                block_row_warps=4,
+                block_col_warps=1,
+                warp_row_tiles=32,
+                warp_col_tiles=block_dexpert_step1,
+                chunk=block_dhidden_step1,
+                k_pack=2,
+            )
+            step2_mma = MinimalMacaMMA(
+                block_row_warps=4,
+                block_col_warps=1,
+                warp_row_tiles=block_token_step2 // 4,
+                warp_col_tiles=block_dhidden_step2,
+                chunk=block_dexpert_step2,
+                k_pack=2,
+            )
+
+            input_shape = (total_padded, hidden)
+            intermediate_shape = (total_padded, intermediate)
+            gate_shape = (num_experts, intermediate, hidden)
+            up_shape = (num_experts, intermediate, hidden)
+            down_shape = (num_experts, hidden, intermediate)
+            step1_col_tiles = (intermediate + block_dexpert_step1 - 1) // block_dexpert_step1
+            step1_long_col_tiles = (
+                intermediate + block_dexpert_step1_long - 1
+            ) // block_dexpert_step1_long
+            step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
+            step2_output_tile = 2 * block_dhidden_step2
+            step2_col_tiles = (hidden + step2_output_tile - 1) // step2_output_tile
+            step2_k_tiles = (intermediate + block_dexpert_step2 - 1) // block_dexpert_step2
+            step1_row_tiles = num_experts // 2 if use_step1_hybrid_case1 else num_blocks_m
+            step1_grid_x = (
+                step1_long_col_tiles if use_grid_transpose_step1 else step1_row_tiles
+            )
+            step1_grid_y = (
+                step1_row_tiles if use_grid_transpose_step1 else step1_long_col_tiles
+            )
+            step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else num_blocks_m
+            step2_grid_y = num_blocks_m if use_grid_transpose_step2 else step2_col_tiles
+
+            @T.prim_func
+            def kernel(
+                input: T.Tensor(input_shape, dtype),
+                gate: T.Tensor(gate_shape, dtype),
+                up: T.Tensor(up_shape, dtype),
+                down: T.Tensor(down_shape, dtype),
+                routed_weights: T.Tensor((total_valid,), T.float32),
+                group_sizes: T.Tensor((num_experts,), T.int32),
+                group_offsets: T.Tensor((group_offsets_len,), T.int32),
+                group_padded_offsets: T.Tensor((group_padded_offsets_len,), T.int32),
+                group_idx_for_bx: T.Tensor((group_idx_len,), T.int32),
+                up_logits: T.Tensor(intermediate_shape, dtype),
+                output: T.Tensor(input_shape, dtype),
+            ):
+                if use_step1_hybrid_case1:
+                    with T.Kernel(step1_col_tiles, num_experts // 2, threads=256) as (pid0, pid1):
+                        if use_step1_hybrid_case1:
+                            bx = pid1 if use_grid_transpose_step1 else pid0
+                            by = pid0 if use_grid_transpose_step1 else pid1
+                        elif use_step1_expert_grouped_grid:
+                            cta_mapping = T.alloc_local((2,), dtype=T.int32)
+                            if pid1 < num_experts // 2:
+                                cta_mapping[0] = pid1
+                                cta_mapping[1] = pid0
+                            else:
+                                cta_mapping[0] = (pid1 // 2) * 2 + pid0 % 2
+                                cta_mapping[1] = (
+                                    (pid1 % 2) * (step1_col_tiles // 2) + pid0 // 2
+                                )
+                            bx = cta_mapping[0]
+                            by = cta_mapping[1]
+                        else:
+                            bx = pid1 if use_grid_transpose_step1 else pid0
+                            by = pid0 if use_grid_transpose_step1 else pid1
+                        input_shared = T.alloc_fragment((block_token_short, block_dhidden_step1), dtype=dtype)
+                        input_prefetch = T.alloc_fragment((block_token_short, block_dhidden_step1), dtype=dtype)
+                        gate_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+                        up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+                        gate_local = T.alloc_fragment((block_token_short, block_dexpert_step1), dtype=accum_dtype)
+                        up_local = T.alloc_fragment((block_token_short, block_dexpert_step1), dtype=accum_dtype)
+                        weight_local = T.alloc_local((step1_short_mma.warp_cols * step1_short_mma.k_pack * step1_short_mma.local_size_b), dtype=dtype)
+
+                        T.annotate_layout(
+                            {
+                                input_shared: step1_short_mma.make_mma_load_layout(input_shared, matrix="A"),
+                                input_prefetch: step1_short_mma.make_mma_load_layout(input_prefetch, matrix="A"),
+                                gate_shared: make_swizzled_layout(gate_shared),
+                                up_shared: make_swizzled_layout(up_shared),
+                                gate_local: step1_short_mma.make_mma_store_layout(gate_local),
+                                up_local: step1_short_mma.make_mma_store_layout(up_local),
+                            }
+                        )
+                        T.use_swizzle(10, enable=False)
+
+                        expert_id = bx
+                        T.assume(0 <= expert_id)
+                        T.assume(expert_id < num_experts)
+                        block_start = (
+                            group_padded_offsets[expert_id]
+                            if use_step1_hybrid_case1
+                            else bx * block_token_short
+                        )
+                        group_size = group_sizes[expert_id]
+                        padded_start = group_padded_offsets[expert_id]
+                        token_offset = 0 if use_step1_hybrid_case1 else block_start - padded_start
+                        actual_rows = T.max(0, T.min(block_token_short, group_size - token_offset))
+
+                        T.clear(gate_local)
+                        T.clear(up_local)
+                        if use_step1_input_prefetch:
+                            if use_step1_tail_pruning:
+                                for i_x_first, j_x_first in T.Parallel(
+                                    block_token_short, block_dhidden_step1
+                                ):
+                                    if i_x_first < actual_rows:
+                                        input_shared[i_x_first, j_x_first] = input[
+                                            block_start + i_x_first, j_x_first
+                                        ]
+                            else:
+                                T.copy(
+                                    input[
+                                        block_start : block_start + block_token_short,
+                                        0:block_dhidden_step1,
+                                    ],
+                                    input_shared,
+                                )
+                            for k_pair in T.serial(step1_k_tiles // 2):
+                                k_even = k_pair * 2
+                                k_odd = k_even + 1
+                                if use_step1_prefetch_before_barrier:
+                                    T.copy(
+                                        gate[
+                                            expert_id,
+                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                        ],
+                                        gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                    )
+                                    if use_step1_tail_pruning:
+                                        for i_x_odd_0, j_x_odd_0 in T.Parallel(
+                                            block_token_short, block_dhidden_step1
+                                        ):
+                                            if i_x_odd_0 < block_token_short // 2 and i_x_odd_0 < actual_rows:
+                                                input_prefetch[i_x_odd_0, j_x_odd_0] = input[
+                                                    block_start + i_x_odd_0,
+                                                    k_odd * block_dhidden_step1 + j_x_odd_0,
+                                                ]
+                                    else:
+                                        T.copy(
+                                            input[
+                                                block_start : block_start + block_token_short // 2,
+                                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                            ],
+                                            input_prefetch[0 : block_token_short // 2, 0:block_dhidden_step1],
+                                        )
+                                    T.copy(
+                                        gate[
+                                            expert_id,
+                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                        ],
+                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                                    )
+                                    T.copy(
+                                        up[
+                                            expert_id,
+                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                        ],
+                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                    )
+                                    if use_step1_tail_pruning:
+                                        for i_x_odd_1, j_x_odd_1 in T.Parallel(
+                                            block_token_short, block_dhidden_step1
+                                        ):
+                                            if block_token_short // 2 <= i_x_odd_1 and i_x_odd_1 < actual_rows:
+                                                input_prefetch[i_x_odd_1, j_x_odd_1] = input[
+                                                    block_start + i_x_odd_1,
+                                                    k_odd * block_dhidden_step1 + j_x_odd_1,
+                                                ]
+                                    else:
+                                        T.copy(
+                                            input[
+                                                block_start + block_token_short // 2 : block_start + block_token_short,
+                                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                            ],
+                                            input_prefetch[block_token_short // 2 : block_token_short, 0:block_dhidden_step1],
+                                        )
+                                    T.copy(
+                                        up[
+                                            expert_id,
+                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                        ],
+                                        up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                                    )
+                                else:
+                                    T.copy(
+                                        gate[
+                                            expert_id,
+                                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                        ],
+                                        gate_shared,
+                                    )
+                                    T.copy(
+                                        up[
+                                            expert_id,
+                                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                        ],
+                                        up_shared,
+                                    )
+                                T.sync_threads()
+                                if not use_step1_prefetch_before_barrier:
+                                    if use_step1_tail_pruning:
+                                        for i_x_odd, j_x_odd in T.Parallel(
+                                            block_token_short, block_dhidden_step1
+                                        ):
+                                            if i_x_odd < actual_rows:
+                                                input_prefetch[i_x_odd, j_x_odd] = input[
+                                                    block_start + i_x_odd,
+                                                    k_odd * block_dhidden_step1 + j_x_odd,
+                                                ]
+                                    else:
+                                        T.copy(
+                                            input[
+                                                block_start : block_start + block_token_short,
+                                                k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                            ],
+                                            input_prefetch,
+                                        )
+                                for ki in T.serial(0, block_dhidden_step1 // 32):
+                                    if not use_step1_tail_pruning or (
+                                        ((T.get_thread_binding() // 64) % 4) * 32
+                                        < actual_rows
+                                    ):
+                                        step1_short_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                                        step1_short_mma.mma(input_shared, weight_local, gate_local, ki)
+                                        step1_short_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                        step1_short_mma.mma(input_shared, weight_local, up_local, ki)
+                                T.sync_threads()
+                                if use_step1_prefetch_before_barrier:
+                                    T.copy(
+                                        gate[
+                                            expert_id,
+                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                    )
+                                    if k_pair + 1 < step1_k_tiles // 2:
+                                        k_next_even = k_odd + 1
+                                        if use_step1_tail_pruning:
+                                            for i_x_even_0, j_x_even_0 in T.Parallel(
+                                                block_token_short, block_dhidden_step1
+                                            ):
+                                                if i_x_even_0 < block_token_short // 2 and i_x_even_0 < actual_rows:
+                                                    input_shared[i_x_even_0, j_x_even_0] = input[
+                                                        block_start + i_x_even_0,
+                                                        k_next_even * block_dhidden_step1 + j_x_even_0,
+                                                    ]
+                                        else:
+                                            T.copy(
+                                                input[
+                                                    block_start : block_start + block_token_short // 2,
+                                                    k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                                                ],
+                                                input_shared[0 : block_token_short // 2, 0:block_dhidden_step1],
+                                            )
+                                    T.copy(
+                                        gate[
+                                            expert_id,
+                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                                    )
+                                    T.copy(
+                                        up[
+                                            expert_id,
+                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                    )
+                                    if k_pair + 1 < step1_k_tiles // 2:
+                                        if use_step1_tail_pruning:
+                                            for i_x_even_1, j_x_even_1 in T.Parallel(
+                                                block_token_short, block_dhidden_step1
+                                            ):
+                                                if block_token_short // 2 <= i_x_even_1 and i_x_even_1 < actual_rows:
+                                                    input_shared[i_x_even_1, j_x_even_1] = input[
+                                                        block_start + i_x_even_1,
+                                                        (k_odd + 1) * block_dhidden_step1 + j_x_even_1,
+                                                    ]
+                                        else:
+                                            T.copy(
+                                                input[
+                                                    block_start + block_token_short // 2 : block_start + block_token_short,
+                                                    (k_odd + 1) * block_dhidden_step1 : (k_odd + 2) * block_dhidden_step1,
+                                                ],
+                                                input_shared[block_token_short // 2 : block_token_short, 0:block_dhidden_step1],
+                                            )
+                                    T.copy(
+                                        up[
+                                            expert_id,
+                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                                    )
+                                else:
+                                    T.copy(
+                                        gate[
+                                            expert_id,
+                                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        gate_shared,
+                                    )
+                                    T.copy(
+                                        up[
+                                            expert_id,
+                                            by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        up_shared,
+                                    )
+                                T.sync_threads()
+                                if not use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
+                                    k_next_even = k_odd + 1
+                                    if use_step1_tail_pruning:
+                                        for i_x_even, j_x_even in T.Parallel(
+                                            block_token_short, block_dhidden_step1
+                                        ):
+                                            if i_x_even < actual_rows:
+                                                input_shared[i_x_even, j_x_even] = input[
+                                                    block_start + i_x_even,
+                                                    k_next_even * block_dhidden_step1 + j_x_even,
+                                                ]
+                                    else:
+                                        T.copy(
+                                            input[
+                                                block_start : block_start + block_token_short,
+                                                k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                                            ],
+                                            input_shared,
+                                        )
+                                for ki in T.serial(0, block_dhidden_step1 // 32):
+                                    if not use_step1_tail_pruning or (
+                                        ((T.get_thread_binding() // 64) % 4) * 32
+                                        < actual_rows
+                                    ):
+                                        step1_short_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                                        step1_short_mma.mma(input_prefetch, weight_local, gate_local, ki)
+                                        step1_short_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                        step1_short_mma.mma(input_prefetch, weight_local, up_local, ki)
+                                if k_pair + 1 < step1_k_tiles // 2:
+                                    T.sync_threads()
+                        else:
+                            for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
+                                T.copy(
+                                    input[
+                                        block_start : block_start + block_token_short,
+                                        k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                    ],
+                                    input_shared,
+                                )
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                        k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared,
+                                )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1 : (by + 1) * block_dexpert_step1,
+                                        k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared,
+                                )
+                                for ki in T.serial(0, block_dhidden_step1 // 32):
+                                    step1_short_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                                    step1_short_mma.mma(input_shared, weight_local, gate_local, ki)
+                                    step1_short_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                    step1_short_mma.mma(input_shared, weight_local, up_local, ki)
+
+                        for i, j in T.Parallel(block_token_short, block_dexpert_step1):
+                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                            if i < actual_rows:
+                                up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+
+                with T.Kernel(step1_grid_x, step1_grid_y, threads=threads_step1) as (pid0, pid1):
+                    if use_step1_hybrid_case1:
+                        bx = pid1 if use_grid_transpose_step1 else pid0
+                        by = pid0 if use_grid_transpose_step1 else pid1
+                    elif use_step1_expert_grouped_grid:
+                        cta_mapping = T.alloc_local((2,), dtype=T.int32)
+                        if pid1 < num_experts // 2:
+                            cta_mapping[0] = pid1
+                            cta_mapping[1] = pid0
+                        else:
+                            cta_mapping[0] = (pid1 // 2) * 2 + pid0 % 2
+                            cta_mapping[1] = (
+                                (pid1 % 2) * (step1_col_tiles // 2) + pid0 // 2
+                            )
+                        bx = cta_mapping[0]
+                        by = cta_mapping[1]
+                    else:
+                        bx = pid1 if use_grid_transpose_step1 else pid0
+                        by = pid0 if use_grid_transpose_step1 else pid1
+                    input_shared = T.alloc_fragment((block_token_step1, block_dhidden_step1), dtype=dtype)
+                    input_prefetch = T.alloc_fragment((block_token_step1, block_dhidden_step1), dtype=dtype)
+                    gate_shared = T.alloc_shared((block_dexpert_step1_long, block_dhidden_step1), dtype=dtype)
+                    up_shared = T.alloc_shared((block_dexpert_step1_long, block_dhidden_step1), dtype=dtype)
+                    gate_local = T.alloc_fragment((block_token_step1, block_dexpert_step1_long), dtype=accum_dtype)
+                    up_local = T.alloc_fragment((block_token_step1, block_dexpert_step1_long), dtype=accum_dtype)
+                    weight_local = T.alloc_local((step1_mma.warp_cols * step1_mma.k_pack * step1_mma.local_size_b), dtype=dtype)
+
+                    T.annotate_layout(
+                        {
+                            input_shared: step1_mma.make_mma_load_layout(input_shared, matrix="A"),
+                            input_prefetch: step1_mma.make_mma_load_layout(input_prefetch, matrix="A"),
+                            gate_shared: make_swizzled_layout(gate_shared),
+                            up_shared: make_swizzled_layout(up_shared),
+                            gate_local: step1_mma.make_mma_store_layout(gate_local),
+                            up_local: step1_mma.make_mma_store_layout(up_local),
+                        }
+                    )
+                    T.use_swizzle(10, enable=False)
+
+                    expert_id = bx + num_experts // 2 if use_step1_hybrid_case1 else group_idx_for_bx[bx]
+                    T.assume(0 <= expert_id)
+                    T.assume(expert_id < num_experts)
+                    block_start = (
+                        group_padded_offsets[expert_id]
+                        if use_step1_hybrid_case1
+                        else bx * block_token_step1
+                    )
+                    group_size = group_sizes[expert_id]
+                    padded_start = group_padded_offsets[expert_id]
+                    token_offset = 0 if use_step1_hybrid_case1 else block_start - padded_start
+                    actual_rows = T.max(0, T.min(block_token_step1, group_size - token_offset))
+
+                    T.clear(gate_local)
+                    T.clear(up_local)
+                    if use_step1_input_prefetch:
+                        if use_step1_tail_pruning:
+                            for i_x_first, j_x_first in T.Parallel(
+                                block_token_step1, block_dhidden_step1
+                            ):
+                                if i_x_first < actual_rows:
+                                    input_shared[i_x_first, j_x_first] = input[
+                                        block_start + i_x_first, j_x_first
+                                    ]
+                        else:
+                            T.copy(
+                                input[
+                                    block_start : block_start + block_token_step1,
+                                    0:block_dhidden_step1,
+                                ],
+                                input_shared,
+                            )
+                        for k_pair in T.serial(step1_k_tiles // 2):
+                            k_even = k_pair * 2
+                            k_odd = k_even + 1
+                            if use_step1_prefetch_before_barrier:
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : by * block_dexpert_step1_long + block_dexpert_step1_long // 2,
+                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared[0 : block_dexpert_step1_long // 2, 0:block_dhidden_step1],
+                                )
+                                if use_step1_tail_pruning:
+                                    for i_x_odd_0, j_x_odd_0 in T.Parallel(
+                                        block_token_step1, block_dhidden_step1
+                                    ):
+                                        if i_x_odd_0 < block_token_step1 // 2 and i_x_odd_0 < actual_rows:
+                                            input_prefetch[i_x_odd_0, j_x_odd_0] = input[
+                                                block_start + i_x_odd_0,
+                                                k_odd * block_dhidden_step1 + j_x_odd_0,
+                                            ]
+                                else:
+                                    T.copy(
+                                        input[
+                                            block_start : block_start + block_token_step1 // 2,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        input_prefetch[0 : block_token_step1 // 2, 0:block_dhidden_step1],
+                                    )
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1_long + block_dexpert_step1_long // 2 : (by + 1) * block_dexpert_step1_long,
+                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared[block_dexpert_step1_long // 2 : block_dexpert_step1_long, 0:block_dhidden_step1],
+                                )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : by * block_dexpert_step1_long + block_dexpert_step1_long // 2,
+                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared[0 : block_dexpert_step1_long // 2, 0:block_dhidden_step1],
+                                )
+                                if use_step1_tail_pruning:
+                                    for i_x_odd_1, j_x_odd_1 in T.Parallel(
+                                        block_token_step1, block_dhidden_step1
+                                    ):
+                                        if block_token_step1 // 2 <= i_x_odd_1 and i_x_odd_1 < actual_rows:
+                                            input_prefetch[i_x_odd_1, j_x_odd_1] = input[
+                                                block_start + i_x_odd_1,
+                                                k_odd * block_dhidden_step1 + j_x_odd_1,
+                                            ]
+                                else:
+                                    T.copy(
+                                        input[
+                                            block_start + block_token_step1 // 2 : block_start + block_token_step1,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        input_prefetch[block_token_step1 // 2 : block_token_step1, 0:block_dhidden_step1],
+                                    )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1_long + block_dexpert_step1_long // 2 : (by + 1) * block_dexpert_step1_long,
+                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared[block_dexpert_step1_long // 2 : block_dexpert_step1_long, 0:block_dhidden_step1],
+                                )
+                            else:
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : (by + 1) * block_dexpert_step1_long,
+                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared,
+                                )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : (by + 1) * block_dexpert_step1_long,
+                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared,
+                                )
+                            T.sync_threads()
+                            if not use_step1_prefetch_before_barrier:
+                                if use_step1_tail_pruning:
+                                    for i_x_odd, j_x_odd in T.Parallel(
+                                        block_token_step1, block_dhidden_step1
+                                    ):
+                                        if i_x_odd < actual_rows:
+                                            input_prefetch[i_x_odd, j_x_odd] = input[
+                                                block_start + i_x_odd,
+                                                k_odd * block_dhidden_step1 + j_x_odd,
+                                            ]
+                                else:
+                                    T.copy(
+                                        input[
+                                            block_start : block_start + block_token_step1,
+                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                        ],
+                                        input_prefetch,
+                                    )
+                            for ki in T.serial(0, block_dhidden_step1 // 32):
+                                if not use_step1_tail_pruning or (
+                                    ((T.get_thread_binding() // 64) % step1_block_row_warps)
+                                    * (block_token_step1 // step1_block_row_warps)
+                                    < actual_rows
+                                ):
+                                    step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                                    step1_mma.mma(input_shared, weight_local, gate_local, ki)
+                                    step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                    step1_mma.mma(input_shared, weight_local, up_local, ki)
+                            T.sync_threads()
+                            if use_step1_prefetch_before_barrier:
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : by * block_dexpert_step1_long + block_dexpert_step1_long // 2,
+                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared[0 : block_dexpert_step1_long // 2, 0:block_dhidden_step1],
+                                )
+                                if k_pair + 1 < step1_k_tiles // 2:
+                                    k_next_even = k_odd + 1
+                                    if use_step1_tail_pruning:
+                                        for i_x_even_0, j_x_even_0 in T.Parallel(
+                                            block_token_step1, block_dhidden_step1
+                                        ):
+                                            if i_x_even_0 < block_token_step1 // 2 and i_x_even_0 < actual_rows:
+                                                input_shared[i_x_even_0, j_x_even_0] = input[
+                                                    block_start + i_x_even_0,
+                                                    k_next_even * block_dhidden_step1 + j_x_even_0,
+                                                ]
+                                    else:
+                                        T.copy(
+                                            input[
+                                                block_start : block_start + block_token_step1 // 2,
+                                                k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                                            ],
+                                            input_shared[0 : block_token_step1 // 2, 0:block_dhidden_step1],
+                                        )
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1_long + block_dexpert_step1_long // 2 : (by + 1) * block_dexpert_step1_long,
+                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared[block_dexpert_step1_long // 2 : block_dexpert_step1_long, 0:block_dhidden_step1],
+                                )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : by * block_dexpert_step1_long + block_dexpert_step1_long // 2,
+                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared[0 : block_dexpert_step1_long // 2, 0:block_dhidden_step1],
+                                )
+                                if k_pair + 1 < step1_k_tiles // 2:
+                                    if use_step1_tail_pruning:
+                                        for i_x_even_1, j_x_even_1 in T.Parallel(
+                                            block_token_step1, block_dhidden_step1
+                                        ):
+                                            if block_token_step1 // 2 <= i_x_even_1 and i_x_even_1 < actual_rows:
+                                                input_shared[i_x_even_1, j_x_even_1] = input[
+                                                    block_start + i_x_even_1,
+                                                    (k_odd + 1) * block_dhidden_step1 + j_x_even_1,
+                                                ]
+                                    else:
+                                        T.copy(
+                                            input[
+                                                block_start + block_token_step1 // 2 : block_start + block_token_step1,
+                                                (k_odd + 1) * block_dhidden_step1 : (k_odd + 2) * block_dhidden_step1,
+                                            ],
+                                            input_shared[block_token_step1 // 2 : block_token_step1, 0:block_dhidden_step1],
+                                        )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1_long + block_dexpert_step1_long // 2 : (by + 1) * block_dexpert_step1_long,
+                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared[block_dexpert_step1_long // 2 : block_dexpert_step1_long, 0:block_dhidden_step1],
+                                )
+                            else:
+                                T.copy(
+                                    gate[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : (by + 1) * block_dexpert_step1_long,
+                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                    ],
+                                    gate_shared,
+                                )
+                                T.copy(
+                                    up[
+                                        expert_id,
+                                        by * block_dexpert_step1_long : (by + 1) * block_dexpert_step1_long,
+                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                    ],
+                                    up_shared,
+                                )
+                            T.sync_threads()
+                            if not use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
+                                k_next_even = k_odd + 1
+                                if use_step1_tail_pruning:
+                                    for i_x_even, j_x_even in T.Parallel(
+                                        block_token_step1, block_dhidden_step1
+                                    ):
+                                        if i_x_even < actual_rows:
+                                            input_shared[i_x_even, j_x_even] = input[
+                                                block_start + i_x_even,
+                                                k_next_even * block_dhidden_step1 + j_x_even,
+                                            ]
+                                else:
+                                    T.copy(
+                                        input[
+                                            block_start : block_start + block_token_step1,
+                                            k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                                        ],
+                                        input_shared,
+                                    )
+                            for ki in T.serial(0, block_dhidden_step1 // 32):
+                                if not use_step1_tail_pruning or (
+                                    ((T.get_thread_binding() // 64) % step1_block_row_warps)
+                                    * (block_token_step1 // step1_block_row_warps)
+                                    < actual_rows
+                                ):
+                                    step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                                    step1_mma.mma(input_prefetch, weight_local, gate_local, ki)
+                                    step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                    step1_mma.mma(input_prefetch, weight_local, up_local, ki)
+                            if k_pair + 1 < step1_k_tiles // 2:
+                                T.sync_threads()
+                    else:
+                        for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
+                            T.copy(
+                                input[
+                                    block_start : block_start + block_token_step1,
+                                    k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                ],
+                                input_shared,
+                            )
+                            T.copy(
+                                gate[
+                                    expert_id,
+                                    by * block_dexpert_step1_long : (by + 1) * block_dexpert_step1_long,
+                                    k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                ],
+                                gate_shared,
+                            )
+                            T.copy(
+                                up[
+                                    expert_id,
+                                    by * block_dexpert_step1_long : (by + 1) * block_dexpert_step1_long,
+                                    k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                ],
+                                up_shared,
+                            )
+                            for ki in T.serial(0, block_dhidden_step1 // 32):
+                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+                                step1_mma.mma(input_shared, weight_local, gate_local, ki)
+                                step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                step1_mma.mma(input_shared, weight_local, up_local, ki)
+
+                    for i, j in T.Parallel(block_token_step1, block_dexpert_step1_long):
+                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                        if i < actual_rows:
+                            up_logits[block_start + i, by * block_dexpert_step1_long + j] = up_local[i, j] * gate_local[i, j]
+                with T.Kernel(step2_grid_x, step2_grid_y, threads=threads_step2) as (pid0, pid1):
+                    if use_step2_expert_grouped_grid:
+                        bx_local = T.alloc_local((1,), dtype=T.int32)
+                        by_local = T.alloc_local((1,), dtype=T.int32)
+                        if pid1 < num_experts // 2:
+                            bx_local[0] = pid1
+                            by_local[0] = pid0
+                        else:
+                            bx_local[0] = (pid1 // 2) * 2 + pid0 % 2
+                            by_local[0] = (pid1 % 2) * (step2_col_tiles // 2) + pid0 // 2
+                        bx = bx_local[0]
+                        by = by_local[0]
+                    else:
+                        bx = pid1 if use_grid_transpose_step2 else pid0
+                        by = pid0 if use_grid_transpose_step2 else pid1
+                    up_logits_shared = T.alloc_fragment((block_token_step2, block_dexpert_step2), dtype=dtype)
+                    up_logits_prefetch = T.alloc_fragment((block_token_step2, block_dexpert_step2), dtype=dtype)
+                    down_shared = T.alloc_shared((step2_output_tile, block_dexpert_step2), dtype=dtype)
+                    out_local_0 = T.alloc_fragment((block_token_step2, block_dhidden_step2), dtype=accum_dtype)
+                    out_local_1 = T.alloc_fragment((block_token_step2, block_dhidden_step2), dtype=accum_dtype)
+                    down_local = T.alloc_local((step2_mma.warp_cols * step2_mma.k_pack * step2_mma.local_size_b), dtype=dtype)
+                    routed_weight_local = T.alloc_local((2,), dtype=T.float32)
+
+                    T.annotate_layout(
+                        {
+                            up_logits_shared: step2_mma.make_mma_load_layout(up_logits_shared, matrix="A"),
+                            up_logits_prefetch: step2_mma.make_mma_load_layout(up_logits_prefetch, matrix="A"),
+                            down_shared: make_swizzled_layout(down_shared),
+                            out_local_0: step2_mma.make_mma_store_layout(out_local_0),
+                            out_local_1: step2_mma.make_mma_store_layout(out_local_1),
+                        }
+                    )
+                    T.use_swizzle(10, enable=False)
+
+                    expert_id = group_idx_for_bx[bx]
+                    T.assume(0 <= expert_id)
+                    T.assume(expert_id < num_experts)
+                    block_start = bx * block_token_step2
+                    group_size = group_sizes[expert_id]
+                    raw_start = group_offsets[expert_id]
+                    padded_start = group_padded_offsets[expert_id]
+                    token_offset = block_start - padded_start
+                    actual_rows = T.max(0, T.min(block_token_step2, group_size - token_offset))
+
+                    T.clear(out_local_0)
+                    T.clear(out_local_1)
+                    if use_step2_input_prefetch:
+                        if use_step2_tail_pruning:
+                            for i_up_first, j_up_first in T.Parallel(
+                                block_token_step2, block_dexpert_step2
+                            ):
+                                if i_up_first < actual_rows:
+                                    up_logits_shared[i_up_first, j_up_first] = up_logits[
+                                        block_start + i_up_first, j_up_first
+                                    ]
+                        else:
+                            T.copy(
+                                up_logits[block_start : block_start + block_token_step2, 0:block_dexpert_step2],
+                                up_logits_shared,
+                            )
+                        for k_pair in T.serial(step2_k_tiles // 2):
+                            k_even = k_pair * 2
+                            k_odd = k_even + 1
+                            T.copy(
+                                down[
+                                    expert_id,
+                                    by * step2_output_tile : (by + 1) * step2_output_tile,
+                                    k_even * block_dexpert_step2 : (k_even + 1) * block_dexpert_step2,
+                                ],
+                                down_shared,
+                            )
+                            T.sync_threads()
+                            if use_step2_tail_pruning:
+                                for i_up_odd, j_up_odd in T.Parallel(
+                                    block_token_step2, block_dexpert_step2
+                                ):
+                                    if i_up_odd < actual_rows:
+                                        up_logits_prefetch[i_up_odd, j_up_odd] = up_logits[
+                                            block_start + i_up_odd,
+                                            k_odd * block_dexpert_step2 + j_up_odd,
+                                        ]
+                            else:
+                                T.copy(
+                                    up_logits[
+                                        block_start : block_start + block_token_step2,
+                                        k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
+                                    ],
+                                    up_logits_prefetch,
+                                )
+                            for ki in T.serial(0, block_dexpert_step2 // 32):
+                                if not use_step2_tail_pruning or (
+                                    ((T.get_thread_binding() // 64) % 4) * 32
+                                    < actual_rows
+                                ):
+                                    step2_mma.ldmatrix_b(
+                                        down_local,
+                                        down_shared,
+                                        ki,
+                                    )
+                                    step2_mma.mma(up_logits_shared, down_local, out_local_0, ki)
+                                    step2_mma.ldmatrix_b(
+                                        down_local,
+                                        down_shared,
+                                        ki,
+                                        row_offset=block_dhidden_step2,
+                                    )
+                                    step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
+                            T.sync_threads()
+                            T.copy(
+                                down[
+                                    expert_id,
+                                    by * step2_output_tile : (by + 1) * step2_output_tile,
+                                    k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
+                                ],
+                                down_shared,
+                            )
+                            T.sync_threads()
+                            if k_pair + 1 < step2_k_tiles // 2:
+                                k_next_even = k_odd + 1
+                                if use_step2_tail_pruning:
+                                    for i_up_even, j_up_even in T.Parallel(
+                                        block_token_step2, block_dexpert_step2
+                                    ):
+                                        if i_up_even < actual_rows:
+                                            up_logits_shared[i_up_even, j_up_even] = up_logits[
+                                                block_start + i_up_even,
+                                                k_next_even * block_dexpert_step2 + j_up_even,
+                                            ]
+                                else:
+                                    T.copy(
+                                        up_logits[
+                                            block_start : block_start + block_token_step2,
+                                            k_next_even * block_dexpert_step2 : (k_next_even + 1) * block_dexpert_step2,
+                                        ],
+                                        up_logits_shared,
+                                    )
+                            for ki in T.serial(0, block_dexpert_step2 // 32):
+                                if not use_step2_tail_pruning or (
+                                    ((T.get_thread_binding() // 64) % 4) * 32
+                                    < actual_rows
+                                ):
+                                    step2_mma.ldmatrix_b(
+                                        down_local,
+                                        down_shared,
+                                        ki,
+                                    )
+                                    step2_mma.mma(up_logits_prefetch, down_local, out_local_0, ki)
+                                    step2_mma.ldmatrix_b(
+                                        down_local,
+                                        down_shared,
+                                        ki,
+                                        row_offset=block_dhidden_step2,
+                                    )
+                                    step2_mma.mma(up_logits_prefetch, down_local, out_local_1, ki)
+                            if k_pair + 1 < step2_k_tiles // 2:
+                                T.sync_threads()
+                    else:
+                        for k in T.Pipelined(T.ceildiv(intermediate, block_dexpert_step2), num_stages=num_stages):
+                            T.copy(
+                                up_logits[
+                                    block_start : block_start + block_token_step2,
+                                    k * block_dexpert_step2 : (k + 1) * block_dexpert_step2,
+                                ],
+                                up_logits_shared,
+                            )
+                            T.copy(
+                                down[
+                                    expert_id,
+                                    by * step2_output_tile : (by + 1) * step2_output_tile,
+                                    k * block_dexpert_step2 : (k + 1) * block_dexpert_step2,
+                                ],
+                                down_shared,
+                            )
+                            for ki in T.serial(0, block_dexpert_step2 // 32):
+                                step2_mma.ldmatrix_b(
+                                    down_local,
+                                    down_shared,
+                                    ki,
+                                )
+                                step2_mma.mma(up_logits_shared, down_local, out_local_0, ki)
+                                step2_mma.ldmatrix_b(
+                                    down_local,
+                                    down_shared,
+                                    ki,
+                                    row_offset=block_dhidden_step2,
+                                )
+                                step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
+
+                    tx = T.get_thread_binding()
+                    for row_slot in T.serial(2):
+                        routed_row = (tx // 64) * 32 + row_slot * 16 + tx % 16
+                        routed_weight_local[row_slot] = 0.0
+                        if routed_row < actual_rows:
+                            routed_weight_local[row_slot] = routed_weights[raw_start + token_offset + routed_row]
+
+                    for i, j in T.Parallel(block_token_step2, block_dhidden_step2):
+                        if i < actual_rows:
+                            output[block_start + i, by * step2_output_tile + j] = (
+                                out_local_0[i, j] * routed_weight_local[(i // 16) % 2]
+                            )
+                        else:
+                            output[block_start + i, by * step2_output_tile + j] = 0.0
+                    for i, j in T.Parallel(block_token_step2, block_dhidden_step2):
+                        if i < actual_rows:
+                            output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = (
+                                out_local_1[i, j] * routed_weight_local[(i // 16) % 2]
+                            )
+                        else:
+                            output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = 0.0
+
+            return kernel
+
+        kernel = make_kernel(*key)
+        _KERNEL_CACHE[key] = kernel
+
+    up_logits = _workspace(stacked_expert_tokens, intermediate)
+    kernel(
+        stacked_expert_tokens,
+        gate_w,
+        up_w,
+        down_w,
+        routed_expert_weights,
+        group_sizes,
+        group_offsets,
+        group_padded_offsets,
+        group_idx_for_bx,
+        up_logits,
+        out,
+    )
