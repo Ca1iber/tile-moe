@@ -218,3 +218,28 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 5. 没有候选达到 1.2% promotion gate；不创建 v085、不改根 submission、不移动 `dorm` 性能 HEAD。
 
 本批 scratch 证据位于远端 `/tmp/v084_per_kernel_case3_step*`、`/tmp/v084-step2-full-a-then-full-b*`、`/tmp/v084-step1-delay-input1*`、`/tmp/v084-auto-warp-specialize*`、`/tmp/v084-step1-kpack4*` 及对应 screen/codegen JSON。
+
+## v084 Step2 长 expert、producer 粒度与 routed-weight 数据流筛选
+
+继续以归档 v084（SHA-256 `32e50bbb...`）为唯一性能基线；本批只使用正常 TileLang，所有进入计时的候选均通过完整 padded-output reference check，并采用三轮同进程 AB/BA、warmup 10、repeat 200。正值表示候选更慢。
+
+| 方向 | Case3 中位变化 vs v084 | 资源 / 物化证据 | 决策 |
+|---|---:|---|---|
+| 长 expert Step2：两个 BM128 合为一个 BM256/512-thread CTA | `+3.576%` | 三 kernel；long Step2 `204/52`、2 waves，无 spill；权重只读一次但大 CTA 协调更贵 | reject |
+| 长 expert Step2：BM192/384-thread/6-wave | 未计时 | `LayoutInference: no available layout found`；当前编译器仍不能表达 6-row-wave fragment | compile reject |
+| 长 expert Step2：BM128 + BM64/128-thread tail | `+13.582%` | main Step2 `226/52`，tail `218/52`；删掉两个空 wave，但 128 threads 下 Down-weight staging 与额外 launch 代价更大 | reject |
+| Step2 `A32 rows -> B64 cols` 四分块 producer interleave | 未计时 | `T.unroll(4)` 与 `T.serial(4)` 均为 Step2 `256/108`；四阶段动态地址使资源爆炸 | resource reject |
+| Step2 最终 routed-weight multiply 改 FP16/half2 | `-0.050%` | 生成 half2 multiply；资源仍 `222/52`；完整正确 | below gate / noise |
+| routed-weight 每 wave 16 lane load + `T.shfl_sync` 广播 | `+0.031%` | `__shfl_sync` 已物化，资源仍 `222/52`；重复标量 load 已被 wave coalescing/cache 吸收 | below gate / noise |
+| 在 Step2 A fragment 中做 FP32 routed scaling | `+20.803%` | Step2 `228/52`；K-loop 中新增 half->float->half 转换与乘法 | reject |
+| 在 Step2 A fragment 中做 FP16/half2 routed scaling | `+17.986%` | packed half multiply 已物化，仍 `228/52`；转换减少但 producer critical path 仍被污染 | reject |
+
+### 因果结论
+
+1. 对长 expert 合并 token CTA 确实减少 Down 权重真实流量，但 BM256 的 8-wave/512-thread 协调代价超过流量收益；BM192 又受当前 TileLang layout 能力限制。另一方面，单独缩小 56-row tail 会让固定 256-column Down-weight staging 缺少 producer threads。Step2 的 `actual_rows` 行 tile 家族因此封口。
+2. v084 的 64-row A / 128-column B 半块是资源可行粒度。继续细分成 32-row / 64-column 四阶段不会改变流量，却把动态 stage 地址和寄存器状态推到 `256/108`，不能进入性能测试。
+3. routed-weight 的末端 FP32 multiply 不是主瓶颈：FP16 化只有约 0.05% 噪声收益；四路重复 scalar load 改 shuffle 也无收益，说明硬件请求合并已足够。
+4. 线性地把 routed scaling 移到 A 理论上减少 71.4% 元素乘法，但会把额外工作插入每个 K tile 的 load/MMA 重叠窗口；即使 packed FP16 仍回退约 18%。routed scaling 数据流家族封口。
+5. 本批没有候选达到 1.2% promotion gate；不创建 v085、不改 submission、不移动 `dorm` 性能 HEAD。
+
+本批 hypothesis、源码、screen JSON 与 codegen 位于远端 `/tmp/v084-step2-hybrid-bm*`、`/tmp/v084-step2-quarter*`、`/tmp/v084-step2-fp16-route*`、`/tmp/v084-step2-route-shuffle*`、`/tmp/v084-step2-route-scale-a*` 及对应 `/tmp/v084_step2_*` 目录。
