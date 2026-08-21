@@ -677,3 +677,52 @@ repeat 50）。本批候选均通过完整 padded-output correctness；负值表
 `dorm` 性能 HEAD。scratch 位于 `/tmp/v084-step2-grid-swizzle2*`、
 `/tmp/v084-memory-latency-{200,400,800}*`、`/tmp/v084-opt-predicate-inst*`、
 `/tmp/v084-step2-tail-skip-clear*`、`/tmp/v084-fastmath-fp16-swiglu*`。
+
+## v084 phase 优先级、尾路径与 MXCC 机器码门禁筛选
+
+本批继续使用正常、OJ 合规 TileLang，不使用 async、foreign source、缓存结果
+或 harness 技巧。运行候选均通过完整 padded-output correctness；Case3 采用
+同进程 AB/BA、warmup 5、repeat 50 的短筛，只有接近 `-1.2%` 才允许长测。
+正值表示候选更慢。
+
+### 源码级调度与尾路径
+
+| 方向 | Case3 变化 vs v084 | 资源 / 物化结论 | 决策 |
+|---|---:|---|---|
+| Step2 full CTA 整个 K-loop 与 partial CTA 分流 | `+0.227%` | Step2 `222/52 -> 226/54`；uniform 分支扩大 live state | reject |
+| 显式 Step2 producer + 56-row tail 跳过第二 A 半块 | `-0.172%` | Step2 `226/54`；真实少发 tail load，但低于 gate | below gate |
+| Step1 56-row tail 跳过第二 input 半块 | `+0.098%` | Step1 `216/54 -> 216/60` | reject / noise |
+| `actual_rows` 移除外层 `T.max(0, ...)` | 未计时 | generated C++ SHA 与 v084 完全相同 | compiler no-op |
+| Step2 输出改 branchless `T.if_then_else` | `-0.088%` | 资源完全不变；完整 padding 仍显式写零 | below gate / noise |
+| 偶 phase 低半优先、奇 phase 高半优先 | `-0.032%` | Step2 `222/52 -> 214/52`，仍 2 waves | below gate / noise |
+
+phase 交替候选补完了“固定低半优先、固定高半优先、跨 phase 交替”三种
+优先级形态。即使 MT registers 下降 8 个，端到端仍只有约 0.03% 噪声，说明
+v084 的核心收益来自 phase 内 `A/B` 邻接，而不是长期 wave 公平性。尾部 load、
+output select 与 `actual_rows` 算术也均不是 1.2% 级路径。
+
+### MXCC 隐藏选项的最终机器码审计
+
+本批重新以带目标 flag 的最终 xcore1000 `.text` 为门禁，避免仅凭 generated
+C++ 或资源报告误判。基线 Case3 `.text` SHA-256 为 `d2231c66...`。
+
+| 单项开关 | 最终机器码 / 资源 | Case3 | 决策 |
+|---|---|---:|---|
+| `metaxgpu-remove-short-bra_xmskz` | `bra_xmskz 102 -> 71`，其余资源不变 | `+0.926%` | reject |
+| `metaxgpu-hoist-arrive` | `.text` SHA 与 v084 完全相同 | 未计时 | no-op |
+| `metaxgpu-XmskOpt-PostRA` | `.text` SHA 与 v084 完全相同 | 未计时 | no-op |
+| `mxg-enable-coissue` | `.text` SHA 与 v084 完全相同 | 未计时 | no-op/default |
+| `metaxgpu-use-hireg` | 仍为 Step1 `216/54`、Step2 `222/52` | 未计时 | target mechanism absent |
+| `enable-aa-sched-mi` | `.text` SHA 与 v084 完全相同 | 未计时 | no-op/default |
+
+短分支删除 pass 是唯一真实改变 ISA 的新开关，但少 31 条静态分支后反而回退
+约 0.93%，表明这些短分支比扩大掩码执行域更便宜。其余 arrive、XMSK、
+co-issue 与 alias-scheduler 开关均被默认管线吸收或没有适用模式，不能把“开关
+写进源码”当成优化。`use-hireg` 也没有降低寄存器或跨 occupancy 阶梯。
+
+本批没有候选达到 1.2% promotion gate；不创建 v085、不修改根 submission、
+不移动 `dorm` 性能 HEAD。scratch 位于 `/tmp/v084-step2-{hoisted-full-loop,
+explicit-tail-skip,branchless-output-select,alternate-half-priority}*`、
+`/tmp/v084-step1-empty-second-half-skip*`、`/tmp/v084-actual-rows-no-max*`、
+`/tmp/v084-{remove-short-bra-xmskz,hoist-arrive,xmsk-opt-postra,enable-coissue,
+use-hireg,enable-aa-sched-mi}*` 及对应 codegen/ISA/JSON。
