@@ -1,0 +1,94 @@
+--- /tmp/v059_remote_baseline.py	2026-08-21 08:59:56.213377725 +0800
++++ /tmp/v073_step1_case1_4wave_rollinga_sc16g.py	2026-08-21 09:11:05.441383662 +0800
+@@ -1,7 +1,7 @@
+-# GENERATED EXPERIMENT: S18
+-# PARENT: S13 / OJ Wrong Answer on sample challenge
+-# PRIMARY_CHANGE: preserve the schedule with non-aliasing one-element CTA coordinates
+-# E145_REFERENCE: scheduling idea only; no async/imported source copied
++# RESTART EXPERIMENT: v073
++# PARENT: v059 teammate 79.33 Case1 grid
++# PRIMARY_CHANGE: Case1 keeps the original 4-wave Step1 grid but uses guarded single-buffer rolling-A
++# No async copy, foreign call, injected source, or benchmark-semantic change.
+ import torch
+ import tilelang
+ import tilelang.language as T
+@@ -80,7 +80,7 @@
+             and total_padded == 3072
+             and num_blocks_m == 24
+         )
+-        use_step1_input_prefetch = True
++        use_step1_input_prefetch = False
+         use_step1_prefetch_before_barrier = True
+         use_step1_tail_pruning = True
+         use_step2_input_prefetch = True
+@@ -674,15 +674,24 @@
+                                     step1_mma.mma(input_prefetch, weight_local, up_local, ki)
+                             if k_pair + 1 < step1_k_tiles // 2:
+                                 T.sync_threads()
+-                    else:
+-                        for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
+-                            T.copy(
+-                                input[
+-                                    block_start : block_start + block_token,
+-                                    k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+-                                ],
+-                                input_shared,
+-                            )
++                    else:
++                        if use_step1_tail_pruning:
++                            for i_x_initial, j_x_initial in T.Parallel(
++                                block_token, block_dhidden_step1
++                            ):
++                                if i_x_initial < actual_rows:
++                                    input_shared[i_x_initial, j_x_initial] = input[
++                                        block_start + i_x_initial, j_x_initial
++                                    ]
++                        else:
++                            T.copy(
++                                input[
++                                    block_start : block_start + block_token,
++                                    0:block_dhidden_step1,
++                                ],
++                                input_shared,
++                            )
++                        for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
+                             T.copy(
+                                 gate[
+                                     expert_id,
+@@ -699,11 +708,24 @@
+                                 ],
+                                 up_shared,
+                             )
+-                            for ki in T.serial(0, block_dhidden_step1 // 32):
+-                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+-                                step1_mma.mma(input_shared, weight_local, gate_local, ki)
+-                                step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+-                                step1_mma.mma(input_shared, weight_local, up_local, ki)
++                            for ki in T.serial(0, block_dhidden_step1 // 32):
++                                if not use_step1_tail_pruning or (
++                                    ((T.get_thread_binding() // 64) % 4) * 32
++                                    < actual_rows
++                                ):
++                                    step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
++                                    step1_mma.mma(input_shared, weight_local, gate_local, ki)
++                                    step1_mma.ldmatrix_b(weight_local, up_shared, ki)
++                                    step1_mma.mma(input_shared, weight_local, up_local, ki)
++                                if k + 1 < step1_k_tiles:
++                                    for i_x_roll, j_x_roll in T.Parallel(
++                                        block_token, 32
++                                    ):
++                                        if not use_step1_tail_pruning or i_x_roll < actual_rows:
++                                            input_shared[i_x_roll, ki * 32 + j_x_roll] = input[
++                                                block_start + i_x_roll,
++                                                (k + 1) * block_dhidden_step1 + ki * 32 + j_x_roll,
++                                            ]
+
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+                         gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+@@ -938,4 +960,4 @@
+         group_idx_for_bx,
+         up_logits,
+         out,
+-    )
+\ No newline at end of file
++    )
