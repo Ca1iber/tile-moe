@@ -396,3 +396,62 @@ factor-2 Step2 的第二轮 parent 出现约 `9.004 ms` 的慢样本，使 mean 
 `/tmp/v084-step1-clamped-loads-guarded-sync*` 及对应 codegen/screen JSON。
 本批没有候选达到 1.2% promotion gate；不创建 v085、不修改 submission、
 不移动 `dorm` 性能 HEAD。
+
+## v084 激活 lowering、16-K consumer 粒度与编译 pass 筛选
+
+继续以精确归档 v084 为唯一基线。本批只使用 OJ 可见的正常 TileLang；
+没有 foreign source、async、缓存结果或 harness 修改。候选先做 source/codegen
+门禁，再做完整 padded-output reference check 与 Case1/3 AB/BA smoke；正值表示
+候选更慢。短筛已经远离 1.2% gate 的方向不扩成长测。
+
+| 方向 | Case | 变化 vs v084 | 资源 / lowering 证据 | 决策 |
+|---|---:|---:|---|---|
+| fast-math + `0.5*x*(tanh(0.5*x)+1)` | 1 | `-0.078%` | Step1 `222/52`；C++ 为四路标量 `tanhf` | below gate |
+| 纯 TileLang 标量 `__builtin_mxc_rcpf` | 1 | `+7.685%` | Step1 `222/52`；正确但破坏原 float4 activation lowering | reject |
+| 按 fragment 物理顺序四元素分组的标量 `rcpf` | 1 | `+0.163%` | Step1 `222/52`；恢复 16 组连续访问，但 reciprocal 仍是标量 | below gate |
+| Step2 每次只载入/消费一个 16-K B 子片 | 3 | `-0.043%` | B local 理论缩半，实际 Step2 `222→238 MT` | below gate / noise |
+| Step1 每次只载入/消费一个 16-K Gate/Up 子片 | 3 | `+0.104%` | B local 理论缩半，实际 Step1 `216→232 MT` | reject / noise |
+| `TL_STORAGE_REWRITE_DETECT_INPLACE=True` | 3 | 未计时 | C++ SHA 与 v084 完全相同，资源相同 | compiler no-op |
+| `enable_simplify_let_inline=False` | 3 | 未计时 | C++ SHA 与 v084 完全相同，资源相同 | compiler no-op |
+| `TL_DISABLE_LOOP_UNSWITCHING=True` | 3 | 未计时 | source bytes/resources 与 v084 相同 | compiler no-op |
+| `TL_FORCE_LET_INLINE=True` | 3 | `+14.788%` | Step1 `216→222`、Step2 `222→214`，C++ `29152→32556 B` | reject |
+| aggressive simplify known propagation | 3 | 未计时 | 单项/组合均使 lowering 超过 90--150 s 无产物 | compile-cost reject |
+
+### 激活 lowering 因果
+
+v084 的逻辑 `T.Parallel` 激活已经被 MACA 后端自动降为 16 组 float4
+load/compute/store；每组内部的 `exp2f` 与除法仍是四路标量算术。历史 v043
+外部 helper 的关键并不是向量 reciprocal（硬件头文件只暴露标量
+`__builtin_mxc_rcpf/rcph`），而是直接用指针强制 float4 访问。正常 TileLang
+尝试复现时出现三条明确边界：
+
+1. 用 `T.Buffer` 给 fragment 建 64 元素物理别名会在 layout reshape 阶段失败；
+   补 256-thread 维后，`T.Ramp` 又不能代入 fragment 的标量 thread map。
+2. 用四个逻辑 fragment 元素构造 `float32x4`，layout inference 不接受单个
+   parallel expression 内的多组不同 buffer indices；通过临时 local 拆开后，
+   MACA C++ 后端又把 vector constructor/shuffle 展开成非法 `float4(...)` 或
+   把 `make_float4` 返回值重复赋给标量 lane。
+3. 最终可 lower 的“物理顺序四标量分组”完整正确，并把直接标量写法的
+   `+7.685%` 回退收回到 `+0.163%`，但仍没有超过原生 float4 exact-divide。
+
+因此正常 submission 中不存在可安全表达、且达到门槛的 packed fast-reciprocal
+路径；原生 `tl.enable_fast_math` 约 `-0.735%`（Case1）仍是该家族的上界，
+低于 promotion gate。
+
+### consumer 与 pass 因果
+
+1. `k_pack=2` 的完整 32-K B fragment 看似扩大 live range，但把它拆成两个
+   16-K load/MMA 后，shared load 从 128-bit 组缩小、动态 `kp` 地址状态增加，
+   Step1/Step2 MT registers 反而各增加 16，性能落在噪声区。保持现状。
+2. storage rewrite、关闭 let inline、关闭 loop unswitch 都被后续 lowering
+   消成逐字节 no-op。强制 let inline 虽让 Step2 少 8 个 MT registers，
+   却让 Step1 增寄存器、代码膨胀 11.7%，端到端回退 14.8%；不能用单 kernel
+   resource 数判断全算子收益。
+3. simplify 的跨条件已知量传播对该大 prim_func 产生编译复杂度爆炸，单一
+   `propagate_knowns_to_simplify_expressions` 也未在 90 秒内产出代码，不适合
+   submission 编译路径。
+
+本批 scratch 位于远端 `/tmp/v084-*fast-rcp*`、
+`/tmp/v084-fastmath-tanh-silu*`、`/tmp/v084-step{1,12}-kp-split*`、
+`/tmp/v084-{storage-inplace,force-let-inline,disable-let-inline,disable-loop-unswitch,simplify-knowns}*`。
+没有候选达到 1.2%；不创建 v085、不修改 submission、不移动 `dorm` 性能 HEAD。
