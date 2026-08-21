@@ -1084,3 +1084,87 @@ fragment layout 无法表达相邻 nibble packing。绕过 `.data`/私有物理�
 scratch 证据位于 `/tmp/v085-step1-wave-epilogue-prune*`、
 `/tmp/v085-up-logits-wave-skew*`、`/tmp/v085-step2-{unified-epilogue,direct-b,
 static-quarter}*`、`/tmp/v085-up-logits-int{8,12}-*` 及对应 codegen/JSON/hypothesis。
+
+## v085 跨 kernel 分块、后端展开、激活近似与地址映射续筛（2026-08-22）
+
+继续以归档 v085（SHA-256 `6d4aa3a6...`）为唯一 promotion parent，只使用
+正常、同步、OJ allowlist 内的 TileLang。所有进入计时的候选均通过完整
+padded-output reference check；负值表示更快，只有稳定达到 `-1.2%` 才能晋级。
+
+### 两段 expert-row pipeline
+
+Case3 把 96 个 row-block 分成两个 48-block chunk，并按
+`Step1[0] -> Step2[0] -> Step1[1] -> Step2[1]` 发射，试图缩短一半 workspace
+的生产到消费距离。四个 kernel 均保持原资源（Step1 `218/54`、Step2
+`222/54`，2 waves）且完整正确，但三轮总时间稳定回退
+`+2.629% / +2.598% / +2.577%`。
+
+mcTracer 显示两个 Step1 合计 `5.994752 ms`、两个 Step2 合计
+`2.718464 ms`，相对同次 parent 的 `5.926656 / 2.661376 ms` 已分别慢
+`1.149% / 2.145%`；中间 Python/JITKernel submission gap 另有约 `0.030 ms`。
+即使假设中间 gap 为零，分块后的 device kernel 本体也更慢，因此不继续拆成
+四段。证据位于 `/tmp/v085-expert-chunk-pipeline2*`、
+`/tmp/v085_chunk2_mctracer_case3/` 与 `/tmp/v085_chunk2_trace.json`。
+
+### MXCC 循环展开边界
+
+通用 `-fno-unroll-loops` 被 MXCC 明确拒绝为 unknown argument。随后用
+`mxcc -mllvm --help-hidden` 确认并分别测试正式的 MetaX 与 LLVM 展开阈值：
+
+- `metaxgpu-unroll-threshold=0` 对 Step1 最终 ISA 无效：仍为 `26248 B`、
+  `3281` 条静态指令、`256 MMA`、`218/54`；Step2 只少 1 条 `snop`。
+- 同时把普通、partial 与 pragma 阈值置零会得到表面上的 `30 MT / 8 waves`，
+  但每线程产生 `772 B` stack；完整正确，Case3 `8.603 -> 336.355 ms`，
+  回退 `3809.6%`。
+- 仅令普通 `unroll-threshold=0` 时，Step1/2 为 `230/236 MT`，最终 ISA 各有
+  `4 private loads / 20 private stores`，静态 MMA 从 256 减为 128；Case3
+  `8.574 -> 40.751 ms`，回退 `375.3%`。
+- 阈值 sweep 的相变清晰：`64--192` 均有 `132 B` stack；`256--768` 无 stack，
+  但 MT 为 `232/236`、仍 2 waves，`.text` 与基线同为 `46320 B`；到 `1024`
+  才恢复基线 `218/222`。不存在“少展开、无 spill、跨 4-wave”的中间甜点。
+
+因此后端去展开不能改善 v085；低寄存器数字若来自 private memory，不是 occupancy
+收益。临时源码/ISA 位于 `/tmp/v085-unroll-*`、`/tmp/v085_unroll_*` 与
+`/tmp/unroll_threshold_*`。
+
+### 小标量去重与 SiLU 近似
+
+Step2 routed-weight 在每个 64-lane wave 中由前 16 lane 读取、再用
+`T.shfl_sync(width=64)` 广播的 v085 复核完整正确；Step2 MT `222 -> 226`，
+三轮变化 `+0.192% / -0.261% / +0.250%`，中位慢 `0.192%`。这与 v084 旧
+shuffle 结果一致：四路重复 scalar load 已被请求合并/cache 吸收。
+
+另对正常数学近似做了终局试验：degree-15 SiLU 多项式在 `[-7,7]` 的离线最大
+绝对误差约 `0.00638`，完整 Case1 correctness PASS、资源档位不变，但时间
+`2.609 -> 2.675 ms`，回退 `2.536%`。降低到 degree-11（离线最大误差约
+`0.01484`）后，Case1 有 `854 / 6291456` 个元素越过容差，最大差
+`0.018066`。高阶正确但 Horner 依赖链更慢，低阶又不满足数值契约，正常
+多项式激活家族关闭。证据位于 `/tmp/v085_silu_poly{11,15}*` 及对应 hypothesis。
+
+### Step2 output-half 配对与 Step1 输入 row pitch
+
+此前 serpentine 只改变 CTA 顺序，没有改变同一 CTA 的两个 128-column Down
+panel。本批把相邻配对 `(2y, 2y+1)` 改成跨距配对
+`(y, y+step2_col_tiles)`；CTA/MMA/字节/barrier/A 复用与 `218/222` MT 均不变，
+完整正确，但 Case3 三轮稳定 `+1.907% / +1.783% / +1.746%`。相邻 Down panel
+的空间局部性有真实价值，不继续扫配对距离。
+
+最后把 v085 的 +256 B row-pitch 机制反向用于 Step1 input：新增一个正常
+TileLang prepack kernel，将 Case3 输入复制到 `hidden+128` FP16 row pitch。
+三个 kernel 资源分别为 copy `90/16`（5 waves）、Step1 `218/54`、Step2
+`222/54`，无 spill且完整正确，但端到端三轮稳定回退约 `15.43%`。
+mcTracer 归因为：copy 仅 `0.240896 ms`，Step2 `2.651136 ms` 基本正常，
+Step1 却升至 `7.024128 ms`，相对同环境约 `5.926656 ms` 慢约 `18.5%`。
+原始 14336 B input stride 对跨 N-CTA A 复用更有利，up_logits 的 pitch 规律
+不能机械迁移到输入。证据位于 `/tmp/v085_input_ldpad128*` 与
+`/tmp/v085_input_ldpad128_trace/`。
+
+### 本批结论
+
+1. 分块 launch 不能改善跨 kernel recency，反而让两个 GEMM 本体都变慢。
+2. 后端展开存在 spill/无 spill 的离散相变，但没有跨 occupancy 的可用中间点。
+3. 标量 load 与激活尾声仍不是新的 1.2% 主路径。
+4. v085 的地址收益具有张量与访问模式特异性：相邻 Down panel、原始 input
+   stride 都应保留，只有 Step1->Step2 `up_logits` 的 +256 B row pitch 有效。
+5. 本批无候选达到 promotion gate；不创建 v086、不修改 submission、不移动
+   `dorm` 性能源码。
