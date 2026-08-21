@@ -155,3 +155,30 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 6. 本批没有候选达到 1.2%，因此不创建 v085、不更新 submission、不移动 `dorm`。
 
 临时源码、hypothesis、screen JSON 和局部 codegen 保存在远端 `/tmp/v084-step1-*`、`/tmp/v084-step2-*`、`/tmp/v084_case1_step2_tail_pruning_screen.json` 与 `/tmp/v084_step2_*_codegen/`；仅本结论报告进入 Git。
+
+## v084 热路径 guard、显式展开与共享布局筛选
+
+继续以根 submission v084 为基线，使用相同的 source gate、完整 padded correctness 和三轮同进程 AB/BA（warmup 10、repeat 200）。除特别注明的 import 探针外，所有实际计时候选均通过 OJ source gate 和正确性；正值表示更慢。
+
+| 方向 | Case | 三轮中位变化 vs v084 | 关键证据 | 决策 |
+|---|---:|---:|---|---|
+| Step2 64-row A 半块取消 `actual_rows` predicate | 3 | `+2.067%` | 恢复规则 copy，但额外 padding 流量更贵 | reject |
+| Step2 full-half `T.copy` / partial-half predicate 分流 | 3 | `+3.309%` | 流量不变，CTA-uniform 动态分支仍显著伤害 lowering | reject |
+| Step1 `G0-X0-G1-X1-U0-U1` | 3 | `+2.728%` | 提前 input1 会破坏 incumbent 的 `G1-U0-input1` 延迟窗口 | reject |
+| Step2 手工展开 `A0-B0-A1-B1` | 3 | `-0.242%` | 真实小收益，但 Step2 资源 `222/52 -> 226/54`，仍 2 waves | below gate |
+| 同一手工展开 | 1 | `+1.197%` | 64 个 K-pair 未放大控制流收益，反而稳定回退 | reject / not generalizable |
+| Step2 inline 64B half-bank shared layout | 3 | `+0.276%` | 默认 128B full-bank 更优 | reject |
+| Step2 inline 32B quarter-bank shared layout | 3 | `+0.701%` | swizzle 周期进一步缩小继续回退 | reject |
+| Step2 inline MACA 16x16 / vec4 XOR layout | 3 | `+32.734%` | 虽正确但不匹配当前 custom `ldmatrix_b` 地址访问 | reject |
+
+另有一次直接导入 `make_half_bank_swizzled_layout` 的语法探针被本地 OJ gate 在执行前拒绝，原因是 allowlist 只允许 `from tilelang.layout import make_swizzled_layout`；随后使用合规、等价的 `T.Layout` 完成了实际 half/quarter-bank 测试，因此该探针不计为性能候选。
+
+### 本批边界
+
+1. v084 的逐元素 `actual_rows` copy predicate 不是纯开销：取消它会因 padding 流量增加而回退；改成运行期粗粒度 full/tail 分支则会触发更差的控制流/codegen。Step2 copy-tail 家族封口。
+2. Step1 incumbent 中 `G1 -> Up0 -> input1` 是关键延迟隐藏段；不能把第二个 input 半块提前合并到两个 Up half 之前。
+3. `T.unroll(2)` 在生成 C++ 中仍表现为带 stage 索引的循环，手工展开能让 Case3 稳定快约 0.24%，但资源上涨且 Case1 明显回退。该线索不足 1.2%，不记录为版本。
+4. 对当前 64-thread custom `ldmatrix_b`，默认 128B/full-bank swizzle 明确优于 64B、32B 和仓库中未被默认选择的 MACA 16x16 映射。共享布局家族封口。
+5. 本批仍不创建 v085、不改根 submission、不移动 `dorm` 的性能 HEAD。
+
+新增 scratch 证据位于远端 `/tmp/v084-step2-unmasked-*`、`/tmp/v084-step2-full-or-tail-*`、`/tmp/v084-step1-gxgxxuu*`、`/tmp/v084-step2-explicit-*`、`/tmp/v084-step2-inline-*-layout*` 及其对应 `*_screen.json` / codegen 目录。
