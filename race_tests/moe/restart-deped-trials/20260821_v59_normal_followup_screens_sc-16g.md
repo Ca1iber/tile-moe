@@ -522,3 +522,63 @@ v084 的收益来自 A/Down 半块请求的发射邻接，而不是少发 load�
 `/tmp/v084-sched-*`、`/tmp/v084-{igroup,flag,bsm,aggressive,mma,const,warp}*`、
 `/tmp/v084-step1-middle-weight-quarter*`、`/tmp/v084_isa_case3/` 及对应 JSON/
 codegen 目录。
+
+## v084 非 2 次幂 row-wave、输出宽度与 cache policy 筛选（2026-08-22）
+
+本批继续以 v084 为 promotion baseline，只使用普通同步 TileLang。BM192/BM96
+候选还使用 v59 作为 Step1 结构隔离对照，但任何最终晋级仍必须相对 v084
+达到 1.2%。所有进入计时的候选均通过 OJ source gate 与完整 padded-output
+correctness；明显回退只做 warmup 5/repeat 50 的单轮 AB smoke。正值表示更慢。
+
+### 非 2 次幂 row-wave 重新打开后的真实结论
+
+此前 BM192/BM96 被 `LayoutInference: no available layout found` 拒绝，并非
+6/3 row-wave accumulator 本身必然非法。真正的一个阻塞点是 384/192 threads
+不能整除某些 producer copy 域：例如 Step2 `Down[256,64]`、Step1 64x64
+Gate/Up 半块。用前 256 threads 做显式 vector staging 后，相关 kernel 都能
+正常 lowering、无 private spill，从而允许公平运行测试。
+
+| 方向 | Case3 变化 | 资源 / 机制 | 决策 |
+|---|---:|---|---|
+| Step2 long expert BM192，前 256 producer | `+3.408%` | long `226/52`、2 waves；两个 BM128 合一 | reject |
+| 同一 BM192，96-row A-first | `+10.988%` | long `210/52`；更低寄存器但 96-row split 更差 | reject |
+| 同一 BM192，384-thread 均摊 producer | `+4.595%` | long `216/52`；均摊不如干净的前 256 producer | reject |
+| Step2 long expert 两个 BM96 CTA | `+3.046%` | long `242/52`；3-wave kernel 正常 lowering | reject |
+| Step1 全 expert BM192 + 原六段预取 | `+32.678%` vs v59 | `212/52`；短 expert 也被放大到 6 waves | reject |
+| Step1 short BM128 / long BM192 混合 | `+20.295%` vs v59 | short `216/52`、long `208/52`；理论 waves `384→320` | reject |
+
+混合 Step1 是该方向的终局公平测试：100-row expert 保持原 BM128，只有
+184-row expert 从两个 4-wave CTA 合为一个 6-wave CTA；长 expert 的 Gate/Up
+权重读取减半，总 dispatched waves 理论下降 16.7%。即便如此仍回退 20.3%，
+说明非标准 CTA 的显式 producer、6-wave 协调和额外 kernel launch 成本远大于
+真实 work/traffic 节省。旧结论应修正为“可以表达，但当前运行效率不成立”，
+不再派生 BM160/BM192/BM224 邻接扫参。
+
+### Step2 精确 224-column 输出 tile
+
+对 Case2/3 令 accumulator half width 为 112，使 `7168 = 32*224` 无 N-tail。
+CTA 数由 28 增至 32，理论 accumulator 面积下降 12.5%。实际 OJ/correctness
+PASS，Step2 仅从 `222` 降至 `220 MT`，仍为 2 waves；Case3 回退
+`+4.079%`。没有跨 occupancy 台阶时，14.3% 的额外 CTA 调度成本占主导；
+不继续测试其他非自然 output width。
+
+### 尾激活与 MXCC cache policy
+
+| 方向 | Case3 变化 | 资源 / 结论 | 决策 |
+|---|---:|---|---|
+| Step1 只对 valid rows 做 SwiGLU | `-0.129%` | `216/54` 不变；float4 lowering 保留 | below gate |
+| `metaxgpu-FetchOnWrite-global` | `-0.046%` | 两 kernel 资源与 C++ 不变；L2 write-allocate 无信号 | noise |
+| `metaxgpu-force-l2rp` | `+26.137%` | 资源不变；强制所有 GVM 走该 L2/一致性路径严重回退 | reject |
+| `metaxgpu-skip-cache-invalidations` | `+0.076%` | 资源不变 | noise |
+
+Step1 valid-row SwiGLU 在 v59 历史也只有约 `-0.027%`，本次 v084 复核仍远低于
+1.2%，证明 padding 的 expensive activation 不是 GEMM 主路径。MXCC hidden help
+与 `/opt/maca` 头文件同时确认：普通 MACA `T.copy` backend 没有 submission 可用
+的逐 load cache hint；全局正式 flag 又给出噪声或终止性回退。cache-policy
+家族因此封口，不组合多个亚门槛 flag。
+
+本批仍不创建 v085、不修改根 submission、不移动 `dorm` 性能 HEAD。scratch
+证据位于 `/tmp/v084-step2-hybrid-bm{96,192}*`、
+`/tmp/v084-step2-output224*`、`/tmp/v084-step1-tail-activation*`、
+`/tmp/v59-bm192-case3-prefetch*`、`/tmp/v59-case3-hybrid-bm192-prefetch*`、
+`/tmp/v084-{fetch-on-write-global,force-l2rp,skip-cache-invalidations}*`。
