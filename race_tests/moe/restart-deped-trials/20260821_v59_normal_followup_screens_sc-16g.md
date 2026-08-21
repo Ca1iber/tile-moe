@@ -182,3 +182,39 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 5. 本批仍不创建 v085、不改根 submission、不移动 `dorm` 的性能 HEAD。
 
 新增 scratch 证据位于远端 `/tmp/v084-step2-unmasked-*`、`/tmp/v084-step2-full-or-tail-*`、`/tmp/v084-step1-gxgxxuu*`、`/tmp/v084-step2-explicit-*`、`/tmp/v084-step2-inline-*-layout*` 及其对应 `*_screen.json` / codegen 目录。
+
+## v084 分阶段 profile 复核与 K-pack 后续
+
+继续以 `dorm` 根 submission v084（SHA-256 `32e50bbb...`）为唯一基线。本批仍只使用正常、OJ 合规 TileLang；性能候选均先写 hypothesis、通过 source gate 与完整 padded-output correctness，再使用三轮同进程 AB/BA（warmup 10、repeat 200）。正值表示候选更慢。
+
+### mcProfiler 口径审计
+
+最初复用 v013 的 source loader 时，目标进程因旧接口 `RoutedMoEKernel` 与 v084 `run_kernel` 不兼容而在每个 replay import 失败；mcProfiler 仍生成了 report，因此“report 存在”不能代替检查目标日志中的 `PROFILE_DONE`。修正为 v59/v084 自带 `profile_submission.py` 后重新采集 Case3：
+
+| kernel | `Total Cycles` | Average wave life | 说明 |
+|---|---:|---:|---|
+| Step1 `kernel_kernel` | `8,819,256.93 Kcycles` | `4,725.73` cycles | kernel-name 过滤有效 |
+| Step2 `kernel_kernel_1` | `8,622,591.28 Kcycles` | `4,722.90` cycles | 与 Step1 同量级 |
+
+其余计数在两次报告中几乎逐项相同（例如 achieved waves 均 `5,758,096`、MTE duty 约 `41.48%`、MMA duty 约 `22.84%`、global read 约 `39.8 GB`），证明这些字段仍是整次 profiler range 聚合，不能冒充分阶段指标。可安全采用的结论只有：Case3 Step1/Step2 都是主路径；整次调用未出现 private spill，共享访问效率报告为 100%。
+
+### 候选结果
+
+| 方向 | SHA-256 | Case3 中位变化 vs v084 | 证据与决策 |
+|---|---|---:|---|
+| Step2 `A128 -> B256` 整块 A-first | `daae0066...` | `+3.313%` | correctness PASS；只让 A 先发不够，破坏 `A0/B0`、`A1/B1` 邻接后稳定回退 |
+| Step1 `G0-X0-G1-U0-U1-X1` | `a398791c...` | `+1.662%` | correctness PASS；`input1` 延后也回退，确认它必须夹在 `U0/U1` 之间 |
+| 移除 `TL_DISABLE_WARP_SPECIALIZED` | `9c5aea0a...` | 未计时 | OJ gate PASS；Case3 generated C++ 与 v084 SHA-256 完全相同，资源同为 Step1 `216/54`、Step2 `222/52`，compiler no-op |
+| Step1 `k_pack=4` + 正确 generalized lane map | `8df8859f...` | `+31.006%` | correctness PASS；总 MFMA/流量不变，但把 Gate/Up 从 32-K 交错改成 64-K 分组造成终止性回退 |
+
+`k_pack=4` 的第一次语法/资源探针只改参数，虽生成更短 C++，但因原 `16x32/64x8` map 为 k_pack=2 写死而出现约 69.3% mismatch，未计性能。随后采用 `thread=i+16*(j//(k_pack*4))`、`local=j%(k_pack*4)` 的 generalized map；该公式在 k_pack=2 时与 incumbent 完全等价，在 k_pack=4 时完整正确，但性能仍回退约 31%。
+
+### 新边界
+
+1. v084 Step2 收益来自半块局部邻接，不是简单的 A-first；整块 `A -> B` 家族关闭。
+2. Step1 的最优六段顺序两侧都已验证：`input1` 提前约回退 2.73%，延后约回退 1.66%，现有 `G1 -> U0 -> input1 -> U1` 是有效延迟窗口。
+3. 当前显式同步流水不会触发 TileLang 默认 warp specialization；移除禁用开关是逐字节 no-op。
+4. `k_pack=2` 同时决定 operand lane map 与 Gate/Up 的 32-K 交错。正确的 k_pack=4 仍大幅变慢，不继续派生 Step2 kpack4 或更多 64-K grouping。
+5. 没有候选达到 1.2% promotion gate；不创建 v085、不改根 submission、不移动 `dorm` 性能 HEAD。
+
+本批 scratch 证据位于远端 `/tmp/v084_per_kernel_case3_step*`、`/tmp/v084-step2-full-a-then-full-b*`、`/tmp/v084-step1-delay-input1*`、`/tmp/v084-auto-warp-specialize*`、`/tmp/v084-step1-kpack4*` 及对应 screen/codegen JSON。
