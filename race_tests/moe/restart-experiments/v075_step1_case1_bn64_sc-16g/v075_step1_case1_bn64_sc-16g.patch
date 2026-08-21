@@ -1,0 +1,33 @@
+--- /tmp/v059_remote_baseline.py	2026-08-21 08:59:56.213377725 +0800
++++ /tmp/v075_step1_case1_bn64_sc16g.py	2026-08-21 09:24:26.329379211 +0800
+@@ -1,7 +1,7 @@
+-# GENERATED EXPERIMENT: S18
+-# PARENT: S13 / OJ Wrong Answer on sample challenge
+-# PRIMARY_CHANGE: preserve the schedule with non-aliasing one-element CTA coordinates
+-# E145_REFERENCE: scheduling idea only; no async/imported source copied
++# RESTART EXPERIMENT: v075
++# PARENT: v059 teammate 79.33 Case1 grid
++# PRIMARY_CHANGE: Case1 Step1 halves the N tile to BN64 at the original 256-thread/4-wave CTA
++# No async copy, foreign call, injected source, or benchmark-semantic change.
+ import torch
+ import tilelang
+ import tilelang.language as T
+@@ -71,8 +71,9 @@
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+-    elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
+-        use_grid_transpose_step1 = True
++    elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
++        block_dexpert_step1 = 64
++        use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+         use_step1_expert_grouped_grid = False
+         use_step2_expert_grouped_grid = (
+@@ -938,4 +939,4 @@
+         group_idx_for_bx,
+         up_logits,
+         out,
+-    )
+\ No newline at end of file
++    )
