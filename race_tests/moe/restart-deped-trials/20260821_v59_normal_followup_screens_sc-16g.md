@@ -815,3 +815,114 @@ correctness、OJ source/generated gate、最终 ISA no-async/no-spill 与 2-wave
 独立归档为 `v085_step2_up_logits_ldpad128_sc-16g`，不再作为 abandoned trial；
 外部 OJ 逐 Case 数值待定，因此按最新 SOTA contract 不创建同 ID submission
 ledger。下一轮从 +256B pitch 候选继续研究 Step2 CTA-row/expert 映射。
+
+## v085 晋级后的行映射、Step1 资源与跨 kernel 顺序筛选
+
+本批以精确归档 v085 为唯一性能父版本，继续只使用正常/OJ 合规 TileLang。
+候选先写 hypothesis，执行 source/generated-code gate、完整 padded-output
+correctness，再按资源门槛或同进程 AB/BA 决定是否扩成长测。负值表示更快；没有
+任何结果达到相对 v085 至少 1.2% 的 promotion 门槛。
+
+### `up_logits` pitch 的局部最优与布局因果
+
+为排除 v085 初筛中的 DVFS 漂移，Case3 对所有相邻 pitch 使用持续
+warmup=300/repeat=100、两轮 AB/BA 重测。相对 pad128（额外 128 个 FP16 列，
+即 +256B/row）：
+
+| extra FP16 columns | 相对 v085 | 决策 |
+|---:|---:|---|
+| 32 | `+0.991%` | slower |
+| 64 | `+1.704%` | slower |
+| 96 | `+0.938%` | slower |
+| 160 | `+0.840%` | slower |
+| 192 | `+1.819%` | slower |
+| 224 | `+0.988%` | slower |
+| 256 | `+4.697%` | 512B 周期回到冲突档 |
+
+随后补齐此前没有做过的 Case1/2 shape-specific sweep。所有候选完整输出均通过，
+Case1 使用 warmup=1000/repeat=300，Case2 使用 warmup=100/repeat=100，每点两轮
+AB/BA：
+
+| candidate vs pad128 | Case1 | Case2 |
+|---|---:|---:|
+| pad64 | `+1.229%` | `+1.621%` |
+| pad96 | `+0.534%` | `+0.740%` |
+| pad160 | `+0.515%` | `+0.762%` |
+| pad192 | `+1.163%` | `+1.601%` |
+| pad224 | `+0.803%` | `+0.839%` |
+
+因此 pad128 是三个官方 shape 共同的局部最优点，不需要 shape specialization。
+另外三组布局/地址控制给出更具体边界：
+
+- 保持 +256B pitch，只整体移动 workspace base：+64B 为 `+1.830%`、+128B 为
+  `+3.281%`、+256B 为 `-0.097%` 噪声。收益来自 stride 关系，不是 allocator
+  起始相位。
+- 4D tile-major workspace 完整正确，但 Case3 `+1.671%`；paired mcTracer 中
+  Step1 `-0.042%` 噪声、Step2 `+5.541%`。ISA 仍是 36 个 `ldg_b128`、256 MMA、
+  无 spill，Step2 甚至从 `222/54` 降至 `218/52`，证明回退不是失去向量化或
+  地址代码膨胀，而是连续 tile 映射本身更差。
+- tile-major 内再给每个物理 row slot 256B，Case3 仍 `+1.633%`；相同低位相位
+  不足以复制 v085，v085 的大 row-major stride/high-bit 分布或跨 CTA locality
+  才是关键。
+
+### CTA-varying workspace phase
+
+在 v085 的 256B 空隙内，让不同 token-block CTA 使用不同列偏移，逻辑字节、
+workspace 大小、行内连续性与 MMA 均不变：
+
+| phase pattern | Case3 | 资源/结论 |
+|---|---:|---|
+| 4 phases × 64B | `+1.794%` | Step2 `222→216 MT`，仍 2 waves |
+| 2 phases × 64B | `+0.511%` | 两轮同向慢 |
+| 4 phases × 32B | `+2.747%` | 两轮同向慢 |
+
+三个候选全部完整正确。动态分散 CTA base phase 不能叠加 v085，且“相位更多”
+反而更差；v085 的收益不是泛化的随机打散，而是固定 row-pitch 映射。该家族关闭。
+最终候选 SHA 分别为 `8d731718...`、`fd8ef90b...`、`9d33fcd9...`。
+
+### Step1 小 accumulator 串行复用与 BK32
+
+旧 BN64 实验把 Step1 CTA 数翻倍，虽然寄存器 `222→150`，Case1 却回退
+17.68%。本批做了更公平的终局测试：每个原 N128 CTA 使用 N64 accumulator，
+串行计算两个相邻半块，CTA 数不变。首版缺少两个半块之间的 CTA barrier，严格
+candidate-vs-parent 检查发现错误；补 barrier 后 candidate 与 v085 **逐 bit 相同**，
+padding 也全零。最终资源为 Step1 `166/46`、3-wave，Step2 `204/60`、2-wave，
+无 async；但 Case1 三轮 warmup=1000/repeat=300 为
+`+20.623% / +20.608% / +20.443%`，中位 `+20.608%`。
+
+这证明 occupancy 台阶真实跨过也不足以获胜：同 CTA 为第二个 N64 半块重复读取
+input，并增加半块边界 barrier，其成本显著超过多一个 resident wave。最终源码
+SHA `1ba63f4c...`，不再派生串行 M/N 半块。
+
+另一个此前未覆盖的资源闸门是 Case2/3 Step1 `BK64→BK32`。lowering 正常，
+资源从 `218/54` 降至 `186/40`，但仍为 2-wave；K phase/barrier 数会翻倍且没有
+occupancy 档位收益，因此按 hypothesis 在计时前拒绝。源码 SHA `e4e657d3...`。
+
+### Step2 反向 K-pair 消费
+
+为测试跨 kernel recency，Case3 Step2 按 `(30,31),(28,29),...,(0,1)` 读取
+workspace，同时保留 pair 内 v084/v085 的 A-first 邻接。第一次实现漏改了
+tail-pruned 首块手工加载，完整 reference 立即失败；生成 C++ 显示 A0 与 B30
+错配，修正后完整 correctness PASS。正确候选 Step2 为 `216/52`、2-wave，
+Case3 smoke 为 `-0.025%`，纯噪声。
+
+这与旧 reverse-bx 结果一致：Step1 最后写入的 workspace 区域没有可兑现的
+跨 kernel cache recency，反向 reduction 顺序不再扩成长测。最终源码 SHA
+`4a39185a...`；错误中间态不计作性能候选。
+
+### 本批结论与证据位置
+
+1. v085 pad128 已在三个 Case 上形成稳健局部最优；base offset、tile-major、
+   CTA phase skew 均不能叠加。
+2. Step1 accumulator 是寄存器主体；缩 staging 到 BK32 不跨档，真正跨到 3-wave
+   的 serial N64 又被重复 input 流量和 barrier 终止性击败。
+3. 降低 MT registers（多个候选到 216/218/186/166）仍不能单独预测吞吐；必须
+   同时保留请求发射邻接、流量与同步结构。
+4. 没有候选达到 1.2%，因此不创建 v086、不修改根 submission、不移动 v085
+   性能源码。
+
+scratch 证据位于 `/tmp/v085_pitch_pad*_vs_pad128_case3.json`、
+`/tmp/v085_baseoff*_vs_zero_case3.json`、`/tmp/v085_tile_major*`、
+`/tmp/v085_step1_serial_n64*`、`/tmp/v085_shape_pitch_sweep_case{1,2}.json`、
+`/tmp/v085_step1_bk32_codegen_case3/`、`/tmp/v085_cta_*` 与
+`/tmp/v085_step2_reverse_k*`；对应 hypothesis cards 与候选源码同在 `/tmp`。
