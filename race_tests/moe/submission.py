@@ -67,6 +67,7 @@ def run_kernel(
     use_step1_tail_pruning = False
     use_step2_tail_pruning = False
     use_step2_input_prefetch = False
+    use_step2_half_interleave = False
 
     if hidden == 3584 and intermediate == 1024:
         use_grid_transpose_step1 = True
@@ -92,6 +93,12 @@ def run_kernel(
         use_step1_tail_pruning = num_experts >= 32
         use_step2_tail_pruning = num_experts >= 32
         use_step2_input_prefetch = True
+        use_step2_half_interleave = (
+            num_experts == 64
+            and total_padded == 12288
+            and total_valid == 9088
+            and num_blocks_m == 96
+        )
     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
         use_grid_transpose_step1 = True
         use_grid_transpose_step2 = True
@@ -119,6 +126,7 @@ def run_kernel(
         bool(use_step1_tail_pruning),
         bool(use_step2_tail_pruning),
         bool(use_step2_input_prefetch),
+        bool(use_step2_half_interleave),
     )
     kernel = _KERNEL_CACHE.get(key)
 
@@ -334,6 +342,7 @@ def run_kernel(
             use_step1_tail_pruning,
             use_step2_tail_pruning,
             use_step2_input_prefetch,
+            use_step2_half_interleave,
         ):
             scale = 1.44269504
             dtype = T.float16
@@ -773,32 +782,71 @@ def run_kernel(
                         for k_pair in T.serial(step2_k_tiles // 2):
                             k_even = k_pair * 2
                             k_odd = k_even + 1
-                            T.copy(
-                                down[
-                                    expert_id,
-                                    by * step2_output_tile : (by + 1) * step2_output_tile,
-                                    k_even * block_dexpert_step2 : (k_even + 1) * block_dexpert_step2,
-                                ],
-                                down_shared,
-                            )
-                            T.sync_threads()
-                            if use_step2_tail_pruning:
-                                for i_up_odd, j_up_odd in T.Parallel(
-                                    block_token, block_dexpert_step2
-                                ):
-                                    if i_up_odd < actual_rows:
-                                        up_logits_prefetch[i_up_odd, j_up_odd] = up_logits[
-                                            block_start + i_up_odd,
-                                            k_odd * block_dexpert_step2 + j_up_odd,
-                                        ]
+                            if use_step2_half_interleave:
+                                for producer_stage in T.unroll(2):
+                                    for i_up_odd_q, j_up_odd_q in T.Parallel(
+                                        block_token // 2, block_dexpert_step2
+                                    ):
+                                        if (
+                                            producer_stage * (block_token // 2) + i_up_odd_q
+                                            < actual_rows
+                                        ):
+                                            up_logits_prefetch[
+                                                producer_stage * (block_token // 2) + i_up_odd_q,
+                                                j_up_odd_q,
+                                            ] = up_logits[
+                                                block_start
+                                                + producer_stage * (block_token // 2)
+                                                + i_up_odd_q,
+                                                k_odd * block_dexpert_step2 + j_up_odd_q,
+                                            ]
+                                    T.copy(
+                                        down[
+                                            expert_id,
+                                            by * step2_output_tile
+                                            + producer_stage
+                                            * block_dhidden_step2 : by
+                                            * step2_output_tile
+                                            + (producer_stage + 1)
+                                            * block_dhidden_step2,
+                                            k_even * block_dexpert_step2 : (k_even + 1)
+                                            * block_dexpert_step2,
+                                        ],
+                                        down_shared[
+                                            producer_stage
+                                            * block_dhidden_step2 : (producer_stage + 1)
+                                            * block_dhidden_step2,
+                                            0:block_dexpert_step2,
+                                        ],
+                                    )
                             else:
                                 T.copy(
-                                    up_logits[
-                                        block_start : block_start + block_token,
-                                        k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
+                                    down[
+                                        expert_id,
+                                        by * step2_output_tile : (by + 1) * step2_output_tile,
+                                        k_even * block_dexpert_step2 : (k_even + 1) * block_dexpert_step2,
                                     ],
-                                    up_logits_prefetch,
+                                    down_shared,
                                 )
+                            T.sync_threads()
+                            if not use_step2_half_interleave:
+                                if use_step2_tail_pruning:
+                                    for i_up_odd, j_up_odd in T.Parallel(
+                                        block_token, block_dexpert_step2
+                                    ):
+                                        if i_up_odd < actual_rows:
+                                            up_logits_prefetch[i_up_odd, j_up_odd] = up_logits[
+                                                block_start + i_up_odd,
+                                                k_odd * block_dexpert_step2 + j_up_odd,
+                                            ]
+                                else:
+                                    T.copy(
+                                        up_logits[
+                                            block_start : block_start + block_token,
+                                            k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
+                                        ],
+                                        up_logits_prefetch,
+                                    )
                             for ki in T.serial(0, block_dexpert_step2 // 32):
                                 if not use_step2_tail_pruning or (
                                     ((T.get_thread_binding() // 64) % 4) * 32
@@ -818,16 +866,59 @@ def run_kernel(
                                     )
                                     step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
                             T.sync_threads()
-                            T.copy(
-                                down[
-                                    expert_id,
-                                    by * step2_output_tile : (by + 1) * step2_output_tile,
-                                    k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
-                                ],
-                                down_shared,
-                            )
+                            if use_step2_half_interleave:
+                                k_next_even = k_odd + 1
+                                for producer_stage in T.unroll(2):
+                                    if k_pair + 1 < step2_k_tiles // 2:
+                                        for i_up_even_q, j_up_even_q in T.Parallel(
+                                            block_token // 2, block_dexpert_step2
+                                        ):
+                                            if (
+                                                producer_stage * (block_token // 2)
+                                                + i_up_even_q
+                                                < actual_rows
+                                            ):
+                                                up_logits_shared[
+                                                    producer_stage * (block_token // 2)
+                                                    + i_up_even_q,
+                                                    j_up_even_q,
+                                                ] = up_logits[
+                                                    block_start
+                                                    + producer_stage * (block_token // 2)
+                                                    + i_up_even_q,
+                                                    k_next_even * block_dexpert_step2
+                                                    + j_up_even_q,
+                                                ]
+                                    T.copy(
+                                        down[
+                                            expert_id,
+                                            by * step2_output_tile
+                                            + producer_stage
+                                            * block_dhidden_step2 : by
+                                            * step2_output_tile
+                                            + (producer_stage + 1)
+                                            * block_dhidden_step2,
+                                            k_odd * block_dexpert_step2 : (k_odd + 1)
+                                            * block_dexpert_step2,
+                                        ],
+                                        down_shared[
+                                            producer_stage
+                                            * block_dhidden_step2 : (producer_stage + 1)
+                                            * block_dhidden_step2,
+                                            0:block_dexpert_step2,
+                                        ],
+                                    )
+                            else:
+                                T.copy(
+                                    down[
+                                        expert_id,
+                                        by * step2_output_tile : (by + 1) * step2_output_tile,
+                                        k_odd * block_dexpert_step2 : (k_odd + 1) * block_dexpert_step2,
+                                    ],
+                                    down_shared,
+                                )
                             T.sync_threads()
-                            if k_pair + 1 < step2_k_tiles // 2:
+                            if not use_step2_half_interleave and k_pair + 1 < step2_k_tiles // 2:
                                 k_next_even = k_odd + 1
                                 if use_step2_tail_pruning:
                                     for i_up_even, j_up_even in T.Parallel(

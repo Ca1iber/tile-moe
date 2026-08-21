@@ -77,3 +77,33 @@ codegen 确认后端确实生成 `hexp2` 与 half2 算术，而非重新提升�
 5. 没有候选达到 promotion 门槛。`dorm`、根 submission 和 v59 归档均保持不变。
 
 原始临时证据位于远端 `/tmp/`：`v59-prescale-*`、`v59_case3_expert_grid_*`、`v59-step1-mfma16-tail-*`、`v59-case1-step1-expert-grid-assume-*`、`v59-case1-fp16-swiglu-*`。这些是 scratch 证据，不作为持久 submission。
+
+## Step2 同步 copy 调度后续筛选
+
+所有候选继续从精确 v59 出发，只使用同步 TileLang copy。负值表示更快。
+
+| 方向 | Case3 median vs v59 | 关键资源/结论 | 决策 |
+|---|---:|---|---|
+| B-first 64-row half interleave | `-0.948%`（初版）/ `-1.009%`（looped） | Step2 224 MT / 52 ST / 2 waves | below gate |
+| looped half + Step1 prune | `-1.038%` | 正确但仍低于 1.2% | below gate |
+| full A middle | `-0.322%` | 重叠不足 | reject |
+| even phase only | `-0.448%` | 只覆盖一半 producer phase | reject |
+| reverse half order | `-0.692%` | 216 MT，但调度更差 | reject |
+| cross-half A order | `-0.782%` | 顺序弱于 low-half-first | reject |
+| full-domain masked half | `-0.905%` | 代码更短但调度更差 | reject |
+| K-half B split | `+8.564%` | 破坏 B 行方向连续性 | reject |
+| quarter row interleave | correctness FAIL | 32-row A fragment 不能安全拆成该 quarter 语义 | reject |
+| MMA sandwich | `+0.931%` | 同步 load 阻塞，独立 MMA 未隐藏延迟 | reject |
+| Step2 expert grouping + range proofs | `+0.824%` | guard 已消除，mapping 本身仍慢 | reject |
+| 按 accumulator 完成全部 K | `-0.944%` | Step2 增至 240 MT，未优于 looped parent | reject |
+| 双 B fragment 预装 | `-0.810%` | 224 MT 不变，load/MMA 原交错更优 | reject |
+| **A-first 64-row half interleave** | **`-3.395%`（最终 5 轮）** | Step2 222 MT / 52 ST / 2 waves，trace Step2 `-9.448%` | **promote v083** |
+
+### v083 关键因果
+
+- v59 每个 phase 是完整 B copy 后完整 A copy；v083 将 Case3 精确 shape 改为 `A0 -> B0 -> A1 -> B1`。
+- Case1/2 generated C++ 与 v59 逐字节一致；两者性能变化均在 0.02% 内。
+- Case3 最终五轮为 `-3.394% / -3.418% / -3.400% / -3.393% / -3.395%`，标准差 `0.0094%`。
+- mcTracer 三组配对把收益定位到 Step2：中位 `3.343104 -> 3.027712 ms`，paired median `-9.448%`；Step1 仅 `+0.277%` 噪声。
+- 最终 ISA 的 MMA/shared/store/barrier 工作量不变，global-load 静态 site 反而从 36 增至 44；收益来自 request issue order 与有效重叠，而不是少算少搬。
+- v083 为正常、非 hack 晋级版本；外部 OJ 尚待复核，不在本报告中预测新分数。
