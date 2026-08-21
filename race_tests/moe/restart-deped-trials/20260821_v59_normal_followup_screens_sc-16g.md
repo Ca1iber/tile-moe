@@ -787,3 +787,31 @@ load/store；未触碰的地址洞只扩大虚拟跨度，不等价于 HBM 字�
 Step1 `group_offsets` 标量 load/address 链，未得到可测 cache 收益，因此不晋级。
 证据位于 `/tmp/v084-packed-up-logits*` 与
 `/tmp/v084_packed_up_logits_{codegen,case3_short.json}`。
+
+## 从压紧反例转向物理行跨度：v085 有效线索
+
+压紧 valid rows 没有收益并不代表 `up_logits` 布局无关，而是说明 padding 洞没有
+产生实际 HBM 字节。继续审计发现 v084 的 FP16 leading dimension 在 Case1 为
+16384B、Cases2/3 为 4096B，都是 2 的幂；因此改为只扰动物理行 pitch，而不改变
+逻辑行数、列数、计算或有效访问。
+
+Case3 的因果 sweep 呈明显周期响应：
+
+| 额外 pitch | Case3 median vs v084 | 结论 |
+|---:|---:|---|
+| 64B | `-3.448%` | 有效 |
+| 256B | `-4.429%` | 最佳稳定控制 |
+| 384B | `-2.653%` | 有效但较弱 |
+| 512B | `+0.077%` | 回到噪声 |
+
+最终选择 `+128 FP16 columns = +256B/row`。三 Case 长测分别为
+`-4.315% / -4.602% / -4.438%`，pstdev 均不超过 `0.061%`；Case3 三对
+mcTracer 中 Step1 仅 `-0.547%`，Step2 达 `-12.750%`。三 Case 完整 padded
+correctness、OJ source/generated gate、最终 ISA no-async/no-spill 与 2-wave
+门禁全部通过。
+
+周期性和 Step2 归因强烈支持 cache set、memory partition 或内部 bank 地址映射
+冲突，但 mcTracer 不能直接证明具体硬件层级，报告中保持为高置信推断。该方向已
+独立归档为 `v085_step2_up_logits_ldpad128_sc-16g`，不再作为 abandoned trial；
+外部 OJ 逐 Case 数值待定，因此按最新 SOTA contract 不创建同 ID submission
+ledger。下一轮从 +256B pitch 候选继续研究 Step2 CTA-row/expert 映射。

@@ -1,0 +1,20 @@
+--- v084_step2_all_cases_a_first_half_interleave_sc-16g_custom_fusedmoe.py
++++ v085_step2_up_logits_ldpad128_sc-16g_custom_fusedmoe.py
+@@ -378,7 +378,7 @@
+             )
+ 
+             input_shape = (total_padded, hidden)
+-            intermediate_shape = (total_padded, intermediate)
++            intermediate_shape = (total_padded, intermediate + 128)
+             gate_shape = (num_experts, intermediate, hidden)
+             up_shape = (num_experts, intermediate, hidden)
+             down_shape = (num_experts, hidden, intermediate)
+@@ -1025,7 +1025,7 @@
+         kernel = make_kernel(*key)
+         _KERNEL_CACHE[key] = kernel
+ 
+-    up_logits = _workspace(stacked_expert_tokens, intermediate)
++    up_logits = _workspace(stacked_expert_tokens, intermediate + 128)
+     kernel(
+         stacked_expert_tokens,
+         gate_w,

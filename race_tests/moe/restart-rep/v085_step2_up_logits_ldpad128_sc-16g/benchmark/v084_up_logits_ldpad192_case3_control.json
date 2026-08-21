@@ -1,0 +1,45 @@
+{
+  "case": 3,
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-experiments/v084_step2_all_cases_a_first_half_interleave_sc-16g/v084_step2_all_cases_a_first_half_interleave_sc-16g_custom_fusedmoe.py",
+    "candidate": "/tmp/v084-up-logits-ldpad192.py"
+  },
+  "protocol": {
+    "rounds": 2,
+    "warmup": 5,
+    "repeat": 100,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 8.950031127929687,
+      "candidate": 8.71636962890625,
+      "change_percent": -2.6107339257655515
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 8.71947021484375,
+      "parent": 8.960957641601562,
+      "change_percent": -2.694884145380827
+    }
+  ],
+  "change": {
+    "samples": [
+      -2.6107339257655515,
+      -2.694884145380827
+    ],
+    "mean": -2.6528090355731893,
+    "median": -2.6528090355731893,
+    "pstdev": 0.042075109807637734
+  }
+}

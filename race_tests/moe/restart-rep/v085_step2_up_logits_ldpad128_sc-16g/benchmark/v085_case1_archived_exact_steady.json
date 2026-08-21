@@ -1,0 +1,56 @@
+{
+  "case": 1,
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-experiments/v084_step2_all_cases_a_first_half_interleave_sc-16g/v084_step2_all_cases_a_first_half_interleave_sc-16g_custom_fusedmoe.py",
+    "candidate": "/root/tilelang-metax/race_tests/moe/restart-experiments/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_custom_fusedmoe.py"
+  },
+  "protocol": {
+    "rounds": 3,
+    "warmup": 1000,
+    "repeat": 300,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 2.706185302734375,
+      "candidate": 2.5852705891927084,
+      "change_percent": -4.468086993876296
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 2.5882342529296873,
+      "parent": 2.702249755859375,
+      "change_percent": -4.219280719055085
+    },
+    {
+      "round": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 2.7039599609375,
+      "candidate": 2.5856768798828127,
+      "change_percent": -4.374439073190894
+    }
+  ],
+  "change": {
+    "samples": [
+      -4.468086993876296,
+      -4.219280719055085,
+      -4.374439073190894
+    ],
+    "mean": -4.353935595374092,
+    "median": -4.374439073190894,
+    "pstdev": 0.10260420735213571
+  }
+}

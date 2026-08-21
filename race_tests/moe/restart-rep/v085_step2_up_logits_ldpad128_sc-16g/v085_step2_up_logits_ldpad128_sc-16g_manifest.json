@@ -1,0 +1,597 @@
+{
+  "iteration_id": "v085_step2_up_logits_ldpad128_sc-16g",
+  "status": "inconclusive",
+  "machine": "sc-16g",
+  "parent": "v084_step2_all_cases_a_first_half_interleave_sc-16g",
+  "incumbent_local_submission_sha256": "32e50bbb2b21683765702b920ee78aa2fff865db78fcc8da94d3e3debfa517a2",
+  "candidate_sha256": "6d4aa3a6f428d023adf6b681ea3a4429e5fd563d84f4fdd12fb85a8aab5be3d5",
+  "historical_external_oj_baseline": {
+    "iteration": "v059_teammate_79_33_case1_grid_sc-16g",
+    "display_score": 79.33
+  },
+  "promotion_gate_percent": 1.2,
+  "local_benchmark": {
+    "protocol": "archived exact source; same-process device-event AB/BA; Cases2/3 warmup 10 repeat 200; Case1 steady-state warmup 1000 repeat 300",
+    "case1": {
+      "rounds": 3,
+      "v084_median_ms": 2.7039599609375,
+      "candidate_median_ms": 2.5856768798828127,
+      "median_change_percent": -4.374439073190894,
+      "pstdev_percent": 0.10260420735213571
+    },
+    "case2": {
+      "rounds": 5,
+      "v084_median_ms": 4.589121398925781,
+      "candidate_median_ms": 4.381121215820312,
+      "median_change_percent": -4.52665269109922,
+      "pstdev_percent": 0.029003030290391956
+    },
+    "case3": {
+      "rounds": 3,
+      "v084_median_ms": 8.952974243164062,
+      "candidate_median_ms": 8.558379516601562,
+      "median_change_percent": -4.412217840978183,
+      "pstdev_percent": 0.015139559906931261
+    }
+  },
+  "case3_mctracer": {
+    "pairs": 3,
+    "step1_median_change_percent": -0.5470174524615734,
+    "step2_median_change_percent": -12.750210260723293
+  },
+  "oj_source_and_generated_gate": "PASS",
+  "full_padded_correctness": "PASS_ALL_CASES",
+  "isa_gate": "PASS_ALL_CASES_NO_ASYNC_NO_SPILL_TWO_WAVES",
+  "external_oj_status": "PENDING",
+  "sota_gate": null,
+  "conclusion": "Stable local winner on all three OJ shapes; external per-case OJ scores are unavailable, so SOTA promotion is inconclusive and no restart-submission entry is created.",
+  "summarized_at_utc": "2026-08-21T18:28:05.516180+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "90b3f4f33755c5752f292ac1518cf3a912360ff7",
+    "status_short": "M race_tests/moe/restart-deped-trials/20260821_v59_normal_followup_screens_sc-16g.md\n?? race_tests/moe/moe-roofline/v085_step2_up_logits_ldpad128_sc-16g/\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-experiments/v085_step2_up_logits_ldpad128_sc-16g/\n?? race_tests/moe/restart-hack/\n?? race_tests/moe/restart-rep/v085_step2_up_logits_ldpad128_sc-16g/\n?? race_tests/moe/restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v085_step2_up_logits_ldpad128_sc-16g/UNAVAILABLE.md",
+      "bytes": 376,
+      "sha256": "435d16de45251c88804bd3513829614da7706366db93d4bcfc402b77a5b24eb3"
+    },
+    {
+      "path": "moe-roofline/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_manifest.json",
+      "bytes": 237,
+      "sha256": "4b93f19fadc24664e7d7e3c753474814a882a18fbc74d4b15ea477577117ae3c"
+    },
+    {
+      "path": "restart-experiments/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g.patch",
+      "bytes": 833,
+      "sha256": "01e2cbee2863e059a1670178aee91209e0730b4f983d4f49c5ca686404af2a59"
+    },
+    {
+      "path": "restart-experiments/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_custom_fusedmoe.py",
+      "bytes": 55269,
+      "sha256": "6d4aa3a6f428d023adf6b681ea3a4429e5fd563d84f4fdd12fb85a8aab5be3d5"
+    },
+    {
+      "path": "restart-experiments/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_experiment.md",
+      "bytes": 1962,
+      "sha256": "37cf1e7990fb01b6d2e026faa841914a6f3b96dd80c03627583732a8bad802ce"
+    },
+    {
+      "path": "restart-experiments/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_hypothesis.md",
+      "bytes": 2586,
+      "sha256": "829f243e498f1a1e97e2ac236b3f5632b405aff2a28971d22b5408dea1293ec9"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/README.md",
+      "bytes": 701,
+      "sha256": "110404714fbb5a744883c16e925bebe7e8c02b719c1eb5f309594905e2c24c61"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/external_oj_UNAVAILABLE.md",
+      "bytes": 295,
+      "sha256": "f004418c02c04167f9921125f3ee335fb592f3880fc4412a1b3263be030351a0"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad128_case1_final.json",
+      "bytes": 1310,
+      "sha256": "50130a37e895d973a6f65570d644d022c321cda3f9acb9a095bcd60c8d8167c6"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad128_case2_final.json",
+      "bytes": 1782,
+      "sha256": "d3efb729bc91754d09ecdfcb942a7f3c9a58601cdbc55d6de4c373f5ffe2dd9d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad128_case3_control.json",
+      "bytes": 1075,
+      "sha256": "d920f95f4ef1fb0ca872c05be5c59da954a482e1df72f83736999f182a9c2e5d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad128_case3_final.json",
+      "bytes": 1308,
+      "sha256": "7e96a4aff0b64457c6e112a28cdf44b1a76a5567de9c180e110dd6bfa8b4cd90"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad192_case3_control.json",
+      "bytes": 1077,
+      "sha256": "f12e9a4710a7d1cdcb8216f8bb1cdc884cd58100b79d0397b1e5b28c4be47b1a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad256_case3_control.json",
+      "bytes": 1081,
+      "sha256": "2be52833edaac0ca48fe60b99c5f6e2c936722701433a9159a2eadbe0cd1894c"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad32_case3_control.json",
+      "bytes": 1076,
+      "sha256": "f7ba981e0858b6f0ff6388498807cf0dc4dba049110606698d8dd8662548aa3c"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v084_up_logits_ldpad64_case3_long.json",
+      "bytes": 1307,
+      "sha256": "93df29de8a3c170f07e1397531257c8ed80ea9db0589e55550ee4219132ba6c2"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v085_case1_archived_exact_final.json",
+      "bytes": 1427,
+      "sha256": "782e85b3c5a350ae4d0fe430853f75e3456f06adf713ae96b8437c4795f0909a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v085_case1_archived_exact_steady.json",
+      "bytes": 1432,
+      "sha256": "ec7122c9b4352dc895eced6e4f3a4a6aac900fb59440b2d7a4eeb4a483613c7b"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v085_case2_archived_exact_final.json",
+      "bytes": 1898,
+      "sha256": "a8d0173f67f47479f09538f388633ef45aa7682cf75a7acafcd4fda729f40907"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/benchmark/v085_case3_archived_exact_final.json",
+      "bytes": 1427,
+      "sha256": "a77000b40d7bb0a02ce0b5f67ea7eebf33e38d13d2c0a1a66d4c68afdbb7501c"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case1_compiler.log",
+      "bytes": 10629,
+      "sha256": "fc75c4e1fdabca62381c4d1327bd6dffa7a196f9e9bab3d609ae695887ee0016"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case1_generated_device.cpp",
+      "bytes": 32212,
+      "sha256": "342347f2cf3c02aaf958822bf2781757de94536563e8da8271756261a0b3abe4"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case1_resource_usage.json",
+      "bytes": 656,
+      "sha256": "c776d7df23adb063730fc161971c5c4f11ad9616cfbe76cb9f2a85fa00ef09b2"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case2_compiler.log",
+      "bytes": 10629,
+      "sha256": "9db3102317e8057e839432a58efb46c496c3a4fa429907a68d1c86fb193e181e"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case2_generated_device.cpp",
+      "bytes": 29152,
+      "sha256": "39fd9084acbe731bd2ef0771e6ec5bda637dff4f5f549c2e577b17a19b74daf6"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case2_resource_usage.json",
+      "bytes": 656,
+      "sha256": "638b3ff797b8a49b39ba0fda492ba601e08f5f4b274c5eaf2f39e0e18ff442df"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case3_compiler.log",
+      "bytes": 10825,
+      "sha256": "b8681e05401f040365f30dfd6a67424e0312178663c2c960750d356e0450a53d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case3_generated_device.cpp",
+      "bytes": 29152,
+      "sha256": "9b8826636f818c42dac825202e1b35bb608615e37214888e95e40c35846f9a5b"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_codegen/v084_up_logits_ldpad128_case3_resource_usage.json",
+      "bytes": 656,
+      "sha256": "57713ffff5f939bdeec4a346ddd06b04c7ec3dbdd77f7717e2d73f05202c24c0"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/summary.json",
+      "bytes": 4116,
+      "sha256": "944be49b8ecdf2e2236c81ea362eab2d52377cb6d584d2b2d53d213c66d7b0b2"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.device_obj.log",
+      "bytes": 10403,
+      "sha256": "087530146b130af86a2e4de5b3ab55c6fe3160b4ae7f6d18c100945e9b0e311d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.embedded.bc",
+      "bytes": 162400,
+      "sha256": "9fcc3bf77d3cbf229157be84c92af428bb37e5a6810d48c5bb7edc3c59950c6d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "1d39b97c740fa084b3b6bd3455f9fcbbaa85555b1225986da90d88276cb05308"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.llvmcmd",
+      "bytes": 702,
+      "sha256": "93eeaa55e1fea54b1b2ac0c1cdd0a15fcb6913de28e907621008c3fb32ce0d76"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.llvmcmd.txt",
+      "bytes": 698,
+      "sha256": "1064f81ae622274300efd9bccb923d60efa5a829153817a70cf6d6412224f0f7"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.mcfb",
+      "bytes": 238616,
+      "sha256": "1ca2405e6b4ab52306cf2cb048afa33dc06cfb263658f7d999d484d41d66e5ec"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.metax.s",
+      "bytes": 480977,
+      "sha256": "146e0e0f8e3224a95e5a5db42e65787bcde7041f2b8609b487d7f9f0694632a3"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.sha256",
+      "bytes": 801,
+      "sha256": "f3ff4248ac50822794f87df0bb8170ebaee285e478794046edfe2706464785ef"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.text.bin",
+      "bytes": 50160,
+      "sha256": "68ae8db4cc88cd5caa936d03997be9c75e5d7ad2362115186e33ab18f28d64b0"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case1/v084_up_logits_ldpad128_case1_generated_device.xcore1000.elf",
+      "bytes": 238616,
+      "sha256": "1ca2405e6b4ab52306cf2cb048afa33dc06cfb263658f7d999d484d41d66e5ec"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/summary.json",
+      "bytes": 4113,
+      "sha256": "0bcb41facba150a98f55b1736c832d828388809c9e4fce43c09b1335783faf37"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.device_obj.log",
+      "bytes": 10403,
+      "sha256": "6174a894b4668c8ed3071b7b94f2eeabd7a2ea3c486e470b4339a74563aa8e3a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.embedded.bc",
+      "bytes": 142752,
+      "sha256": "068e54f47b4dbc7605f22c19a9227f85a3c15f88f7f45626ef39cd0247a63054"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "d33f3e86a07d1bef68aaf98f7712880df285e8650f20b2d8759a36542173d81a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.llvmcmd",
+      "bytes": 702,
+      "sha256": "0ae116151a7e8076e568ec8629cd63a2ddea7fb3e34ced25fa648eeb383c6d2f"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.llvmcmd.txt",
+      "bytes": 698,
+      "sha256": "4bc51679cc608edca73a36b139bebe701b73a2b79455eeac39008c4f61539777"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.mcfb",
+      "bytes": 214656,
+      "sha256": "510c01f0758547ab4d1d9569f821389cad9cd3fc78a33f4a78416d22b6bc8f24"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.metax.s",
+      "bytes": 448783,
+      "sha256": "31b1fc19eac1e2283b6405b898a9130be0cf93f5c07f8adff6513263a92a47a6"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.sha256",
+      "bytes": 801,
+      "sha256": "089a888685b55d36b828156d8c32c8f88bd534d0de1bf57d22ed75476283e041"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.text.bin",
+      "bytes": 46320,
+      "sha256": "56f44cf9a495823ce9c338a2d6f6b39e8a8c2c80410aec9c8eb50dbb7d4959ca"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case2/v084_up_logits_ldpad128_case2_generated_device.xcore1000.elf",
+      "bytes": 214656,
+      "sha256": "510c01f0758547ab4d1d9569f821389cad9cd3fc78a33f4a78416d22b6bc8f24"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/summary.json",
+      "bytes": 4113,
+      "sha256": "b79b39b72541ed2379e29c0a84ac7113819785888fa15fe7dc35783e881c8142"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.bundle_targets.txt",
+      "bytes": 21,
+      "sha256": "14bbe855f797d3e78a55948bb18d9efdbcfbff07a95ad7eaed1c41201d627642"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.device_obj.log",
+      "bytes": 10403,
+      "sha256": "2fe5e9ed5841f83dadbf7b12d8f209a03b55da76c475e9f80bfb2228d51da39c"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.embedded.bc",
+      "bytes": 142752,
+      "sha256": "15f2d320aec84191e707d7cea2c0a83f3d57a1c7dacad0960b57923980479d62"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.isa_backend.log",
+      "bytes": 378,
+      "sha256": "d33f3e86a07d1bef68aaf98f7712880df285e8650f20b2d8759a36542173d81a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.llvmcmd",
+      "bytes": 702,
+      "sha256": "c60e55e71c27a05d9a7c0a014b718c85e3703cf5c0145fb0425d672269aeb2b4"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.llvmcmd.txt",
+      "bytes": 698,
+      "sha256": "2c5fdc0dfa74b2ad6e9a7f80889081664f0cec50e848edaa6e4edeb0d1e7266f"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.mcfb",
+      "bytes": 214656,
+      "sha256": "30d63fc3c026d8775cee9ed758eed385408963fa13ea8a63561f7d36d0b50003"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.metax.s",
+      "bytes": 448783,
+      "sha256": "ed26ee0156b4d2adc39b8bca070fc538e1864c895c568a71be6376c82dbeabd6"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.sha256",
+      "bytes": 801,
+      "sha256": "ce6b837182cc31d900cb1aaa2cca850658b362b95259f2a7e708f36c7987a8a2"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.text.bin",
+      "bytes": 46320,
+      "sha256": "cd86fea5a2e98ae09e2aef7f83e332b1b2e2b43d9a6f91fff468a2e5f2b41c88"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/codegen/v084_up_logits_ldpad128_isa_case3/v084_up_logits_ldpad128_case3_generated_device.xcore1000.elf",
+      "bytes": 214656,
+      "sha256": "30d63fc3c026d8775cee9ed758eed385408963fa13ea8a63561f7d36d0b50003"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/correctness/oj_source_generated_validation.txt",
+      "bytes": 438,
+      "sha256": "c41ca6fe8cca7eda9f0ef3600f264cc04133604a7c4031ebeaf9a4c446059985"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/correctness/v084_up_logits_ldpad128_case1_fullcheck.json",
+      "bytes": 820,
+      "sha256": "c69bcc2b967bdadcc0ad5ef1bc1f5a14b7ab45d09aec9c9782533f6134a0e972"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/correctness/v084_up_logits_ldpad128_case2_fullcheck.json",
+      "bytes": 825,
+      "sha256": "596d248453293ae03f2eebbf108be97f7684ef587c144116dde3826008ca781e"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/correctness/v084_up_logits_ldpad128_case3_fullcheck.json",
+      "bytes": 819,
+      "sha256": "6b886d17f550115396308607b5e331342c687ea15210dd30accba5bef8ae74bd"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mcprofiler/UNAVAILABLE.md",
+      "bytes": 368,
+      "sha256": "77f0a850fa22a38061362cc32f81d6e595187273e68bba85967d1d4c066d7725"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/ldpad128_vs_v084_case3_summary.json",
+      "bytes": 9833,
+      "sha256": "fa4616514344e20cc7858f54aa31a90c9f7f928ef8fbcd04a89ba56bd103b1ec"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_1_v084/case3_pair1_1_v084-518566.json",
+      "bytes": 104361,
+      "sha256": "153b45fe05a8de764fe678c49047b71c1e94a4c6ee237349d1f1e8d01cefb965"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_1_v084/command.json",
+      "bytes": 579,
+      "sha256": "94921a0b3d9021a87562ae719e62b4ceece9fd3c2c46d7cc2655e910ad760b8c"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_1_v084/mctracer_console.log",
+      "bytes": 5399,
+      "sha256": "f89a5044a0a97b6f430c37bab3877c1a233d28095d70c4b456e07defb992743d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_1_v084/summary.json",
+      "bytes": 793,
+      "sha256": "b3720da48c0128cffa4d036d33def6a9cdb018b6aea544051db3af050ce74e66"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_2_ldpad128/case3_pair1_2_ldpad128-518741.json",
+      "bytes": 104369,
+      "sha256": "ad413fd18ba88ef1b93ce9ef547604a410c00f4d73a59d9d036085b2127fa44a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_2_ldpad128/command.json",
+      "bytes": 444,
+      "sha256": "ebdd5cc47e7e2d76067e052e6c308e2913c558cf2e3a1ccfbe46f11ff083babe"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_2_ldpad128/mctracer_console.log",
+      "bytes": 5264,
+      "sha256": "2e03a3f5992bbbd812d6619e346eae8f48d1fa8931be36c34ba52bfe11e33494"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair1_2_ldpad128/summary.json",
+      "bytes": 805,
+      "sha256": "52ea82d892360f59f401bffb97f4d17318919154dd0a3d9cf838858334ae82de"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_1_ldpad128/case3_pair2_1_ldpad128-518916.json",
+      "bytes": 104338,
+      "sha256": "a88ea44a2e2377e8d6ec25741fa87d824385bbca6094868a1e802404d9140089"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_1_ldpad128/command.json",
+      "bytes": 444,
+      "sha256": "facd207f6324f2d59cafded539944907522f3f30d4042f2f405a6dcef06add75"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_1_ldpad128/mctracer_console.log",
+      "bytes": 4907,
+      "sha256": "1e789c9cff4094a3a9204ea84326568309d9cd56cda115cea7c4c6d11cc3e072"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_1_ldpad128/summary.json",
+      "bytes": 805,
+      "sha256": "ee344098a20ed479d0523fa622a9e5964ce021bd792def28e0a94514ca69a462"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_2_v084/case3_pair2_2_v084-519044.json",
+      "bytes": 104357,
+      "sha256": "74900ef3ec4afe804c05adad46094e93a6c081cab44dfeba461870e49c7185fb"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_2_v084/command.json",
+      "bytes": 579,
+      "sha256": "97da0c2bb84a584582160428f0320206d9bfd6772dc3eedf2b676f6138c8ca3d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_2_v084/mctracer_console.log",
+      "bytes": 5042,
+      "sha256": "c7abd99f5755c9560a9be9734593c29427af8f5ad1f1034c9468d60e7f71de09"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair2_2_v084/summary.json",
+      "bytes": 790,
+      "sha256": "8a84401ae9982d96b4293cb89c9348a11cedbfdd298304854b34fd75268583e2"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_1_v084/case3_pair3_1_v084-519171.json",
+      "bytes": 104342,
+      "sha256": "a8c8667f2752d83f5ed8d08d58f4b94a10031fa895612521d8f6a8dd88869f59"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_1_v084/command.json",
+      "bytes": 579,
+      "sha256": "d58d2121ce9406adcf1fb7a837116254999d034da94425cc3a2fa74cb5ef7273"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_1_v084/mctracer_console.log",
+      "bytes": 5042,
+      "sha256": "5b7065df6df3470b32c3e1b1afae48a8cddbe51474fc8fa8b2fd8a7f8a07190e"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_1_v084/summary.json",
+      "bytes": 793,
+      "sha256": "e9a69b39d87f6515d7b3b720d06b22d58a20e67092974d6c09fd19842fe18f18"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_2_ldpad128/case3_pair3_2_ldpad128-519299.json",
+      "bytes": 104362,
+      "sha256": "846bd31f6e195eeec7c3630d1c1e6d192e1a110814dfb520aacbeab1e5a9b413"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_2_ldpad128/command.json",
+      "bytes": 444,
+      "sha256": "48a08dda49be2925a0e424bc51b19eb127fd05962cf30f86f75f5946e7f71e0c"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_2_ldpad128/mctracer_console.log",
+      "bytes": 4907,
+      "sha256": "c613d539c4b9b96f70272e1d277b5396e1331d0d727fc06f84f262a85bce608b"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mctracer/v084_ldpad128_mctracer_case3/pair3_2_ldpad128/summary.json",
+      "bytes": 805,
+      "sha256": "1013db3e602e160cb9388f8a70580c8a24e9144dabc244760030591a110aa59a"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/profiler/mxsmi/v085_mxsmi_snapshot.txt",
+      "bytes": 3626,
+      "sha256": "0d7150d22f6ce6fc5e12a77b6c5e9f6a11bbbb4d69b932569e0c83a8cd1bef4d"
+    },
+    {
+      "path": "restart-rep/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_report.md",
+      "bytes": 7187,
+      "sha256": "3d38b549bb0909e843fcf003b0ffc510afc72518ee11bc0766a14f8fb35673eb"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/analyze_metax_isa.py",
+      "bytes": 4213,
+      "sha256": "dff479daee3f45463a47c2a6d554888b088c2d14a6e6bd645cb066b079a38a87"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/capture_codegen.py",
+      "bytes": 5756,
+      "sha256": "d81be2f92b3538966d5504ed279c807db3a9c5182a052cc4557828c44658e10f"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/extract_metax_isa.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/profile_submission.py",
+      "bytes": 3373,
+      "sha256": "0104891c6729d30c24feb108a4b89804c3c011fcb85869c4186cd762355740cd"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/run_paired_mctracer.py",
+      "bytes": 6716,
+      "sha256": "8ac0449343c15a2c2886a9627c893aceb5a174aff3eccb004f915431df1fb6ab"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/run_v59_fullcheck.py",
+      "bytes": 5763,
+      "sha256": "de683f42eb05b384c8b576b87cee5b546168325a5db5b19342b90c3bfd9e961c"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/run_v59_paired.py",
+      "bytes": 5751,
+      "sha256": "0172726c0f8e4051cd53f29a5c2495675c2bdfc4a24278a6fb287fa25c57659c"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/summarize_iteration.py",
+      "bytes": 3127,
+      "sha256": "dd95064639a88a92f0c026a3d879f59e9a762c78e94d1b0375e3a8d3072ec1b0"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/v085_step2_up_logits_ldpad128_sc-16g_scripts.md",
+      "bytes": 1953,
+      "sha256": "d4b48de576887f01ed42fede7387ea41c7c485097ad57a344678aff9fe7473d5"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/validate_iteration.py",
+      "bytes": 3471,
+      "sha256": "813a4eeb0b42c1c06e583c1c652b4ee59df555c0e6caa5d7695d48b1ee9ee93a"
+    },
+    {
+      "path": "restart-scripts/v085_step2_up_logits_ldpad128_sc-16g/validate_oj_submission.py",
+      "bytes": 6807,
+      "sha256": "a83f8139dffd694b19484a2c092381898af3cc145263ac5fa96a23777dfa158a"
+    }
+  ]
+}
