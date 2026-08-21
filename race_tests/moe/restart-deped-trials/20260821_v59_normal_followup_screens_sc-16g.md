@@ -641,3 +641,39 @@ expert-grouped mapping 至此共同关闭 Step1 网格重排轴。
 `/tmp/v084-step2-{early,final-pair}-routed-weight*`、
 `/tmp/v084-{cross-mem-fence-sched,pingpong-opt,unorder-dispatch,mmasched,sinkload,live-range-split}*`、
 `/tmp/v084-step1-grid-swizzle{2,4}*` 及对应 JSON/codegen 目录。
+
+## v084 Step2 panel、scheduler latency、tail clear 与激活协同筛选
+
+继续使用同一正常/OJ 合规门禁和 Case1/3 单轮 AB/BA smoke（warmup 5、
+repeat 50）。本批候选均通过完整 padded-output correctness；负值表示更快，
+但只有稳定达到 `-1.2%` 才能晋级。
+
+| 方向 | Case | 变化 vs v084 | 资源 / 结论 | 决策 |
+|---|---:|---:|---|---|
+| Step2 `T.use_swizzle(2)` | 3 | `+1.893%` | Step2 `222/52 -> 232/52`；Down 复用不抵 up_logits row 连续性损失 | reject |
+| MI scheduler global-memory latency=200 | 3 | `-0.114%` | 资源/C++ 不变 | below gate |
+| 同上 latency=400 | 3 | `-0.047%` | 资源/C++ 不变 | noise |
+| 同上 latency=800 | 3 | `-0.017%` | 资源/C++ 不变 | noise |
+| `metaxgpu-opt-predicate-inst` | 3 | `-0.062%` | 资源/C++ 不变 | noise |
+| Step2 无效 tail wave 跳过 accumulator clear | 3 | `+0.042%` | `222/52` 不变；仅 C++ `29152 -> 29278 B` | noise |
+| 原生 fast-math + Case1 FP16 SwiGLU | 1 | `-0.097%` | Step1/2 `222/52`、`206/52`；C++ `34334 B` | below gate |
+
+### 因果结论
+
+1. Step2 的 32 KiB Down tile 虽大于 16 KiB up_logits tile，panel-2 仍回退近
+   1.9% 并增加 10 个 MT registers；同一 row-block 的 28-column A 复用仍是
+   更关键的 grid locality，Step2 小 panel 不再派生。
+2. MXCC 明确说明 `metaxgpu-memory-latency` 会影响 MI scheduler，默认值为 0。
+   预注册的 200/400/800 三点没有形成大于 0.12% 的信号，而且数值越大收益
+   单调缩回零；当前手工 producer 顺序已主导关键 load issue order，不继续扫值。
+3. 保留完全相同的 `actual_rows` 语义时，后端 predicate pass 没有收益；tail
+   wave 已跳过 MMA后，再省一次 accumulator clear 也只有约 0.04% 噪声。
+   padding 的剩余固定开销不是 1.2% 级瓶颈。
+4. FP16 SwiGLU 与 native fast-math 没有协同：组合仅 `-0.097%`，明显弱于
+   fast-math 单独约 `-0.735%`。转换与更大的 lowering 抵消了低精度算术，
+   不把亚门槛结果组合进 submission。
+
+本批没有候选达到 promotion gate；不创建 v085、不修改 submission、不移动
+`dorm` 性能 HEAD。scratch 位于 `/tmp/v084-step2-grid-swizzle2*`、
+`/tmp/v084-memory-latency-{200,400,800}*`、`/tmp/v084-opt-predicate-inst*`、
+`/tmp/v084-step2-tail-skip-clear*`、`/tmp/v084-fastmath-fp16-swiglu*`。
