@@ -582,3 +582,62 @@ Step1 valid-row SwiGLU 在 v59 历史也只有约 `-0.027%`，本次 v084 复核
 `/tmp/v084-step2-output224*`、`/tmp/v084-step1-tail-activation*`、
 `/tmp/v59-bm192-case3-prefetch*`、`/tmp/v59-case3-hybrid-bm192-prefetch*`、
 `/tmp/v084-{fetch-on-write-global,force-l2rp,skip-cache-invalidations}*`。
+
+## v084 prologue/epilogue overlap、后端隐藏调度与小 panel 局部性筛选
+
+本批继续只使用正常 OJ 合规 TileLang。所有进入计时的候选均通过 source gate
+和完整 padded-output correctness，Case3 使用同进程 AB/BA、warmup 5、
+repeat 50 的短筛；只有接近 `-1.2%` 才允许扩成长测。正值表示候选更慢。
+
+### 首尾访存 overlap
+
+| 方向 | Case3 变化 vs v084 | 资源 / 机制 | 决策 |
+|---|---:|---|---|
+| Step1 把首个 input A tile 延后到 `Gate0` 之后 | `+0.213%` | Step1 `216/54 -> 222/56`；稳态顺序不变 | reject |
+| Step2 routed weight 在整个 K-loop 前预取 | `+0.107%` | Step2 `222/52 -> 226/52`；两 FP32 值长生命周期 | reject |
+| Step2 routed weight 只在最后 k-pair 首次 barrier 后预取 | `+0.122%` | Step2 `222/52 -> 228/52`；后续 8 次 MMA 未兑现收益 | reject |
+
+Step1 首 A prologue 与 Step2 routed-weight epilogue 都不是 1.2% 级空泡。后者
+即使只在最终 k-pair 发出，也因条件/live state 增加 6 个 MT registers；两种
+重排都比原位置略慢。结合此前 routed-weight FP16、shuffle 和 prescale 结果，
+该标量尾声数据流家族关闭。
+
+### MXCC hidden option 审计
+
+从 `mxcc -mllvm --help-hidden` 选择了与当前 MMA/load 排程直接相关、且此前
+未测的独立布尔选项；每个选项单独加入官方 `TL_DEVICE_COMPILE_FLAGS`，没有
+组合亚门槛结果。
+
+| 开关 | Case3 变化 vs v084 | codegen 证据 | 决策 |
+|---|---:|---|---|
+| `cross-mem-fence-sched` | `-0.025%` | 资源与 C++ 不变 | noise |
+| `pingpong-opt` | `-0.014%` | 资源与 C++ 不变 | noise |
+| `enable-unorder-dispatch` | `-0.092%` | 资源与 C++ 不变 | noise |
+| `mmasched`（不同于已测 `mma-sched`） | `-0.078%` | Step1/2 仍 `216/54`、`222/52` | noise |
+| `sinkload` | `-0.097%` | Step1/2 资源与 C++ 不变 | noise |
+| `live-range-split` | 未计时 | 资源与 C++ 不变，目标机制未物化 | codegen reject |
+
+这些开关最多只可能改变最终 machine scheduling，但所有短筛均聚集在
+`-0.10%..0%` 的噪声区，且没有资源/occupancy 变化；不扩成长测、不叠加。
+
+### Step1 panel-2/panel-4 网格局部性
+
+Case3 的 32 个长 expert 各对应两个连续 BM128 row-block。此前 panel-10
+回退 `+3.980%`，panel-1 serpentine 回退 `+0.478%`；本批补测与长 expert
+两 row-block 精确对齐的 panel-2，以及相邻尺度 panel-4：
+
+| 方向 | Case3 变化 vs v084 | Step1 资源 | 决策 |
+|---|---:|---:|---|
+| `T.use_swizzle(2, enable=True)` | `+3.385%` | `216 MT / 48 ST / 2 waves` | reject |
+| `T.use_swizzle(4, enable=True)` | `+3.216%` | `216 MT / 48 ST / 2 waves` | reject |
+
+panel-2 虽精确覆盖同 expert 的两个 row-block，仍与 panel-4 一样回退超过 3%。
+这说明当前关键局部性是同一 input row-block 的 16 个 N-column CTA 连续复用；
+更早回访 Gate/Up 权重无法补偿对该连续性的打断。panel=1/2/4/10 与公平的
+expert-grouped mapping 至此共同关闭 Step1 网格重排轴。
+
+本批没有候选达到 1.2% promotion gate；不创建 v085、不修改 submission、
+不移动 `dorm` 性能 HEAD。scratch 位于 `/tmp/v084-step1-delay-initial-a*`、
+`/tmp/v084-step2-{early,final-pair}-routed-weight*`、
+`/tmp/v084-{cross-mem-fence-sched,pingpong-opt,unorder-dispatch,mmasched,sinkload,live-range-split}*`、
+`/tmp/v084-step1-grid-swizzle{2,4}*` 及对应 JSON/codegen 目录。
