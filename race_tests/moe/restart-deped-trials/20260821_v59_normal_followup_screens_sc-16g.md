@@ -926,3 +926,94 @@ scratch 证据位于 `/tmp/v085_pitch_pad*_vs_pad128_case3.json`、
 `/tmp/v085_step1_serial_n64*`、`/tmp/v085_shape_pitch_sweep_case{1,2}.json`、
 `/tmp/v085_step1_bk32_codegen_case3/`、`/tmp/v085_cta_*` 与
 `/tmp/v085_step2_reverse_k*`；对应 hypothesis cards 与候选源码同在 `/tmp`。
+
+## v085 物理吞吐复核与细粒度 consumer/tail/request 筛选（2026-08-22）
+
+本批继续以精确归档 v085（SHA-256 `6d4aa3a6...`）为唯一 promotion parent，
+只使用正常、同步、OJ 合规 TileLang。所有进入计时且可表达的候选均通过源码门禁
+和完整 padded-output reference check；Case3 短筛为同进程 AB、warmup 5、
+repeat 50。负值表示更快，但只有稳定达到 `-1.2%` 才能长测或创建版本。
+
+### 对齐后的物理 HBM/AP 采样
+
+为了区分“逻辑 load issue 接近屋顶”与“真实 HBM 已饱和”，先让 v085 Case3 在
+完成 JIT 后写出 `READY`，随后连续执行 5000 次，并以 100 ms 间隔同步采样。
+持续负载 device-event 平均为 `8.548866 ms`。355 个活跃 HBM 样本为：
+
+- median `1,006,989 MB/s`，mean `1,006,191 MB/s`；
+- p10/p90 `994,195 / 1,016,741 MB/s`；
+- min/max `983,278 / 1,042,390 MB/s`。
+
+同一窗口 8 次 AP 快照覆盖 832 个 AP 样本，median `95%`、mean `95.06%`、
+范围 `93%--98%`。因此 Case3 已把 104 个 AP 全部持续占满，但物理 HBM 只有
+约 `1.0 TB/s`，明显低于同机流式实测约 `1.4 TB/s`：瓶颈不是 grid 并行度不足，
+也不能简单称为 HBM 饱和，更像 CTA 内的 request issue、依赖和 MMA/VLS/MTE
+混合关键路径。
+
+mcProfiler 对 `kernel_kernel` 的 kernel-name replay 正常完成、无 private spill、
+shared non-conflict 为 100%，整次 range 聚合 MTE/MMA duty 为 `42.58%/23.38%`。
+但其 achieved waves、global bytes 与 v084 审计一样在两个 kernel filter 下仍会
+聚合多批 replay；本轮不把 `39.4 GB/12.5 GB` 或巨大 stall 数误写成单个 Step1
+的绝对计数。它们只支持继续研究 MTE/MMA 排程，不支持具体 cache/stall 定量。
+
+### Step1 B-column fragment streaming
+
+当前每 wave 先把八个 16-column B 微块全部载入 `weight_local`，再执行对应 MMA。
+候选保持 accumulator、global/shared 字节、MFMA、barrier 和 Gate-before-Up 次序
+不变，只按 1/2/4 个微块流式 `LDS -> MMA`。预注册 hypothesis：
+`/tmp/v085-step1-bcol-stream-hypothesis.md`。
+
+| group columns | SHA-256 | Step1 MT/ST | Case3 | 决策 |
+|---:|---|---:|---:|---|
+| 1 | `a6bb92c3...` | `218/54`，2 waves | `+0.033%`，完整正确 | noise/reject |
+| 2 | `cc4f7329...` | `234/54`，2 waves | 资源门禁 | reject |
+| 4 | `a1af5419...` | `234/54`，2 waves | 资源门禁 | reject |
+
+最细流式没有缩短最终 MT live range，2/4 组反而增加 16 个 MT registers；g1 动态
+性能与 v085 相同。B local 的源码数组大小不是当前寄存器主体，column streaming
+方向关闭。
+
+### Step1 input-tail 对齐粒度
+
+候选只把 Step1 input prefetch 的行上界从 `actual_rows` 向上取整，MFMA 的原始
+32-row wave predicate、输出语义、权重流量和所有同步保持不变。目的是检验是否能
+用少量已经参与 MMA 的 padding lane 流量换取更便宜的 load mask。
+
+| rounded rows | SHA-256 | Step1 MT/ST | Case3 | 决策 |
+|---:|---|---:|---:|---|
+| 8 | `77bce753...` | `218/54` | codegen 更大，机制未物化 | reject before timing |
+| 16 | `f9c22ca8...` | `218/52` | `+0.817%`，完整正确 | reject |
+| 32 | `5c2a5a47...` | `210/44` | `+2.817%`，完整正确 | reject |
+
+32-row 对齐确实大幅简化资源状态，却仍未跨 3-wave occupancy，并因多读 padding
+input 稳定回退；16-row 较小但同向，8-row 又保留原 mask/codegen。结论是 v085
+的精确 `actual_rows` input pruning 有真实价值，不能用 padding 流量交换较低的
+静态寄存器数字。
+
+### Step2 非对称两阶段 A burst
+
+在保持最佳 `A0 -> B0 -> A1 -> B1`、B 的 128/128-column split、总流量、MFMA、
+barrier 和 CTA 不变时，显式测试 A 的 32/96、64/64 控制、96/32 row split：
+
+| A split | SHA-256 | Step2 MT/ST | Case3 | 决策 |
+|---|---|---:|---:|---|
+| 32/96 | `fc149643...` | `220/56` | `+0.606%`，完整正确 | reject |
+| 64/64 explicit control | `1e6a5604...` | `218/56` | `-0.288%`，完整正确 | below gate |
+| 96/32 | `bb350ef...` | `226/62` | correctness FAIL，8.6% mismatch | semantic reject |
+
+32/96 相对显式对称控制还更慢约 0.9%；96-row fragment 前片虽能 lowering，却不能
+保持注解 fragment 的正确 slice 语义。现有对称 64/64 请求窗口仍是实测最优，
+显式控制的约 0.29% 小收益与旧手工展开约 0.24% 一致，明确低于 1.2% 门槛。
+
+### 本批结论
+
+1. v085 Case3 是全 AP 高活跃、约 1.0 TB/s HBM 的混合 issue/compute 路径，不能
+   归因为缺 CTA 或 HBM 已跑满。
+2. B-column fragment streaming、padding input 换 mask、非对称 Step2 A burst
+   都已得到机制与反例，不继续在邻近参数上盲扫。
+3. 没有候选达到 1.2%，因此不创建 v086、不改根 submission、不移动 `dorm`。
+
+scratch 证据位于 `/tmp/v085_{hbm,ap}_aligned.log`、
+`/tmp/v085_case3_step1_mcprof/`、`/tmp/v085-step1-bcol-stream-*`、
+`/tmp/v085-step1-{wave,row*}-rounded-input*`、`/tmp/v085-step2-a-split*` 及对应
+`*_codegen/`、`*_smoke.json` 与 hypothesis cards。
