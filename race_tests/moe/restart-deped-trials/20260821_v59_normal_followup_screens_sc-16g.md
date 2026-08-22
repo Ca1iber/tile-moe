@@ -1620,3 +1620,33 @@ Step2 实测明显优于 producer-direct tile-major；不继续扫任意 tile pa
 `/tmp/v087_up_logits_tilemajor_mctracer_case3` 及对应 hypothesis/codegen/fullcheck
 JSON。全部低于 `1.2%` 晋级门槛且方向为回退；不创建 v088、不修改 submission、
 不移动 `dorm` 性能源码。
+
+### v087 row-front recency、相邻 Gate copy 与 prepack CTA 粒度
+
+继续从 exact v087 隔离三个不改变数学的正常机制，均先写 hypothesis，并通过 OJ
+source/generated gate 与 Case3 完整 padded correctness；无 async/private spill。
+
+1. **只反转 Step1 `bx`**：尝试先消费 prepack 最后写入的高 row block，同时让
+   Step2 正序先消费 Step1 最后生产的低 row block。Step1 generated 资源
+   `216/42 -> 214/36`，但三轮 warmup10/repeat100 为
+   `+0.945/+0.817/+0.830%`，median `+0.830%`，稳定回退。
+2. **只反转 prepack row producer**：Step1/Step2 generated C++ 逐字节不变，
+   只让 prepack 最后写低 `bx`。三轮为 `+0.036/+0.090/-0.099%`，median
+   `+0.036%`，纯噪声。结合第一项，prepack->Step1 与 Step1->Step2 的 row-front
+   cache recency 均没有可兑现收益，不扫更多 row permutation。
+3. **合并相邻 Gate 两个 `64x64` copy**：v087 官方路径已是
+   `G0 -> G1 -> Afull -> U0 -> U1`，因此把 Gate 改为一次 `128x64` copy。
+   generated C++ 缩小约4.4%、ST `42 -> 36`，但最终 Step1 ISA 仅
+   `24640 -> 24632 B`、`3080 -> 3079` 条，少1个 `snop/mov`；34 global load、
+   256 MMA、64 LDS、4 barrier 与2-wave档全部不变。按 ISA gate 判定为近似 no-op，
+   不计时、不做对称 Up 扫描。
+4. **prepack 列块 `256 -> 512`**：256 threads 与逻辑字节不变，grid-x/CTA 数减半，
+   Step1/Step2 generated C++ 逐字节不变。prepack 循环 `16 -> 32`，MT
+   `84 -> 132`、静态 waves/PEU `5 -> 3`；Case3 三轮
+   `+0.019/+0.011/+0.028%`，median `+0.019%`，纯噪声。减少 dispatch 与更长
+   CTA/寄存器代价互相抵消，不扫1024列，也不与已低于门槛的 prepack tail-pruning
+   结果组合。
+
+证据位于 `/tmp/v087_{step1_reverse_bx,prepack_reverse_bx,step1_fused_gate_copy,
+prepack_cols512}*` 及对应 hypothesis/codegen/ISA/fullcheck JSON。没有候选达到
+`1.2%`；不创建 v088，也不因这些候选修改已整理为 v087 的 submission。
