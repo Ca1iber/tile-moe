@@ -1517,3 +1517,39 @@ MMA/A 工作的节省，不移植到 v085、不测 BM80/112 邻点。证据位�
 地址相位和基址算术，没有减少 HBM 字节或 MMA。不继续扫 32/96-row 对齐。
 证据位于 `/tmp/v085_workspace_slot64_case3*`。两个方向均未达 `1.2%`；
 不创建 v086、不修改 submission、不移动 `dorm` 性能源码。
+
+### v085 fresh baseline、Step1 persistent row-pair 与 v086 input tile-major
+
+重新确认 sc-16g 为 C500 25% sGPU、MACA 3.7.1.5、KMD 3.8.30，精确 v085
+Case3 self-pair 三轮仅 `-0.0558/-0.1365/+0.0158%`，当前短测噪声远低于
+1.2% 门槛。两对 fresh mcTracer 把 v085 Case3 分为 Step1
+`5.870--5.931ms`（约69%）、Step2 `2.645--2.668ms`（约31%），kernel gap
+仅 `0.003--0.033ms`，继续支持直接改善 Step1 数据供给。
+
+先测试保持 BM128/256-thread/4-wave 微内核、但让同一 CTA 串行处理长 expert
+两个 row block 的 persistent row-pair。它把 grid row 从96降到64并复用 Gate/Up
+权重，但 OJ/full correctness PASS 后 Case3 `8.5834 -> 9.6015ms`，回退
+`11.861%`；Step1 资源为 `232/48`、2 waves、无 private。即使不改成8-wave
+大 CTA，串行两个 row block 仍损失独立 CTA 并发且扩大地址/循环状态，权重 cache
+recency 无法补偿，故拒绝。scratch 位于 `/tmp/v085_step1_persistent_rowpair*`。
+
+随后采用不同机制：每次调用先用正常同步 TileLang kernel，把输入从 row-major
+重排为 `[row_block,k_tile,row_in_block,k_in_tile]`，使 Step1 每个 `128x64` A tile
+成为连续16KiB；同一 row block 的16个 N-panel CTA仍读取同一物理tile。该候选
+不缓存输入/结果，只缓存空 workspace 分配；无 async、foreign source或Torch代算。
+
+三 Case完整 padded correctness、OJ source/generated gate与最终 xcore1000 ISA
+均PASS，三个kernel均无private/async。相对精确v085的长测为：
+
+| Case | protocol | paired median | pstdev |
+|---:|---|---:|---:|
+| 1 | 3轮，warmup1000/repeat300 | `-4.016%` | `0.135%` |
+| 2 | 5轮，warmup100/repeat100 | `-2.052%` | `0.059%` |
+| 3 | 5轮，warmup20/repeat100 | `-1.405%` | `0.141%` |
+
+Case3 paired mcTracer 显示 prepack中位 `0.242944ms`、prepack到Step1 gap
+`0.028032ms`；Step1 `5.886464 -> 5.543168ms`，中位 `-5.825%`；Step2
+`+0.275%` 为噪声。连续A tile带来的Step1缩短覆盖了额外copy成本。该候选
+SHA-256为 `43bda05910a72ce3ee75a12f04d906f45abab2e446f8d05a977f733b796b8b9e`，
+已独立归档为 `v086_step1_input_tilemajor_sc-16g` 并通过本地三 Case 1.2% 晋级门槛；
+外部OJ仍待执行，因此不声明官方分数、不创建同ID restart-submission。
