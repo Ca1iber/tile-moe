@@ -1168,3 +1168,93 @@ Step1 却升至 `7.024128 ms`，相对同环境约 `5.926656 ms` 慢约 `18.5%`�
    stride 都应保留，只有 Step1->Step2 `up_logits` 的 +256 B row pitch 有效。
 5. 本批无候选达到 promotion gate；不创建 v086、不修改 submission、不移动
    `dorm` 性能源码。
+
+## v085 寄存器预取、尾块配对与请求相位续筛（2026-08-22）
+
+继续以精确 v085（SHA-256 `6d4aa3a6...`）为唯一 promotion parent，只使用正常、
+同步、OJ allowlist 内的 TileLang。候选先做 source/generated gate、完整 padded-output
+reference check，再做 Case1/3 AB smoke；正值表示变慢。没有结果达到 `-1.2%`。
+
+### 激活、consumer live range 与初始化排程
+
+| 方向 | 结果 | 关键证据 / 决策 |
+|---|---:|---|
+| Case1 SiLU Pade(5,4) | median `-0.023%` | 三轮 `+0.057/-0.125/-0.023%`，正确但纯噪声 |
+| FP8 e4m3fn workspace | correctness FAIL | `27.9%` mismatch，max abs `0.153` |
+| Step1 input `coalesced_width=4` | Case3 `-0.089%` | 噪声 |
+| Step1 Gate/Up `coalesced_width=4` | Case3 `+1.498%` | 显式缩窄权重 producer 更慢 |
+| Step1 `Gate0-Up0-Gate1-Up1` producer 顺序 | Case3 `+2.032%` | 破坏原六段延迟窗口 |
+| 最后一组 Up MMA 前提前 Gate 激活 | Case1 `+0.453%` | `222/54`，live state 增大 |
+| 最后 Up MMA 间插入 1/2/4 个激活 quarter | Case3 `+0.511/+0.338/+0.338%` | 均为 `238/56`，无收益 |
+| Step1 clear 延后到首 A load 后 | Case3 `-0.010%` | `218/54`，最终 ISA 仅少 1 条 `snop` |
+| Step1 clear 延后到首轮 staging 后 | Case3 `-0.174%` | `218/56`，低于门槛 |
+| Step2 clear 延后到首 barrier 前 | Case3 `-0.039%` | `222/56`，噪声 |
+
+试图把下一组 Gate/Up B 值跨 barrier 保存在寄存器时，所有完整预取版本都产生
+private stack：显式 half[32] 虽正确且为 `230/52`，但每线程有 `68B` stack，
+Case1 回退 `16.94%`；进一步把表面资源降到约 `220 MT` 的 half/manual-vector
+版本仍有 `36B` stack或被 codegen gate 拒绝。结论是当前 backend 无法让额外 B
+状态无 spill 地跨 CTA barrier，不能把较低静态 MT 数当成可用预取。
+
+另一个 320-thread/5-wave staging 候选在 Case3 LayoutInference 阶段得到
+`no available layout found`：四 row-wave accumulator fragment 不能直接挂在
+五 wave CTA 上。官方 `T.gemm` MACA 路径也仍构造同一 `TensorCoreIntrinEmitter`，
+忽略调用点 `k_pack=2` 并退回已测的 16-K consumer；两次 `T.gemm` 还会把 Gate
+与 Up 分组，破坏 v085 交错。Step1 MFMA micro-loop 从 `kp,row,col` 改为
+`kp,col,row` 后最终 `.text` SHA 完全相同，说明 backend 已规范化该次序。
+
+### 两个 expert 的 56-row tail 配对
+
+Case3 长 expert 的第二个 BM128 只有 56 行，尝试让一个 CTA 的 waves0--1 计算
+expert A、waves2--3 计算 expert B。主 Step1 仍处理 short expert 与长 expert 首块，
+尾块进入独立配对 kernel；数学、有效行与输出均完整正确。
+
+| paired-tail 结构 | 资源 | Case3 end-to-end | mcTracer 尾核 | 决策 |
+|---|---|---:|---:|---|
+| BN128，Gate/Up 同时驻留 | tail `252/52`，64 KiB，2 waves | `+13.923%` | `3.001600 ms` | reject |
+| BN64，两 expert 同 CTA | tail `138/52`，32 KiB，3 waves | `+20.852%` | `3.764480 ms` | reject |
+| BN128，单 32 KiB buffer 分阶段复用 | tail `212/52`，32 KiB，2 waves | `+9.180%` | 未扩 profile | reject |
+
+首版 trace 的 candidate 主核/尾核为 `4.034304/3.001600 ms`，而 v085 完整 Step1
+为 `5.874944 ms`；配对尾核必须低于约 `1.84 ms` 才可能打平。BN64 trace 更差：
+主核/尾核 `4.118016/3.764480 ms`，合计 Step1 比同次 v085 慢 `34.394%`，两 kernel
+间空泡仅 `0.031232 ms`。单缓冲把 64 KiB 和 40 个 MT register 消掉后仍慢 9.18%，
+证明失败不只是 shared occupancy：配对并未减少有效 MMA/权重字节，BN64 又复制 A，
+BN128 单缓冲则增加 Gate/Up 分阶段 barrier。该 tail 配对家族关闭。
+
+### Step2 请求宽度与 workspace 细相位
+
+此前 `coalesced_width` 只测过 Step1。本批补测 Step2 两类 producer：
+
+- Down global-to-shared copy：cw2 将 Step2 推到 `252 MT`，资源拒绝；cw4 为
+  `228 MT` 且 Case3 `+0.752%`；cw8 generated C++ 与 v085 SHA-256 完全相同，
+  即默认映射。
+- `up_logits` global-to-fragment 的显式 `T.Parallel`：cw4/cw16 均与 v085
+  generated C++ 逐字节相同。MMA fragment 的固定 thread/index layout 覆盖了
+  coalescing hint，不能借该注解改变 A 请求。
+
+在 workspace phase 上，旧 CTA-level 2x64B 会让同一长 expert 的两个 row-block
+落到不同 phase。本批改为 `(expert_id % 2) * 32` FP16 columns，保持 expert 内
+phase 一致；完整正确、Step2 `216/52`，但 Case3仍回退 `+0.737%`。动态列起点
+本身的地址/连续性代价高于可能的分散收益。
+
+最后在 v085 pad128 周围补齐此前 64B 步长未覆盖的细 pitch。四点均 source/
+generated OJ PASS、完整 padded correctness PASS、无 async/spill：
+
+| extra FP16 columns | 相对 v085 Case3 | Step2 MT/ST |
+|---:|---:|---:|
+| 112 | `+3.009%` | `216/52` |
+| 120 | `+4.786%` | `216/52` |
+| 136 | `+4.812%` | `216/52` |
+| 144 | `+3.054%` | `216/52` |
+
+pad128 因此不只是 64B 粗网格的局部最优；偏离 `-32/-16/+16/+32B` 都产生 3%--5%
+终止性回退，进一步支持离散 cache-set/memory-partition 地址映射推断。较低 Step2
+寄存器再次没有预测到更快运行。没有候选达到 1.2%，不创建 v086、不修改
+submission、不移动 v085 性能源码。
+
+本批 scratch 位于 `/tmp/v085_{silu_pade54,weight_cw4}*`、
+`/tmp/v085_step1_{gate_odd,lastup,defer_accum,final_gate,mma_kp}*`、
+`/tmp/v085_step2_defer_accum*`、`/tmp/v085_step1_pair_expert_tails*`、
+`/tmp/v085_step2_{down,up_logits}_cw*`、`/tmp/v085_up_logits_{expert_phase,pad}*`
+及对应 hypothesis/codegen/JSON/mcTracer 目录。
