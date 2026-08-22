@@ -10,6 +10,7 @@ from tilelang.layout import make_swizzled_layout
 
 _KERNEL_CACHE = {}
 _WORKSPACE_CACHE = {}
+_INPUT_WORKSPACE_CACHE = {}
 
 
 def _workspace(stacked_expert_tokens, intermediate):
@@ -28,6 +29,26 @@ def _workspace(stacked_expert_tokens, intermediate):
             dtype=stacked_expert_tokens.dtype,
         )
         _WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def _input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(stacked_expert_tokens.shape[0]),
+        int(num_blocks_m),
+        int(step1_k_tiles),
+        str(stacked_expert_tokens.dtype),
+    )
+    buf = _INPUT_WORKSPACE_CACHE.get(key)
+    if buf is None:
+        buf = torch.empty(
+            (int(num_blocks_m), int(step1_k_tiles), 128, 64),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _INPUT_WORKSPACE_CACHE[key] = buf
     return buf
 
 
@@ -377,13 +398,19 @@ def run_kernel(
                 k_pack=2,
             )
 
+            step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
             input_shape = (total_padded, hidden)
-            intermediate_shape = (total_padded, intermediate)
+            tiled_input_shape = (
+                num_blocks_m,
+                step1_k_tiles,
+                block_token,
+                block_dhidden_step1,
+            )
+            intermediate_shape = (total_padded, intermediate + 128)
             gate_shape = (num_experts, intermediate, hidden)
             up_shape = (num_experts, intermediate, hidden)
             down_shape = (num_experts, hidden, intermediate)
             step1_col_tiles = (intermediate + block_dexpert_step1 - 1) // block_dexpert_step1
-            step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
             step2_output_tile = 2 * block_dhidden_step2
             step2_col_tiles = (hidden + step2_output_tile - 1) // step2_output_tile
             step2_k_tiles = (intermediate + block_dexpert_step2 - 1) // block_dexpert_step2
@@ -394,7 +421,8 @@ def run_kernel(
 
             @T.prim_func
             def kernel(
-                input: T.Tensor(input_shape, dtype),
+                input_original: T.Tensor(input_shape, dtype),
+                input: T.Tensor(tiled_input_shape, dtype),
                 gate: T.Tensor(gate_shape, dtype),
                 up: T.Tensor(up_shape, dtype),
                 down: T.Tensor(down_shape, dtype),
@@ -406,6 +434,24 @@ def run_kernel(
                 up_logits: T.Tensor(intermediate_shape, dtype),
                 output: T.Tensor(input_shape, dtype),
             ):
+                with T.Kernel(
+                    T.ceildiv(hidden, 256),
+                    T.ceildiv(total_padded, block_token),
+                    threads=threads,
+                ) as (copy_col, copy_row):
+                    for i_copy, j_copy in T.Parallel(block_token, 256):
+                        source_row = copy_row * block_token + i_copy
+                        source_col = copy_col * 256 + j_copy
+                        if source_row < total_padded and source_col < hidden:
+                            input[
+                                copy_row,
+                                source_col // block_dhidden_step1,
+                                i_copy,
+                                source_col % block_dhidden_step1,
+                            ] = input_original[
+                                source_row, source_col
+                            ]
+
                 with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
                     if use_step1_expert_grouped_grid:
                         cta_mapping = T.alloc_local((2,), dtype=T.int32)
@@ -455,7 +501,7 @@ def run_kernel(
                     T.clear(up_local)
                     if use_step1_input_prefetch:
                         T.copy(
-                            input[block_start : block_start + block_token, 0:block_dhidden_step1],
+                            input[bx, 0, 0:block_token, 0:block_dhidden_step1],
                             input_shared,
                         )
                         for k_pair in T.serial(step1_k_tiles // 2):
@@ -470,20 +516,13 @@ def run_kernel(
                                     ],
                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
                                 )
-                                if use_step1_tail_pruning:
-                                    for i_x_odd_0, j_x_odd_0 in T.Parallel(
-                                        block_token, block_dhidden_step1
-                                    ):
-                                        if i_x_odd_0 < 64 and i_x_odd_0 < actual_rows:
-                                            input_prefetch[i_x_odd_0, j_x_odd_0] = input[
-                                                block_start + i_x_odd_0,
-                                                k_odd * block_dhidden_step1 + j_x_odd_0,
-                                            ]
-                                else:
+                                if not use_step1_tail_pruning:
                                     T.copy(
                                         input[
-                                            block_start : block_start + block_token // 2,
-                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                            bx,
+                                            k_odd,
+                                            0 : block_token // 2,
+                                            0:block_dhidden_step1,
                                         ],
                                         input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
                                     )
@@ -495,6 +534,14 @@ def run_kernel(
                                     ],
                                     gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
                                 )
+                                if use_step1_tail_pruning:
+                                    for i_x_odd, j_x_odd in T.Parallel(
+                                        block_token, block_dhidden_step1
+                                    ):
+                                        if i_x_odd < actual_rows:
+                                            input_prefetch[i_x_odd, j_x_odd] = input[
+                                                bx, k_odd, i_x_odd, j_x_odd
+                                            ]
                                 T.copy(
                                     up[
                                         expert_id,
@@ -503,20 +550,13 @@ def run_kernel(
                                     ],
                                     up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
                                 )
-                                if use_step1_tail_pruning:
-                                    for i_x_odd_1, j_x_odd_1 in T.Parallel(
-                                        block_token, block_dhidden_step1
-                                    ):
-                                        if 64 <= i_x_odd_1 and i_x_odd_1 < actual_rows:
-                                            input_prefetch[i_x_odd_1, j_x_odd_1] = input[
-                                                block_start + i_x_odd_1,
-                                                k_odd * block_dhidden_step1 + j_x_odd_1,
-                                            ]
-                                else:
+                                if not use_step1_tail_pruning:
                                     T.copy(
                                         input[
-                                            block_start + block_token // 2 : block_start + block_token,
-                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                            bx,
+                                            k_odd,
+                                            block_token // 2 : block_token,
+                                            0:block_dhidden_step1,
                                         ],
                                         input_prefetch[block_token // 2 : block_token, 0:block_dhidden_step1],
                                     )
@@ -553,14 +593,15 @@ def run_kernel(
                                     ):
                                         if i_x_odd < actual_rows:
                                             input_prefetch[i_x_odd, j_x_odd] = input[
-                                                block_start + i_x_odd,
-                                                k_odd * block_dhidden_step1 + j_x_odd,
+                                                bx, k_odd, i_x_odd, j_x_odd
                                             ]
                                 else:
                                     T.copy(
                                         input[
-                                            block_start : block_start + block_token,
-                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+                                            bx,
+                                            k_odd,
+                                            0:block_token,
+                                            0:block_dhidden_step1,
                                         ],
                                         input_prefetch,
                                     )
@@ -585,20 +626,13 @@ def run_kernel(
                                 )
                                 if k_pair + 1 < step1_k_tiles // 2:
                                     k_next_even = k_odd + 1
-                                    if use_step1_tail_pruning:
-                                        for i_x_even_0, j_x_even_0 in T.Parallel(
-                                            block_token, block_dhidden_step1
-                                        ):
-                                            if i_x_even_0 < 64 and i_x_even_0 < actual_rows:
-                                                input_shared[i_x_even_0, j_x_even_0] = input[
-                                                    block_start + i_x_even_0,
-                                                    k_next_even * block_dhidden_step1 + j_x_even_0,
-                                                ]
-                                    else:
+                                    if not use_step1_tail_pruning:
                                         T.copy(
                                             input[
-                                                block_start : block_start + block_token // 2,
-                                                k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                                                bx,
+                                                k_next_even,
+                                                0 : block_token // 2,
+                                                0:block_dhidden_step1,
                                             ],
                                             input_shared[0 : block_token // 2, 0:block_dhidden_step1],
                                         )
@@ -610,6 +644,15 @@ def run_kernel(
                                     ],
                                     gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
                                 )
+                                if k_pair + 1 < step1_k_tiles // 2:
+                                    if use_step1_tail_pruning:
+                                        for i_x_even, j_x_even in T.Parallel(
+                                            block_token, block_dhidden_step1
+                                        ):
+                                            if i_x_even < actual_rows:
+                                                input_shared[i_x_even, j_x_even] = input[
+                                                    bx, k_odd + 1, i_x_even, j_x_even
+                                                ]
                                 T.copy(
                                     up[
                                         expert_id,
@@ -619,20 +662,13 @@ def run_kernel(
                                     up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
                                 )
                                 if k_pair + 1 < step1_k_tiles // 2:
-                                    if use_step1_tail_pruning:
-                                        for i_x_even_1, j_x_even_1 in T.Parallel(
-                                            block_token, block_dhidden_step1
-                                        ):
-                                            if 64 <= i_x_even_1 and i_x_even_1 < actual_rows:
-                                                input_shared[i_x_even_1, j_x_even_1] = input[
-                                                    block_start + i_x_even_1,
-                                                    (k_odd + 1) * block_dhidden_step1 + j_x_even_1,
-                                                ]
-                                    else:
+                                    if not use_step1_tail_pruning:
                                         T.copy(
                                             input[
-                                                block_start + block_token // 2 : block_start + block_token,
-                                                (k_odd + 1) * block_dhidden_step1 : (k_odd + 2) * block_dhidden_step1,
+                                                bx,
+                                                k_odd + 1,
+                                                block_token // 2 : block_token,
+                                                0:block_dhidden_step1,
                                             ],
                                             input_shared[block_token // 2 : block_token, 0:block_dhidden_step1],
                                         )
@@ -670,14 +706,15 @@ def run_kernel(
                                     ):
                                         if i_x_even < actual_rows:
                                             input_shared[i_x_even, j_x_even] = input[
-                                                block_start + i_x_even,
-                                                k_next_even * block_dhidden_step1 + j_x_even,
+                                                bx, k_next_even, i_x_even, j_x_even
                                             ]
                                 else:
                                     T.copy(
                                         input[
-                                            block_start : block_start + block_token,
-                                            k_next_even * block_dhidden_step1 : (k_next_even + 1) * block_dhidden_step1,
+                                            bx,
+                                            k_next_even,
+                                            0:block_token,
+                                            0:block_dhidden_step1,
                                         ],
                                         input_shared,
                                     )
@@ -696,8 +733,10 @@ def run_kernel(
                         for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
                             T.copy(
                                 input[
-                                    block_start : block_start + block_token,
-                                    k * block_dhidden_step1 : (k + 1) * block_dhidden_step1,
+                                    bx,
+                                    k,
+                                    0:block_token,
+                                    0:block_dhidden_step1,
                                 ],
                                 input_shared,
                             )
@@ -1025,9 +1064,11 @@ def run_kernel(
         kernel = make_kernel(*key)
         _KERNEL_CACHE[key] = kernel
 
-    up_logits = _workspace(stacked_expert_tokens, intermediate)
+    up_logits = _workspace(stacked_expert_tokens, intermediate + 128)
+    padded_input = _input_workspace(stacked_expert_tokens, num_blocks_m, hidden // 64)
     kernel(
         stacked_expert_tokens,
+        padded_input,
         gate_w,
         up_w,
         down_w,
