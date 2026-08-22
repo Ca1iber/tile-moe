@@ -1258,3 +1258,27 @@ submission、不移动 v085 性能源码。
 `/tmp/v085_step2_defer_accum*`、`/tmp/v085_step1_pair_expert_tails*`、
 `/tmp/v085_step2_{down,up_logits}_cw*`、`/tmp/v085_up_logits_{expert_phase,pad}*`
 及对应 hypothesis/codegen/JSON/mcTracer 目录。
+
+### 512B pitch 周期复现与 K-front 并发映射
+
+为区分“pad128 单点偶然”与真正的地址周期，继续测试相同低位相位但更大的
+workspace stride：Case3 pad384 为 `4864B = 19*256B`，pad640 为
+`5376B = 21*256B`。两者均 OJ/source/generated PASS、完整 padded correctness
+PASS，Step1/2 资源与 v085 同为 `218/54`、`222/54`，无 async/spill。单轮 AB
+分别为 `+0.0444%/+0.0439%`，与 v085 完全等价。
+
+结合已知 pad256（`18*256B`）相对 v085回退约 `4.70%`，现在可以直接复现：
+`17/19/21` 个 256B 的奇数 stride 属于同一好相位，偶数 stride 属于冲突档，
+响应周期约为 512B。更高地址位没有进一步收益，因此仍保留内存占用最小的 pad128。
+
+最终 ISA 审计显示 Step2 每个稳态 stage 已把 predicated `up_logits` A 请求与四个
+Down `ldg_b128` 批次并列发出，再按 gvmcnt 逐个写入 shared；barrier 前没有新的
+源码级 ready-work 空洞。作为并发映射对照，基于已正确的 reverse-K 版本，让偶数
+输出 CTA 正向、奇数 CTA 反向遍历 K-pair。候选保持字节/MFMA/barrier/CTA 不变，
+完整正确、Step2 `216/52`，但 generated C++ `29.2 -> 32.7 KiB`，Case3 回退
+`+5.460%`。所有 CTA 一起反向原本仅 `-0.025%` 噪声，因此结论是方向本身无关，
+而相邻输出 CTA 保持同一 K-front 对 `up_logits` 的 cache/request 合并很重要。
+
+新增 scratch：`/tmp/v085_up_logits_pad{384,640}*`、
+`/tmp/v085_step2_bipolar_k*` 及对应 hypothesis/codegen/JSON。仍无候选达到 1.2%，
+不创建 v086、不修改 submission、不移动 v085 性能源码。
