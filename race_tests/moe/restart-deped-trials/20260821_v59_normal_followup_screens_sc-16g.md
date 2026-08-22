@@ -1282,3 +1282,54 @@ Down `ldg_b128` 批次并列发出，再按 gvmcnt 逐个写入 shared；barrier
 新增 scratch：`/tmp/v085_up_logits_pad{384,640}*`、
 `/tmp/v085_step2_bipolar_k*` 及对应 hypothesis/codegen/JSON。仍无候选达到 1.2%，
 不创建 v086、不修改 submission、不移动 v085 性能源码。
+
+## v085 普通 copy cache hint、同步双 B 缓冲与 reciprocal lowering 续筛（2026-08-22）
+
+继续以精确归档 v085（SHA-256 `6d4aa3a6...`）为唯一 promotion parent，只使用
+正常、同步、OJ allowlist 内的 TileLang。候选先写 hypothesis，依次经过源码、
+generated code、最终 ISA、完整 padded-output correctness 与门禁计时；只有稳定达到
+`-1.2%` 才允许长测或创建版本。
+
+### 普通 `T.copy` 的 eviction policy 能力边界
+
+TileLang 公开 `T.copy(..., eviction_policy="evict_first")` 会把注解写进 Copy node，
+但源码审计显示 MACA 后端只在 TMA lowering 的 `tl::tma_load` 路径读取该值；普通
+global-to-shared SIMT copy 不消费它。给 Step2 所有 Down copy 加 `evict_first` 后，
+Case3 generated C++ 与 v085 的 SHA-256 同为 `9b8826636f81...`，`cmp` 逐字节相同。
+因此该候选在 codegen gate 直接淘汰，未运行 benchmark。它也解释了此前全局 cache
+flag 无法覆盖当前 `ldg_b128 -> shared` 路径的原因。
+
+### Step2 64 KiB 同步双 B shared buffer
+
+候选把 Step2 单个 32 KiB `down_shared` 扩成 even/odd 两个不重叠的 32 KiB 区域，
+保持 `A0 -> B0 -> A1 -> B1`、HBM 字节、MMA、CTA、A fragment 与请求宽度不变。
+由于下一 B tile 不再覆盖仍被其他 wave 消费的旧 tile，删除两个覆盖前 CTA barrier，
+只保留 copy 完成后的可见性 barrier。
+
+- generated C++ 静态 `__syncthreads` 站点从 `8` 降到 `6`，机制真实物化；
+- Case3 Step2 从 `222/54` 增至 `230/54` MT/ST，仍为 2 waves、无 spill、无 async；
+- 三 Case 完整 valid rows 与 padding 全部 correctness PASS；
+- 单次终止性门禁相对 v085 分别为 Case1 `+20.474%`、Case2 `+18.689%`、
+  Case3 `+20.256%`。
+
+回退远大于噪声和 promotion 门槛，故不做正式 paired benchmark。结论是同步条件下
+减少 barrier 不足以抵消 32→64 KiB shared 带来的实际驻留/容量与地址状态代价；
+不继续派生 shared padding 或更大 K-group。
+
+### 向量布局内 reciprocal 替代
+
+为避免历史直接 `__builtin_mxc_rcpf` 破坏 fragment 的 float4 activation lowering，
+本批只使用公开 TileLang 数学算子，并保持原 `T.Parallel` 布局：
+
+| 方向 | 最终 ISA / 资源 | correctness / 门禁 | 决策 |
+|---|---|---:|---|
+| `T.rsqrt(d*d)`，`d=1+exp2(...)` | exact divide 链消失，变为 `64×rsq_f32`；Step1 `222/52`、2 waves、无 spill | Case1完整 PASS；单次 `+1.927%` | reject |
+| `T.ieee_frcp(d, "rn")` | C++ 为 `__frcp_rn`，但最终 ISA仍是 `rcp/div_scale/div_fmas/div_fixup`；Step1 ST `52→56` | 机制未物化，不计时 | ISA reject |
+
+direct rsqrt 已通过误差门禁，因此不触发预注册的 Newton correctness fallback；增加
+Newton 算术也没有性能依据。`ieee_frcp` 则证明“前端 intrinsic 名称更直接”不代表
+最终 C500 指令更短，必须以 `.metax.s` 而不是 generated C++ 作最终门禁。
+
+本批 scratch 位于 `/tmp/v085_{eviction_first,step2_sync_double_b,silu_rsqrt,
+silu_ieee_frcp}*` 及对应 hypothesis、codegen、ISA、fullcheck JSON。没有候选达到
+`1.2%`，因此不创建 v086、不修改 submission、不移动 `dorm` 性能源码。
