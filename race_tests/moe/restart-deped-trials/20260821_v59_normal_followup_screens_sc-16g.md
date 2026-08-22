@@ -1333,3 +1333,187 @@ Newton 算术也没有性能依据。`ieee_frcp` 则证明“前端 intrinsic �
 本批 scratch 位于 `/tmp/v085_{eviction_first,step2_sync_double_b,silu_rsqrt,
 silu_ieee_frcp}*` 及对应 hypothesis、codegen、ISA、fullcheck JSON。没有候选达到
 `1.2%`，因此不创建 v086、不修改 submission、不移动 `dorm` 性能源码。
+
+## v085 显式宽加载、范围证明与正反 K-front 续筛（2026-08-22）
+
+继续以精确归档 v085（SHA-256 `6d4aa3a6...`）为唯一 promotion parent，只使用
+正常、同步、OJ allowlist 内的 TileLang。候选先写 hypothesis，依次执行 source /
+generated gate、最终 xcore1000 ISA、项目原生 correctness 与 AB screen；稳定提升
+不足 `1.2%` 不创建版本、不移动 `dorm`。
+
+### 公开 load intrinsic 的真实后端边界
+
+首先验证 public DSL 的 `T.__ldg` 与 `T.ldg{128,256}`，没有导入 TVM、foreign
+helper、call_extern 或 async copy：
+
+| 方向 | 最终 ISA / correctness | 性能 / 决策 |
+|---|---|---:|
+| Step2 `up_logits` 热路径 `T.__ldg` | Step2 global load `44→184`，其中 `160×ldg_u16`；`.text 18.5→35.6 KiB`，`snop 390→876` | ISA reject，不计时 |
+| Step2 Down `T.ldg256` + `uint32x8` unpack | Step2 load site `44→32`、`222/54→216/52`，但最终没有任何 256-bit load；Case1 checked elements `74.7%` mismatch | semantic reject |
+| Step2 Down `2×T.ldg128` + 完整 unpack | 三 Case correctness PASS；Step2 `222/54→222/52`，`.text`、44 loads、256 MMA、barrier 均与 v085 相同 | Case1/2/3 `+7.885%/+10.633%/+11.063%`，reject |
+
+`T.ldg256` 的直接 vector-to-swizzled-shared 写法先被 LayoutInference 拒绝；经 local
+`float16x16` 中转又被 MACA codegen 明确拒绝为 `Cannot convert type float16x16`。
+合法的 `uint32x8` 拆包版本虽然 lowering，但最终只少了 12 个 `ldg_b128`，没有
+生成对应的宽 load，correctness 立即证明高半数据未被正确物化。相反，两个
+`ldg128` 保住完整字节和数学，但显式拆包破坏普通 `T.copy` 的动态搬运调度，三个
+shape 都终止性回退。因此 public explicit-load 家族关闭；较低静态 load/register
+数字不能脱离 correctness 解释。
+
+另审计了 IR builder 中的 `prefetch`：当前安装的 `tilelang.language` 没有导出
+`T.prefetch`（直接访问抛 `AttributeError`），submission 无法通过正常 public DSL
+表达同步 cache prefetch，因此没有伪造接口或转向 extern。
+
+### 编译证明与 Step2 Down 请求边界
+
+- 给两个 kernel 增加真实 block contract：`group_size>0`、
+  `0<=token_offset<group_size`。Case3 generated C++ SHA-256 仍为
+  `9b8826636f81...`，与 v085 `cmp` 逐字节相同；编译器已从 grid/max/min 推出这些
+  不变量，codegen-only reject。
+- 保持 `A64` 两阶段不变，只把每次连续 Down `B128 rows × K64` copy 拆成两个
+  `B64 rows × K64` copy。最终 load/store/MMA/shared/barrier 与 `.text` 大小完全
+  不变，Step2 `222/54→216/58`、`snop 390→387`，correctness PASS；Case3
+  warmup5/repeat50 为 `-0.0586%`，纯噪声。请求边界成功物化但没有动态收益，不扫
+  32/96 邻点。
+
+### Step1 reverse hidden-K front
+
+此前只测过 Step2 reverse-K。本批保持 Step1 每个 pair 内既有六段顺序、流量、
+barrier、MMA 与 CTA 映射不变，把 hidden-K pair 从尾到头遍历。候选 Case1/3
+correctness PASS，Step2 完全不变；Case3 Step1 最终 ISA 为：
+
+- `218/54→216/42` registers，2 waves、无 private；
+- `.text 26248→25888 B`，静态指令 `3281→3236`；
+- `mov_b32 93→73`，但 `42 global loads / 256 MMA / 64 LDS / 4 barriers /
+  91 arrive / 405 snop` 全部保持。
+
+尽管地址状态真实缩短，Case3 warmup5/repeat50 为 `+0.0105%`；Case1
+warmup100/repeat100 为 `+0.5374%`。减少的 45 条静态地址指令不在动态关键路径，
+反向 input/Gate/Up request front 也没有改善跨 CTA cache 合并，故关闭该轴。
+
+### 验证协议复核与本批结论
+
+`T.ldg256` 首次 fullcheck 的异常堆栈没有打印当前 module tag，stdout 缓冲又让
+编译日志出现在 traceback 后面，一度可能被误读为 parent 先失败。随后直接运行
+exact v085-vs-v085 的同一 `run_v59_fullcheck.py` Case1 self-check，完整 padded
+output 正常 PASS；因此原异常确实属于第二个 `ldg256` candidate，而不是 verifier
+或 v085。`run_v59_paired.py` 的 v085-vs-v085 self-check 也正常通过。本批 reject
+决策以明确的 candidate correctness / ISA / paired 结果为准，不放宽 tolerance。
+
+本批没有候选达到 `1.2%`。不创建 v086、不修改 submission、不移动 `dorm` 性能
+源码。scratch 位于 `/tmp/v085_{up_logits_readonly_ldg,step2_down_ldg256,
+step2_down_2xldg128,block_contract_assume,step2_brow64_split,step1_reverse_k}*` 及
+对应 hypothesis、codegen、ISA、JSON。
+
+### v024 遗留的 Step1 半块内部遍历
+
+全历史检索确认，v024 报告明确提出、但后续没有完成记录的假设是：不改变
+`G0 -> A0 -> G1 -> U0 -> A1 -> U1` 分组，只反转某个 64x64 权重半块内部的
+row-to-thread 遍历。为避免把亚门槛结果叠加，本批从 exact v085 分别隔离 G1-only
+与 U0-only；source/destination 使用同一反向逻辑 row，数值放置、字节、同步和 MMA
+不变。
+
+| 方向 | Case3 Step1 最终 ISA | correctness / smoke | 决策 |
+|---|---|---:|---|
+| G1 两 phase 内部反向 | `218/54→220/50`；`.text +112 B/+14 inst`；`snop 405→404`；42 load/256 MMA/64 LDS/4 barrier 不变 | PASS；warmup5/repeat50 `-0.3663%` | below gate |
+| U0 两 phase 内部反向 | `218/54→216/54`；`.text +168 B/+21 inst`；`snop 405→403`；主工作量不变 | PASS；warmup5/repeat50 `+0.1898%` | reject |
+
+内部遍历方向确实能改变地址状态和寄存器分配，但关键中间两个权重半块的最好单点
+信号仍只有一次 `-0.366%` short screen，远低于 `1.2%`，另一对称点还反向回退。
+因此不扩展到 G0/U1 邻点、不组合其他亚门槛结果。新增 scratch 位于
+`/tmp/v085_step1_{g1,u0}_reverse_rows*`。
+
+### v085 Step2 列 CTA、三段 producer 与 workspace 行相位
+
+继续从 v085 的两个已验证事实出发：`up_logits` 的 512B 地址周期会显著改变
+Step2，而 `A64 -> B128` 的同步请求邻接是当前最优 producer。所有候选仍从 exact
+v085 单独派生，只使用正常同步 TileLang，预先写 hypothesis，并通过 OJ source /
+generated gate、Case3 完整 padded correctness、codegen 与最终 xcore1000 ISA。
+
+| 方向 | Case3 / 阶段结果 | 最终 ISA / 资源 | 决策 |
+|---|---:|---|---|
+| 同一 token row 内 column CTA 半区交错 `0,14,1,15,...` | fullcheck 附带 screen `+0.337%` | Step2 `.text +40B/+5 inst`，`222/54→222/56`；44 load/256 MMA/4 barrier 不变 | reject |
+| producer `B64 -> A64 -> B64` | fullcheck 附带 screen `+1.764%` | Step2 `.text +40B/+5 inst`，`222/54→220/58`；主工作量不变 | reject |
+| valid-row 紧凑索引 + 保留 pad128 pitch | 3× AB/BA `-0.067/-0.111/-0.209%`，median `-0.111%` | Step1 `218/56`、Step2 `216/56`，无 spill，均 2 waves | below gate |
+| Case2/3 partial 128-row workspace slot 右对齐 | fullcheck 附带 screen `+0.060%` | Step1 `.text 26248→25928B`；Step2 `18456→18000B`、`2307→2250 inst`、`222/54→222/52` | reject/noise |
+
+column permutation 保留了 row-block-first 的 `up_logits` reuse，但没有改善 dispatch
+序号到 Down 地址高位的映射；不继续扫乘法/bit-reverse 排列。`B64-A64-B64` 则证明
+即使 B64 边界本身近似免费，把任何 Down burst 放到 A64 之前仍会破坏 v084/v085
+的 A-first 关键窗口，因此 producer 邻接轴关闭。
+
+紧凑+pad128 是本批唯一出现阶段级正信号的布局。一次 paired mcTracer 为：
+
+- Step1 `5.844992 -> 5.920000 ms`，`+1.283%`；
+- Step2 `2.658304 -> 2.626560 ms`，`-1.194%`；
+- launch gap `0.028416 -> 0.027648 ms`。
+
+最终 ISA 同样呈相反迁移：Step1 `.text 26248→25888B`、静态
+`3281→3236`，Step2 却 `18456→19536B`、`2307→2442`。阶段时间不能由静态
+代码长度预测；物理 compact row phase 对 consumer 有约 1.2% 信号，却让 producer
+付出更大的地址/写入代价。按 Step2 约三成端到端占比，即使把 Step1 损失完全消除，
+该 consumer 信号也只值约 0.4% 全算子收益，低于 promotion gate。
+
+partial-slot 右对齐用 `block_start + 128 - actual_rows` 避免新增 `group_offsets`
+load，并把 Step2 代码和 ST registers 降低，但性能仍为零，说明 compact 版收益不
+能简化为“给 100/56-row tail 两个非零 row phase”。不扫更多 row offset。新增
+scratch 位于 `/tmp/v085_step2_{col_half_interleave,b64_a64_b64}*`、
+`/tmp/v085_{packed_valid_rows_pad128,workspace_tail_slot_right_align}*` 及对应
+hypothesis、codegen、ISA、JSON 和 mcTracer 目录。
+
+本批无候选达到 `1.2%`；不创建 v086、不修改 submission、不移动 `dorm` 性能
+源码。
+
+### Step1 Gate/Up 统一 shared 对象
+
+历史中只有把 Gate/Up 串行复用单个 16 KiB buffer 的尝试，未见保留两者
+同时存活、只把两个 `128x64` 对象合并为一个 `256x64` 对象的记录。本候选
+保持 32 KiB 总容量、`G0 -> A0 -> G1 -> U0 -> A1 -> U1` 顺序、barrier、流量和
+MMA 不变，Up 的 LDS 改为同一 shared 对象的 row offset 128。
+
+- OJ source/generated 均 PASS，Case3 完整 padded correctness PASS；
+- 候选与 exact v085 均为 Step1 `218/54`、2 waves、无 spill，`.text 26248 B`、
+  `3281 inst / 42 global load / 256 MMA / 64 LDS / 4 barrier` 全部一致；
+- 忽略 `.file/.loc` 后，剩余差异只是 dynamic-shared symbol 从 `buf_dyn_shmem` 改名为
+  `weight_shared` 及调试字符串 offset，执行指令序列没有差异。
+
+这证明 TileLang/MXMACA lowering 原本已把两个相邻 shared allocation 折叠到同一
+dynamic-shared 基址上；源码层手动统一不会改变机器工作。fullcheck 中单次
+`+0.551%` 只是完全同指令候选的计时噪声，不做 paired 放大、不记录版本。scratch
+位于 `/tmp/v085_step1_unified_weight_shared*`。
+
+### Step1 BM96 long-expert 与 64-row workspace slot
+
+历史精确检索发现 Step1 测过 BM64/BM128/BM192，Step2 测过 BM96，但没有
+Step1 BM96。因此先在 v59 结构上做隔离：short 100-row expert 保留一个
+BM128/256-thread CTA，long 184-row expert 从两个 BM128 改为两个
+BM96/192-thread CTA。每个 64x64 权重半块用已在 Step2 BM96 验证过的
+`192*2 + 128` 向量 lane 分解搬运。
+
+- 理论 Case3 Step1 row waves 从 `32*4 + 32*8 = 384` 降到
+  `32*4 + 32*6 = 320`，减少 16.7%，long expert CTA 数和权重重读次数不变；
+- OJ source/generated PASS，完整 correctness PASS；short/long Step1 均为
+  `216/52`、2 waves/PEU，无表面 spill；
+- 终止性 Case3 从 `9.333 -> 10.944 ms`，回退 `17.262%`。
+
+非标准 192-thread/3-wave CTA 的 producer/consumer 执行效率损失远大于 padding
+MMA/A 工作的节省，不移植到 v085、不测 BM80/112 邻点。证据位于
+`/tmp/v59_step1_hybrid_bm96_long*`。
+
+随后保留 v085 的 CTA/MMA/流量/+128-column pitch，只把 Case3 internal
+`up_logits` expert slot 从 short/long `128/256` 行改为 64-row-aligned
+`128/192` 行。基址为
+`expert_id*128 + max(0, expert_id-32)*64 + token_offset`，不增加
+`group_offsets` load；short expert 基址与 v085 完全一致，long 的每 expert
+空洞从 72 行降为 8 行，workspace 有效地址跨度从 12288 行降为 10240 行。
+
+- OJ source/generated 与完整 padded correctness PASS，无 private spill；
+- Step1 `218/54 -> 218/56`，`.text 26248 -> 28464 B`、`3281 -> 3558`
+  静态指令；Step2 `222/54 -> 218/56`，`.text 18456 -> 19768 B`、
+  `2307 -> 2471` 指令；MMA/global/shared/barrier 不变；
+- 终止性 Case3 `8.5880 -> 8.5921 ms`，`+0.0477%`，纯噪声。
+
+该结果表明 `actual_rows` 本来就不访问 padding 洞；减少内部虚拟槽位只改变
+地址相位和基址算术，没有减少 HBM 字节或 MMA。不继续扫 32/96-row 对齐。
+证据位于 `/tmp/v085_workspace_slot64_case3*`。两个方向均未达 `1.2%`；
+不创建 v086、不修改 submission、不移动 `dorm` 性能源码。
