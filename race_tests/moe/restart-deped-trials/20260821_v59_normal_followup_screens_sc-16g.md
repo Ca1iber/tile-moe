@@ -1591,3 +1591,32 @@ v087 晋级后又对 fused A 的 producer 位置做了两个有边界的 follow-
 因此 v087 当前位置是 fused-load 方案中“寄存器生命周期/同步延迟覆盖”的已验证
 平衡点；关闭更多 producer 排列扫描。scratch 位于
 `/tmp/v087_input_fused_{early_after_gate0,late_after_up0}*`。
+
+### v087 producer-direct tile-major `up_logits`
+
+v086 证明连续 `128x64` A tile 能显著改善 Step1，因此继续检验同一物理布局是否
+适用于 Step1 唯一生产、Step2 重复消费的 `up_logits`。候选不增加转换 kernel，
+由 Step1 直接写成 `[row_block,k_tile,row_in_block,k_in_tile]`，Step2 直接读取；
+保持 prepack、MMA、K/producer 顺序、barrier、grid、mask 和输出语义不变。
+
+OJ source/generated gate、Case3 完整 padded correctness 均 PASS；仍为三个 kernel，
+无 async/private spill。相对 exact v087 的三轮 warmup10/repeat100 AB/BA 为：
+
+| 变体 | Case3 paired change | 结论 |
+|---|---:|---|
+| 直接 `128x64` / 16 KiB tile | `+1.710/+1.668/+1.686%`，median `+1.686%` | reject |
+| 显式拆成两个连续 64-column 写循环 | `+1.718/+1.659/+1.709%`，median `+1.709%` | reject |
+| 每 tile 增加 256 B 空隙（物理 `130x64`，16640 B pitch） | `+1.688/+1.763/+1.665%`，median `+1.688%` | reject |
+
+直接版的三对 paired mcTracer 把回退定位到 consumer，而不是 producer：Step1
+中位 `-0.825%`，Step2 中位 `+5.059%`，总 GPU timeline 中位 `+1.049%`。
+显式双半块没有改变回退，说明热循环里的除模/跨 tile 选择不是根因；随后把 tile
+基距从 16384 B 改为 16640 B 也完全没有恢复，故幂次 pitch / partition camping
+假设同样被证伪。当前 row-major 2176-half pitch 虽然表面跨距大，但在 C500 上的
+Step2 实测明显优于 producer-direct tile-major；不继续扫任意 tile padding、列 pitch
+或更多布局排列。
+
+证据位于 `/tmp/v087_up_logits_tilemajor*`、
+`/tmp/v087_up_logits_tilemajor_mctracer_case3` 及对应 hypothesis/codegen/fullcheck
+JSON。全部低于 `1.2%` 晋级门槛且方向为回退；不创建 v088、不修改 submission、
+不移动 `dorm` 性能源码。
