@@ -1553,3 +1553,41 @@ Case3 paired mcTracer 显示 prepack中位 `0.242944ms`、prepack到Step1 gap
 SHA-256为 `43bda05910a72ce3ee75a12f04d906f45abab2e446f8d05a977f733b796b8b9e`，
 已独立归档为 `v086_step1_input_tilemajor_sc-16g` 并通过本地三 Case 1.2% 晋级门槛；
 外部OJ仍待执行，因此不声明官方分数、不创建同ID restart-submission。
+
+### v086 follow-up：tile pitch、prepack pruning、K order 与 fused A prefetch
+
+围绕 v086 的 tile-major A workspace 继续做四个单机制实验：
+
+1. 每个连续 `128x64` A tile 后增加 256 B padding（物理 130 rows）。OJ/codegen、
+   完整 correctness 均 PASS，Case3 `8.44794 -> 8.44476ms`，仅 `-0.0376%`，
+   纯噪声；不扫更多任意 pitch。
+2. prepack 读取 group metadata，只搬 `actual_rows`，理论跳过约 26% padding rows。
+   三轮 Case3 为 `-0.647/-0.683/-0.621%`，中位 `-0.647%`、pstdev `0.025%`。
+   这是稳定小收益，但低于 1.2% 门槛，因此不编号、不合并进性能父版本。
+3. prepack 逆序写 K tile，Step1 逆序消费 K pair，试图利用最后写入的 cache recency。
+   Step1 资源从 `218/54` 降到 `214/42`，但三轮 Case3 仅
+   `-0.142/-0.134/-0.189%`，仍属噪声，说明静态资源下降没有转化成吞吐收益。
+4. v59 row-major 上合并 A 载入曾回退约5.76%；v086 已使每个 A tile 连续，故在
+   新布局上重新检验。将 tail-pruned Step1 每个 K tile 的两个64-row载入合并为
+   一次128-row载入，保持字节数、K顺序、MMA、barrier、grid、prepack和Step2不变。
+
+第四项成为 v087：三 Case严格配对中位分别 `-2.554/-1.587/-1.760%`，pstdev
+`0.022/0.065/0.052%`；完整 padded correctness、OJ source与三份generated source
+均PASS。最终ISA三Case均无async/spill/private op；Step1 `218/54 -> 216/42`，
+机器码约减少6.5%。Case3三对mcTracer把收益定位到Step1中位 `-3.490%`，Step2
+`-0.164%`为噪声，总GPU timeline中位 `-2.487%`。因此归档并晋级
+`v087_step1_fused_input_prefetch_sc-16g`；外部OJ仍待执行。
+
+v087 晋级后又对 fused A 的 producer 位置做了两个有边界的 follow-up。相对当前
+`G0 -> G1 -> Afull -> U0 -> U1`：
+
+- 提前为 `G0 -> Afull -> G1 -> U0 -> U1`，Step1 MT `216 -> 224`、ST仍42；
+  Case3三轮为 `+0.057/+4.687/-0.515%`，中位 `+0.057%`且高度不稳定。更早发起
+  扩大A与Gate状态的重叠生命周期，没有形成可用收益。
+- 延后为 `G0 -> G1 -> U0 -> Afull -> U1`，Step1 MT `216 -> 222`、ST仍42；
+  Case3三轮稳定回退 `+4.181/+4.114/+4.096%`，中位 `+4.114%`。仅保留U1覆盖
+  同步A载入明显不足。
+
+因此 v087 当前位置是 fused-load 方案中“寄存器生命周期/同步延迟覆盖”的已验证
+平衡点；关闭更多 producer 排列扫描。scratch 位于
+`/tmp/v087_input_fused_{early_after_gate0,late_after_up0}*`。
