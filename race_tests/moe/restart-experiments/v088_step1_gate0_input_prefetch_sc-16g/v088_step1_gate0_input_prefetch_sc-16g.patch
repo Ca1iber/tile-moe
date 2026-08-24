@@ -1,0 +1,111 @@
+diff --git a/race_tests/moe/restart-submission/v086_step1_input_tilemajor_sc-16g/submission.py b/tmp/v087c_input_after_gate0.py
+index 216d2550..424f3b5a 100644
+--- a/race_tests/moe/restart-submission/v086_step1_input_tilemajor_sc-16g/submission.py
++++ b/tmp/v087c_input_after_gate0.py
+@@ -499,6 +499,8 @@ def run_kernel(
+ 
+                     T.clear(gate_local)
+                     T.clear(up_local)
++                    if use_step1_input_prefetch and use_step1_tail_pruning:
++                        T.clear(input_prefetch)
+                     if use_step1_input_prefetch:
+                         T.copy(
+                             input[bx, 0, 0:block_token, 0:block_dhidden_step1],
+@@ -516,15 +518,7 @@ def run_kernel(
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
+-                                if use_step1_tail_pruning:
+-                                    for i_x_odd_0, j_x_odd_0 in T.Parallel(
+-                                        block_token, block_dhidden_step1
+-                                    ):
+-                                        if i_x_odd_0 < 64 and i_x_odd_0 < actual_rows:
+-                                            input_prefetch[i_x_odd_0, j_x_odd_0] = input[
+-                                                bx, k_odd, i_x_odd_0, j_x_odd_0
+-                                            ]
+-                                else:
++                                if not use_step1_tail_pruning:
+                                     T.copy(
+                                         input[
+                                             bx,
+@@ -534,6 +528,14 @@ def run_kernel(
+                                         ],
+                                         input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
+                                     )
++                                if use_step1_tail_pruning:
++                                    for i_x_odd, j_x_odd in T.Parallel(
++                                        block_token, block_dhidden_step1
++                                    ):
++                                        if i_x_odd < actual_rows:
++                                            input_prefetch[i_x_odd, j_x_odd] = input[
++                                                bx, k_odd, i_x_odd, j_x_odd
++                                            ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -550,15 +552,7 @@ def run_kernel(
+                                     ],
+                                     up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
+-                                if use_step1_tail_pruning:
+-                                    for i_x_odd_1, j_x_odd_1 in T.Parallel(
+-                                        block_token, block_dhidden_step1
+-                                    ):
+-                                        if 64 <= i_x_odd_1 and i_x_odd_1 < actual_rows:
+-                                            input_prefetch[i_x_odd_1, j_x_odd_1] = input[
+-                                                bx, k_odd, i_x_odd_1, j_x_odd_1
+-                                            ]
+-                                else:
++                                if not use_step1_tail_pruning:
+                                     T.copy(
+                                         input[
+                                             bx,
+@@ -634,15 +628,7 @@ def run_kernel(
+                                 )
+                                 if k_pair + 1 < step1_k_tiles // 2:
+                                     k_next_even = k_odd + 1
+-                                    if use_step1_tail_pruning:
+-                                        for i_x_even_0, j_x_even_0 in T.Parallel(
+-                                            block_token, block_dhidden_step1
+-                                        ):
+-                                            if i_x_even_0 < 64 and i_x_even_0 < actual_rows:
+-                                                input_shared[i_x_even_0, j_x_even_0] = input[
+-                                                    bx, k_next_even, i_x_even_0, j_x_even_0
+-                                                ]
+-                                    else:
++                                    if not use_step1_tail_pruning:
+                                         T.copy(
+                                             input[
+                                                 bx,
+@@ -652,6 +638,14 @@ def run_kernel(
+                                             ],
+                                             input_shared[0 : block_token // 2, 0:block_dhidden_step1],
+                                         )
++                                    if use_step1_tail_pruning:
++                                        for i_x_even, j_x_even in T.Parallel(
++                                            block_token, block_dhidden_step1
++                                        ):
++                                            if i_x_even < actual_rows:
++                                                input_shared[i_x_even, j_x_even] = input[
++                                                    bx, k_odd + 1, i_x_even, j_x_even
++                                                ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -669,15 +663,7 @@ def run_kernel(
+                                     up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
+                                 if k_pair + 1 < step1_k_tiles // 2:
+-                                    if use_step1_tail_pruning:
+-                                        for i_x_even_1, j_x_even_1 in T.Parallel(
+-                                            block_token, block_dhidden_step1
+-                                        ):
+-                                            if 64 <= i_x_even_1 and i_x_even_1 < actual_rows:
+-                                                input_shared[i_x_even_1, j_x_even_1] = input[
+-                                                    bx, k_odd + 1, i_x_even_1, j_x_even_1
+-                                                ]
+-                                    else:
++                                    if not use_step1_tail_pruning:
+                                         T.copy(
+                                             input[
+                                                 bx,

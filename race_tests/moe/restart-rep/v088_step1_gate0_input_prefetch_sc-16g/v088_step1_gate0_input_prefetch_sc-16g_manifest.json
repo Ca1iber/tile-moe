@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "iteration_id": "v088_step1_gate0_input_prefetch_sc-16g",
+  "status": "inconclusive",
+  "machine": "sc-16g",
+  "branch": "dorm",
+  "parent_commit": "2add86954a45e2678ca03e7f1783c461dd8fd21d",
+  "parent_id": "v086_step1_input_tilemajor_sc-16g",
+  "parent_submission_sha256": "43bda05910a72ce3ee75a12f04d906f45abab2e446f8d05a977f733b796b8b9e",
+  "candidate_submission_sha256": "cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47",
+  "candidate_path": "race_tests/moe/restart-experiments/v088_step1_gate0_input_prefetch_sc-16g/candidate_submission.py",
+  "mechanism": "move the AC-safe full predicated Step1 input prefetch immediately after Gate0",
+  "correctness": {
+    "official_cases": [1, 2, 3],
+    "full_padded_output": "PASS",
+    "oj_source_and_generated_validation": "PASS",
+    "async_copy": "ABSENT_IN_SOURCE_GENERATED_CPP_AND_ISA",
+    "spill": "NONE"
+  },
+  "paired_benchmark_change_percent": {
+    "case1_median": -3.181668245780256,
+    "case2_median": -2.2999068464046757,
+    "case3_median": -2.2861329426258736
+  },
+  "mctracer_case3_paired_median_change_percent": {
+    "prepack": -0.2101464821228969,
+    "step1": -2.8789439191086896,
+    "step2": 0.09704968944099779,
+    "total_gpu": -1.8360675770628943
+  },
+  "resources": {
+    "step1_mt_registers": 224,
+    "step1_st_registers": 42,
+    "step1_max_warps_per_peu": 2,
+    "dynamic_shared_bytes": 32768,
+    "private_bytes": 0
+  },
+  "incumbent_external_oj": {
+    "authority": "user-provided OJ reports",
+    "id": "v086_step1_input_tilemajor_sc-16g",
+    "latency_ms": [2.487, 4.287, 8.383],
+    "score_ratio": [0.818969, 0.81277, 0.810588],
+    "display_score": [81, 81, 81]
+  },
+  "candidate_external_oj": "PENDING",
+  "conclusion": "local winner above the 1.2% gate in every case; global SOTA promotion remains blocked pending exact external OJ results"
+}
