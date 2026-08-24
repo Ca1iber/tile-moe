@@ -25,7 +25,25 @@ Case2 的 odd tile 和 next-even tile 都在 Gate0 后按 native thread/vector �
 - 三个 generated-device source validator：PASS。
 - 禁止项扫描：无 async copy、foreign source、extern/packed escape。
 - Case2 ISA：private load/store 0，spill store/reload 0。
-- 外部 OJ：PENDING，因此不能进入 `restart-submission`。
+- 外部 OJ：**WA**。用户提交 exact archived candidate 后，Case1 在
+  `(1926, 1091)` 出现 `target=0.21240234375`、`ref=0.024627685546875`，
+  `max_abs_diff=0.187774658203125`（`rtol=0.05, atol=0.05`）；测得
+  `2.439 ms`，但正确性门禁失败，因此性能结果无效，且不能进入
+  `restart-submission`。
+
+## Post-OJ correctness diagnosis
+
+- 诊断性质：不替代官方/OJ verdict。
+- Case1 保持官方张量形状 `(3072, 2048)`、2272 个有效行、24 个 M blocks。
+- 覆盖固定 `100/184`、反转分布及 12 组满足同样总行数/总 blocks 的合法随机
+  expert-tail 分布；每种分布 8 组输入数值，队友版和 v089 各重复 5 次。
+- 共 1120 次相对 OJ-AC v088 的逐元素差分全部一致，未在裸 Python 环境复现
+  OJ WA。
+- Case1/3 device C++ 又与 v088 逐字节相同，因此当前证据不支持
+  `actual_rows` 算法错误；风险更集中在 v089 从队友源带入的 host workspace
+  cache 语义（把 OJ proxy/output tensor 放入全局字典 key）或 OJ 特有运行环境。
+- 后续修正必须让非 Case2 的 host workspace 路径也回到 v088，并取消 v089
+  的 SOTA 资格，不能以本地未复现为由忽略外部 WA。
 
 ## Final paired benchmark versus v088
 
@@ -65,4 +83,6 @@ Case2 上组合版相对原始 mate 版本：median `-0.6805%`，pstdev `0.0372%
 
 ## Verdict
 
-`inconclusive` for global promotion：本地组合成立，Case2 相对 OJ SOTA v088 稳定提升约 3%，Case1/3 不变，并通过全部本地正确性、合规、codegen 和 ISA gate。外部 OJ 结果缺失，在 OJ 单调 SOTA gate 前仅作为 v089 candidate 归档。
+`rejected`：本地组合的 Case2 性能证据成立，但 exact candidate 已被外部 OJ
+判定 WA。正确性是硬门禁，所有候选性能数据仅保留为研究线索，v089 不得进入
+`restart-submission`，正式 SOTA 继续为 v088。

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "iteration_id": "v089_case2_native_gate0_input_sc-16g",
-  "status": "inconclusive",
+  "status": "rejected",
   "machine": "sc-16g",
   "branch": "dorm",
   "parent_commit": "be907d5f",
@@ -47,6 +47,27 @@
     "latency_ms": [2.431, 4.227, 8.281],
     "score_ratio": [0.822321, 0.814906, 0.81246]
   },
-  "candidate_external_oj": "PENDING",
-  "conclusion": "local Case2 winner above the 1.2% gate with neutral Case1/3; global SOTA promotion remains pending external OJ"
+  "candidate_external_oj": {
+    "authority": "user-provided external OJ checker log",
+    "status": "WA",
+    "case": 1,
+    "failure_coordinate": [1926, 1091],
+    "target": 0.21240234375,
+    "reference": 0.024627685546875,
+    "max_abs_diff": 0.187774658203125,
+    "rtol": 0.05,
+    "atol": 0.05,
+    "reported_time_ms": 2.439
+  },
+  "post_oj_diagnostic": {
+    "kind": "diagnostic differential stress; not official/OJ verdict",
+    "case": 1,
+    "comparand": "v088 OJ-accepted source",
+    "legal_distributions": 14,
+    "value_seeds_per_distribution": 8,
+    "repeats_per_source": 5,
+    "comparisons": 1120,
+    "result": "PASS; OJ WA not reproduced locally"
+  },
+  "conclusion": "rejected: exact candidate failed external OJ correctness; local Case2 performance is retained only as a research clue and v088 remains SOTA"
 }
