@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "iteration_id": "v089_case2_native_gate0_input_sc-16g",
+  "status": "inconclusive",
+  "machine": "sc-16g",
+  "branch": "dorm",
+  "parent_commit": "be907d5f",
+  "parent_id": "v088_step1_gate0_input_prefetch_sc-16g",
+  "parent_submission_sha256": "cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47",
+  "teammate_reference_original_crlf_sha256": "2a562e568dbebcad0aa7c4b55a79139ad380600d7376310990603432917a5406",
+  "teammate_reference_archived_lf_sha256": "5792fd7317914caef019090b05da1d4ec1309457d2ee07dfa96ae220422cd37e",
+  "candidate_submission_sha256": "333fbf1867970e2ffb88e46c021c6091b89da29f75cff7b58b12b1aec7618cd0",
+  "candidate_path": "race_tests/moe/restart-experiments/v089_case2_native_gate0_input_sc-16g/candidate_submission.py",
+  "mechanism": "combine v088 Gate0-early Step1 input issue with a Case2-only consumer-native MMA-A workspace and synchronous shared bridge",
+  "correctness": {
+    "official_cases": [1, 2, 3],
+    "full_padded_output": "PASS",
+    "oj_source_and_generated_validation": "PASS",
+    "async_copy": "ABSENT_IN_SOURCE_GENERATED_CPP_AND_CASE2_ISA",
+    "spill": "NONE"
+  },
+  "paired_benchmark_change_percent": {
+    "case1_median": 0.0014000643858924633,
+    "case2_median": -3.0742908059867124,
+    "case3_median": 0.049924910781085075
+  },
+  "mate_to_combo_case2_median_change_percent": -0.6805040117503491,
+  "mctracer_case2_paired_median_change_percent": {
+    "step1": -4.315304948216337,
+    "step2": 0.22844089091946795,
+    "total_gpu": -2.494317134607116
+  },
+  "resources_case2": {
+    "prepack_mt_registers": 78,
+    "prepack_st_registers": 11,
+    "prepack_max_warps_per_peu": 6,
+    "step1_mt_registers": 222,
+    "step1_st_registers": 42,
+    "step1_max_warps_per_peu": 2,
+    "step1_dynamic_shared_bytes": 32768,
+    "step1_private_bytes": 0
+  },
+  "non_target_codegen": "case1 and case3 generated C++ are byte-identical to v088",
+  "incumbent_external_oj": {
+    "id": "v088_step1_gate0_input_prefetch_sc-16g",
+    "aggregate_score": 81.33,
+    "latency_ms": [2.431, 4.227, 8.281],
+    "score_ratio": [0.822321, 0.814906, 0.81246]
+  },
+  "candidate_external_oj": "PENDING",
+  "conclusion": "local Case2 winner above the 1.2% gate with neutral Case1/3; global SOTA promotion remains pending external OJ"
+}
