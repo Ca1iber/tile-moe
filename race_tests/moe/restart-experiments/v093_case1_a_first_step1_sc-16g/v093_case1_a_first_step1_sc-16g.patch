@@ -1,0 +1,82 @@
+--- race_tests/moe/restart-experiments/v092_case3_a_first_step1_sc-16g/candidate_submission.py	2026-08-24 15:10:18.078208717 +0000
++++ race_tests/moe/restart-experiments/v093_case1_a_first_step1_sc-16g/candidate_submission.py	2026-08-24 15:35:42.391841543 +0000
+@@ -158,7 +158,7 @@
+     use_step2_input_prefetch = False
+     use_step2_half_interleave = False
+     use_case2_consumer_native_input = False
+-    use_case3_non_native_a_before_gate0 = False
++    use_non_native_a_before_gate0 = False
+
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -177,6 +177,7 @@
+         use_step1_prefetch_before_barrier = True
+         use_step1_tail_pruning = True
+         use_step2_input_prefetch = True
++        use_non_native_a_before_gate0 = True
+     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -200,7 +201,7 @@
+             )
+         )
+         use_case2_consumer_native_input = num_experts == 32
+-        use_case3_non_native_a_before_gate0 = num_experts == 64
++        use_non_native_a_before_gate0 = num_experts == 64
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -230,7 +231,7 @@
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_interleave),
+         bool(use_case2_consumer_native_input),
+-        bool(use_case3_non_native_a_before_gate0),
++        bool(use_non_native_a_before_gate0),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+
+@@ -448,7 +449,7 @@
+             use_step2_input_prefetch,
+             use_step2_half_interleave,
+             use_case2_consumer_native_input,
+-            use_case3_non_native_a_before_gate0,
++            use_non_native_a_before_gate0,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -677,7 +678,7 @@
+                                                     native_thread,
+                                                     native_elem,
+                                                 ]
+-                                if use_case3_non_native_a_before_gate0:
++                                if use_non_native_a_before_gate0:
+                                     for i_x_odd, j_x_odd in T.Parallel(
+                                         block_token, block_dhidden_step1
+                                     ):
+@@ -705,7 +706,7 @@
+                                     )
+                                 if (
+                                     use_step1_tail_pruning
+-                                    and not use_case3_non_native_a_before_gate0
++                                    and not use_non_native_a_before_gate0
+                                 ):
+                                     for i_x_odd, j_x_odd in T.Parallel(
+                                         block_token, block_dhidden_step1
+@@ -846,7 +847,7 @@
+                                                     native_elem,
+                                                 ]
+                                 if (
+-                                    use_case3_non_native_a_before_gate0
++                                    use_non_native_a_before_gate0
+                                     and k_pair + 1 < step1_k_tiles // 2
+                                 ):
+                                     for i_x_even, j_x_even in T.Parallel(
+@@ -878,7 +879,7 @@
+                                         )
+                                     if (
+                                         use_step1_tail_pruning
+-                                        and not use_case3_non_native_a_before_gate0
++                                        and not use_non_native_a_before_gate0
+                                     ):
+                                         for i_x_even, j_x_even in T.Parallel(
+                                             block_token, block_dhidden_step1
