@@ -1,0 +1,136 @@
+--- race_tests/moe/restart-experiments/v093_case1_a_first_step1_sc-16g/candidate_submission.py	2026-08-24 15:35:42.391841543 +0000
++++ race_tests/moe/restart-experiments/v094_case3_split_a_gate0_step1_sc-16g/candidate_submission.py	2026-08-24 16:19:08.433265956 +0000
+@@ -159,6 +159,7 @@
+     use_step2_half_interleave = False
+     use_case2_consumer_native_input = False
+     use_non_native_a_before_gate0 = False
++    use_non_native_a_split_gate0 = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -202,6 +203,7 @@
+         )
+         use_case2_consumer_native_input = num_experts == 32
+         use_non_native_a_before_gate0 = num_experts == 64
++        use_non_native_a_split_gate0 = num_experts == 64
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -232,6 +234,7 @@
+         bool(use_step2_half_interleave),
+         bool(use_case2_consumer_native_input),
+         bool(use_non_native_a_before_gate0),
++        bool(use_non_native_a_split_gate0),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -450,6 +453,7 @@
+             use_step2_half_interleave,
+             use_case2_consumer_native_input,
+             use_non_native_a_before_gate0,
++            use_non_native_a_split_gate0,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -679,13 +683,22 @@
+                                                     native_elem,
+                                                 ]
+                                 if use_non_native_a_before_gate0:
+-                                    for i_x_odd, j_x_odd in T.Parallel(
+-                                        block_token, block_dhidden_step1
+-                                    ):
+-                                        if i_x_odd < actual_rows:
+-                                            input_prefetch[i_x_odd, j_x_odd] = input[
+-                                                bx, k_odd, i_x_odd, j_x_odd
+-                                            ]
++                                    if use_non_native_a_split_gate0:
++                                        for i_x_odd, j_x_odd in T.Parallel(
++                                            block_token // 2, block_dhidden_step1
++                                        ):
++                                            if i_x_odd < actual_rows:
++                                                input_prefetch[i_x_odd, j_x_odd] = input[
++                                                    bx, k_odd, i_x_odd, j_x_odd
++                                                ]
++                                    else:
++                                        for i_x_odd, j_x_odd in T.Parallel(
++                                            block_token, block_dhidden_step1
++                                        ):
++                                            if i_x_odd < actual_rows:
++                                                input_prefetch[i_x_odd, j_x_odd] = input[
++                                                    bx, k_odd, i_x_odd, j_x_odd
++                                                ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -694,6 +707,18 @@
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if (
++                                    use_non_native_a_before_gate0
++                                    and use_non_native_a_split_gate0
++                                ):
++                                    for i_x_odd_hi, j_x_odd_hi in T.Parallel(
++                                        block_token // 2, block_dhidden_step1
++                                    ):
++                                        input_row_odd_hi = block_token // 2 + i_x_odd_hi
++                                        if input_row_odd_hi < actual_rows:
++                                            input_prefetch[input_row_odd_hi, j_x_odd_hi] = input[
++                                                bx, k_odd, input_row_odd_hi, j_x_odd_hi
++                                            ]
+                                 if not use_step1_tail_pruning:
+                                     T.copy(
+                                         input[
+@@ -850,13 +875,22 @@
+                                     use_non_native_a_before_gate0
+                                     and k_pair + 1 < step1_k_tiles // 2
+                                 ):
+-                                    for i_x_even, j_x_even in T.Parallel(
+-                                        block_token, block_dhidden_step1
+-                                    ):
+-                                        if i_x_even < actual_rows:
+-                                            input_shared[i_x_even, j_x_even] = input[
+-                                                bx, k_odd + 1, i_x_even, j_x_even
+-                                            ]
++                                    if use_non_native_a_split_gate0:
++                                        for i_x_even, j_x_even in T.Parallel(
++                                            block_token // 2, block_dhidden_step1
++                                        ):
++                                            if i_x_even < actual_rows:
++                                                input_shared[i_x_even, j_x_even] = input[
++                                                    bx, k_odd + 1, i_x_even, j_x_even
++                                                ]
++                                    else:
++                                        for i_x_even, j_x_even in T.Parallel(
++                                            block_token, block_dhidden_step1
++                                        ):
++                                            if i_x_even < actual_rows:
++                                                input_shared[i_x_even, j_x_even] = input[
++                                                    bx, k_odd + 1, i_x_even, j_x_even
++                                                ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -865,6 +899,22 @@
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if (
++                                    use_non_native_a_before_gate0
++                                    and use_non_native_a_split_gate0
++                                    and k_pair + 1 < step1_k_tiles // 2
++                                ):
++                                    for i_x_even_hi, j_x_even_hi in T.Parallel(
++                                        block_token // 2, block_dhidden_step1
++                                    ):
++                                        input_row_even_hi = block_token // 2 + i_x_even_hi
++                                        if input_row_even_hi < actual_rows:
++                                            input_shared[input_row_even_hi, j_x_even_hi] = input[
++                                                bx,
++                                                k_odd + 1,
++                                                input_row_even_hi,
++                                                j_x_even_hi,
++                                            ]
+                                 if k_pair + 1 < step1_k_tiles // 2:
+                                     k_next_even = k_odd + 1
+                                     if not use_step1_tail_pruning:
