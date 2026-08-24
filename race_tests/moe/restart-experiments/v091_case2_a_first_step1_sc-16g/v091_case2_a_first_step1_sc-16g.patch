@@ -1,0 +1,197 @@
+--- race_tests/moe/restart-experiments/v090_oj_safe_case_dispatch_sc-16g/candidate_submission.py	2026-08-24 12:58:58.351431628 +0000
++++ race_tests/moe/restart-experiments/v091_case2_a_first_step1_sc-16g/candidate_submission.py	2026-08-24 14:14:17.319255826 +0000
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v090
+-# PARENT: v088 OJ SOTA / SHA256 cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47
+-# PRIMARY_CHANGE: OJ-safe dispatch: exact v088 behavior for Case1/3, teammate-native behavior for Case2
++# GENERATED EXPERIMENT: v091
++# PARENT: v090 OJ-AC development baseline / SHA256 6e28d4446cb79b9bbcd440b39ccfda61c2d82792f23987bc15d7ebfe5923b8d7
++# PRIMARY_CHANGE: Case2 Step1 native A prefetch before Gate0; Case1/3 remain v090/v088 behavior
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -651,6 +651,28 @@
+                             k_even = k_pair * 2
+                             k_odd = k_even + 1
+                             if use_step1_prefetch_before_barrier:
++                                if use_case2_consumer_native_input:
++                                    for native_vec in T.serial(4):
++                                        native_row = (
++                                            (native_thread // 64) * 32
++                                            + (native_vec % 2) * 16
++                                            + native_thread % 16
++                                        )
++                                        native_col = (
++                                            (native_vec // 2) * 32
++                                            + ((native_thread % 64) // 16) * 8
++                                        )
++                                        if native_row < actual_rows:
++                                            for native_elem in T.vectorized(8):
++                                                input_prefetch[
++                                                    native_row, native_col + native_elem
++                                                ] = input[
++                                                    bx,
++                                                    k_odd,
++                                                    native_vec,
++                                                    native_thread,
++                                                    native_elem,
++                                                ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -669,15 +691,6 @@
+                                         ],
+                                         input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
+                                     )
+-                                if use_case2_consumer_native_input:
+-                                    T.copy(
+-                                        gate[
+-                                            expert_id,
+-                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                        ],
+-                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                    )
+                                 if use_step1_tail_pruning:
+                                     for i_x_odd, j_x_odd in T.Parallel(
+                                         block_token, block_dhidden_step1
+@@ -687,37 +700,14 @@
+                                                 input_prefetch[i_x_odd, j_x_odd] = input[
+                                                     bx, k_odd, i_x_odd, j_x_odd
+                                                 ]
+-                                    if use_case2_consumer_native_input:
+-                                        for native_vec in T.serial(4):
+-                                            native_row = (
+-                                                (native_thread // 64) * 32
+-                                                + (native_vec % 2) * 16
+-                                                + native_thread % 16
+-                                            )
+-                                            native_col = (
+-                                                (native_vec // 2) * 32
+-                                                + ((native_thread % 64) // 16) * 8
+-                                            )
+-                                            if native_row < actual_rows:
+-                                                for native_elem in T.vectorized(8):
+-                                                    input_prefetch[
+-                                                        native_row, native_col + native_elem
+-                                                    ] = input[
+-                                                        bx,
+-                                                        k_odd,
+-                                                        native_vec,
+-                                                        native_thread,
+-                                                        native_elem,
+-                                                    ]
+-                                if not use_case2_consumer_native_input:
+-                                    T.copy(
+-                                        gate[
+-                                            expert_id,
+-                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                        ],
+-                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                    )
++                                T.copy(
++                                    gate[
++                                        expert_id,
++                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                    ],
++                                    gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                )
+                                 T.copy(
+                                     up[
+                                         expert_id,
+@@ -815,6 +805,31 @@
+                                     step1_mma.mma(input_shared, weight_local, up_local, ki)
+                             T.sync_threads()
+                             if use_step1_prefetch_before_barrier:
++                                if (
++                                    use_case2_consumer_native_input
++                                    and k_pair + 1 < step1_k_tiles // 2
++                                ):
++                                    for native_vec in T.serial(4):
++                                        native_row = (
++                                            (native_thread // 64) * 32
++                                            + (native_vec % 2) * 16
++                                            + native_thread % 16
++                                        )
++                                        native_col = (
++                                            (native_vec // 2) * 32
++                                            + ((native_thread % 64) // 16) * 8
++                                        )
++                                        if native_row < actual_rows:
++                                            for native_elem in T.vectorized(8):
++                                                input_shared[
++                                                    native_row, native_col + native_elem
++                                                ] = input[
++                                                    bx,
++                                                    k_odd + 1,
++                                                    native_vec,
++                                                    native_thread,
++                                                    native_elem,
++                                                ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -823,15 +838,6 @@
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
+-                                if use_case2_consumer_native_input:
+-                                    T.copy(
+-                                        gate[
+-                                            expert_id,
+-                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                        ],
+-                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                    )
+                                 if k_pair + 1 < step1_k_tiles // 2:
+                                     k_next_even = k_odd + 1
+                                     if not use_step1_tail_pruning:
+@@ -853,37 +859,14 @@
+                                                     input_shared[i_x_even, j_x_even] = input[
+                                                         bx, k_odd + 1, i_x_even, j_x_even
+                                                     ]
+-                                    if use_case2_consumer_native_input:
+-                                        for native_vec in T.serial(4):
+-                                            native_row = (
+-                                                (native_thread // 64) * 32
+-                                                + (native_vec % 2) * 16
+-                                                + native_thread % 16
+-                                            )
+-                                            native_col = (
+-                                                (native_vec // 2) * 32
+-                                                + ((native_thread % 64) // 16) * 8
+-                                            )
+-                                            if native_row < actual_rows:
+-                                                for native_elem in T.vectorized(8):
+-                                                    input_shared[
+-                                                        native_row, native_col + native_elem
+-                                                    ] = input[
+-                                                        bx,
+-                                                        k_odd + 1,
+-                                                        native_vec,
+-                                                        native_thread,
+-                                                        native_elem,
+-                                                    ]
+-                                if not use_case2_consumer_native_input:
+-                                    T.copy(
+-                                        gate[
+-                                            expert_id,
+-                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                        ],
+-                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                    )
++                                T.copy(
++                                    gate[
++                                        expert_id,
++                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                    ],
++                                    gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                )
+                                 T.copy(
+                                     up[
+                                         expert_id,
