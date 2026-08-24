@@ -1,0 +1,91 @@
+--- race_tests/moe/restart-experiments/v091_case2_a_first_step1_sc-16g/candidate_submission.py	2026-08-24 14:14:17.319255826 +0000
++++ race_tests/moe/restart-experiments/v092_case3_a_first_step1_sc-16g/candidate_submission.py	2026-08-24 15:10:18.078208717 +0000
+@@ -158,6 +158,7 @@
+     use_step2_input_prefetch = False
+     use_step2_half_interleave = False
+     use_case2_consumer_native_input = False
++    use_case3_non_native_a_before_gate0 = False
+
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -199,6 +200,7 @@
+             )
+         )
+         use_case2_consumer_native_input = num_experts == 32
++        use_case3_non_native_a_before_gate0 = num_experts == 64
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -228,6 +230,7 @@
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_interleave),
+         bool(use_case2_consumer_native_input),
++        bool(use_case3_non_native_a_before_gate0),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+
+@@ -445,6 +448,7 @@
+             use_step2_input_prefetch,
+             use_step2_half_interleave,
+             use_case2_consumer_native_input,
++            use_case3_non_native_a_before_gate0,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -673,6 +677,14 @@
+                                                     native_thread,
+                                                     native_elem,
+                                                 ]
++                                if use_case3_non_native_a_before_gate0:
++                                    for i_x_odd, j_x_odd in T.Parallel(
++                                        block_token, block_dhidden_step1
++                                    ):
++                                        if i_x_odd < actual_rows:
++                                            input_prefetch[i_x_odd, j_x_odd] = input[
++                                                bx, k_odd, i_x_odd, j_x_odd
++                                            ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -691,7 +703,10 @@
+                                         ],
+                                         input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
+                                     )
+-                                if use_step1_tail_pruning:
++                                if (
++                                    use_step1_tail_pruning
++                                    and not use_case3_non_native_a_before_gate0
++                                ):
+                                     for i_x_odd, j_x_odd in T.Parallel(
+                                         block_token, block_dhidden_step1
+                                     ):
+@@ -830,6 +845,17 @@
+                                                     native_thread,
+                                                     native_elem,
+                                                 ]
++                                if (
++                                    use_case3_non_native_a_before_gate0
++                                    and k_pair + 1 < step1_k_tiles // 2
++                                ):
++                                    for i_x_even, j_x_even in T.Parallel(
++                                        block_token, block_dhidden_step1
++                                    ):
++                                        if i_x_even < actual_rows:
++                                            input_shared[i_x_even, j_x_even] = input[
++                                                bx, k_odd + 1, i_x_even, j_x_even
++                                            ]
+                                 T.copy(
+                                     gate[
+                                         expert_id,
+@@ -850,7 +876,10 @@
+                                             ],
+                                             input_shared[0 : block_token // 2, 0:block_dhidden_step1],
+                                         )
+-                                    if use_step1_tail_pruning:
++                                    if (
++                                        use_step1_tail_pruning
++                                        and not use_case3_non_native_a_before_gate0
++                                    ):
+                                         for i_x_even, j_x_even in T.Parallel(
+                                             block_token, block_dhidden_step1
+                                         ):
