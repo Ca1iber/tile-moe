@@ -1,0 +1,168 @@
+--- /tmp/v089_candidate.py	2026-08-24 20:50:08.691883978 +0800
++++ /tmp/v090_candidate.py	2026-08-24 20:58:35.247874733 +0800
+@@ -1,7 +1,7 @@
+-# GENERATED EXPERIMENT: v089
++# GENERATED EXPERIMENT: v090
+ # PARENT: v088 OJ SOTA / SHA256 cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47
+-# PRIMARY_CHANGE: combine Gate0-early input prefetch with Case-2 consumer-native MMA-A input
+-# SAFETY: TileLang primitives only; output-owned workspaces; no injection or async copy
++# PRIMARY_CHANGE: OJ-safe dispatch: exact v088 behavior for Case1/3, teammate-native behavior for Case2
++# SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+ import tilelang.language as T
+@@ -12,6 +12,8 @@
+ _WORKSPACE_CACHE = {}
+ _INPUT_WORKSPACE_CACHE = {}
+ _CONSUMER_NATIVE_INPUT_WORKSPACE_CACHE = {}
++_V088_WORKSPACE_CACHE = {}
++_V088_INPUT_WORKSPACE_CACHE = {}
+ 
+ 
+ def _workspace(stacked_expert_tokens, intermediate, owner):
+@@ -79,6 +81,45 @@
+     return buf
+ 
+ 
++def _v088_workspace(stacked_expert_tokens, intermediate):
++    device_index = stacked_expert_tokens.device.index
++    key = (
++        int(device_index if device_index is not None else 0),
++        int(stacked_expert_tokens.shape[0]),
++        int(intermediate),
++        str(stacked_expert_tokens.dtype),
++    )
++    buf = _V088_WORKSPACE_CACHE.get(key)
++    if buf is None:
++        buf = torch.empty(
++            (int(stacked_expert_tokens.shape[0]), int(intermediate)),
++            device=stacked_expert_tokens.device,
++            dtype=stacked_expert_tokens.dtype,
++        )
++        _V088_WORKSPACE_CACHE[key] = buf
++    return buf
++
++
++def _v088_input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles):
++    device_index = stacked_expert_tokens.device.index
++    key = (
++        int(device_index if device_index is not None else 0),
++        int(stacked_expert_tokens.shape[0]),
++        int(num_blocks_m),
++        int(step1_k_tiles),
++        str(stacked_expert_tokens.dtype),
++    )
++    buf = _V088_INPUT_WORKSPACE_CACHE.get(key)
++    if buf is None:
++        buf = torch.empty(
++            (int(num_blocks_m), int(step1_k_tiles), 128, 64),
++            device=stacked_expert_tokens.device,
++            dtype=stacked_expert_tokens.dtype,
++        )
++        _V088_INPUT_WORKSPACE_CACHE[key] = buf
++    return buf
++
++
+ def run_kernel(
+     stacked_expert_tokens,
+     gate_w,
+@@ -628,6 +669,15 @@
+                                         ],
+                                         input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
+                                     )
++                                if use_case2_consumer_native_input:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
+                                 if use_step1_tail_pruning:
+                                     for i_x_odd, j_x_odd in T.Parallel(
+                                         block_token, block_dhidden_step1
+@@ -659,14 +709,15 @@
+                                                         native_thread,
+                                                         native_elem,
+                                                     ]
+-                                T.copy(
+-                                    gate[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                    ],
+-                                    gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                )
++                                if not use_case2_consumer_native_input:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
+                                 T.copy(
+                                     up[
+                                         expert_id,
+@@ -772,6 +823,15 @@
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if use_case2_consumer_native_input:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
+                                 if k_pair + 1 < step1_k_tiles // 2:
+                                     k_next_even = k_odd + 1
+                                     if not use_step1_tail_pruning:
+@@ -815,14 +875,15 @@
+                                                         native_thread,
+                                                         native_elem,
+                                                     ]
+-                                T.copy(
+-                                    gate[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                    ],
+-                                    gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                )
++                                if not use_case2_consumer_native_input:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
+                                 T.copy(
+                                     up[
+                                         expert_id,
+@@ -1261,15 +1322,16 @@
+         kernel = make_kernel(*key)
+         _KERNEL_CACHE[key] = kernel
+ 
+-    up_logits = _workspace(stacked_expert_tokens, intermediate + 128, out)
+     step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
+     if use_case2_consumer_native_input:
++        up_logits = _workspace(stacked_expert_tokens, intermediate + 128, out)
+         tiled_input = _consumer_native_input_workspace(
+             stacked_expert_tokens, num_blocks_m, step1_k_tiles, out
+         )
+     else:
+-        tiled_input = _input_workspace(
+-            stacked_expert_tokens, num_blocks_m, step1_k_tiles, out
++        up_logits = _v088_workspace(stacked_expert_tokens, intermediate + 128)
++        tiled_input = _v088_input_workspace(
++            stacked_expert_tokens, num_blocks_m, step1_k_tiles
+         )
+     kernel(
+         stacked_expert_tokens,
