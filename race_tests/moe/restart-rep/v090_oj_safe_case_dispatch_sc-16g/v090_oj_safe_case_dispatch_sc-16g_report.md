@@ -15,7 +15,11 @@
 - Generated source validators, Cases1/2/3: PASS.
 - Full padded-output correctness, Cases1/2/3: PASS, `rtol=1e-2`, `atol=1e-2`.
 - Async-copy and foreign-code marker scan: no hits.
-- External OJ: PENDING.
+- External OJ Case2: AC, user-provided SPJ report: baseline `18.610 ms`,
+  candidate `4.133 ms`, speedup `4.503x`, score ratio `0.818274`, display `81`.
+- External OJ Cases1/3: user reports AC/unchanged but did not provide their exact
+  per-case latency and score-ratio fields. The complete monotonic SOTA vector is
+  therefore still unavailable for ledger promotion.
 
 ## Code-generation identity
 
@@ -51,8 +55,9 @@ WA.
 
 ## Verdict
 
-`inconclusive` for global promotion. The local correctness, compliance,
-code-generation, and >1.2% Case2 performance gates pass, but external OJ is the
-authority. v088 remains SOTA and no v090 submission ledger entry is created
-until the exact candidate passes all cases and satisfies the monotonic score
-gate.
+`inconclusive` for formal global promotion. The exact candidate is externally
+AC and Case2 improves v088 from `4.227 ms / 0.814906` to
+`4.133 ms / 0.818274`: latency falls `2.22380%` and score ratio rises
+`0.003368`. However, Cases1/3 exact OJ fields are absent, so the machine-readable
+monotonic vector cannot be completed. v090 is the current development baseline;
+the formal SOTA ledger remains v088 until those fields are supplied.
