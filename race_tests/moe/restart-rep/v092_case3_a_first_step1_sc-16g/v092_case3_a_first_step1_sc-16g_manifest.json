@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "iteration_id": "v092_case3_a_first_step1_sc-16g",
-  "status": "candidate_local_win_external_oj_pending",
+  "status": "accepted",
   "machine": "sc-16g",
   "branch": "dorm",
   "parent_commit": "ef1fb8913840ab99375000a25207df9b93cb9220",
@@ -62,9 +62,31 @@
     "private_bytes": 0
   },
   "promotion_threshold_percent": 1.2,
-  "external_oj": "PENDING_COMPLETE_THREE_CASE_VECTOR",
-  "formal_sota_promotion": "INCONCLUSIVE",
-  "conclusion": "stable local Case3 win with Step1-localized evidence; complete external OJ metrics are required before restart-submission promotion",
+  "external_oj": {
+    "authority": "user-provided external OJ SPJ reports",
+    "all_cases_pass": true,
+    "score_vector": [0.823043, 0.823925, 0.817403],
+    "latency_ms": [2.419, 3.977, 8.014],
+    "display_score_vector": [82, 82, 81]
+  },
+  "sota_gate": {
+    "authority": "oj-platform",
+    "incumbent_id": "v088_step1_gate0_input_prefetch_sc-16g",
+    "incumbent_submission_sha256": "cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47",
+    "candidate_submission_sha256": "8d114ac3fb34b95835a977d4a67907d287bf0229a16e7a237a184451df428483",
+    "metric": "score_ratio",
+    "higher_is_better": true,
+    "official_case_count": 3,
+    "cases": [
+      {"case": 1, "incumbent": 0.822321, "candidate": 0.823043},
+      {"case": 2, "incumbent": 0.814906, "candidate": 0.823925},
+      {"case": 3, "incumbent": 0.81246, "candidate": 0.817403}
+    ],
+    "all_cases_non_regressing": true,
+    "at_least_one_case_improved": true
+  },
+  "formal_sota_promotion": "ACCEPTED",
+  "conclusion": "external OJ passed all three official cases and improved every score ratio versus v088; promote exact candidate bytes as the new global SOTA",
   "summarized_at_utc": "2026-08-24T15:32:39.152083+00:00",
   "git": {
     "root": "/root/tilelang-metax",

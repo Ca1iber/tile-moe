@@ -51,4 +51,10 @@ mcProfiler/Roofline 未重复：FLOPs、逻辑字节、grid 与 MMA 数不变，
 
 ## 6. 结论
 
-split-A 折中成立：Case3 clean latency 稳定提升约 1.60%，真实 Step1 约 2.99%，且 Case1/2 生成代码完全不变。该精确 SHA 作为待外部 OJ 的本地候选保存；在三例 OJ 数值齐全并满足单调 SOTA gate 前，不创建 `restart-submission`。
+split-A 在本地 clean timing 中成立：Case3 latency 稳定提升约 1.60%，真实 Step1 约 2.99%，且 Case1/2 生成代码完全不变。
+
+## 7. 外部 OJ 结论（2026-08-25）
+
+用户报告 exact candidate SHA-256 `2f1f5ea7c99a7efb1c717eb6a3fbb16b8c387d6f5fb5fe475b73fab2cbd29cb9` 在外部 OJ 为 `Wrong Answer`；未提供失败坐标或 testcase 诊断。
+
+外部 OJ 正确性否决本地候选资格。正式 verdict 更新为 `rejected_external_oj_wrong_answer`；v094 不创建 `restart-submission`，且因其 parent v093 同样 WA，后续正确性基线必须回到 v092。

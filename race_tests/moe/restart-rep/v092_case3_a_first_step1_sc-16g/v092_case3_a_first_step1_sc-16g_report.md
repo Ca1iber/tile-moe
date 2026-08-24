@@ -54,4 +54,14 @@ mcProfiler/Roofline 未重复：本机制不改变 FLOPs、逻辑字节、grid�
 
 v092 达成预测：Case3 clean latency 稳定提升 `2.522%`，mcTracer 将收益定位到 Step1 `3.917%`，资源虽增加 4 MT 但没有 occupancy 降档，正确性与 OJ source/generated 校验全部通过。瓶颈没有迁移，Step1 仍占主导；最有价值的下一实验是将同一 `A-before-G0` 机制独立迁移到 Case1，而不是继续排列已关闭的 Case2 producer 顺序。
 
-Verdict：`local candidate win / external OJ pending`。完整三例 OJ 数值到齐且逐例不回退之前，不创建同 ID `restart-submission`。
+## 8. 外部 OJ 与 SOTA 晋级（2026-08-25）
+
+用户提交的 exact candidate SHA-256 `8d114ac3fb34b95835a977d4a67907d287bf0229a16e7a237a184451df428483` 三例全部 AC：
+
+| Case | v088 latency | v092 latency | v088 score ratio | v092 score ratio | 判定 |
+|---:|---:|---:|---:|---:|---|
+| 1 | 2.431 ms | 2.419 ms | 0.822321 | 0.823043 | 单调改善 |
+| 2 | 4.227 ms | 3.977 ms | 0.814906 | 0.823925 | 单调改善 |
+| 3 | 8.281 ms | 8.014 ms | 0.812460 | 0.817403 | 单调改善 |
+
+三例均不回退且至少一例严格改善，满足 global-SOTA promotion gate。正式 verdict 更新为 `accepted`；exact bytes 进入 `restart-submission/v092_case3_a_first_step1_sc-16g/submission.py`，并更新 `restart-submission/SOTA.json`。

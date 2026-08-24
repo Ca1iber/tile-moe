@@ -56,4 +56,8 @@ v093 达成预测：Case1 clean latency 稳定提升 `1.641%`，真实 Step1 改
 
 结合 v091/v092，三个官方 shape 都对 A-before-Gate0 呈现收益，且非-native Case1/3 的 ISA 均只减少 3 条总指令/3 个 snop，工作量计数不变。这是当前最强的新线索：更早发出独立 A 请求能改善同步 producer 的动态重叠。
 
-Verdict：`local candidate win / external OJ pending`。完整三例 OJ 数值到齐且逐例不回退前，不创建同 ID `restart-submission`。
+## 8. 外部 OJ 结论（2026-08-25）
+
+用户报告 exact candidate SHA-256 `f87f933dd3484a9e7508cea21883d6ab790201939e0781c12bd5d8cbbd1a9247` 在外部 OJ 为 `Wrong Answer`；未提供失败坐标或 testcase 诊断。
+
+外部 OJ 正确性高于本地检查证据，因此正式 verdict 更新为 `rejected_external_oj_wrong_answer`。v093 不创建 `restart-submission`，也不能作为后续正确性合格父版本；本地性能/profile 仅保留为调度研究证据。
