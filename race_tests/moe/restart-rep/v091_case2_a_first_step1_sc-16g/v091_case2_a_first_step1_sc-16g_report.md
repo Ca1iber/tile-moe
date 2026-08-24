@@ -7,7 +7,7 @@ v091 从外部 OJ AC 的 v090 开始，只特化 Case2 Step1 的同步 producer 
 - v090：`G0 -> G1 -> A -> U0 -> U1`
 - v091：`A -> G0 -> G1 -> U0 -> U1`
 
-Case2 七轮严格 AB/BA 长测全部正确，端到端中位提升 `2.703969%`，超过用户规定的 `1.2%` 候选门槛。Case1/3 generated-device C++ 与 v090 逐字节相同。v091 因此是本地已晋级候选；外部 OJ 尚未执行，不能创建 `restart-submission` 或宣布正式 SOTA。
+Case2 七轮严格 AB/BA 长测全部正确，端到端中位提升 `2.703969%`，超过用户规定的 `1.2%` 候选门槛。Case1/3 generated-device C++ 与 v090 逐字节相同。用户随后确认 exact candidate 外部 OJ `AC`；Case2 为 `4.133 -> 3.995 ms`，提升 `3.338979%`，score ratio `0.818274 -> 0.823269`。但 Case1/3 精确数值尚未提供，按全局 SOTA 单调晋级规则仍不能创建 `restart-submission` 或更新正式 ledger。
 
 ## Identity
 
@@ -53,6 +53,16 @@ Case3 采样时整机出现双向大抖动，不能拿计时中位数判断代�
 
 收益明确来自 Step1，而不是 prepack、Step2 或 launch gap。
 
+## 外部 OJ
+
+| Case | v090 latency | v091 latency | 相对变化 | score ratio | Display | Pass |
+|---:|---:|---:|---:|---:|---:|---|
+| 1 | 未提供 | 未提供 | 生成代码与 v090 相同 | 未提供 | 未提供 | 用户报告 AC |
+| 2 | 4.133 ms | 3.995 ms | -3.338979% | 0.823269 | 82 | OK |
+| 3 | 未提供 | 未提供 | 生成代码与 v090 相同 | 未提供 | 未提供 | 用户报告 AC |
+
+Case2 的外部 OJ 收益与本地配对 benchmark、mcTracer Step1 改善方向一致。这里不以“生成代码相同”代替缺失的 OJ 数值，也不推算总分。
+
 ## Verdict
 
-`local-candidate-accepted / external-OJ-pending`。归档 v091 并推进 `dorm` 实验历史；等待 exact SHA 的外部 OJ 三 Case 结果后，才决定 `restart-submission` 和正式 SOTA ledger。
+`external-OJ-AC / partial-numeric-evidence`。v091 是后续实验父版本；等待 exact SHA 的外部 OJ 三 Case 完整数值后，才决定 `restart-submission` 和正式 SOTA ledger。
