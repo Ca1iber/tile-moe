@@ -25,7 +25,7 @@
 - 三 Case generated-device source validator：PASS。
 - Case1/2/3 完整 padded-output 检查：PASS。
 - 三 Case MetaX ISA：无 async-copy marker，无 spill；Step1 仍为 2-wave。
-- OJ 外部结果：PENDING。本版本状态只能是 local winner / promotion inconclusive。
+- OJ 外部结果：三个 case 全部 `Pass: OK`；综合分为 `81.33`，高于 v086 的 `81`。
 
 ## Clean paired benchmark
 
@@ -65,7 +65,21 @@
 
 收益不是 occupancy 或 MMA 数量变化，而是同步全局 input load 更早发出后形成的有效延迟重叠。
 
+## External OJ promotion
+
+用户提供的外部 OJ SPJ 报告如下：
+
+| Case | v086 latency | v088 latency | v086 score ratio | v088 score ratio | Display | Pass |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 | 2.487 ms | 2.431 ms | 0.818969 | 0.822321 | 82 | OK |
+| 2 | 4.287 ms | 4.227 ms | 0.812770 | 0.814906 | 81 | OK |
+| 3 | 8.383 ms | 8.281 ms | 0.810588 | 0.812460 | 81 | OK |
+
+- 三个 case 的 latency 全部降低；
+- 三个 case 的 score ratio 全部提高；
+- OJ 综合分从 v086 的 `81` 提高到 v088 的 `81.33`；
+- 精确 OJ 源码 SHA-256 为 `cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47`。
+
 ## Verdict
 
-`inconclusive`：本地 correctness、合规、clean benchmark、mcTracer、codegen 和 ISA 全部支持候选，且三例均超过 1.2%；但尚无外部 OJ 三例结果，因此不能创建 `restart-submission/v088...`、不能替换正式 submission，也不能宣称 global SOTA。
-
+`accepted`：v088 已通过外部 OJ 三例正确性检查，并在每个官方 case 上非回退且严格改善，满足单调 global-SOTA promotion gate。正式 submission 晋级为 `restart-submission/v088_step1_gate0_input_prefetch_sc-16g/submission.py`。

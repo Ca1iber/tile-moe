@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "iteration_id": "v088_step1_gate0_input_prefetch_sc-16g",
-  "status": "inconclusive",
+  "status": "accepted",
   "machine": "sc-16g",
   "branch": "dorm",
   "parent_commit": "2add86954a45e2678ca03e7f1783c461dd8fd21d",
@@ -42,6 +42,29 @@
     "score_ratio": [0.818969, 0.81277, 0.810588],
     "display_score": [81, 81, 81]
   },
-  "candidate_external_oj": "PENDING",
-  "conclusion": "local winner above the 1.2% gate in every case; global SOTA promotion remains blocked pending exact external OJ results"
+  "candidate_external_oj": {
+    "authority": "user-provided external OJ SPJ reports",
+    "aggregate_score": 81.33,
+    "latency_ms": [2.431, 4.227, 8.281],
+    "score_ratio": [0.822321, 0.814906, 0.81246],
+    "display_score": [82, 81, 81],
+    "pass": [true, true, true]
+  },
+  "sota_gate": {
+    "authority": "oj-platform",
+    "incumbent_id": "v086_step1_input_tilemajor_sc-16g",
+    "incumbent_submission_sha256": "43bda05910a72ce3ee75a12f04d906f45abab2e446f8d05a977f733b796b8b9e",
+    "candidate_submission_sha256": "cf36dc665bffbe7127bb388f583538d31881f1c509157aa27c7ad4cf35e0fa47",
+    "metric": "score_ratio",
+    "higher_is_better": true,
+    "official_case_count": 3,
+    "cases": [
+      {"case": 1, "incumbent": 0.818969, "candidate": 0.822321},
+      {"case": 2, "incumbent": 0.81277, "candidate": 0.814906},
+      {"case": 3, "incumbent": 0.810588, "candidate": 0.81246}
+    ],
+    "all_cases_non_regressing": true,
+    "at_least_one_case_improved": true
+  },
+  "conclusion": "accepted as the OJ-verified global SOTA: all three official cases pass and improve over v086; aggregate score rises from 81 to 81.33"
 }
