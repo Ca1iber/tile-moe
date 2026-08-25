@@ -1,0 +1,26 @@
+--- v110/submission.py
++++ v134/candidate_submission.py
+@@
+-            step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else num_blocks_m
+-            step2_grid_y = num_blocks_m if use_grid_transpose_step2 else step2_col_tiles
++            if use_step2_expert_grouped_grid:
++                step2_grid_x, step2_grid_y, step2_grid_z = 2, step2_col_tiles // 2, num_blocks_m
++            else:
++                step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else num_blocks_m
++                step2_grid_y = num_blocks_m if use_grid_transpose_step2 else step2_col_tiles
++                step2_grid_z = 1
+@@
+-                with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
++                with T.Kernel(step2_grid_x, step2_grid_y, step2_grid_z, threads=threads) as (pid0, pid1, pid2):
+@@
+-                        if pid1 < num_experts // 2:
+-                            bx_local[0] = pid1
+-                            by_local[0] = pid0
++                        if pid2 < num_experts // 2:
++                            bx_local[0] = pid2
++                            by_local[0] = pid1 * 2 + pid0
+                         else:
+-                            bx_local[0] = (pid1 // 2) * 2 + pid0 % 2
+-                            by_local[0] = (pid1 % 2) * (step2_col_tiles // 2) + pid0 // 2
++                            bx_local[0] = (pid2 // 2) * 2 + pid0
++                            by_local[0] = (pid2 % 2) * (step2_col_tiles // 2) + pid1

@@ -1,0 +1,56 @@
+{
+  "case": 1,
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py",
+    "candidate": "/root/tilelang-metax/race_tests/moe/restart-experiments/v134_case1_step2_hardware_divmod_grid_sc-16g/candidate_submission.py"
+  },
+  "protocol": {
+    "rounds": 3,
+    "warmup": 20,
+    "repeat": 50,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 2.1836492919921877,
+      "candidate": 2.1852723693847658,
+      "change_percent": 0.07432866617043121
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 2.183726043701172,
+      "parent": 2.184883270263672,
+      "change_percent": -0.05296514364175886
+    },
+    {
+      "round": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 2.1823948669433593,
+      "candidate": 2.183178253173828,
+      "change_percent": 0.03589571448936457
+    }
+  ],
+  "change": {
+    "samples": [
+      0.07432866617043121,
+      -0.05296514364175886,
+      0.03589571448936457
+    ],
+    "mean": 0.019086412339345642,
+    "median": 0.03589571448936457,
+    "pstdev": 0.053309429955080666
+  }
+}
