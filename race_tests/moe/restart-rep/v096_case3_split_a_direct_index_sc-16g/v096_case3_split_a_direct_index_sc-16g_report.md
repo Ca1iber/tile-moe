@@ -20,4 +20,14 @@ Case3 resources remain `226 MT / 54 ST / 2 waves per PEU`; no async copy or fore
 
 ## Verdict
 
-状态 `equivalent_candidate_pending_external_oj`。它可以在 OJ 重投；在得到逐 Case 单调优于 v092 的官方向量前，不创建 `restart-submission`，v092 保持正式 SOTA。
+外部 OJ 三例均 AC，但相对 v095 三例全部轻微回退：
+
+| Case | v095 | v096 | latency change | v096 score ratio |
+|---:|---:|---:|---:|---:|
+| 1 | 2.429 ms | 2.454 ms | +1.029% | 0.820941 |
+| 2 | 3.977 ms | 3.998 ms | +0.528% | 0.823160 |
+| 3 | 7.896 ms | 7.937 ms | +0.519% | 0.818840 |
+
+因为三例 generated-device C++ 均逐字节相同，这种同方向整体位移不能归因于 direct-index 源码改写，应视为本次 OJ 环境/计时波动；但正式 SOTA gate 只认平台数值，不允许用该解释豁免回退。
+
+状态 `rejected_external_oj_regression`。v096 不创建 `restart-submission`；v092 保持正式 SOTA。warning-cleanup 在源码质量上成立，但没有形成可晋级的性能版本。

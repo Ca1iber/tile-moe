@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "iteration_id": "v096_case3_split_a_direct_index_sc-16g",
-  "status": "equivalent_candidate_pending_external_oj",
+  "status": "rejected_external_oj_regression",
   "machine": "sc-16g",
   "branch": "dorm",
   "parent_commit": "d06854a6",
@@ -22,16 +22,66 @@
     "all_cases_identical_to_v095": true
   },
   "external_oj": {
-    "verdict": "PENDING"
+    "authority": "user-provided SPJ reports on 2026-08-25",
+    "verdict": "ACCEPTED",
+    "all_cases_pass": true,
+    "latency_ms": [
+      2.454,
+      3.998,
+      7.937
+    ],
+    "score_vector": [
+      0.820941,
+      0.82316,
+      0.81884
+    ],
+    "display_score_vector": [
+      82,
+      82,
+      81
+    ],
+    "latency_change_vs_v095_percent": [
+      1.0292301358583655,
+      0.5280362081971347,
+      0.5192502532923936
+    ]
   },
-  "formal_sota_promotion": "NOT_ELIGIBLE_PENDING_EXTERNAL_OJ",
-  "conclusion": "warning-free source-equivalent candidate; v092 remains formal SOTA",
-  "summarized_at_utc": "2026-08-25T00:18:55.704363+00:00",
+  "sota_gate": {
+    "authority": "oj-platform",
+    "incumbent_id": "v092_case3_a_first_step1_sc-16g",
+    "incumbent_submission_sha256": "8d114ac3fb34b95835a977d4a67907d287bf0229a16e7a237a184451df428483",
+    "candidate_submission_sha256": "b80b058e788a9f5cc803ab457344ab8160e316b5c45c162e9ffb1cacc89c6a15",
+    "metric": "score_ratio",
+    "higher_is_better": true,
+    "official_case_count": 3,
+    "cases": [
+      {
+        "case": 1,
+        "incumbent": 0.823043,
+        "candidate": 0.820941
+      },
+      {
+        "case": 2,
+        "incumbent": 0.823925,
+        "candidate": 0.82316
+      },
+      {
+        "case": 3,
+        "incumbent": 0.817403,
+        "candidate": 0.81884
+      }
+    ],
+    "all_cases_non_regressing": false,
+    "at_least_one_case_improved": true
+  },
+  "formal_sota_promotion": "REJECTED_BY_PER_CASE_MONOTONIC_GATE",
+  "conclusion": "external OJ AC but all three latencies regressed versus byte-identical v095; v092 remains formal SOTA",
+  "summarized_at_utc": "2026-08-25T00:47:17.040101+00:00",
   "git": {
     "root": "/root/tilelang-metax",
     "branch": "dorm",
-    "commit": "d06854a6d371a172b937f5941dad53f9d1da726a",
-    "status_short": "?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? race_tests/moe/moe-roofline/v096_case3_split_a_direct_index_sc-16g/\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-experiments/v096_case3_split_a_direct_index_sc-16g/\n?? race_tests/moe/restart-hack/\n?? race_tests/moe/restart-rep/v096_case3_split_a_direct_index_sc-16g/\n?? race_tests/moe/restart-scripts/v096_case3_split_a_direct_index_sc-16g/"
+    "commit": "9869f7e2257de27c86f34f1e7d4dccab67e56a57",
+    "status_short": "M race_tests/moe/restart-rep/v096_case3_split_a_direct_index_sc-16g/benchmark/external_oj_verdict.md\n M race_tests/moe/restart-rep/v096_case3_split_a_direct_index_sc-16g/v096_case3_split_a_direct_index_sc-16g_manifest.json\n M race_tests/moe/restart-rep/v096_case3_split_a_direct_index_sc-16g/v096_case3_split_a_direct_index_sc-16g_report.md\n?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-hack/"
   },
   "artifact_inventory": [
     {
@@ -81,8 +131,8 @@
     },
     {
       "path": "restart-rep/v096_case3_split_a_direct_index_sc-16g/benchmark/external_oj_verdict.md",
-      "bytes": 158,
-      "sha256": "85658337766dac7622bf4e12d3da7828240d194f32af93b4c66a74f26c0004cb"
+      "bytes": 515,
+      "sha256": "9110ebf41e0a1edd44a35e5b13b91008d02e611ad410f394e541c09ecbf4cda2"
     },
     {
       "path": "restart-rep/v096_case3_split_a_direct_index_sc-16g/codegen/case1/v096_case1_case1_compiler.log",
@@ -286,8 +336,8 @@
     },
     {
       "path": "restart-rep/v096_case3_split_a_direct_index_sc-16g/v096_case3_split_a_direct_index_sc-16g_report.md",
-      "bytes": 1391,
-      "sha256": "91a40a108d285c54feb9eb42b2f1e764a7478b8f82aa26d384e3f3d0a994de64"
+      "bytes": 1939,
+      "sha256": "4c435ffb5a24413a3d4671b86818a37a8ff39483b0a8eb30e0fd781c7fe9d8f5"
     },
     {
       "path": "restart-scripts/v096_case3_split_a_direct_index_sc-16g/capture_codegen.py",
