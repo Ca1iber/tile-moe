@@ -1,0 +1,43 @@
+v139 BSM legality evidence
+Date: 2026-08-26
+Remote repository head: c4bb881dce2b5ce3ee70f92a991613f1b092efb2
+
+File SHA256:
+9c4c9c8f603167a2231390aa1eb5a246c63625127654ebac25dae4181b13f80f  /opt/maca/include/mctlass/arch/maca_memory.h
+16427b038d6fb99a3910e58769321d8415ebe23ea531c7fe957d1e44259bc81e  tilelang/language/copy_op.py
+9baba2c94b9e4581fa858a2aae3cae33a3769d2cf828e63937c43dce84873ede  tilelang/intrinsics/maca_mma_macro_generator.py
+864e765d1a32f50b38edbb06c011e7b4814f56fa8f87bc4c33a5ebef9b56a18f  src/target/codegen_maca.cc
+439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e  v110 submission.py
+
+SDK classification excerpt:
+// copy from global memory to shared memory
+// cooperate with maca_cp_async_wait
+template <int SizeInBytes>
+struct maca_cp_async_zfill;
+
+template<>
+struct maca_cp_async_zfill<16> {
+    ...
+    __builtin_mxc_ldg_b128_bsm(D, const_cast<void *>(ptr), 0, -1,
+                               true, true, false, true);
+};
+
+template <int N>
+MCTLASS_DEVICE void maca_cp_async_wait() {
+    __builtin_mxc_arrive(64 + N);
+}
+
+TileLang public API excerpt:
+def maca_async_copy(src, dst, barrier, *, annotations=None):
+    """MACA async copy - emits memcpy_async.
+    ... user must call T.maca_barrier_arrive_and_wait() ...
+    """
+
+Direct mapping search:
+grep -RIl --include='*.cc' --include='*.h' --include='*.py' \
+  '__builtin_mxc_ldg_b128_bsm\|ldg_b128_bsm' src tilelang include | wc -l
+0
+
+Conclusion:
+The builtin is async global-to-shared copy. It is not a synchronous shared-to-register
+matrix operand load and has no direct public TileLang mapping under the current source tree.

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "experiment_id": "v139_step1_bsm_operand_feed_legality_gate_sc-16g",
+  "status": "rejected",
+  "date": "2026-08-26",
+  "platform": "MetaX C500 sc-16g",
+  "repository_head_before_archive": "c4bb881dce2b5ce3ee70f92a991613f1b092efb2",
+  "parent": {
+    "version": "v110_case1_unpredicated_native_up_logits_sc-16g",
+    "sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e"
+  },
+  "candidate": null,
+  "hypothesis": "use __builtin_mxc_ldg_b128_bsm as a legal synchronous replacement for Step1 shared-to-register ldmatrix_b",
+  "static_validation": {
+    "sdk_classification": "async_global_to_shared",
+    "tilelang_public_mapping": "T.maca_async_copy_with_required_barrier",
+    "direct_builtin_references_in_src_tilelang_include": 0,
+    "v110_ldmatrix_b_isa": "lds_b128",
+    "constraint_no_async_copy": "FAIL",
+    "constraint_no_foreign_injection": "FAIL_FOR_DIRECT_BUILTIN_CALL"
+  },
+  "dynamic_validation": {
+    "compile": "NOT_RUN_NO_LEGAL_CODE_DELTA",
+    "correctness": "NOT_RUN_NO_LEGAL_CODE_DELTA",
+    "benchmark": "NOT_RUN_NO_LEGAL_CODE_DELTA",
+    "mcprofiler": "NOT_RUN_NO_LEGAL_CODE_DELTA",
+    "mctracer": "NOT_RUN_NO_LEGAL_CODE_DELTA"
+  },
+  "candidate_gate_percent": 1.2,
+  "candidate_gate_status": "NOT_REACHED",
+  "verdict": "rejected_ineligible_before_implementation",
+  "sota_after": "v110_case1_unpredicated_native_up_logits_sc-16g",
+  "iteration_id": "v139_step1_bsm_operand_feed_legality_gate_sc-16g",
+  "summarized_at_utc": "2026-08-25T17:19:25.004892+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "c4bb881dce2b5ce3ee70f92a991613f1b092efb2",
+    "status_short": "?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? .20260825030202.db\n?? .20260825061556.db\n?? .20260825061620.db\n?? .20260825070553.db\n?? .20260825104933.db\n?? .20260825113048.db\n?? .20260825151631.db\n?? .20260825160644.db\n?? .20260825163822.db\n?? .20260825163840.db\n?? race_tests/moe/moe-roofline/v139_step1_bsm_operand_feed_legality_gate_sc-16g/\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-deped-trials/20260826_v139_step1_bsm_operand_feed_legality_gate_sc-16g.md\n?? race_tests/moe/restart-experiments/v139_step1_bsm_operand_feed_legality_gate_sc-16g/\n?? race_tests/moe/restart-hack/\n?? race_tests/moe/restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/\n?? race_tests/moe/restart-scripts/v139_step1_bsm_operand_feed_legality_gate_sc-16g/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v139_step1_bsm_operand_feed_legality_gate_sc-16g/UNAVAILABLE.md",
+      "bytes": 274,
+      "sha256": "7b4b5d4e2c787b123e7e41936b214f0dd8eb272bb32019134594abdeb0c3ab62"
+    },
+    {
+      "path": "moe-roofline/v139_step1_bsm_operand_feed_legality_gate_sc-16g/v139_step1_bsm_operand_feed_legality_gate_sc-16g_manifest.json",
+      "bytes": 430,
+      "sha256": "6ff089909c55d0ab3153068eedfa6566dc08c37fd46e45b2a3a22af1c96ba157"
+    },
+    {
+      "path": "restart-experiments/v139_step1_bsm_operand_feed_legality_gate_sc-16g/NO_CODE_DELTA.md",
+      "bytes": 416,
+      "sha256": "086a7986c5709a898d6d18328f942d49590ef35247f59f56f5c229612c1006f1"
+    },
+    {
+      "path": "restart-experiments/v139_step1_bsm_operand_feed_legality_gate_sc-16g/UNAVAILABLE.md",
+      "bytes": 483,
+      "sha256": "90563a40c7d72f4bb398540360428323c76188ba62df7b7d743f360928bc4f6d"
+    },
+    {
+      "path": "restart-experiments/v139_step1_bsm_operand_feed_legality_gate_sc-16g/v139_step1_bsm_operand_feed_legality_gate_sc-16g_experiment.md",
+      "bytes": 2420,
+      "sha256": "144b54a7e355e16fcc4ce00c318cdcf1e93205ab7677e22f949749d1aaeb19f5"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/benchmark/UNAVAILABLE.md",
+      "bytes": 175,
+      "sha256": "2bded9a074158cbe47b0c81536385d139f29259b46c88d20956a10aff4877fc8"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/codegen/UNAVAILABLE.md",
+      "bytes": 238,
+      "sha256": "718d6cab83ef3f4728630d3914d1747197c7816693d483e17b88022e1e3e0ddb"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/correctness/UNAVAILABLE.md",
+      "bytes": 166,
+      "sha256": "e4ac7cf19a6789fccaf81b753dd19be69caa057f6f379a1c15bb9818d478cc73"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/evidence/v139_bsm_legality_evidence.txt",
+      "bytes": 1621,
+      "sha256": "8afc6213924dfb6e10585d257a346e24f22e014eb2c784401034cc2327a77dab"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/profiler/mcprofiler/UNAVAILABLE.md",
+      "bytes": 169,
+      "sha256": "15f2e42d47a7a5f8c0e7cc8c3c7fcd95b091426867aa4b43ba39391a285e6d44"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/profiler/mctracer/UNAVAILABLE.md",
+      "bytes": 127,
+      "sha256": "9d1f81931cf205fc80e2bea980f8b6ee55fc27a51ac3195653c6ebdf85ccf7d8"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/profiler/mxsmi/UNAVAILABLE.md",
+      "bytes": 181,
+      "sha256": "68b9a29fd72ea5ca35b4f254fbd430cce504501fb6b27ba910a791595f593fbc"
+    },
+    {
+      "path": "restart-rep/v139_step1_bsm_operand_feed_legality_gate_sc-16g/v139_step1_bsm_operand_feed_legality_gate_sc-16g_report.md",
+      "bytes": 2906,
+      "sha256": "379c66e84ae978f3371bf131726c041199949d784c71da80f9bfad4afcf1ff9e"
+    },
+    {
+      "path": "restart-scripts/v139_step1_bsm_operand_feed_legality_gate_sc-16g/probe_bsm_legality.sh",
+      "bytes": 753,
+      "sha256": "027afe1c71b4041a1e6ed07d1e633a49b6dced1e8974735a8a321e6a24fbbef5"
+    },
+    {
+      "path": "restart-scripts/v139_step1_bsm_operand_feed_legality_gate_sc-16g/v139_step1_bsm_operand_feed_legality_gate_sc-16g_scripts.md",
+      "bytes": 1009,
+      "sha256": "5cb4be8d6dd299e0c485ecc30976cc59d139ea97a705afef64fa2f2be89b8568"
+    }
+  ]
+}
