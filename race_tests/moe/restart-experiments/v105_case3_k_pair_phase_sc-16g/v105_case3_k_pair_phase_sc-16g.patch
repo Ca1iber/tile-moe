@@ -1,0 +1,234 @@
+--- race_tests/moe/restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/submission.py	2026-08-25 02:59:17.766022837 +0000
++++ /tmp/v105_case3_k_pair_phase.py	2026-08-25 03:56:14.733610804 +0000
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v102
+-# PARENT: v101 locally-qualified candidate / SHA256 b77766d2a4044bc4b87a47f1b95f0de58d7aeb9afde2e9e3659dc1c9c3c49dbe
+-# PRIMARY_CHANGE: extend consumer-native full-A feed to Case1 while preserving v101 Case2/Case3
++# GENERATED EXPERIMENT: v105
++# PARENT: v102 external-OJ-AC / SHA256 5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801
++# PRIMARY_CHANGE: phase adjacent Case3 N-tile CTAs by half of the K-pair loop while preserving cooperative copies
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -161,6 +161,7 @@
+     use_consumer_native_split_gate0 = False
+     use_non_native_a_before_gate0 = False
+     use_non_native_a_split_gate0 = False
++    use_step1_k_pair_phase = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -207,6 +208,7 @@
+         use_consumer_native_split_gate0 = False
+         use_non_native_a_before_gate0 = False
+         use_non_native_a_split_gate0 = False
++        use_step1_k_pair_phase = num_experts == 64
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -239,6 +241,7 @@
+         bool(use_consumer_native_split_gate0),
+         bool(use_non_native_a_before_gate0),
+         bool(use_non_native_a_split_gate0),
++        bool(use_step1_k_pair_phase),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -459,6 +462,7 @@
+             use_consumer_native_split_gate0,
+             use_non_native_a_before_gate0,
+             use_non_native_a_split_gate0,
++            use_step1_k_pair_phase,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -635,6 +639,10 @@
+                     actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
+                     if use_case2_consumer_native_input:
+                         native_thread = T.get_thread_binding()
++                    if use_step1_k_pair_phase:
++                        initial_k_tile = (by % 2) * (step1_k_tiles // 2)
++                    else:
++                        initial_k_tile = 0
+ 
+                     T.clear(gate_local)
+                     T.clear(up_local)
+@@ -654,16 +662,37 @@
+                                 )
+                                 for native_elem in T.vectorized(8):
+                                     input_shared[native_row, native_col + native_elem] = input[
+-                                        bx, 0, native_vec, native_thread, native_elem
++                                        bx, initial_k_tile, native_vec, native_thread, native_elem
+                                     ]
+                         else:
+                             T.copy(
+-                                input[bx, 0, 0:block_token, 0:block_dhidden_step1],
++                                input[bx, initial_k_tile, 0:block_token, 0:block_dhidden_step1],
+                                 input_shared,
+                             )
+-                        for k_pair in T.serial(step1_k_tiles // 2):
++                        for k_pair_iter in T.serial(step1_k_tiles // 2):
++                            if use_step1_k_pair_phase:
++                                phased_pair = (
++                                    k_pair_iter
++                                    + (by % 2) * (step1_k_tiles // 4)
++                                )
++                                k_pair = T.if_then_else(
++                                    phased_pair >= step1_k_tiles // 2,
++                                    phased_pair - step1_k_tiles // 2,
++                                    phased_pair,
++                                )
++                            else:
++                                k_pair = k_pair_iter
+                             k_even = k_pair * 2
+                             k_odd = k_even + 1
++                            if use_step1_k_pair_phase:
++                                k_next_pair = T.if_then_else(
++                                    k_pair + 1 >= step1_k_tiles // 2,
++                                    0,
++                                    k_pair + 1,
++                                )
++                                k_next_even = k_next_pair * 2
++                            else:
++                                k_next_even = k_odd + 1
+                             if use_step1_prefetch_before_barrier:
+                                 if use_case2_consumer_native_input:
+                                     for native_vec in T.serial(4):
+@@ -891,7 +920,7 @@
+                             if use_step1_prefetch_before_barrier:
+                                 if (
+                                     use_case2_consumer_native_input
+-                                    and k_pair + 1 < step1_k_tiles // 2
++                                    and k_pair_iter + 1 < step1_k_tiles // 2
+                                 ):
+                                     for native_vec in T.serial(4):
+                                         native_row = (
+@@ -915,14 +944,14 @@
+                                                     native_row, native_col + native_elem
+                                                 ] = input[
+                                                     bx,
+-                                                    k_odd + 1,
++                                                    k_next_even,
+                                                     native_vec,
+                                                     native_thread,
+                                                     native_elem,
+                                                 ]
+                                 if (
+                                     use_non_native_a_before_gate0
+-                                    and k_pair + 1 < step1_k_tiles // 2
++                                    and k_pair_iter + 1 < step1_k_tiles // 2
+                                 ):
+                                     if use_non_native_a_split_gate0:
+                                         for i_x_even, j_x_even in T.Parallel(
+@@ -930,7 +959,7 @@
+                                         ):
+                                             if i_x_even < actual_rows:
+                                                 input_shared[i_x_even, j_x_even] = input[
+-                                                    bx, k_odd + 1, i_x_even, j_x_even
++                                                    bx, k_next_even, i_x_even, j_x_even
+                                                 ]
+                                     else:
+                                         for i_x_even, j_x_even in T.Parallel(
+@@ -938,7 +967,7 @@
+                                         ):
+                                             if i_x_even < actual_rows:
+                                                 input_shared[i_x_even, j_x_even] = input[
+-                                                    bx, k_odd + 1, i_x_even, j_x_even
++                                                    bx, k_next_even, i_x_even, j_x_even
+                                                 ]
+                                 T.copy(
+                                     gate[
+@@ -951,7 +980,7 @@
+                                 if (
+                                     use_case2_consumer_native_input
+                                     and use_consumer_native_split_gate0
+-                                    and k_pair + 1 < step1_k_tiles // 2
++                                    and k_pair_iter + 1 < step1_k_tiles // 2
+                                 ):
+                                     for native_vec in T.serial(4):
+                                         native_row = (
+@@ -972,7 +1001,7 @@
+                                                     native_row, native_col + native_elem
+                                                 ] = input[
+                                                     bx,
+-                                                    k_odd + 1,
++                                                    k_next_even,
+                                                     native_vec,
+                                                     native_thread,
+                                                     native_elem,
+@@ -980,7 +1009,7 @@
+                                 if (
+                                     use_non_native_a_before_gate0
+                                     and use_non_native_a_split_gate0
+-                                    and k_pair + 1 < step1_k_tiles // 2
++                                    and k_pair_iter + 1 < step1_k_tiles // 2
+                                 ):
+                                     for i_x_even_hi, j_x_even_hi in T.Parallel(
+                                         block_token // 2, block_dhidden_step1
+@@ -990,12 +1019,11 @@
+                                                 block_token // 2 + i_x_even_hi, j_x_even_hi
+                                             ] = input[
+                                                 bx,
+-                                                k_odd + 1,
++                                                k_next_even,
+                                                 block_token // 2 + i_x_even_hi,
+                                                 j_x_even_hi,
+                                             ]
+-                                if k_pair + 1 < step1_k_tiles // 2:
+-                                    k_next_even = k_odd + 1
++                                if k_pair_iter + 1 < step1_k_tiles // 2:
+                                     if not use_step1_tail_pruning:
+                                         T.copy(
+                                             input[
+@@ -1016,7 +1044,7 @@
+                                             if i_x_even < actual_rows:
+                                                 if not use_case2_consumer_native_input:
+                                                     input_shared[i_x_even, j_x_even] = input[
+-                                                        bx, k_odd + 1, i_x_even, j_x_even
++                                                        bx, k_next_even, i_x_even, j_x_even
+                                                     ]
+                                 T.copy(
+                                     gate[
+@@ -1034,12 +1062,12 @@
+                                     ],
+                                     up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
+-                                if k_pair + 1 < step1_k_tiles // 2:
++                                if k_pair_iter + 1 < step1_k_tiles // 2:
+                                     if not use_step1_tail_pruning:
+                                         T.copy(
+                                             input[
+                                                 bx,
+-                                                k_odd + 1,
++                                                k_next_even,
+                                                 block_token // 2 : block_token,
+                                                 0:block_dhidden_step1,
+                                             ],
+@@ -1071,8 +1099,7 @@
+                                     up_shared,
+                                 )
+                             T.sync_threads()
+-                            if not use_step1_prefetch_before_barrier and k_pair + 1 < step1_k_tiles // 2:
+-                                k_next_even = k_odd + 1
++                            if not use_step1_prefetch_before_barrier and k_pair_iter + 1 < step1_k_tiles // 2:
+                                 if use_step1_tail_pruning:
+                                     for i_x_even, j_x_even in T.Parallel(
+                                         block_token, block_dhidden_step1
+@@ -1085,7 +1112,7 @@
+                             if (
+                                 use_case2_consumer_native_input
+                                 and not use_step1_prefetch_before_barrier
+-                                and k_pair + 1 < step1_k_tiles // 2
++                                and k_pair_iter + 1 < step1_k_tiles // 2
+                             ):
+                                 for native_vec in T.serial(4):
+                                     native_row = (
+@@ -1127,7 +1154,7 @@
+                                     step1_mma.mma(input_prefetch, weight_local, gate_local, ki)
+                                     step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+                                     step1_mma.mma(input_prefetch, weight_local, up_local, ki)
+-                            if k_pair + 1 < step1_k_tiles // 2:
++                            if k_pair_iter + 1 < step1_k_tiles // 2:
+                                 T.sync_threads()
+                     else:
+                         for k in T.Pipelined(T.ceildiv(hidden, block_dhidden_step1), num_stages=num_stages):
