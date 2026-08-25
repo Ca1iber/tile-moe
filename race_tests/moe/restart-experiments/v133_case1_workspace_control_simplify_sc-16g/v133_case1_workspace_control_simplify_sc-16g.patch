@@ -1,0 +1,15 @@
+--- v110/submission.py
++++ v133/candidate_submission.py
+@@
+-# GENERATED EXPERIMENT: v110
++# GENERATED EXPERIMENT: v133
+@@
+-                        if i < actual_rows:
++                        if use_unpredicated_native_reads or i < actual_rows:
+@@
+                     else:
+                         bx = pid1 if use_grid_transpose_step2 else pid0
+                         by = pid0 if use_grid_transpose_step2 else pid1
++                    if use_step2_expert_grouped_grid:
++                        T.assume(0 <= by)
++                        T.assume(by < step2_col_tiles)
