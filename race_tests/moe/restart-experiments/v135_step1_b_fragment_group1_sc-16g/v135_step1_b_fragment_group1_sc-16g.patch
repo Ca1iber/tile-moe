@@ -1,0 +1,289 @@
+--- race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py	2026-08-25 05:24:35.000000000 +0000
++++ /tmp/v135_group1.py	2026-08-25 15:28:50.331379787 +0000
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v110
+-# PARENT: v108 locally-qualified candidate / SHA256 04b8e77c08c146836f9dba3449a20f82f45e9a4fba61697da86997069db7555b
+-# PRIMARY_CHANGE: remove native-workspace valid-row predicates only for official Case1
++# CODEGEN SCREEN: Step1 B-fragment column grouping
++# PARENT: v110 external-OJ SOTA / SHA256 439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e
++# PRIMARY_CHANGE: reuse a one-column B fragment across Step1 output microtiles
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -170,6 +170,7 @@
+     block_dexpert_step1 = 128
+     block_dhidden_step2 = 128
+     block_dexpert_step2 = 64
++    step1_b_group_cols = 1
+     use_grid_transpose_step1 = False
+     use_grid_transpose_step2 = False
+     use_step1_expert_grouped_grid = False
+@@ -253,6 +254,7 @@
+         block_dexpert_step1,
+         block_dhidden_step2,
+         block_dexpert_step2,
++        step1_b_group_cols,
+         bool(use_grid_transpose_step1),
+         bool(use_grid_transpose_step2),
+         bool(use_step1_expert_grouped_grid),
+@@ -411,6 +413,95 @@
+ 
+                 return warp_mma(a_local_buf, b_local_buf, c_local_buf)
+ 
++            def ldmatrix_b_group(
++                self,
++                b_local_buf,
++                b_shared_buf,
++                ki,
++                j_group,
++                group_cols,
++                rk=0,
++                row_offset=0,
++            ):
++                warp_col_tiles = self.warp_col_tiles
++                chunk = self.chunk
++                micro_size_y = self.micro_size_y
++                micro_size_k = self.micro_size_k
++                local_size_b = self.local_size_b
++                k_pack = self.k_pack
++                thread_binding = self.get_thread_binding()
++                reverse_index_map = self.get_ldmatrix_b_index_map()
++
++                @T.macro
++                def warp_ldmatrix_b_group(
++                    b_local_buf,
++                    b_shared_buf,
++                    ki,
++                    j_group,
++                    thread_binding,
++                    rk=0,
++                    row_offset=0,
++                ):
++                    tx, warp_n, _ = self.extract_thread_binding(thread_binding)
++                    for j_local in T.serial(group_cols):
++                        for local_id in T.vectorized(k_pack * local_size_b):
++                            row, col = T.meta_var(reverse_index_map(tx, local_id))
++                            j = j_group * group_cols + j_local
++                            l = warp_n * warp_col_tiles + j * micro_size_y
++                            r = rk * chunk + ki * (k_pack * micro_size_k)
++                            b_local_buf[
++                                j_local * k_pack * local_size_b + local_id
++                            ] = b_shared_buf[row_offset + l + row, r + col]
++
++                return warp_ldmatrix_b_group(
++                    b_local_buf,
++                    b_shared_buf,
++                    ki,
++                    j_group,
++                    thread_binding,
++                    rk,
++                    row_offset,
++                )
++
++            def mma_group(
++                self,
++                a_local_buf,
++                b_local_buf,
++                c_local_buf,
++                k_inner,
++                j_group,
++                group_cols,
++            ):
++                warp_rows = self.warp_rows
++                warp_cols = self.warp_cols
++                local_size_a = self.local_size_a
++                local_size_b = self.local_size_b
++                k_pack = self.k_pack
++                a_local_stride = k_inner * warp_rows * k_pack * local_size_a
++
++                @T.macro
++                def warp_mma_group(a_local_buf, b_local_buf, c_local_buf):
++                    for kp, i, j_local in T.grid(k_pack, warp_rows, group_cols):
++                        j = j_group * group_cols + j_local
++                        T.tvm_mfma(
++                            self.mma_suffix,
++                            "row",
++                            "row",
++                            "float16x4",
++                            "float16x4",
++                            "float32x4",
++                            b_local_buf.data,
++                            j_local * k_pack + kp,
++                            a_local_buf.data,
++                            (a_local_stride + (i * k_pack + kp) * local_size_a)
++                            // local_size_a,
++                            c_local_buf.data,
++                            i * warp_cols + j,
++                            dtype="float32x4",
++                        )
++
++                return warp_mma_group(a_local_buf, b_local_buf, c_local_buf)
++
+             def make_mma_load_layout(self, local_buf, matrix="A"):
+                 def forward_thread(i, j):
+                     lane_id, _ = shared_16x32_to_local_64x8_layout_a(i, j)
+@@ -475,6 +566,7 @@
+             block_dexpert_step1,
+             block_dhidden_step2,
+             block_dexpert_step2,
++            step1_b_group_cols,
+             use_grid_transpose_step1,
+             use_grid_transpose_step2,
+             use_step1_expert_grouped_grid,
+@@ -652,7 +744,14 @@
+                     up_shared = T.alloc_shared((block_dexpert_step1, block_dhidden_step1), dtype=dtype)
+                     gate_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                     up_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+-                    weight_local = T.alloc_local((step1_mma.warp_cols * step1_mma.k_pack * step1_mma.local_size_b), dtype=dtype)
++                    weight_local = T.alloc_local(
++                        (
++                            step1_b_group_cols
++                            * step1_mma.k_pack
++                            * step1_mma.local_size_b
++                        ),
++                        dtype=dtype,
++                    )
+ 
+                     T.annotate_layout(
+                         {
+@@ -924,10 +1023,42 @@
+                                     ((T.get_thread_binding() // 64) % 4) * 32
+                                     < actual_rows
+                                 ):
+-                                    step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+-                                    step1_mma.mma(input_shared, weight_local, gate_local, ki)
+-                                    step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+-                                    step1_mma.mma(input_shared, weight_local, up_local, ki)
++                                    for j_group in T.unroll(
++                                        step1_mma.warp_cols // step1_b_group_cols
++                                    ):
++                                        step1_mma.ldmatrix_b_group(
++                                            weight_local,
++                                            gate_shared,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
++                                        step1_mma.mma_group(
++                                            input_shared,
++                                            weight_local,
++                                            gate_local,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
++                                    for j_group in T.unroll(
++                                        step1_mma.warp_cols // step1_b_group_cols
++                                    ):
++                                        step1_mma.ldmatrix_b_group(
++                                            weight_local,
++                                            up_shared,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
++                                        step1_mma.mma_group(
++                                            input_shared,
++                                            weight_local,
++                                            up_local,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
+                             T.sync_threads()
+                             if use_step1_prefetch_before_barrier:
+                                 if (
+@@ -1164,10 +1295,42 @@
+                                     ((T.get_thread_binding() // 64) % 4) * 32
+                                     < actual_rows
+                                 ):
+-                                    step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+-                                    step1_mma.mma(input_prefetch, weight_local, gate_local, ki)
+-                                    step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+-                                    step1_mma.mma(input_prefetch, weight_local, up_local, ki)
++                                    for j_group in T.unroll(
++                                        step1_mma.warp_cols // step1_b_group_cols
++                                    ):
++                                        step1_mma.ldmatrix_b_group(
++                                            weight_local,
++                                            gate_shared,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
++                                        step1_mma.mma_group(
++                                            input_prefetch,
++                                            weight_local,
++                                            gate_local,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
++                                    for j_group in T.unroll(
++                                        step1_mma.warp_cols // step1_b_group_cols
++                                    ):
++                                        step1_mma.ldmatrix_b_group(
++                                            weight_local,
++                                            up_shared,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
++                                        step1_mma.mma_group(
++                                            input_prefetch,
++                                            weight_local,
++                                            up_local,
++                                            ki,
++                                            j_group,
++                                            step1_b_group_cols,
++                                        )
+                             if k_pair + 1 < step1_k_tiles // 2:
+                                 T.sync_threads()
+                     else:
+@@ -1198,10 +1361,42 @@
+                                 up_shared,
+                             )
+                             for ki in T.serial(0, block_dhidden_step1 // 32):
+-                                step1_mma.ldmatrix_b(weight_local, gate_shared, ki)
+-                                step1_mma.mma(input_shared, weight_local, gate_local, ki)
+-                                step1_mma.ldmatrix_b(weight_local, up_shared, ki)
+-                                step1_mma.mma(input_shared, weight_local, up_local, ki)
++                                for j_group in T.unroll(
++                                    step1_mma.warp_cols // step1_b_group_cols
++                                ):
++                                    step1_mma.ldmatrix_b_group(
++                                        weight_local,
++                                        gate_shared,
++                                        ki,
++                                        j_group,
++                                        step1_b_group_cols,
++                                    )
++                                    step1_mma.mma_group(
++                                        input_shared,
++                                        weight_local,
++                                        gate_local,
++                                        ki,
++                                        j_group,
++                                        step1_b_group_cols,
++                                    )
++                                for j_group in T.unroll(
++                                    step1_mma.warp_cols // step1_b_group_cols
++                                ):
++                                    step1_mma.ldmatrix_b_group(
++                                        weight_local,
++                                        up_shared,
++                                        ki,
++                                        j_group,
++                                        step1_b_group_cols,
++                                    )
++                                    step1_mma.mma_group(
++                                        input_shared,
++                                        weight_local,
++                                        up_local,
++                                        ki,
++                                        j_group,
++                                        step1_b_group_cols,
++                                    )
+ 
+                     for i, j in T.Parallel(block_token, block_dexpert_step1):
+                         gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
