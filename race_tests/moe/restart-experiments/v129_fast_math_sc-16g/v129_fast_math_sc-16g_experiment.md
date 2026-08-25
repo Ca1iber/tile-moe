@@ -7,5 +7,6 @@
 - Source/generated OJ gate: PASS for all three official shapes.
 - Full correctness: PASS for all three official shapes (`rtol=atol=1e-2`).
 - Long paired medians vs v110: Case1 `-1.605886%`, Case2 `-0.474469%`, Case3 `-0.412662%`.
-- Status: `candidate_pending_external_oj`.
-- Formal SOTA remains v110 until external OJ evidence is recorded.
+- External OJ verdict: `WA` (user-reported on 2026-08-25; no detailed failing coordinate was provided).
+- Status: `rejected_external_oj_wa`.
+- Formal SOTA remains v110; all follow-up optimization restarts from the exact v110 source.

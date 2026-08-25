@@ -2,7 +2,7 @@
 
 ## 结论
 
-v129 以外部 OJ SOTA v110 为精确父版本，只在公开的 TileLang JIT 配置中启用 `TL_ENABLE_FAST_MATH`。三 Case 完整 correctness、OJ source/generated gate 均 PASS；修正父版本注释后的最终字节版本重新执行 5 轮 AB/BA 长测，所有轮次均同向，Case1 中位提升 `1.605886%`，Case2/3 分别提升 `0.474469% / 0.412662%`。因此状态为 `candidate_pending_external_oj`，正式 SOTA 与 `restart-submission/SOTA.json` 暂时仍保持 v110。
+v129 以外部 OJ SOTA v110 为精确父版本，只在公开的 TileLang JIT 配置中启用 `TL_ENABLE_FAST_MATH`。本地三 Case correctness、OJ source/generated gate 均 PASS，且本地长测显示 Case1 中位提升 `1.605886%`；但用户于 2026-08-25 报告外部 OJ 判定为 `WA`。正确性 gate 优先于一切本地性能证据，因此 v129 最终状态为 `rejected_external_oj_wa`，正式 SOTA 与 `restart-submission/SOTA.json` 均保持 v110，后续优化从 v110 精确源码重新开始。
 
 ## 单一机制
 
@@ -46,4 +46,4 @@ Case1 三对 AB/BA、warmup=5 的正确三-kernel汇总：prepack `-1.205%`（�
 
 ## 外部 OJ gate
 
-候选 exact SHA256：`895ff6dda3157aad3cf6664b1d0655f9786058563a109203ca4881acc2b6f008`。需要外部 OJ 三 Case 全部 AC，并满足 per-case 非回退后，才能复制到 `restart-submission`、更新 `SOTA.json` 和推进正式 SOTA。
+候选 exact SHA256：`895ff6dda3157aad3cf6664b1d0655f9786058563a109203ca4881acc2b6f008`。外部 OJ 结果为 `WA`（用户报告；未提供失败坐标或详细日志），所以候选被拒绝，不创建 v129 submission、不更新 `SOTA.json`。该结果说明 MXCC fast-math 在本地容差样本上通过仍不足以证明 OJ 全输入域正确，后续不再沿用该 pass。
