@@ -1,0 +1,883 @@
+{
+  "schema_version": 1,
+  "iteration_id": "v130_v110_rebaseline_sc-16g",
+  "cases": {
+    "1": {
+      "trace": {
+        "trace": "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mctracer/case1/v130_case1-24885.json",
+        "prepack": {
+          "symbol": "kernel_kernel",
+          "duration_ms": 0.020736,
+          "timestamp": 1787660736239096320,
+          "grid": {
+            "x": 8,
+            "y": 24,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 65536,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 70,
+            "static_shared": 0
+          }
+        },
+        "step1": {
+          "symbol": "kernel_kernel_1",
+          "duration_ms": 1.417728,
+          "timestamp": 1787660736239146752,
+          "grid": {
+            "x": 64,
+            "y": 24,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 32768,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 226,
+            "static_shared": 0
+          }
+        },
+        "step2": {
+          "symbol": "kernel_kernel_2",
+          "duration_ms": 0.721152,
+          "timestamp": 1787660736240567296,
+          "grid": {
+            "x": 8,
+            "y": 24,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 32768,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 202,
+            "static_shared": 0
+          }
+        },
+        "prepack_to_step1_gap_ms": 0.029696,
+        "step1_to_step2_gap_ms": 0.002816,
+        "kernel_span_ms": 2.192128,
+        "kernel_total_ms": 2.159616,
+        "stage_share_percent": {
+          "prepack": 0.9601706970128021,
+          "step1": 65.64722617354197,
+          "step2": 33.392603129445234
+        }
+      },
+      "profiler": {
+        "step1": {
+          "reports": [
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case1/step1/1_kernel_kernel_1.txt.json"
+          ],
+          "total_cycles_kcycles": 10065.68,
+          "roofline": {
+            "processed_data": {
+              "all_ops": 172761481216.0,
+              "all_memacs": 1622694368.0,
+              "during": 1603639.0,
+              "block_num": 104,
+              "vl1_memacs": 571801600.0,
+              "l2c_memacs": 2220883968.0
+            },
+            "data": {
+              "all_ops": 172761481216.0,
+              "all_memacs": 1622694368.0,
+              "block_num": 104,
+              "during": 1603639.0,
+              "core_clk": 1.125,
+              "MAX_Flops_base": 1,
+              "case_flops": 1035.8740892528708,
+              "MAX_Bandwith": 1843.2,
+              "MAX_I": 260.0,
+              "case_I": 909.9642456804339,
+              "case_bandwith": 1138.3679020028821,
+              "case_VL1_I": 2582.353488599907,
+              "case_L2C_I": 664.8676283060136,
+              "mc_clk": 0.9
+            },
+            "filename": "/opt/mcProfiler-ubuntu18.04/output20260825122930/RoofLine20260825123411660.png"
+          },
+          "workgroups": 1536.0,
+          "waves": 6144.0,
+          "average_wave_life_cycles": 50159.57,
+          "isu_stalls": {
+            "wsm_stall": 11933894.0,
+            "vls_pipeline_stall": 63641829.0,
+            "vls_wdata_stall": 622592.0,
+            "valu_stall": 0.0
+          },
+          "isu_stall_total": 76198315.0,
+          "isu_stall_share_percent": {
+            "wsm_stall": 15.661624538547867,
+            "vls_pipeline_stall": 83.52130752497611,
+            "vls_wdata_stall": 0.8170679364760232,
+            "valu_stall": 0.0
+          },
+          "global_read_bytes": 1585469600.0,
+          "global_write_bytes": 37224768.0,
+          "dnoc_read_average_latency": 279.5,
+          "memory_flow": {
+            "vl1c": 87.45558739255014,
+            "l2c": 28.32617601531863,
+            "sl1": 99.29750614682122,
+            "global_kernel_rd": 2200576,
+            "global_kernel_wr": 77824,
+            "private_kernel_rd": 0,
+            "private_kernel_wr": 0,
+            "generic_kernel_rd": 0,
+            "generic_kernel_wr": 0,
+            "const_kernel_rd": 36864,
+            "shared_kernel_rd": 5242880,
+            "shared_kernel_wr": 1572864,
+            "Ggeneric_vl1c_rd": 2200576,
+            "Ggeneric_vl1c_wr": 77824,
+            "const_sl1c_rd": 22824,
+            "sl1_l2c_rd": 160,
+            "vl1c_l2c_rd": 17373135,
+            "vl1c_l2c_wr": 581640,
+            "l2c_Gmemory_rd": null,
+            "l2c_Gmemory_wr": null
+          },
+          "vl1_partition_stalls": {
+            "pt0": 18645555.0,
+            "pt1": 18468173.0,
+            "pt2": 18345996.0,
+            "pt3": 18378169.0
+          },
+          "achieved_waves": 6144.0,
+          "dispatched_waves": 6144.0,
+          "ap_active_cycles": 162670537.0,
+          "duty_percent": {
+            "mte": 10.38,
+            "ste": 2.36,
+            "mma": 51.57,
+            "vls": 0.0,
+            "l2c": 6.62
+          },
+          "wall_time_corrected": {
+            "trace_duration_ms": 1.417728,
+            "counted_ops": 172761481216.0,
+            "counted_global_bytes": 1622694368.0,
+            "counted_tflops": 121.85798772119898,
+            "counted_bandwidth_gbps": 1144.5738308053449,
+            "counted_arithmetic_intensity": 106.46581674461078,
+            "hbm_roof_gbps": 1400.0,
+            "hbm_roof_utilization_percent": 81.7552736289532,
+            "compute_sensitivity_tflops": 479.232,
+            "compute_sensitivity_utilization_percent": 25.427765199569098,
+            "predicted_limiter": "HBM",
+            "predicted_roof_tflops": 149.0521434424551,
+            "roof_efficiency_percent": 81.75527362895319
+          }
+        },
+        "step2": {
+          "reports": [
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case1/step2/1_kernel_kernel_2.txt.json"
+          ],
+          "total_cycles_kcycles": 9649.96,
+          "roofline": {
+            "processed_data": {
+              "all_ops": 103571869696.0,
+              "all_memacs": 624372096.0,
+              "during": 825723.0,
+              "block_num": 104,
+              "vl1_memacs": 308572160.0,
+              "l2c_memacs": 1208156160.0
+            },
+            "data": {
+              "all_ops": 103571869696.0,
+              "all_memacs": 624372096.0,
+              "block_num": 104,
+              "during": 825723.0,
+              "core_clk": 1.125,
+              "MAX_Flops_base": 1,
+              "case_flops": 1206.0743887012213,
+              "MAX_Bandwith": 1843.2,
+              "MAX_I": 260.0,
+              "case_I": 1417.7918282904295,
+              "case_bandwith": 850.6709974168093,
+              "case_VL1_I": 2868.793009458039,
+              "case_L2C_I": 732.7112875221093,
+              "mc_clk": 0.9
+            },
+            "filename": "/opt/mcProfiler-ubuntu18.04/output20260825123615/RoofLine20260825124056981.png"
+          },
+          "workgroups": 192.0,
+          "waves": 768.0,
+          "average_wave_life_cycles": 191841.76,
+          "isu_stalls": {
+            "wsm_stall": 6044915.0,
+            "vls_pipeline_stall": 14063169.0,
+            "vls_wdata_stall": 196608.0,
+            "valu_stall": 0.0
+          },
+          "isu_stall_total": 20304692.0,
+          "isu_stall_share_percent": {
+            "wsm_stall": 29.771025337394924,
+            "vls_pipeline_stall": 69.26068615076751,
+            "vls_wdata_stall": 0.9682885118375595,
+            "valu_stall": 0.0
+          },
+          "global_read_bytes": 611786016.0,
+          "global_write_bytes": 12586080.0,
+          "dnoc_read_average_latency": 269.92,
+          "memory_flow": {
+            "vl1c": 87.25492798831884,
+            "l2c": 50.34363874659792,
+            "sl1": 93.37196667873958,
+            "global_kernel_rd": 1180864,
+            "global_kernel_wr": 24576,
+            "private_kernel_rd": 0,
+            "private_kernel_wr": 0,
+            "generic_kernel_rd": 0,
+            "generic_kernel_wr": 0,
+            "const_kernel_rd": 4608,
+            "shared_kernel_rd": 3145728,
+            "shared_kernel_wr": 786432,
+            "Ggeneric_vl1c_rd": 1180864,
+            "Ggeneric_vl1c_wr": 24576,
+            "const_sl1c_rd": 2760,
+            "sl1_l2c_rd": 182,
+            "vl1c_l2c_rd": 9457806,
+            "vl1c_l2c_wr": 393224,
+            "l2c_Gmemory_rd": null,
+            "l2c_Gmemory_wr": null
+          },
+          "vl1_partition_stalls": {
+            "pt0": 6696083.0,
+            "pt1": 6908444.0,
+            "pt2": 6562028.0,
+            "pt3": 6717385.0
+          },
+          "achieved_waves": 768.0,
+          "dispatched_waves": 768.0,
+          "ap_active_cycles": 80927415.0,
+          "duty_percent": {
+            "mte": 9.51,
+            "ste": 1.64,
+            "mma": 62.19,
+            "vls": 0.0,
+            "l2c": 3.2
+          },
+          "wall_time_corrected": {
+            "trace_duration_ms": 0.721152,
+            "counted_ops": 103571869696.0,
+            "counted_global_bytes": 624372096.0,
+            "counted_tflops": 143.62002697905575,
+            "counted_bandwidth_gbps": 865.7981895633653,
+            "counted_arithmetic_intensity": 165.88164390998026,
+            "hbm_roof_gbps": 1400.0,
+            "hbm_roof_utilization_percent": 61.84272782595466,
+            "compute_sensitivity_tflops": 479.232,
+            "compute_sensitivity_utilization_percent": 29.96878901639618,
+            "predicted_limiter": "HBM",
+            "predicted_roof_tflops": 232.23430147397235,
+            "roof_efficiency_percent": 61.84272782595467
+          }
+        }
+      }
+    },
+    "2": {
+      "trace": {
+        "trace": "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mctracer/case2/v130_case2-25123.json",
+        "prepack": {
+          "symbol": "kernel_kernel",
+          "duration_ms": 0.128256,
+          "timestamp": 1787660772608089344,
+          "grid": {
+            "x": 28,
+            "y": 48,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 65536,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 78,
+            "static_shared": 0
+          }
+        },
+        "step1": {
+          "symbol": "kernel_kernel_1",
+          "duration_ms": 2.419712,
+          "timestamp": 1787660772608246784,
+          "grid": {
+            "x": 16,
+            "y": 48,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 32768,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 226,
+            "static_shared": 0
+          }
+        },
+        "step2": {
+          "symbol": "kernel_kernel_2",
+          "duration_ms": 1.303808,
+          "timestamp": 1787660772610669312,
+          "grid": {
+            "x": 28,
+            "y": 48,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 32768,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 220,
+            "static_shared": 0
+          }
+        },
+        "prepack_to_step1_gap_ms": 0.029183999999999984,
+        "step1_to_step2_gap_ms": 0.002816,
+        "kernel_span_ms": 3.883776,
+        "kernel_total_ms": 3.851776,
+        "stage_share_percent": {
+          "prepack": 3.3297886481456866,
+          "step1": 62.82068323806992,
+          "step2": 33.8495281137844
+        }
+      },
+      "profiler": {
+        "step1": {
+          "reports": [
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case2/step1/1_kernel_kernel_1.txt.json"
+          ],
+          "total_cycles_kcycles": 11541.45,
+          "roofline": {
+            "processed_data": {
+              "all_ops": 301650575360.0,
+              "all_memacs": 2382068032.0,
+              "during": 2796796.0,
+              "block_num": 104,
+              "vl1_memacs": 975339520.0,
+              "l2c_memacs": 3878682624.0
+            },
+            "data": {
+              "all_ops": 301650575360.0,
+              "all_memacs": 2382068032.0,
+              "block_num": 104,
+              "during": 2796796.0,
+              "core_clk": 1.125,
+              "MAX_Flops_base": 1,
+              "case_flops": 1037.0746745699225,
+              "MAX_Bandwith": 1843.2,
+              "MAX_I": 260.0,
+              "case_I": 1082.3410629658983,
+              "case_bandwith": 958.1773343497345,
+              "case_VL1_I": 2643.3974969167307,
+              "case_L2C_I": 664.7128150828476,
+              "mc_clk": 0.9
+            },
+            "filename": "/opt/mcProfiler-ubuntu18.04/output20260825124120/RoofLine20260825124603191.png"
+          },
+          "workgroups": 768.0,
+          "waves": 3072.0,
+          "average_wave_life_cycles": 165180.11,
+          "isu_stalls": {
+            "wsm_stall": 21312538.0,
+            "vls_pipeline_stall": 112262289.0,
+            "vls_wdata_stall": 311296.0,
+            "valu_stall": 0.0
+          },
+          "isu_stall_total": 133886123.0,
+          "isu_stall_share_percent": {
+            "wsm_stall": 15.918407018179174,
+            "vls_pipeline_stall": 83.849084942134,
+            "vls_wdata_stall": 0.23250803968683148,
+            "valu_stall": 0.0
+          },
+          "global_read_bytes": 2363455456.0,
+          "global_write_bytes": 18612576.0,
+          "dnoc_read_average_latency": 274.36,
+          "memory_flow": {
+            "vl1c": 87.45338484797581,
+            "l2c": 40.357022377187235,
+            "sl1": 97.72969137992196,
+            "global_kernel_rd": 3844608,
+            "global_kernel_wr": 38912,
+            "private_kernel_rd": 0,
+            "private_kernel_wr": 0,
+            "generic_kernel_rd": 0,
+            "generic_kernel_wr": 0,
+            "const_kernel_rd": 18432,
+            "shared_kernel_rd": 9175040,
+            "shared_kernel_wr": 2752512,
+            "Ggeneric_vl1c_rd": 3844608,
+            "Ggeneric_vl1c_wr": 38912,
+            "const_sl1c_rd": 11472,
+            "sl1_l2c_rd": 256,
+            "vl1c_l2c_rd": 30323943,
+            "vl1c_l2c_wr": 290825,
+            "l2c_Gmemory_rd": null,
+            "l2c_Gmemory_wr": null
+          },
+          "vl1_partition_stalls": {
+            "pt0": 31143238.0,
+            "pt1": 31737123.0,
+            "pt2": 31729005.0,
+            "pt3": 30947090.0
+          },
+          "achieved_waves": 3072.0,
+          "dispatched_waves": 3072.0,
+          "ap_active_cycles": 272875287.0,
+          "duty_percent": {
+            "mte": 6.08,
+            "ste": 1.83,
+            "mma": 53.8,
+            "vls": 0.0,
+            "l2c": 9.87
+          },
+          "wall_time_corrected": {
+            "trace_duration_ms": 2.419712,
+            "counted_ops": 301650575360.0,
+            "counted_global_bytes": 2382068032.0,
+            "counted_tflops": 124.66383410918323,
+            "counted_bandwidth_gbps": 984.4427898857384,
+            "counted_arithmetic_intensity": 126.63390436701012,
+            "hbm_roof_gbps": 1400.0,
+            "hbm_roof_utilization_percent": 70.31734213469561,
+            "compute_sensitivity_tflops": 479.232,
+            "compute_sensitivity_utilization_percent": 26.01325331137804,
+            "predicted_limiter": "HBM",
+            "predicted_roof_tflops": 177.28746611381416,
+            "roof_efficiency_percent": 70.3173421346956
+          }
+        },
+        "step2": {
+          "reports": [
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case2/step2/1_kernel_kernel_2.txt.json"
+          ],
+          "total_cycles_kcycles": 10112.73,
+          "roofline": {
+            "processed_data": {
+              "all_ops": 150848352256.0,
+              "all_memacs": 1298028608.0,
+              "during": 1484944.0,
+              "block_num": 104,
+              "vl1_memacs": 528683008.0,
+              "l2c_memacs": 1939144704.0
+            },
+            "data": {
+              "all_ops": 150848352256.0,
+              "all_memacs": 1298028608.0,
+              "block_num": 104,
+              "during": 1484944.0,
+              "core_clk": 1.125,
+              "MAX_Flops_base": 1,
+              "case_flops": 976.7808924366585,
+              "MAX_Bandwith": 1843.2,
+              "MAX_I": 260.0,
+              "case_I": 993.2771497392051,
+              "case_bandwith": 983.3920902067688,
+              "case_VL1_I": 2438.7054936976297,
+              "case_L2C_I": 664.8818695039419,
+              "mc_clk": 0.9
+            },
+            "filename": "/opt/mcProfiler-ubuntu18.04/output20260825124625/RoofLine20260825125109183.png"
+          },
+          "workgroups": 1344.0,
+          "waves": 5376.0,
+          "average_wave_life_cycles": 53737.91,
+          "isu_stalls": {
+            "wsm_stall": 10393064.0,
+            "vls_pipeline_stall": 39778618.0,
+            "vls_wdata_stall": 1404928.0,
+            "valu_stall": 0.0
+          },
+          "isu_stall_total": 51576610.0,
+          "isu_stall_share_percent": {
+            "wsm_stall": 20.15073111629477,
+            "vls_pipeline_stall": 77.12530544368852,
+            "vls_wdata_stall": 2.723963440016705,
+            "valu_stall": 0.0
+          },
+          "global_read_bytes": 1209940544.0,
+          "global_write_bytes": 88088064.0,
+          "dnoc_read_average_latency": 281.62,
+          "memory_flow": {
+            "vl1c": 86.45533922663918,
+            "l2c": 41.724659524934765,
+            "sl1": 98.39163650985122,
+            "global_kernel_rd": 1929536,
+            "global_kernel_wr": 175616,
+            "private_kernel_rd": 0,
+            "private_kernel_wr": 0,
+            "generic_kernel_rd": 0,
+            "generic_kernel_wr": 0,
+            "const_kernel_rd": 32256,
+            "shared_kernel_rd": 4587520,
+            "shared_kernel_wr": 1376256,
+            "Ggeneric_vl1c_rd": 1929536,
+            "Ggeneric_vl1c_wr": 175616,
+            "const_sl1c_rd": 19896,
+            "sl1_l2c_rd": 320,
+            "vl1c_l2c_rd": 15166715,
+            "vl1c_l2c_wr": 2752520,
+            "l2c_Gmemory_rd": null,
+            "l2c_Gmemory_wr": null
+          },
+          "vl1_partition_stalls": {
+            "pt0": 14095324.0,
+            "pt1": 13517844.0,
+            "pt2": 13615401.0,
+            "pt3": 13531624.0
+          },
+          "achieved_waves": 5376.0,
+          "dispatched_waves": 5376.0,
+          "ap_active_cycles": 151047465.0,
+          "duty_percent": {
+            "mte": 5.43,
+            "ste": 3.43,
+            "mma": 48.59,
+            "vls": 0.0,
+            "l2c": 10.64
+          },
+          "wall_time_corrected": {
+            "trace_duration_ms": 1.303808,
+            "counted_ops": 150848352256.0,
+            "counted_global_bytes": 1298028608.0,
+            "counted_tflops": 115.6982870606715,
+            "counted_bandwidth_gbps": 995.5672982525034,
+            "counted_arithmetic_intensity": 116.213426519487,
+            "hbm_roof_gbps": 1400.0,
+            "hbm_roof_utilization_percent": 71.11194987517881,
+            "compute_sensitivity_tflops": 479.232,
+            "compute_sensitivity_utilization_percent": 24.142437704633977,
+            "predicted_limiter": "HBM",
+            "predicted_roof_tflops": 162.6987971272818,
+            "roof_efficiency_percent": 71.11194987517881
+          }
+        }
+      }
+    },
+    "3": {
+      "trace": {
+        "trace": "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mctracer/case3/v130_case3-25362.json",
+        "prepack": {
+          "symbol": "kernel_kernel",
+          "duration_ms": 0.24704,
+          "timestamp": 1787660817495821056,
+          "grid": {
+            "x": 28,
+            "y": 96,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 65536,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 78,
+            "static_shared": 0
+          }
+        },
+        "step1": {
+          "symbol": "kernel_kernel_1",
+          "duration_ms": 4.697088,
+          "timestamp": 1787660817496100608,
+          "grid": {
+            "x": 16,
+            "y": 96,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 32768,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 226,
+            "static_shared": 0
+          }
+        },
+        "step2": {
+          "symbol": "kernel_kernel_2",
+          "duration_ms": 2.586368,
+          "timestamp": 1787660817500800512,
+          "grid": {
+            "x": 28,
+            "y": 96,
+            "z": 1
+          },
+          "block": {
+            "x": 256,
+            "y": 1,
+            "z": 1
+          },
+          "memory": {
+            "dynamic_shared": 32768,
+            "private_per_thread": 0,
+            "private_total": 0,
+            "registers_per_thread": 220,
+            "static_shared": 0
+          }
+        },
+        "prepack_to_step1_gap_ms": 0.032512,
+        "step1_to_step2_gap_ms": 0.002816,
+        "kernel_span_ms": 7.565824,
+        "kernel_total_ms": 7.530495999999999,
+        "stage_share_percent": {
+          "prepack": 3.280527604025021,
+          "step1": 62.37421811259179,
+          "step2": 34.34525428338319
+        }
+      },
+      "profiler": {
+        "step1": {
+          "reports": [
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case3/step1/1_kernel_kernel_1.txt.json"
+          ],
+          "total_cycles_kcycles": 14085.47,
+          "roofline": {
+            "processed_data": {
+              "all_ops": 603301150720.0,
+              "all_memacs": 5295642688.0,
+              "during": 5330932.0,
+              "block_num": 104,
+              "vl1_memacs": 1950679040.0,
+              "l2c_memacs": 7757365248.0
+            },
+            "data": {
+              "all_ops": 603301150720.0,
+              "all_memacs": 5295642688.0,
+              "block_num": 104,
+              "during": 5330932.0,
+              "core_clk": 1.125,
+              "MAX_Flops_base": 1,
+              "case_flops": 1088.1723126606987,
+              "MAX_Bandwith": 1843.2,
+              "MAX_I": 260.0,
+              "case_I": 973.7099716543285,
+              "case_bandwith": 1117.5528076516453,
+              "case_VL1_I": 2643.3974969167307,
+              "case_L2C_I": 664.7128150828476,
+              "mc_clk": 0.9
+            },
+            "filename": "/opt/mcProfiler-ubuntu18.04/output20260825125134/RoofLine20260825125612890.png"
+          },
+          "workgroups": 1536.0,
+          "waves": 6144.0,
+          "average_wave_life_cycles": 168466.95,
+          "isu_stalls": {
+            "wsm_stall": 42447414.0,
+            "vls_pipeline_stall": 234125274.0,
+            "vls_wdata_stall": 622592.0,
+            "valu_stall": 0.0
+          },
+          "isu_stall_total": 277195280.0,
+          "isu_stall_share_percent": {
+            "wsm_stall": 15.313180657332982,
+            "vls_pipeline_stall": 84.46221522963883,
+            "vls_wdata_stall": 0.2246041130281872,
+            "valu_stall": 0.0
+          },
+          "global_read_bytes": 5258417824.0,
+          "global_write_bytes": 37224864.0,
+          "dnoc_read_average_latency": 272.0,
+          "memory_flow": {
+            "vl1c": 87.45338484797581,
+            "l2c": 31.814943511817663,
+            "sl1": 97.9035639412998,
+            "global_kernel_rd": 7689216,
+            "global_kernel_wr": 77824,
+            "private_kernel_rd": 0,
+            "private_kernel_wr": 0,
+            "generic_kernel_rd": 0,
+            "generic_kernel_wr": 0,
+            "const_kernel_rd": 36864,
+            "shared_kernel_rd": 18350080,
+            "shared_kernel_wr": 5505024,
+            "Ggeneric_vl1c_rd": 7689216,
+            "Ggeneric_vl1c_wr": 77824,
+            "const_sl1c_rd": 22824,
+            "sl1_l2c_rd": 480,
+            "vl1c_l2c_rd": 60626545,
+            "vl1c_l2c_wr": 581641,
+            "l2c_Gmemory_rd": null,
+            "l2c_Gmemory_wr": null
+          },
+          "vl1_partition_stalls": {
+            "pt0": 67942535.0,
+            "pt1": 67697524.0,
+            "pt2": 67683207.0,
+            "pt3": 67454512.0
+          },
+          "achieved_waves": 6144.0,
+          "dispatched_waves": 6144.0,
+          "ap_active_cycles": 536473652.0,
+          "duty_percent": {
+            "mte": 6.19,
+            "ste": 1.86,
+            "mma": 54.73,
+            "vls": 0.0,
+            "l2c": 18.4
+          },
+          "wall_time_corrected": {
+            "trace_duration_ms": 4.697088,
+            "counted_ops": 603301150720.0,
+            "counted_global_bytes": 5295642688.0,
+            "counted_tflops": 128.44152605188575,
+            "counted_bandwidth_gbps": 1127.4310142794855,
+            "counted_arithmetic_intensity": 113.92406668355643,
+            "hbm_roof_gbps": 1400.0,
+            "hbm_roof_utilization_percent": 80.53078673424896,
+            "compute_sensitivity_tflops": 479.232,
+            "compute_sensitivity_utilization_percent": 26.801533714753134,
+            "predicted_limiter": "HBM",
+            "predicted_roof_tflops": 159.493693356979,
+            "roof_efficiency_percent": 80.53078673424895
+          }
+        },
+        "step2": {
+          "reports": [
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case3/step2_supplement/1_kernel_kernel_2.txt.json",
+            "/root/tilelang-metax/race_tests/moe/restart-rep/v130_v110_rebaseline_sc-16g/profiler/mcprofiler/raw/case3/step2_core_supplement/1_kernel_kernel_2.txt.json"
+          ],
+          "total_cycles_kcycles": 6434.81,
+          "roofline": {
+            "processed_data": {
+              "all_ops": 301696704512.0,
+              "all_memacs": 2801222784.0,
+              "during": 2933757.0,
+              "block_num": 104,
+              "vl1_memacs": 1057366016.0,
+              "l2c_memacs": 3878289408.0
+            },
+            "data": {
+              "all_ops": 301696704512.0,
+              "all_memacs": 2801222784.0,
+              "block_num": 104,
+              "during": 2933757.0,
+              "core_clk": 1.125,
+              "MAX_Flops_base": 1,
+              "case_flops": 988.8105426171708,
+              "MAX_Bandwith": 1843.2,
+              "MAX_I": 260.0,
+              "case_I": 920.5281089375774,
+              "case_bandwith": 1074.177456415102,
+              "case_VL1_I": 2438.7054936976297,
+              "case_L2C_I": 664.8818695039419,
+              "mc_clk": 0.9
+            },
+            "filename": "/opt/mcProfiler-ubuntu18.04/output20260825130339/RoofLine20260825130735385.png"
+          },
+          "workgroups": 2688.0,
+          "waves": 10752.0,
+          "average_wave_life_cycles": 54298.88,
+          "isu_stalls": {
+            "wsm_stall": 20782881.0,
+            "vls_pipeline_stall": 80678804.0,
+            "vls_wdata_stall": 2809856.0,
+            "valu_stall": 0.0
+          },
+          "isu_stall_total": 104271541.0,
+          "isu_stall_share_percent": {
+            "wsm_stall": 19.931498854514867,
+            "vls_pipeline_stall": 77.37375244123417,
+            "vls_wdata_stall": 2.694748704250952,
+            "valu_stall": 0.0
+          },
+          "global_read_bytes": 2625050880.0,
+          "global_write_bytes": 176171904.0,
+          "dnoc_read_average_latency": 280.17,
+          "memory_flow": {
+            "vl1c": 86.45533922663918,
+            "l2c": 36.09984192913879,
+            "sl1": 98.47205468435867,
+            "global_kernel_rd": 3859072,
+            "global_kernel_wr": 351232,
+            "private_kernel_rd": 0,
+            "private_kernel_wr": 0,
+            "generic_kernel_rd": 0,
+            "generic_kernel_wr": 0,
+            "const_kernel_rd": 64512,
+            "shared_kernel_rd": 9175040,
+            "shared_kernel_wr": 2752512,
+            "Ggeneric_vl1c_rd": 3859072,
+            "Ggeneric_vl1c_wr": 351232,
+            "const_sl1c_rd": 39792,
+            "sl1_l2c_rd": 608,
+            "vl1c_l2c_rd": 30316785,
+            "vl1c_l2c_wr": 5505033,
+            "l2c_Gmemory_rd": null,
+            "l2c_Gmemory_wr": null
+          },
+          "vl1_partition_stalls": {
+            "pt0": 29952718.0,
+            "pt1": 29879936.0,
+            "pt2": 29022615.0,
+            "pt3": 28389304.0
+          },
+          "achieved_waves": 10752.0,
+          "dispatched_waves": 10752.0,
+          "ap_active_cycles": 301281901.0,
+          "duty_percent": {
+            "mte": 5.49,
+            "ste": 3.44,
+            "mma": 48.73,
+            "vls": 0.0,
+            "l2c": 14.16
+          },
+          "wall_time_corrected": {
+            "trace_duration_ms": 2.586368,
+            "counted_ops": 301696704512.0,
+            "counted_global_bytes": 2801222784.0,
+            "counted_tflops": 116.64879263585074,
+            "counted_bandwidth_gbps": 1083.0720083143622,
+            "counted_arithmetic_intensity": 107.70178874569656,
+            "hbm_roof_gbps": 1400.0,
+            "hbm_roof_utilization_percent": 77.36228630816872,
+            "compute_sensitivity_tflops": 479.232,
+            "compute_sensitivity_utilization_percent": 24.340777042403413,
+            "predicted_limiter": "HBM",
+            "predicted_roof_tflops": 150.78250424397518,
+            "roof_efficiency_percent": 77.36228630816872
+          }
+        }
+      }
+    }
+  }
+}
