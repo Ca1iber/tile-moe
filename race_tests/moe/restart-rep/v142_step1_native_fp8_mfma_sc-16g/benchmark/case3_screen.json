@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "case": 3,
+  "parent": "v110_case1_unpredicated_native_up_logits_sc-16g",
+  "candidate": "v142_step1_native_fp8_mfma_sc-16g",
+  "protocol": {"rounds": 3, "warmup": 10, "repeat": 50, "order": "AB/BA", "timer": "device_event"},
+  "correctness": "FAIL_OJ_TOLERANCE",
+  "rows": [
+    {"round": 1, "order": ["parent", "candidate"], "parent_ms": 7.56632080078125, "candidate_ms": 205.574921875, "change_percent": 2616.9733783131906},
+    {"round": 2, "order": ["candidate", "parent"], "parent_ms": 7.558077392578125, "candidate_ms": 205.59486328125, "change_percent": 2620.2005563364555},
+    {"round": 3, "order": ["parent", "candidate"], "parent_ms": 7.562244873046875, "candidate_ms": 205.5591796875, "change_percent": 2618.229614861426}
+  ],
+  "change": {"median_percent": 2618.229614861426, "mean_percent": 2618.467849837024, "pstdev_percent": 1.3282159528630262},
+  "candidate_gate_percent": 1.2,
+  "candidate_gate_status": "FAIL_CATASTROPHIC_REGRESSION"
+}
