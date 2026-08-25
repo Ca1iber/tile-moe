@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "iteration_id": "v100_step2_expert_grid_after_pad128_sc-16g",
+  "status": "rejected",
+  "machine": "sc-16g",
+  "branch": "dorm",
+  "parent_commit": "b36057fe",
+  "development_parent_id": "v095_case3_split_a_recovery_sc-16g",
+  "development_parent_sha256": "7e7f5b69a9a17fef7f6e155f7a07901af0e0aba9ec59edab788e6b4f15e90b8f",
+  "source_scaffold_id": "v096_case3_split_a_direct_index_sc-16g",
+  "source_scaffold_sha256": "b80b058e788a9f5cc803ab457344ab8160e316b5c45c162e9ffb1cacc89c6a15",
+  "incumbent_sota_id": "v092_case3_a_first_step1_sc-16g",
+  "incumbent_sota_sha256": "8d114ac3fb34b95835a977d4a67907d287bf0229a16e7a237a184451df428483",
+  "mechanism": "enable Step2 expert-grouped CTA mapping after pad128 independently for Case2 and Case3",
+  "variants": {
+    "case2": {
+      "source_sha256": "c86b6e2a4bedb5d93a54147ba66445ade12393d82a4c6eb5baa7ca6c27792ca5",
+      "generated_sha256": "588bde9468aa55ceb652b1916331c70556ea96a272053a05883bdcef19da4af6",
+      "correctness": "PASS",
+      "paired_median_change_percent": 4.256570333132559,
+      "verdict": "rejected_performance_regression"
+    },
+    "case3": {
+      "source_sha256": "c3916c4ac8749f23ebd6650ff8888760b7720ec057a12bc85ff676c3f08e9c57",
+      "generated_sha256": "0c1392b515cf5806cf049a9bd9ff7e3206434d530bbd73c38b3e6c67ac2f393d",
+      "correctness": "PASS",
+      "paired_median_change_percent": 4.245675614760636,
+      "verdict": "rejected_performance_regression"
+    }
+  },
+  "oj_source_validation": "PASS_BOTH",
+  "promotion_threshold_percent": 1.2,
+  "external_oj": {"verdict": "NOT_SUBMITTED"},
+  "formal_sota_promotion": "REJECTED",
+  "conclusion": "expert grouping remains harmful after pad128; retain v095 as development-performance base and v092 as formal SOTA"
+}
