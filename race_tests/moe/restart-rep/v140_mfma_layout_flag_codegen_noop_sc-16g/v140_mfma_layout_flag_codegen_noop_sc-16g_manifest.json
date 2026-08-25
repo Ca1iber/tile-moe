@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "experiment_id": "v140_mfma_layout_flag_codegen_noop_sc-16g",
+  "status": "rejected",
+  "date": "2026-08-26",
+  "platform": "MetaX C500 sc-16g",
+  "repository_head_before_archive": "a995adc4f592a6c17b9a1ee1588023938dd7ffdb",
+  "parent": {
+    "version": "v110_case1_unpredicated_native_up_logits_sc-16g",
+    "sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e"
+  },
+  "candidate": {
+    "kind": "single_literal_codegen_probe",
+    "sha256": "3524049223d4fb4c5ad083eb605d4296381091e425784f82d3ff95a94222d149",
+    "source_delta": "T.tvm_mfma second layout literal row to col"
+  },
+  "hypothesis": "the MFMA row/col layout flag selects a distinct MetaX operand-feed path",
+  "static_validation": {
+    "oj_source": "PASS",
+    "official_case_compile": "PASS_CASES_1_2_3",
+    "generated_device_cmp": "BYTE_IDENTICAL_CASES_1_2_3",
+    "resource_usage": "IDENTICAL_TO_PARENT",
+    "async_copy_sites": 0
+  },
+  "dynamic_validation": {
+    "correctness": "NOT_RERUN_BYTE_IDENTICAL_CODEGEN",
+    "benchmark": "NOT_RUN_BYTE_IDENTICAL_CODEGEN",
+    "mcprofiler": "NOT_RUN_BYTE_IDENTICAL_CODEGEN",
+    "mctracer": "NOT_RUN_BYTE_IDENTICAL_CODEGEN"
+  },
+  "candidate_gate_percent": 1.2,
+  "candidate_gate_status": "NOT_REACHED_STATIC_NOOP",
+  "verdict": "rejected_codegen_noop",
+  "sota_after": "v110_case1_unpredicated_native_up_logits_sc-16g",
+  "iteration_id": "v140_mfma_layout_flag_codegen_noop_sc-16g",
+  "summarized_at_utc": "2026-08-25T17:58:22.915630+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "a995adc4f592a6c17b9a1ee1588023938dd7ffdb",
+    "status_short": "AM race_tests/experiment/v140_mfma_layout_flag_noop_16g.md\nAM race_tests/moe/moe-roofline/v140_mfma_layout_flag_codegen_noop_sc-16g/UNAVAILABLE.md\nAM race_tests/moe/moe-roofline/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_manifest.json\nAM race_tests/moe/restart-deped-trials/20260826_v110_step2_bk128_microprobe_sc-16g.md\nAM race_tests/moe/restart-deped-trials/20260826_v140_mfma_layout_flag_codegen_noop_sc-16g.md\nAM race_tests/moe/restart-experiments/v140_mfma_layout_flag_codegen_noop_sc-16g/NO_RUNTIME_DELTA.md\nAM race_tests/moe/restart-experiments/v140_mfma_layout_flag_codegen_noop_sc-16g/UNAVAILABLE.md\nAM race_tests/moe/restart-experiments/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_experiment.md\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/benchmark/UNAVAILABLE.md\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/codegen/codegen_comparison.json\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/codegen/mfma_layout_flag.patch\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/codegen/oj_static_validation.txt\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/correctness/CODEGEN_EQUIVALENT.md\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/evidence/backend_layout_handling.txt\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/profiler/mcprofiler/UNAVAILABLE.md\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/profiler/mctracer/UNAVAILABLE.md\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/profiler/mxsmi/UNAVAILABLE.md\nA  race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_manifest.json\nAM race_tests/moe/restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_report.md\nAM race_tests/moe/restart-scripts/v140_mfma_layout_flag_codegen_noop_sc-16g/probe_mfma_layout_codegen.sh\nAM race_tests/moe/restart-scripts/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_scripts.md\n?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? .20260825030202.db\n?? .20260825061556.db\n?? .20260825061620.db\n?? .20260825070553.db\n?? .20260825104933.db\n?? .20260825113048.db\n?? .20260825151631.db\n?? .20260825160644.db\n?? .20260825163822.db\n?? .20260825163840.db\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-hack/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v140_mfma_layout_flag_codegen_noop_sc-16g/UNAVAILABLE.md",
+      "bytes": 269,
+      "sha256": "1f8fb8a790b9d31425223d34ac40e4e471fa5bf33c1ff914a5ee6f8b2b4b8691"
+    },
+    {
+      "path": "moe-roofline/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_manifest.json",
+      "bytes": 389,
+      "sha256": "a57225f4b5fb2c30b0af04d219dff9bfbe8a55a36c5fe71eb4285dff32449557"
+    },
+    {
+      "path": "restart-experiments/v140_mfma_layout_flag_codegen_noop_sc-16g/NO_RUNTIME_DELTA.md",
+      "bytes": 584,
+      "sha256": "0fd492741bf3f588fdf404343837d7c95b91d642ccce27106fe7e8f3ac4a7874"
+    },
+    {
+      "path": "restart-experiments/v140_mfma_layout_flag_codegen_noop_sc-16g/UNAVAILABLE.md",
+      "bytes": 495,
+      "sha256": "f924bdfdffb290e83a48950445eaf6a6a0c765899f3f479ce9ba68aaafbcb590"
+    },
+    {
+      "path": "restart-experiments/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_experiment.md",
+      "bytes": 2248,
+      "sha256": "f01e48043a64e76d8777394b33ebaea62dc0832db1ef0ca1f1a5592f48bda329"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/benchmark/UNAVAILABLE.md",
+      "bytes": 264,
+      "sha256": "daac28dd89a8b7a2857c3258c4b790c0f272cd2cef5c88f82207418247c9263d"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/codegen/codegen_comparison.json",
+      "bytes": 2407,
+      "sha256": "b9743addf89fea31cac2403b7dc7762c77280118b11d6ab576f633bdc18f9b59"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/codegen/mfma_layout_flag.patch",
+      "bytes": 373,
+      "sha256": "163eaf583c82c5d4681025acd3eb025dd629188988dfe13e658eb795bd1b5300"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/codegen/oj_static_validation.txt",
+      "bytes": 198,
+      "sha256": "a738f21b21a1081689a9d3dca84b95bb7150cd983025c13b84c454cd7d60a293"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/correctness/CODEGEN_EQUIVALENT.md",
+      "bytes": 521,
+      "sha256": "1ca6090a067836342afb9840db8fb83412c3186bb09f77b45a078c105db10d56"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/evidence/backend_layout_handling.txt",
+      "bytes": 1237,
+      "sha256": "9444565ea639992c8f97a46e6ad33c08f205f2f8f3c7ec306ef2d8c0acbcfe00"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/profiler/mcprofiler/UNAVAILABLE.md",
+      "bytes": 150,
+      "sha256": "3c09a802eb4b59ee62a2ba5bed55c285421bc655e9ef4c5a2bac3c9ad29fd1e2"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/profiler/mctracer/UNAVAILABLE.md",
+      "bytes": 150,
+      "sha256": "d34ba17b20803052bc826cc9ee15515afb202e07bb70749f6257332f725f0ede"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/profiler/mxsmi/UNAVAILABLE.md",
+      "bytes": 164,
+      "sha256": "cfd8e2025a03fe6a1f40abed3943ba131ca2cc2c380b8d7a5a84ee3cede609b3"
+    },
+    {
+      "path": "restart-rep/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_report.md",
+      "bytes": 2424,
+      "sha256": "fbba0f95a0f4251682d8eeefdb2276f0ec9795400a9ab08ed8c85fcb8dad17d3"
+    },
+    {
+      "path": "restart-scripts/v140_mfma_layout_flag_codegen_noop_sc-16g/probe_mfma_layout_codegen.sh",
+      "bytes": 1068,
+      "sha256": "b8b6f8662cf2dc722c25c0e0f2186939909d239bf55e3b692276876bab9fa52a"
+    },
+    {
+      "path": "restart-scripts/v140_mfma_layout_flag_codegen_noop_sc-16g/v140_mfma_layout_flag_codegen_noop_sc-16g_scripts.md",
+      "bytes": 1440,
+      "sha256": "31dd9ef7368c2b7b7c862a6bbcbe15650a71b31fb0c290ba493a8ce7aa5321ff"
+    }
+  ]
+}

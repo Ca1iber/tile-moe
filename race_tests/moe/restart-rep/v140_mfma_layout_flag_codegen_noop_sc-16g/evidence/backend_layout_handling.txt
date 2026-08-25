@@ -1,0 +1,24 @@
+v140 MFMA layout-flag backend evidence
+Date: 2026-08-26
+Repository head before archive: a995adc4f592a6c17b9a1ee1588023938dd7ffdb
+
+Source hashes:
+864e765d1a32f50b38edbb06c011e7b4814f56fa8f87bc4c33a5ebef9b56a18f  src/target/codegen_maca.cc
+7e47b1f20f32541f239884c9fc37c2b11f2b741dc2d10588ceea8e62b1f2c04b  tilelang/language/tir/op.py
+439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e  v110 parent source
+3524049223d4fb4c5ad083eb605d4296381091e425784f82d3ff95a94222d149  row,col probe source
+
+Relevant MetaX codegen behavior:
+- parses A_layout and B_layout from tvm_mfma arguments;
+- checks: A_layout == "row" || B_layout == "row";
+- constructs: __builtin_mxc_mma_ + prefix;
+- does not use either layout string in builtin selection or emitted operands.
+
+Official-shape generated-source equality:
+case1 bcaea2c2c9ec00a7f0572711c43734e5a400b827965eea85ccbc1c7f60f2da14, 30746 bytes, cmp=0
+case2 08529581037825875d4898b5251a36fb1d23e30e2578d758dfc4c4dcab75565c, 28449 bytes, cmp=0
+case3 b3f51feb124ac19099d49d379ad01928252535a5af9a8d4fb8674252f3c9d7c2, 28449 bytes, cmp=0
+
+Conclusion:
+Changing only the second MFMA layout flag from row to col is a compile-time
+no-op on the current MetaX backend.  It cannot change performance.
