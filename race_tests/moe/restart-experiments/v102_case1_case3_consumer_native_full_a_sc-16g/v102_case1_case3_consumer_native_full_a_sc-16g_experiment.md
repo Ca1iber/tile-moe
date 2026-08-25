@@ -16,6 +16,15 @@ Only official Case1 changes from v101: enable the existing consumer-native works
 - mcTracer Step1 median: `-6.496794%`; GPU span median: `-4.355180%`.
 - Case2/Case3 generated device code: byte-identical to v101.
 
+## External OJ result
+
+- Candidate SHA-256: `5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801`.
+- Case latencies: `[2.332, 3.974, 7.690] ms`.
+- Score ratios: `[0.828315, 0.824035, 0.823482]`.
+- Display scores: `[82, 82, 82]`.
+- Correctness: all three cases AC.
+- Versus incumbent v092, no case regresses and all three score ratios improve.
+
 ## Status
 
-Qualified local candidate combining the v102 Case1 gain with the inherited v101 Case3 gain; awaiting external OJ.
+Accepted as the new external-OJ-verified global SOTA and promoted to `restart-submission`.

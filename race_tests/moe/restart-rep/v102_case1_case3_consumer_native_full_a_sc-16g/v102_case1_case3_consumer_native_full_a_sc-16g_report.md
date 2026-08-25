@@ -4,7 +4,17 @@
 
 v102 extends v101's consumer-native full-A feed to official Case1. It passes the OJ source/generated-code validator and full padded-output correctness. Seven Case1 AB/BA rounds against v101 improve latency by a median **3.565378%**; Case2 and Case3 generated device files remain byte-identical to v101, so v102 also inherits v101's qualified Case3 improvement.
 
-This is submission-ready but still pending external OJ. The formal SOTA ledger remains v092.
+The exact candidate SHA-256 `5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801` passed all three external OJ cases. Compared with incumbent v092, every score ratio is non-regressing and all three are strictly higher, so v102 is promoted as the formal global SOTA.
+
+## External OJ SOTA gate
+
+| Case | v092 latency (ms) | v102 latency (ms) | latency change | v092 score ratio | v102 score ratio | Display |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 | 2.419 | 2.332 | -3.5965% | 0.823043 | 0.828315 | 82 |
+| 2 | 3.977 | 3.974 | -0.0754% | 0.823925 | 0.824035 | 82 |
+| 3 | 8.014 | 7.690 | -4.0430% | 0.817403 | 0.823482 | 82 |
+
+OJ baseline latencies are `[11.251, 18.610, 35.875] ms`; v102 speedups are `[4.825, 4.683, 4.665]x`. All cases report `Pass: OK`.
 
 ## Isolated change
 
@@ -38,4 +48,4 @@ Case1 prepack changes from `94 MT / 5 waves` to `70 MT / 7 waves` while adding t
 - Case2 generated SHA-256: `717d9d46...`, byte-identical to v101/v095.
 - Case3 generated SHA-256: `9f28a6b5...`, byte-identical to v101.
 - OJ validator: PASS on source plus all three generated device files.
-- Decision: archive as `candidate_pending_external_oj`; provide `candidate_submission.py`; retain v092 in `restart-submission/SOTA.json` until external OJ verification.
+- Decision: `accepted`; archive the exact OJ-tested bytes under `restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/submission.py` and promote v102 in `restart-submission/SOTA.json`.

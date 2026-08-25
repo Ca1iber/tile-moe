@@ -6,4 +6,4 @@
 - Full padded-output reference check: PASS for official Case1 (`rtol=1e-2`, `atol=1e-2`).
 - No TileLang data-race warning was emitted during candidate compilation.
 - Case2 and Case3 generated device files are byte-identical to v101.
-- External OJ: pending.
+- External OJ: AC for all three official cases using the exact candidate SHA-256 above.

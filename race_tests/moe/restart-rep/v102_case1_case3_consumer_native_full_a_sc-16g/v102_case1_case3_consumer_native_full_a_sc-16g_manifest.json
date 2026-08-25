@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "iteration_id": "v102_case1_case3_consumer_native_full_a_sc-16g",
-  "status": "candidate_pending_external_oj",
+  "status": "accepted",
   "machine": "sc-16g",
   "branch": "dorm",
   "parent_commit": "20829308",
@@ -11,7 +11,7 @@
   "incumbent_sota_id": "v092_case3_a_first_step1_sc-16g",
   "incumbent_sota_sha256": "8d114ac3fb34b95835a977d4a67907d287bf0229a16e7a237a184451df428483",
   "mechanism": "extend v101 consumer-native full-A feed from Case3 to official Case1",
-  "correctness": "PASS_full_padded_case1",
+  "correctness": "PASS_full_padded_case1_and_external_oj_all_cases",
   "oj_source_and_generated_validation": "PASS_3_CASES",
   "generated_identity": {
     "case1_matches_v101": false,
@@ -35,7 +35,413 @@
     "step2_median_change_percent": -0.3032140691328067,
     "gpu_span_median_change_percent": -4.355179704016909
   },
-  "external_oj": {"verdict": "PENDING"},
-  "formal_sota_promotion": "PENDING_EXTERNAL_OJ",
-  "conclusion": "submission-ready candidate combining Case1 and Case3 native-A wins; keep formal SOTA at v092 until exact external OJ evidence"
+  "external_oj": {
+    "verdict": "AC",
+    "authority": "user-provided external OJ SPJ reports",
+    "baseline_latency_ms": [
+      11.251,
+      18.61,
+      35.875
+    ],
+    "candidate_latency_ms": [
+      2.332,
+      3.974,
+      7.69
+    ],
+    "speedup_vs_baseline": [
+      4.825,
+      4.683,
+      4.665
+    ],
+    "score_vector": [
+      0.828315,
+      0.824035,
+      0.823482
+    ],
+    "display_score_vector": [
+      82,
+      82,
+      82
+    ],
+    "all_cases_pass": true
+  },
+  "sota_gate": {
+    "authority": "oj-platform",
+    "incumbent_id": "v092_case3_a_first_step1_sc-16g",
+    "incumbent_submission_sha256": "8d114ac3fb34b95835a977d4a67907d287bf0229a16e7a237a184451df428483",
+    "candidate_submission_sha256": "5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801",
+    "metric": "score_ratio",
+    "higher_is_better": true,
+    "official_case_count": 3,
+    "cases": [
+      {
+        "case": 1,
+        "incumbent": 0.823043,
+        "candidate": 0.828315
+      },
+      {
+        "case": 2,
+        "incumbent": 0.823925,
+        "candidate": 0.824035
+      },
+      {
+        "case": 3,
+        "incumbent": 0.817403,
+        "candidate": 0.823482
+      }
+    ],
+    "all_cases_non_regressing": true,
+    "at_least_one_case_improved": true
+  },
+  "formal_sota_promotion": "ACCEPTED",
+  "conclusion": "external OJ passed all three official cases and improved every score ratio versus v092; promote exact candidate bytes as the new global SOTA",
+  "summarized_at_utc": "2026-08-25T03:00:29.424684+00:00",
+  "git": {
+    "root": "/root/tilelang-metax",
+    "branch": "dorm",
+    "commit": "f16c6d7cc65010161c705140912bf5156e393918",
+    "status_short": "M race_tests/moe/restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_experiment.md\n M race_tests/moe/restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/benchmark/external_oj_verdict.md\n M race_tests/moe/restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/correctness/correctness_summary.md\n M race_tests/moe/restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_manifest.json\n M race_tests/moe/restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_report.md\n M race_tests/moe/restart-submission/SOTA.json\n?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-hack/\n?? race_tests/moe/restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/"
+  },
+  "artifact_inventory": [
+    {
+      "path": "moe-roofline/v102_case1_case3_consumer_native_full_a_sc-16g/README.md",
+      "bytes": 274,
+      "sha256": "73ec5cd08cce3751b0915ad850c24b9276730e4d1fa207198a3f56e0c9ff968a"
+    },
+    {
+      "path": "moe-roofline/v102_case1_case3_consumer_native_full_a_sc-16g/UNAVAILABLE.md",
+      "bytes": 222,
+      "sha256": "c0587aa84f71eabe088d21437144ee07c7fc47ac9a00e59b2f94d84bef4812e1"
+    },
+    {
+      "path": "moe-roofline/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_manifest.json",
+      "bytes": 372,
+      "sha256": "9b7fa78923e5a7b008ac2eecb8f7404d84f5d985f2cb4d63e85cb245aedc0a49"
+    },
+    {
+      "path": "moe-roofline/v102_case1_case3_consumer_native_full_a_sc-16g/v102_roofline_manifest.json",
+      "bytes": 372,
+      "sha256": "9b7fa78923e5a7b008ac2eecb8f7404d84f5d985f2cb4d63e85cb245aedc0a49"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/__pycache__/candidate_submission.cpython-312.pyc",
+      "bytes": 47296,
+      "sha256": "f7fa6d08703199df46e1856af2681f701ae75136c4b91991198d1403292c88c4"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/candidate_submission.py",
+      "bytes": 78760,
+      "sha256": "5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/candidate_submission.sha256",
+      "bytes": 90,
+      "sha256": "b1176b25503dff76b7e5a1e43e2123497e50bdeaa5901dea062ef5c0c99c1a5a"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g.patch",
+      "bytes": 1158,
+      "sha256": "4ebc4a219a0166567fee07a90b8f5ee51ee0f89c98d6156c48c91dc3822b44ea"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_custom_fusedmoe.py",
+      "bytes": 78760,
+      "sha256": "5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_experiment.md",
+      "bytes": 1254,
+      "sha256": "716677ce8165a05ec9b405616d6db15bc86c401cb05a96b086971fa92bc4ec83"
+    },
+    {
+      "path": "restart-experiments/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_hypothesis.md",
+      "bytes": 1142,
+      "sha256": "a3993108071ba6de7bf835f3ad8640adfa24ed3d3b4f9a692da915f653c1da7d"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/.gitattributes",
+      "bytes": 307,
+      "sha256": "0e00cd52396104b7b5d8f5355077f3b90e223f9d535c34bcd240d021188ff20e"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/benchmark/case1_long.json",
+      "bytes": 2222,
+      "sha256": "a4745a7e3e1f143506d9ef0903de92b0cf1f2d5af66cbad032c748b4bbc64f4f"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/benchmark/case1_screen.json",
+      "bytes": 1266,
+      "sha256": "c05e4e881b6c63677310fae939ad7402ae71d9d8b3ab1df9e51b359206375a58"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/benchmark/external_oj_verdict.md",
+      "bytes": 829,
+      "sha256": "c0926eaf092d557a4fbf4cb75c0add578f5c59560e4ff6e0a2a0cae82878704c"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case1/v102_case1_case1_compiler.log",
+      "bytes": 10977,
+      "sha256": "2076dcf3da33e50b704e1c954861e49bdbecaeff58a575ea09facf5d85b2dea8"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case1/v102_case1_case1_generated_device.cpp",
+      "bytes": 32135,
+      "sha256": "1cd46135b729c20e3fbeac77bf119cf73d56992b9f195f0323261c0e42495c63"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case1/v102_case1_case1_resource_usage.json",
+      "bytes": 820,
+      "sha256": "0ab1548e12a3d33d95c618b3c1b96cec1253020852adb9c7d2e71740caaabf4c"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case2/v102_case2_case2_compiler.log",
+      "bytes": 10977,
+      "sha256": "99b4294e61735ccc0e78ccdfc3acd59e761618b5f1d614471b492e69cbf2c78f"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case2/v102_case2_case2_generated_device.cpp",
+      "bytes": 29065,
+      "sha256": "717d9d4699c0c98d94ade731eb43b02d0b10b05cbbcff7403e31f746869f9d9e"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case2/v102_case2_case2_resource_usage.json",
+      "bytes": 820,
+      "sha256": "14041fe71fb8175e063f72dff9c1cdcb38d102317a5a449598bb812b68b7ea9c"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case3/v102_case3_case3_compiler.log",
+      "bytes": 10977,
+      "sha256": "946485980de37d261eff7646b580c5a9131c281c37a5ebdde1088ba77cf0b9cf"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case3/v102_case3_case3_generated_device.cpp",
+      "bytes": 29065,
+      "sha256": "9f28a6b560444c9072e74de0506aed486e53774044434d39c29f13f02a3a5ce2"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/codegen/case3/v102_case3_case3_resource_usage.json",
+      "bytes": 820,
+      "sha256": "06ad50bd851c85316cdc67a51a950e275214a557c974d863c3dcfc1112ba220a"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/correctness/correctness_summary.md",
+      "bytes": 530,
+      "sha256": "dfad7dfa91f4ebbf25f6afda98666b4319cca6eff8c83238898f38e91e15ba08"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/correctness/oj_validation_stdout.txt",
+      "bytes": 387,
+      "sha256": "3f504b6eb238457300977970cda7be68648b246716c828e44536b82c75b7f47c"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mcprofiler/UNAVAILABLE.md",
+      "bytes": 180,
+      "sha256": "7dda530ea583b1d8ebf23aa1118bbe0da40e8c67ad3f43e64c4666d36b0337cd"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_1_v101/case1_pair1_1_v101-224969.json",
+      "bytes": 119226,
+      "sha256": "4357a7b0bf2b8a1c8477434e58b0f7c6ca56dfe84dc346d6c0205b4202585b9b"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_1_v101/command.json",
+      "bytes": 501,
+      "sha256": "e266290d8b0e69bf9bfc647b510132b3add37a62e63f543d841ccadc2a81c4bb"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_1_v101/mctracer_console.log",
+      "bytes": 5331,
+      "sha256": "6004f3036aed233e2aa1327e23d7a9781ea5fdbdeee0615517f247e161b70e79"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_1_v101/summary.json",
+      "bytes": 654,
+      "sha256": "664c407a637777a3ca1bfcd33a996f1bb99fbebd19dca5a8d33f7e7e3277856d"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_2_v102/case1_pair1_2_v102-225145.json",
+      "bytes": 119252,
+      "sha256": "18dfd351e6470a9902e119eb2880fab5668613b9b6190c9e7579b7ae69e2f3d6"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_2_v102/command.json",
+      "bytes": 414,
+      "sha256": "be8e08f3b3c4b671272493267dd357c7382f56402e62b9c26fefcc0525e87dd1"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_2_v102/mctracer_console.log",
+      "bytes": 5244,
+      "sha256": "f56228e7008ee5db3a7d022b5f6171100405d9a9457b63b90d0905804ad17aca"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair1_2_v102/summary.json",
+      "bytes": 658,
+      "sha256": "1d1e47796e1af73f8e9cf165009f41f9172d169a554f6d481c0820b855f67825"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_1_v102/case1_pair2_1_v102-225319.json",
+      "bytes": 119247,
+      "sha256": "9f21f73d5e4d74b84c61183495e13d586ab40d1adb685c5c5cab1750a48688a1"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_1_v102/command.json",
+      "bytes": 414,
+      "sha256": "620a3c2eba5371f647e6541dc1cfa8f88d1e6f8df3daab42ba5af291e69337dc"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_1_v102/mctracer_console.log",
+      "bytes": 4887,
+      "sha256": "391db655a8d9667acf1d15bc685cc7e59cf84d1e310db45fe3cebf41b78a9fe9"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_1_v102/summary.json",
+      "bytes": 657,
+      "sha256": "af2b962650dba389f130f0fa1341ecc8d866f2ebfd069cf16670cbbd341ebcf4"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_2_v101/case1_pair2_2_v101-225447.json",
+      "bytes": 119212,
+      "sha256": "75fdb64c25fcdff8f3c5d2dd6680801da334b6a6ebab78f317fadd30057150fe"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_2_v101/command.json",
+      "bytes": 501,
+      "sha256": "d2a6ea4a60bbcda6e88fccead77feed8b3afc3a2354c7d6525b65efe4ee10163"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_2_v101/mctracer_console.log",
+      "bytes": 4974,
+      "sha256": "c2d154510d279acb75a6a0fc3f685d0c77b4e34dd3cb48ae96858e216709e995"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair2_2_v101/summary.json",
+      "bytes": 652,
+      "sha256": "1d130127ca4c4da19d7e2b655e9979dab2675ef42360444c89ae2b0a02819576"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_1_v101/case1_pair3_1_v101-225574.json",
+      "bytes": 119216,
+      "sha256": "0d85df401c095b81c393080ae5a18cc92bdd53391eee41ddaaf713f198484fd8"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_1_v101/command.json",
+      "bytes": 501,
+      "sha256": "e9cfa26e4045f19d6d017076914c405ed5a3c241a6805536e1c4d625ad3dc007"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_1_v101/mctracer_console.log",
+      "bytes": 4974,
+      "sha256": "da73e57765af3dda2294cdb1ba0fdf280082d922dd04c54a3959c228718783dc"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_1_v101/summary.json",
+      "bytes": 655,
+      "sha256": "3d23ff15ae197dd3ae15feaaea70897c92fd1651bf5a26bbc52e650428ae21f7"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_2_v102/case1_pair3_2_v102-225701.json",
+      "bytes": 119252,
+      "sha256": "0c99f7a7440052d61602d9679bb8fff08f87f1023383bf2ec38035bd8b60fdc5"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_2_v102/command.json",
+      "bytes": 414,
+      "sha256": "8b3b755ac609f73c4af7744907cf363a1e3cf7cf6d386d279ee962932dbd7789"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_2_v102/mctracer_console.log",
+      "bytes": 4887,
+      "sha256": "fd45dd72215fa63141db942a0dfc337ffb78b8ee4be2f7643a0e895b21055ccc"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/pair3_2_v102/summary.json",
+      "bytes": 659,
+      "sha256": "752e4d059611b4e2e01b4e9daaa9a12e16bdc75c79171589fe7a89ccd49d1920"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/three_kernel_summary.json",
+      "bytes": 11592,
+      "sha256": "934c7fb6051caebefeeb68b12a30975b6ec7ababcfbcbf0faaaf97a7a2d4b3e5"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mctracer/v102_vs_v101_case1_summary.json",
+      "bytes": 7305,
+      "sha256": "74a81a2bd0be8bcf123a87cbbe7a35ff3b8404c3e1c02b13855a07d3a34ded01"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/profiler/mxsmi/UNAVAILABLE.md",
+      "bytes": 157,
+      "sha256": "0ce0f7d16208770c1579a22241f8a0d8d869878359a1e2c2fcbb3badfa20628e"
+    },
+    {
+      "path": "restart-rep/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_report.md",
+      "bytes": 2933,
+      "sha256": "0266991a1f6e2ee3465880a96ec2e1604369188d4267e9ba43398491ef4078c3"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/capture_codegen.py",
+      "bytes": 5756,
+      "sha256": "d81be2f92b3538966d5504ed279c807db3a9c5182a052cc4557828c44658e10f"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/extract_metax_isa.sh",
+      "bytes": 2866,
+      "sha256": "adb3e03a79adf208913df3485cdcfcc9f34cc965b93fd50283ce7df8facd7885"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/profile_submission.py",
+      "bytes": 3373,
+      "sha256": "0104891c6729d30c24feb108a4b89804c3c011fcb85869c4186cd762355740cd"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/run_paired_mctracer.py",
+      "bytes": 5852,
+      "sha256": "f73851b9a9f2d9ae56583f25413f6aeda664bf28183e52fdc5e07bb4d6bf0679"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/run_v59_fullcheck.py",
+      "bytes": 5763,
+      "sha256": "de683f42eb05b384c8b576b87cee5b546168325a5db5b19342b90c3bfd9e961c"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/summarize_iteration.py",
+      "bytes": 3264,
+      "sha256": "ff56712eca6967f230166042b61b91003d133142c8e9866edf92726980cbcb0d"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/summarize_three_kernel_trace.py",
+      "bytes": 4296,
+      "sha256": "d0091162b753d9a2aec659a309ca48ee2f38d5b3e0a516bd55416d808856b23f"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/v102_case1_case3_consumer_native_full_a_sc-16g_scripts.md",
+      "bytes": 445,
+      "sha256": "dc234bb9755ba65b09045f837acb85a54d6ceba7b830fc7b54f2d7ea6f8a7285"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/validate_iteration.py",
+      "bytes": 11099,
+      "sha256": "19cd80c932804e5130fbfeb8eb4640ed7567aa9650a20c6fe1f4e1beb04dd9d0"
+    },
+    {
+      "path": "restart-scripts/v102_case1_case3_consumer_native_full_a_sc-16g/validate_oj_submission.py",
+      "bytes": 6807,
+      "sha256": "a83f8139dffd694b19484a2c092381898af3cc145263ac5fa96a23777dfa158a"
+    },
+    {
+      "path": "restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/oj_import_validation.txt",
+      "bytes": 863,
+      "sha256": "f14adb65a2c966a5a70eea5e7b5a9d61ce25bad85954d1cc3bbb4b803e11c516"
+    },
+    {
+      "path": "restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/submission.py",
+      "bytes": 78760,
+      "sha256": "5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801"
+    },
+    {
+      "path": "restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/submission.sha256",
+      "bytes": 80,
+      "sha256": "ef5a5facc495fb953e1822750ee8e01a6dd9ab6e8a8517a87da17415c5eee935"
+    }
+  ]
 }
