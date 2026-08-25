@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "experiment_id": "v137_step1_valid_row_silu_sc-16g",
+  "date": "2026-08-26",
+  "platform": "MetaX C500 sc-16g",
+  "parent": {
+    "version": "v110_case1_unpredicated_native_up_logits_sc-16g",
+    "sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e"
+  },
+  "candidate": {
+    "version": "v137_step1_valid_row_silu_sc-16g",
+    "sha256": "c0516d26ef1a35ba9eba052f030073601b256655f13d02f98e9dfa03db282ed3"
+  },
+  "single_change": "predicate Step1 SiLU/exp2 on i < actual_rows",
+  "validation": {
+    "oj_source": "PASS",
+    "oj_generated_case1": "PASS",
+    "correctness_case1": "PASS",
+    "cases_2_3": "SKIPPED_BELOW_GATE",
+    "mcprofiler": "SKIPPED_BELOW_GATE"
+  },
+  "case1_abba": {
+    "rounds": 4,
+    "warmup": 5,
+    "repeat": 120,
+    "mean_change_percent": -0.5256093952969415,
+    "median_change_percent": -0.506727046647587,
+    "pstdev_percent": 0.0725366273143629
+  },
+  "candidate_gate_percent": 1.2,
+  "verdict": "rejected_below_candidate_gate",
+  "sota_after": "v110_case1_unpredicated_native_up_logits_sc-16g"
+}
+

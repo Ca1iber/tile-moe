@@ -1,0 +1,11 @@
+--- v110/submission.py
++++ v137/v137_step1_valid_row_silu_sc-16g_custom_fusedmoe.py
+@@
+-                    for i, j in T.Parallel(block_token, block_dexpert_step1):
+-                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+-                        if i < actual_rows:
++                    for i, j in T.Parallel(block_token, block_dexpert_step1):
++                        if i < actual_rows:
++                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                             if use_consumer_native_up_logits:
+
