@@ -1,0 +1,24 @@
+--- a/v110_submission.py
++++ b/v141_step2_native_vector_pair_interleave_sc-16g_custom_fusedmoe.py
+@@
+-                                    if use_consumer_native_up_logits:
+-                                        if producer_stage == intermediate_thread // 128:
+-                                            for intermediate_vec in T.serial(4):
++                                    if use_consumer_native_up_logits:
++                                        for intermediate_vec_pair in T.serial(2):
++                                            intermediate_vec = producer_stage * 2 + intermediate_vec_pair
+                                             intermediate_row = (
+                                                 (intermediate_thread // 64) * 32
+                                                 + (intermediate_vec % 2) * 16
+                                                 + intermediate_thread % 16
+@@
+-                                        if use_consumer_native_up_logits:
+-                                            if producer_stage == intermediate_thread // 128:
+-                                                for intermediate_vec in T.serial(4):
++                                        if use_consumer_native_up_logits:
++                                            for intermediate_vec_pair in T.serial(2):
++                                                intermediate_vec = producer_stage * 2 + intermediate_vec_pair
+                                                 intermediate_row = (
+                                                     (intermediate_thread // 64) * 32
+                                                     + (intermediate_vec % 2) * 16
+                                                     + intermediate_thread % 16

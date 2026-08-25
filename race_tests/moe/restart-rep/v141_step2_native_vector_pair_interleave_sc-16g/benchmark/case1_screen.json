@@ -1,0 +1,56 @@
+{
+  "case": 1,
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py",
+    "candidate": "/root/moe_runs/v141_step2_native_vector_pair_interleave/candidate.py"
+  },
+  "protocol": {
+    "rounds": 3,
+    "warmup": 10,
+    "repeat": 80,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 2.182425689697266,
+      "candidate": 2.194870376586914,
+      "change_percent": 0.5702227089974476
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 2.197804832458496,
+      "parent": 2.179840087890625,
+      "change_percent": 0.8241313052121724
+    },
+    {
+      "round": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 2.180966377258301,
+      "candidate": 2.194086456298828,
+      "change_percent": 0.6015718159314565
+    }
+  ],
+  "change": {
+    "samples": [
+      0.5702227089974476,
+      0.8241313052121724,
+      0.6015718159314565
+    ],
+    "mean": 0.6653086100470255,
+    "median": 0.6015718159314565,
+    "pstdev": 0.11303149413926149
+  }
+}
