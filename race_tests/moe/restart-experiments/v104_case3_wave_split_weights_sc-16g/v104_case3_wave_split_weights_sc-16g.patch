@@ -1,0 +1,301 @@
+--- race_tests/moe/restart-submission/v102_case1_case3_consumer_native_full_a_sc-16g/submission.py	2026-08-25 02:59:17.766022837 +0000
++++ /tmp/v104_case3_wave_split_weights.py	2026-08-25 03:43:08.556269667 +0000
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v102
+-# PARENT: v101 locally-qualified candidate / SHA256 b77766d2a4044bc4b87a47f1b95f0de58d7aeb9afde2e9e3659dc1c9c3c49dbe
+-# PRIMARY_CHANGE: extend consumer-native full-A feed to Case1 while preserving v101 Case2/Case3
++# GENERATED EXPERIMENT: v104
++# PARENT: v102 external-OJ-AC / SHA256 5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801
++# PRIMARY_CHANGE: assign Case3 Gate/Up weight halves to distinct waves without changing bytes, MMA, or barriers
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -161,6 +161,7 @@
+     use_consumer_native_split_gate0 = False
+     use_non_native_a_before_gate0 = False
+     use_non_native_a_split_gate0 = False
++    use_step1_wave_split_weights = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -207,6 +208,7 @@
+         use_consumer_native_split_gate0 = False
+         use_non_native_a_before_gate0 = False
+         use_non_native_a_split_gate0 = False
++        use_step1_wave_split_weights = num_experts == 64
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -239,6 +241,7 @@
+         bool(use_consumer_native_split_gate0),
+         bool(use_non_native_a_before_gate0),
+         bool(use_non_native_a_split_gate0),
++        bool(use_step1_wave_split_weights),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -459,6 +462,7 @@
+             use_consumer_native_split_gate0,
+             use_non_native_a_before_gate0,
+             use_non_native_a_split_gate0,
++            use_step1_wave_split_weights,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -710,14 +714,58 @@
+                                                 input_prefetch[i_x_odd, j_x_odd] = input[
+                                                     bx, k_odd, i_x_odd, j_x_odd
+                                                 ]
+-                                T.copy(
++                                if use_step1_wave_split_weights:
++                                    weight_wave = native_thread // 64
++                                    weight_lane = native_thread % 64
++                                    if weight_wave == 0:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                gate_shared[weight_row, weight_col + weight_elem] = gate[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + weight_row,
++                                                    k_even * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                    elif weight_wave == 1:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                up_shared[weight_row, weight_col + weight_elem] = up[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + weight_row,
++                                                    k_even * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                    elif weight_wave == 2:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                gate_shared[block_dexpert_step1 // 2 + weight_row, weight_col + weight_elem] = gate[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + block_dexpert_step1 // 2 + weight_row,
++                                                    k_even * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                    else:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                up_shared[block_dexpert_step1 // 2 + weight_row, weight_col + weight_elem] = up[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + block_dexpert_step1 // 2 + weight_row,
++                                                    k_even * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                if not use_step1_wave_split_weights:
++                                    T.copy(
+                                     gate[
+                                         expert_id,
+                                         by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                         k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+                                     ],
+-                                    gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+-                                )
++                                        gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if (
+                                     use_case2_consumer_native_input
+                                     and use_consumer_native_split_gate0
+@@ -784,22 +832,23 @@
+                                                 input_prefetch[i_x_odd, j_x_odd] = input[
+                                                     bx, k_odd, i_x_odd, j_x_odd
+                                                 ]
+-                                T.copy(
+-                                    gate[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                    ],
+-                                    gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                )
+-                                T.copy(
+-                                    up[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                    ],
+-                                    up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+-                                )
++                                if not use_step1_wave_split_weights:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if not use_step1_tail_pruning:
+                                     T.copy(
+                                         input[
+@@ -810,14 +859,15 @@
+                                         ],
+                                         input_prefetch[block_token // 2 : block_token, 0:block_dhidden_step1],
+                                     )
+-                                T.copy(
+-                                    up[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                    ],
+-                                    up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                )
++                                if not use_step1_wave_split_weights:
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
+                             else:
+                                 T.copy(
+                                     gate[
+@@ -940,14 +990,58 @@
+                                                 input_shared[i_x_even, j_x_even] = input[
+                                                     bx, k_odd + 1, i_x_even, j_x_even
+                                                 ]
+-                                T.copy(
+-                                    gate[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                    ],
+-                                    gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+-                                )
++                                if use_step1_wave_split_weights:
++                                    weight_wave = native_thread // 64
++                                    weight_lane = native_thread % 64
++                                    if weight_wave == 0:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                gate_shared[weight_row, weight_col + weight_elem] = gate[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + weight_row,
++                                                    k_odd * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                    elif weight_wave == 1:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                up_shared[weight_row, weight_col + weight_elem] = up[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + weight_row,
++                                                    k_odd * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                    elif weight_wave == 2:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                gate_shared[block_dexpert_step1 // 2 + weight_row, weight_col + weight_elem] = gate[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + block_dexpert_step1 // 2 + weight_row,
++                                                    k_odd * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                    else:
++                                        for weight_row_vec in T.serial(8):
++                                            weight_row = weight_row_vec * 8 + weight_lane // 8
++                                            weight_col = (weight_lane % 8) * 8
++                                            for weight_elem in T.vectorized(8):
++                                                up_shared[block_dexpert_step1 // 2 + weight_row, weight_col + weight_elem] = up[
++                                                    expert_id,
++                                                    by * block_dexpert_step1 + block_dexpert_step1 // 2 + weight_row,
++                                                    k_odd * block_dhidden_step1 + weight_col + weight_elem,
++                                                ]
++                                if not use_step1_wave_split_weights:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if (
+                                     use_case2_consumer_native_input
+                                     and use_consumer_native_split_gate0
+@@ -1018,22 +1112,23 @@
+                                                     input_shared[i_x_even, j_x_even] = input[
+                                                         bx, k_odd + 1, i_x_even, j_x_even
+                                                     ]
+-                                T.copy(
+-                                    gate[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                    ],
+-                                    gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                )
+-                                T.copy(
+-                                    up[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                    ],
+-                                    up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+-                                )
++                                if not use_step1_wave_split_weights:
++                                    T.copy(
++                                        gate[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if k_pair + 1 < step1_k_tiles // 2:
+                                     if not use_step1_tail_pruning:
+                                         T.copy(
+@@ -1045,14 +1140,15 @@
+                                             ],
+                                             input_shared[block_token // 2 : block_token, 0:block_dhidden_step1],
+                                         )
+-                                T.copy(
+-                                    up[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
+-                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                    ],
+-                                    up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+-                                )
++                                if not use_step1_wave_split_weights:
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 + block_dexpert_step1 // 2 : (by + 1) * block_dexpert_step1,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
++                                    )
+                             else:
+                                 T.copy(
+                                     gate[
