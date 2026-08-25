@@ -1,0 +1,26 @@
+--- v110/submission.py
++++ v129/candidate_submission.py
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v110
+-# PARENT: v108 locally-qualified candidate / SHA256 04b8e77c08c146836f9dba3449a20f82f45e9a4fba61697da86997069db7555b
+-# PRIMARY_CHANGE: remove native-workspace valid-row predicates only for official Case1
++# GENERATED EXPERIMENT: v129
++# PARENT: v110 external-OJ-SOTA / SHA256 439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e
++# PRIMARY_CHANGE: enable the native TileLang/MXCC fast-math pass on exact v110
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -460,7 +460,12 @@
+                     forward_index_fn=forward_index,
+                 )
+
+-        @tilelang.jit(pass_configs={tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True})
++        @tilelang.jit(
++            pass_configs={
++                tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True,
++                tilelang.PassConfigKey.TL_ENABLE_FAST_MATH: True,
++            }
++        )
+         def make_kernel(
+             hidden,
+             intermediate,
