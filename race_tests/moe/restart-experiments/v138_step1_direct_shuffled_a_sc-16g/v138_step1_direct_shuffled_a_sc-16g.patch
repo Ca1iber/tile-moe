@@ -1,0 +1,383 @@
+diff --git a/race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py b/race_tests/moe/restart-experiments/v138_step1_direct_shuffled_a_sc-16g/v138_step1_direct_shuffled_a_sc-16g_custom_fusedmoe.py
+index 1428cbce..34c77c60 100755
+--- a/race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py
++++ b/race_tests/moe/restart-experiments/v138_step1_direct_shuffled_a_sc-16g/v138_step1_direct_shuffled_a_sc-16g_custom_fusedmoe.py
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v110
+-# PARENT: v108 locally-qualified candidate / SHA256 04b8e77c08c146836f9dba3449a20f82f45e9a4fba61697da86997069db7555b
+-# PRIMARY_CHANGE: remove native-workspace valid-row predicates only for official Case1
++# GENERATED EXPERIMENT: v138
++# PARENT: v110 external-OJ SOTA / SHA256 439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e
++# PRIMARY_CHANGE: replace official-case input prepack/workspace with coalesced row-major loads plus a 64-lane register transpose
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -180,6 +180,7 @@ def run_kernel(
+     use_step2_tail_pruning = False
+     use_step2_input_prefetch = False
+     use_step2_half_interleave = False
++    use_direct_shuffled_input = False
+     use_case2_consumer_native_input = False
+     use_consumer_native_split_gate0 = False
+     use_non_native_a_before_gate0 = False
+@@ -204,6 +205,7 @@ def run_kernel(
+         use_step1_prefetch_before_barrier = True
+         use_step1_tail_pruning = True
+         use_step2_input_prefetch = True
++        use_direct_shuffled_input = True
+         use_case2_consumer_native_input = True
+         use_non_native_a_before_gate0 = False
+         use_consumer_native_up_logits = True
+@@ -216,6 +218,7 @@ def run_kernel(
+         use_step1_tail_pruning = num_experts >= 32
+         use_step2_tail_pruning = num_experts >= 32
+         use_step2_input_prefetch = True
++        use_direct_shuffled_input = num_experts >= 32
+         use_step2_half_interleave = (
+             (
+                 num_experts == 64
+@@ -263,6 +266,7 @@ def run_kernel(
+         bool(use_step2_tail_pruning),
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_interleave),
++        bool(use_direct_shuffled_input),
+         bool(use_case2_consumer_native_input),
+         bool(use_consumer_native_split_gate0),
+         bool(use_non_native_a_before_gate0),
+@@ -485,6 +489,7 @@ def run_kernel(
+             use_step2_tail_pruning,
+             use_step2_input_prefetch,
+             use_step2_half_interleave,
++            use_direct_shuffled_input,
+             use_case2_consumer_native_input,
+             use_consumer_native_split_gate0,
+             use_non_native_a_before_gate0,
+@@ -570,65 +575,66 @@ def run_kernel(
+                 up_logits: T.Tensor(intermediate_shape, dtype),
+                 output: T.Tensor(input_shape, dtype),
+             ):
+-                with T.Kernel(
+-                    T.ceildiv(hidden, 256),
+-                    T.ceildiv(total_padded, block_token),
+-                    threads=threads,
+-                ) as (copy_col, copy_row):
+-                    if use_case2_consumer_native_input:
+-                        # A synchronous 64-KiB bridge lets T.copy read the
+-                        # original M128/N256 panel in row-major coalesced form.
+-                        # Consumer threads then write contiguous native slots.
+-                        # This kernel has no async operation; the CTA barrier
+-                        # is the complete producer/consumer hand-off.
+-                        copy_shared = T.alloc_shared((block_token, 256), dtype=dtype)
+-                        T.copy(
+-                            input_original[
+-                                copy_row * block_token : (copy_row + 1) * block_token,
+-                                copy_col * 256 : (copy_col + 1) * 256,
+-                            ],
+-                            copy_shared,
+-                        )
+-                        T.sync_threads()
+-                        copy_thread = T.get_thread_binding()
+-                        for copy_k_sub in T.serial(4):
+-                            copy_k_tile = copy_col * 4 + copy_k_sub
+-                            for native_vec in T.serial(4):
+-                                source_row_in_block = (
+-                                    (copy_thread // 64) * 32
+-                                    + (native_vec % 2) * 16
+-                                    + copy_thread % 16
+-                                )
+-                                source_col_in_tile = (
+-                                    (native_vec // 2) * 32
+-                                    + ((copy_thread % 64) // 16) * 8
+-                                )
+-                                for native_elem in T.vectorized(8):
++                if not use_direct_shuffled_input:
++                    with T.Kernel(
++                        T.ceildiv(hidden, 256),
++                        T.ceildiv(total_padded, block_token),
++                        threads=threads,
++                    ) as (copy_col, copy_row):
++                        if use_case2_consumer_native_input:
++                            # A synchronous 64-KiB bridge lets T.copy read the
++                            # original M128/N256 panel in row-major coalesced form.
++                            # Consumer threads then write contiguous native slots.
++                            # This kernel has no async operation; the CTA barrier
++                            # is the complete producer/consumer hand-off.
++                            copy_shared = T.alloc_shared((block_token, 256), dtype=dtype)
++                            T.copy(
++                                input_original[
++                                    copy_row * block_token : (copy_row + 1) * block_token,
++                                    copy_col * 256 : (copy_col + 1) * 256,
++                                ],
++                                copy_shared,
++                            )
++                            T.sync_threads()
++                            copy_thread = T.get_thread_binding()
++                            for copy_k_sub in T.serial(4):
++                                copy_k_tile = copy_col * 4 + copy_k_sub
++                                for native_vec in T.serial(4):
++                                    source_row_in_block = (
++                                        (copy_thread // 64) * 32
++                                        + (native_vec % 2) * 16
++                                        + copy_thread % 16
++                                    )
++                                    source_col_in_tile = (
++                                        (native_vec // 2) * 32
++                                        + ((copy_thread % 64) // 16) * 8
++                                    )
++                                    for native_elem in T.vectorized(8):
++                                        input[
++                                            copy_row,
++                                            copy_k_tile,
++                                            native_vec,
++                                            copy_thread,
++                                            native_elem,
++                                        ] = copy_shared[
++                                            source_row_in_block,
++                                            copy_k_sub * block_dhidden_step1
++                                            + source_col_in_tile
++                                            + native_elem,
++                                        ]
++                        else:
++                            for i_copy, j_copy in T.Parallel(block_token, 256):
++                                source_row = copy_row * block_token + i_copy
++                                source_col = copy_col * 256 + j_copy
++                                if source_row < total_padded and source_col < hidden:
+                                     input[
+                                         copy_row,
+-                                        copy_k_tile,
+-                                        native_vec,
+-                                        copy_thread,
+-                                        native_elem,
+-                                    ] = copy_shared[
+-                                        source_row_in_block,
+-                                        copy_k_sub * block_dhidden_step1
+-                                        + source_col_in_tile
+-                                        + native_elem,
++                                        source_col // block_dhidden_step1,
++                                        i_copy,
++                                        source_col % block_dhidden_step1,
++                                    ] = input_original[
++                                        source_row, source_col
+                                     ]
+-                    else:
+-                        for i_copy, j_copy in T.Parallel(block_token, 256):
+-                            source_row = copy_row * block_token + i_copy
+-                            source_col = copy_col * 256 + j_copy
+-                            if source_row < total_padded and source_col < hidden:
+-                                input[
+-                                    copy_row,
+-                                    source_col // block_dhidden_step1,
+-                                    i_copy,
+-                                    source_col % block_dhidden_step1,
+-                                ] = input_original[
+-                                    source_row, source_col
+-                                ]
+
+                 with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
+                     if use_step1_expert_grouped_grid:
+@@ -653,6 +659,9 @@ def run_kernel(
+                     gate_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                     up_local = T.alloc_fragment((block_token, block_dexpert_step1), dtype=accum_dtype)
+                     weight_local = T.alloc_local((step1_mma.warp_cols * step1_mma.k_pack * step1_mma.local_size_b), dtype=dtype)
++                    if use_direct_shuffled_input:
++                        input_shuffle_packed = T.alloc_local((4,), dtype=T.uint32)
++                        input_shuffled_word = T.alloc_local((1,), dtype=T.uint32)
+
+                     T.annotate_layout(
+                         {
+@@ -682,7 +691,60 @@ def run_kernel(
+                     if use_step1_input_prefetch and use_step1_tail_pruning:
+                         T.clear(input_prefetch)
+                     if use_step1_input_prefetch:
+-                        if use_case2_consumer_native_input:
++                        if use_direct_shuffled_input:
++                            for direct_row_half in T.serial(2):
++                                for direct_k_half in T.serial(2):
++                                    direct_load_row = (
++                                        (native_thread // 64) * 32
++                                        + direct_row_half * 16
++                                        + (native_thread % 64) // 4
++                                    )
++                                    direct_load_col = (
++                                        direct_k_half * 32
++                                        + (native_thread % 4) * 8
++                                    )
++                                    input_shuffle_packed[0:4] = T.ldg128(
++                                        input_original[
++                                            block_start + direct_load_row,
++                                            direct_load_col : direct_load_col + 8,
++                                        ],
++                                        pred=direct_load_row < actual_rows,
++                                    )
++                                    direct_owner_row = (
++                                        (native_thread // 64) * 32
++                                        + direct_row_half * 16
++                                        + native_thread % 16
++                                    )
++                                    direct_owner_col = (
++                                        direct_k_half * 32
++                                        + ((native_thread % 64) // 16) * 8
++                                    )
++                                    direct_source_lane = (
++                                        (native_thread % 16) * 4
++                                        + (native_thread % 64) // 16
++                                    )
++                                    for direct_word in T.serial(4):
++                                        input_shuffled_word[0] = T.shfl_sync(
++                                            input_shuffle_packed[direct_word],
++                                            direct_source_lane,
++                                            width=64,
++                                            mask=18446744073709551615,
++                                        )
++                                        input_shared[
++                                            direct_owner_row,
++                                            direct_owner_col + direct_word * 2,
++                                        ] = T.reinterpret(
++                                            T.cast(input_shuffled_word[0], T.uint16),
++                                            T.float16,
++                                        )
++                                        input_shared[
++                                            direct_owner_row,
++                                            direct_owner_col + direct_word * 2 + 1,
++                                        ] = T.reinterpret(
++                                            T.cast(input_shuffled_word[0] >> 16, T.uint16),
++                                            T.float16,
++                                        )
++                        elif use_case2_consumer_native_input:
+                             for native_vec in T.serial(4):
+                                 native_row = (
+                                     (native_thread // 64) * 32
+@@ -706,7 +768,64 @@ def run_kernel(
+                             k_even = k_pair * 2
+                             k_odd = k_even + 1
+                             if use_step1_prefetch_before_barrier:
+-                                if use_case2_consumer_native_input:
++                                if use_direct_shuffled_input:
++                                    for odd_row_half in T.serial(2):
++                                        for odd_k_half in T.serial(2):
++                                            odd_load_row = (
++                                                (native_thread // 64) * 32
++                                                + odd_row_half * 16
++                                                + (native_thread % 64) // 4
++                                            )
++                                            odd_load_col = (
++                                                odd_k_half * 32
++                                                + (native_thread % 4) * 8
++                                            )
++                                            input_shuffle_packed[0:4] = T.ldg128(
++                                                input_original[
++                                                    block_start + odd_load_row,
++                                                    k_odd * block_dhidden_step1
++                                                    + odd_load_col : k_odd
++                                                    * block_dhidden_step1
++                                                    + odd_load_col
++                                                    + 8,
++                                                ],
++                                                pred=odd_load_row < actual_rows,
++                                            )
++                                            odd_owner_row = (
++                                                (native_thread // 64) * 32
++                                                + odd_row_half * 16
++                                                + native_thread % 16
++                                            )
++                                            odd_owner_col = (
++                                                odd_k_half * 32
++                                                + ((native_thread % 64) // 16) * 8
++                                            )
++                                            odd_source_lane = (
++                                                (native_thread % 16) * 4
++                                                + (native_thread % 64) // 16
++                                            )
++                                            for odd_word in T.serial(4):
++                                                input_shuffled_word[0] = T.shfl_sync(
++                                                    input_shuffle_packed[odd_word],
++                                                    odd_source_lane,
++                                                    width=64,
++                                                    mask=18446744073709551615,
++                                                )
++                                                input_prefetch[
++                                                    odd_owner_row,
++                                                    odd_owner_col + odd_word * 2,
++                                                ] = T.reinterpret(
++                                                    T.cast(input_shuffled_word[0], T.uint16),
++                                                    T.float16,
++                                                )
++                                                input_prefetch[
++                                                    odd_owner_row,
++                                                    odd_owner_col + odd_word * 2 + 1,
++                                                ] = T.reinterpret(
++                                                    T.cast(input_shuffled_word[0] >> 16, T.uint16),
++                                                    T.float16,
++                                                )
++                                elif use_case2_consumer_native_input:
+                                     for native_vec in T.serial(4):
+                                         native_row = (
+                                             (native_thread // 64) * 32
+@@ -931,6 +1050,67 @@ def run_kernel(
+                             T.sync_threads()
+                             if use_step1_prefetch_before_barrier:
+                                 if (
++                                    use_direct_shuffled_input
++                                    and k_pair + 1 < step1_k_tiles // 2
++                                ):
++                                    for even_row_half in T.serial(2):
++                                        for even_k_half in T.serial(2):
++                                            even_load_row = (
++                                                (native_thread // 64) * 32
++                                                + even_row_half * 16
++                                                + (native_thread % 64) // 4
++                                            )
++                                            even_load_col = (
++                                                even_k_half * 32
++                                                + (native_thread % 4) * 8
++                                            )
++                                            input_shuffle_packed[0:4] = T.ldg128(
++                                                input_original[
++                                                    block_start + even_load_row,
++                                                    (k_odd + 1)
++                                                    * block_dhidden_step1
++                                                    + even_load_col : (k_odd + 1)
++                                                    * block_dhidden_step1
++                                                    + even_load_col
++                                                    + 8,
++                                                ],
++                                                pred=even_load_row < actual_rows,
++                                            )
++                                            even_owner_row = (
++                                                (native_thread // 64) * 32
++                                                + even_row_half * 16
++                                                + native_thread % 16
++                                            )
++                                            even_owner_col = (
++                                                even_k_half * 32
++                                                + ((native_thread % 64) // 16) * 8
++                                            )
++                                            even_source_lane = (
++                                                (native_thread % 16) * 4
++                                                + (native_thread % 64) // 16
++                                            )
++                                            for even_word in T.serial(4):
++                                                input_shuffled_word[0] = T.shfl_sync(
++                                                    input_shuffle_packed[even_word],
++                                                    even_source_lane,
++                                                    width=64,
++                                                    mask=18446744073709551615,
++                                                )
++                                                input_shared[
++                                                    even_owner_row,
++                                                    even_owner_col + even_word * 2,
++                                                ] = T.reinterpret(
++                                                    T.cast(input_shuffled_word[0], T.uint16),
++                                                    T.float16,
++                                                )
++                                                input_shared[
++                                                    even_owner_row,
++                                                    even_owner_col + even_word * 2 + 1,
++                                                ] = T.reinterpret(
++                                                    T.cast(input_shuffled_word[0] >> 16, T.uint16),
++                                                    T.float16,
++                                                )
++                                elif (
+                                     use_case2_consumer_native_input
+                                     and k_pair + 1 < step1_k_tiles // 2
+                                 ):

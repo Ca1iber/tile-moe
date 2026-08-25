@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "experiment_id": "v138_step1_direct_shuffled_a_sc-16g",
+  "date": "2026-08-26",
+  "platform": "MetaX C500 sc-16g",
+  "parent": {
+    "version": "v110_case1_unpredicated_native_up_logits_sc-16g",
+    "sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e"
+  },
+  "candidate": {
+    "version": "v138_step1_direct_shuffled_a_sc-16g",
+    "sha256": "78caf19e226e9648d46280e6297e5f72b98f42f3ebd4efd8ba911aa15b440980"
+  },
+  "single_change": "remove the runtime input-prepack kernel and reconstruct the native MFMA-A fragment from coalesced row-major ldg128 loads with a 64-lane register transpose",
+  "validation": {
+    "oj_source": "PASS",
+    "oj_generated_case1": "PASS",
+    "correctness_case1": "PASS",
+    "cases_2_3": "SKIPPED_BELOW_GATE",
+    "mcprofiler": "SKIPPED_BELOW_GATE",
+    "mctracer": "SKIPPED_BELOW_GATE"
+  },
+  "case1_abba": {
+    "rounds": 4,
+    "warmup": 5,
+    "repeat": 120,
+    "mean_latency_change_percent": 19.213320239154168,
+    "median_latency_change_percent": 19.174259202534728,
+    "pstdev_percent": 0.2795251502376583,
+    "mean_improvement_percent": -19.213320239154168
+  },
+  "codegen": {
+    "kernel_count_parent": 3,
+    "kernel_count_candidate": 2,
+    "step1_mt_registers_parent": 226,
+    "step1_mt_registers_candidate": 240,
+    "step1_st_registers_parent": 42,
+    "step1_st_registers_candidate": 44,
+    "step1_static_max_warps_per_peu": 2,
+    "async_copy_sites": 0,
+    "barrier_arrive_and_wait_sites": 0
+  },
+  "candidate_gate_percent": 1.2,
+  "verdict": "rejected_regression",
+  "sota_after": "v110_case1_unpredicated_native_up_logits_sc-16g"
+}
