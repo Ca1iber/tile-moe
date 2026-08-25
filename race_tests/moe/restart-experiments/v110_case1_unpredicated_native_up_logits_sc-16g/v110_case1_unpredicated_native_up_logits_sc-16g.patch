@@ -1,0 +1,73 @@
+diff --git race_tests/moe/restart-experiments/v108_all_cases_consumer_native_up_logits_sc-16g/candidate_submission.py race_tests/moe/restart-experiments/v110_case1_unpredicated_native_up_logits_sc-16g/candidate_submission.py
+index b94c2a94..1428cbce 100755
+--- race_tests/moe/restart-experiments/v108_all_cases_consumer_native_up_logits_sc-16g/candidate_submission.py
++++ race_tests/moe/restart-experiments/v110_case1_unpredicated_native_up_logits_sc-16g/candidate_submission.py
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v108
+-# PARENT: v102 external-OJ-AC / SHA256 5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801
+-# PRIMARY_CHANGE: extend the Step1-to-Step2 consumer-native intermediate layout to all three official cases
++# GENERATED EXPERIMENT: v110
++# PARENT: v108 locally-qualified candidate / SHA256 04b8e77c08c146836f9dba3449a20f82f45e9a4fba61697da86997069db7555b
++# PRIMARY_CHANGE: remove native-workspace valid-row predicates only for official Case1
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -185,6 +185,7 @@ def run_kernel(
+     use_non_native_a_before_gate0 = False
+     use_non_native_a_split_gate0 = False
+     use_consumer_native_up_logits = False
++    use_unpredicated_native_reads = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -206,6 +207,7 @@ def run_kernel(
+         use_case2_consumer_native_input = True
+         use_non_native_a_before_gate0 = False
+         use_consumer_native_up_logits = True
++        use_unpredicated_native_reads = True
+     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -266,6 +268,7 @@ def run_kernel(
+         bool(use_non_native_a_before_gate0),
+         bool(use_non_native_a_split_gate0),
+         bool(use_consumer_native_up_logits),
++        bool(use_unpredicated_native_reads),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -487,6 +490,7 @@ def run_kernel(
+             use_non_native_a_before_gate0,
+             use_non_native_a_split_gate0,
+             use_consumer_native_up_logits,
++            use_unpredicated_native_reads,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -1284,7 +1288,7 @@ def run_kernel(
+                                     (intermediate_vec // 2) * 32
+                                     + ((intermediate_thread % 64) // 16) * 8
+                                 )
+-                                if intermediate_row < actual_rows:
++                                if use_unpredicated_native_reads or intermediate_row < actual_rows:
+                                     for intermediate_elem in T.vectorized(8):
+                                         up_logits_shared[
+                                             intermediate_row,
+@@ -1326,7 +1330,7 @@ def run_kernel(
+                                                     (intermediate_vec // 2) * 32
+                                                     + ((intermediate_thread % 64) // 16) * 8
+                                                 )
+-                                                if intermediate_row < actual_rows:
++                                                if use_unpredicated_native_reads or intermediate_row < actual_rows:
+                                                     for intermediate_elem in T.vectorized(8):
+                                                         up_logits_prefetch[
+                                                             intermediate_row,
+@@ -1437,7 +1441,7 @@ def run_kernel(
+                                                         (intermediate_vec // 2) * 32
+                                                         + ((intermediate_thread % 64) // 16) * 8
+                                                     )
+-                                                    if intermediate_row < actual_rows:
++                                                    if use_unpredicated_native_reads or intermediate_row < actual_rows:
+                                                         for intermediate_elem in T.vectorized(8):
+                                                             up_logits_shared[
+                                                                 intermediate_row,
