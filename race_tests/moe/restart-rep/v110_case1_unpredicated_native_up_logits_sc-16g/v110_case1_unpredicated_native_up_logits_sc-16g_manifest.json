@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "iteration_id": "v110_case1_unpredicated_native_up_logits_sc-16g",
-  "status": "candidate_pending_external_oj",
+  "status": "accepted",
   "machine": "sc-16g",
   "branch": "dorm",
   "development_parent_id": "v108_all_cases_consumer_native_up_logits_sc-16g",
@@ -20,16 +20,70 @@
     "promotion_threshold_percent": 1.2
   },
   "external_oj": {
-    "verdict": "PENDING"
+    "verdict": "AC",
+    "authority": "user-provided external OJ SPJ reports",
+    "score_ratio": [
+      0.833778,
+      0.824765,
+      0.823671
+    ],
+    "latency_ms": [
+      2.243,
+      3.954,
+      7.68
+    ],
+    "display_score": [
+      83,
+      82,
+      82
+    ],
+    "baseline_latency_ms": [
+      11.251,
+      18.61,
+      35.875
+    ],
+    "speedup": [
+      5.016,
+      4.707,
+      4.671
+    ]
   },
-  "formal_sota_promotion": "PENDING_EXTERNAL_OJ",
-  "conclusion": "Case1 unpredicated native reads remove Step2 control overhead while preserving v108 byte-identically for Cases2/3",
-  "summarized_at_utc": "2026-08-25T05:00:51.867522+00:00",
+  "formal_sota_promotion": "ACCEPTED_GLOBAL_OJ_SOTA",
+  "sota_gate": {
+    "authority": "oj-platform",
+    "incumbent_id": "v102_case1_case3_consumer_native_full_a_sc-16g",
+    "incumbent_submission_sha256": "5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801",
+    "candidate_submission_sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e",
+    "metric": "score_ratio",
+    "higher_is_better": true,
+    "official_case_count": 3,
+    "cases": [
+      {
+        "case": 1,
+        "incumbent": 0.828315,
+        "candidate": 0.833778
+      },
+      {
+        "case": 2,
+        "incumbent": 0.824035,
+        "candidate": 0.824765
+      },
+      {
+        "case": 3,
+        "incumbent": 0.823482,
+        "candidate": 0.823671
+      }
+    ],
+    "all_cases_non_regressing": true,
+    "at_least_one_case_improved": true
+  },
+  "conclusion": "external OJ AC; all three score ratios beat v102, so v110 is promoted as the global SOTA",
+  "summarized_at_utc": "2026-08-25T05:25:44.983364+00:00",
   "git": {
     "root": "/root/tilelang-metax",
     "branch": "dorm",
-    "commit": "3a2b3cfb6241102e6bbdca6069f804bfc4566518",
-    "status_short": "?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? .20260825030202.db\n?? race_tests/moe/moe-roofline/v110_case1_unpredicated_native_up_logits_sc-16g/\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-deped-trials/20260825_v109_all_cases_unpredicated_native_reads_sc-16g.md\n?? race_tests/moe/restart-deped-trials/v109_unpredicated_native_up_logits.py\n?? race_tests/moe/restart-experiments/v110_case1_unpredicated_native_up_logits_sc-16g/\n?? race_tests/moe/restart-hack/\n?? race_tests/moe/restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/\n?? race_tests/moe/restart-scripts/v110_case1_unpredicated_native_up_logits_sc-16g/"
+    "commit": "5916234d83dd2fc1371dcb7bdfca43e3c1e74ba4",
+    "status_short": "M race_tests/moe/restart-experiments/v110_case1_unpredicated_native_up_logits_sc-16g/v110_case1_unpredicated_native_up_logits_sc-16g_experiment.md\n M race_tests/moe/restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/v110_case1_unpredicated_native_up_logits_sc-16g_manifest.json\n M race_tests/moe/restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/v110_case1_unpredicated_native_up_logits_sc-16g_report.md\n M race_tests/moe/restart-submission/SOTA.json\n?? .20260824132630.db\n?? .20260824152150.db\n?? .20260824152511.db\n?? .20260825030202.db\n?? race_tests/moe/restart-deped-trials/20260820_v59_case1_step2_splitk2_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_hbm_arithmetic_intensity_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_official_builtin_mapping_study_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_register_pressure_branch_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_8wave_efficiency_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_gate_up_cross_overlap_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_step1_hybrid_cta_16g.md\n?? race_tests/moe/restart-deped-trials/20260820_v59_up_logits_fusion_cache_16g.md\n?? race_tests/moe/restart-hack/\n?? race_tests/moe/restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/benchmark/external_oj_spj.json\n?? race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/"
   },
   "artifact_inventory": [
     {
@@ -64,13 +118,18 @@
     },
     {
       "path": "restart-experiments/v110_case1_unpredicated_native_up_logits_sc-16g/v110_case1_unpredicated_native_up_logits_sc-16g_experiment.md",
-      "bytes": 882,
-      "sha256": "21f7323e1878507806fffc6d97ffff66060294773e0509561a7fc2fcce6277b7"
+      "bytes": 1053,
+      "sha256": "870ae2e224066293657fbd887214a16774203e775e6482346d049c2970eaa7ca"
     },
     {
       "path": "restart-experiments/v110_case1_unpredicated_native_up_logits_sc-16g/v110_case1_unpredicated_native_up_logits_sc-16g_hypothesis.md",
       "bytes": 751,
       "sha256": "282d2238589f5fc9839984fd332aa65d1d2f15a8a3519c500ff2d5ca72c9417f"
+    },
+    {
+      "path": "restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/benchmark/external_oj_spj.json",
+      "bytes": 810,
+      "sha256": "58832dd206d1f98c77a5612f97b523c39df45a083cd65abbf019a1b10b26f379"
     },
     {
       "path": "restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/benchmark/v110_case1_long.json",
@@ -289,8 +348,8 @@
     },
     {
       "path": "restart-rep/v110_case1_unpredicated_native_up_logits_sc-16g/v110_case1_unpredicated_native_up_logits_sc-16g_report.md",
-      "bytes": 1788,
-      "sha256": "ab8f67895b93300a8247f46806564c3114b80c271a132b1e4ef7eb18e23924b7"
+      "bytes": 2157,
+      "sha256": "ef08921881a96616375136d169a93ec040800d9aa01fa5750ea68787fbb7296f"
     },
     {
       "path": "restart-scripts/v110_case1_unpredicated_native_up_logits_sc-16g/capture_codegen.py",
@@ -341,6 +400,21 @@
       "path": "restart-scripts/v110_case1_unpredicated_native_up_logits_sc-16g/validate_oj_submission.py",
       "bytes": 6807,
       "sha256": "a83f8139dffd694b19484a2c092381898af3cc145263ac5fa96a23777dfa158a"
+    },
+    {
+      "path": "restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/oj_import_validation.txt",
+      "bytes": 291,
+      "sha256": "1e62031fac4371e6bf25394feb24b5a1523f1334b64c1ae7472f94b9b6b1899c"
+    },
+    {
+      "path": "restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py",
+      "bytes": 87140,
+      "sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e"
+    },
+    {
+      "path": "restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.sha256",
+      "bytes": 80,
+      "sha256": "e8a4f09b7bc2cae903709545924f669f649cec3fee1a1e4d14258ba1e8c1ae11"
     }
   ]
 }

@@ -8,3 +8,4 @@
 - 长测：Case1，同进程 AB/BA 5轮，warmup=20，repeat=50，完整 padded correctness。
 - 身份检查：Case2/3 generated device C++ SHA 与 v108 完全一致，并再次执行完整正确性检查。
 - Profile：Case1 三对 AB/BA mcTracer，使用三 kernel 汇总。
+- 外部 OJ：三 Case AC，latency `2.243 / 3.954 / 7.680 ms`，score ratio `0.833778 / 0.824765 / 0.823671`；全部超过 v102，已满足全局 SOTA promotion gate。

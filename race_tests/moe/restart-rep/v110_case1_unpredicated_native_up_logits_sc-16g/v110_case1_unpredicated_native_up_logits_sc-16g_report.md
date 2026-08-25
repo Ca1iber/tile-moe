@@ -2,7 +2,7 @@
 
 ## 结论
 
-本地候选通过。v110 仅对官方 Case1 删除 consumer-native workspace 的 valid-row 读取谓词，相对 v108 长测中位再快 `3.694554%`；Case2/3 设备代码逐字等同 v108。结合 v108 相对 v102 的收益，Case1 本地累计约快 `5.058809%`。正式 `restart-submission` 仍保持 external-OJ-AC v102，等待 v110 外部 OJ AC。
+接受并提升为全局 SOTA。v110 仅对官方 Case1 删除 consumer-native workspace 的 valid-row 读取谓词，相对 v108 长测中位再快 `3.694554%`；Case2/3 设备代码逐字等同 v108。外部 OJ 三 Case 全部 AC，score ratio 为 `0.833778 / 0.824765 / 0.823671`，均高于 v102。
 
 ## 为什么正确
 
@@ -30,4 +30,14 @@ Case1 三对 AB/BA 的中位变化：prepack `0.000%`、Step1 `-0.036%`、Step2 
 
 ## 资源与决策
 
-Case1 Step2 MT registers 从 204 降到 202，ST 保持 52，仍为 2 waves/PEU且无 private allocation。v110 达到 OJ candidate 标准；外部 OJ AC 且成绩高于 v102 后才正式提升 SOTA。
+Case1 Step2 MT registers 从 204 降到 202，ST 保持 52，仍为 2 waves/PEU且无 private allocation。
+
+## 外部 OJ 与 SOTA gate
+
+| Case | v102 score ratio | v110 score ratio | v110 latency | display |
+|---:|---:|---:|---:|---:|
+| 1 | 0.828315 | 0.833778 | 2.243 ms | 83 |
+| 2 | 0.824035 | 0.824765 | 3.954 ms | 82 |
+| 3 | 0.823482 | 0.823671 | 7.680 ms | 82 |
+
+三个 Case 均非回退，且全部严格提升；精确 OJ 源码 SHA256 为 `439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e`。因此创建同 ID `restart-submission`，更新 `SOTA.json`，正式结论为 accepted global OJ SOTA。
