@@ -1,0 +1,92 @@
+--- v102_submission.py
++++ v103_candidate.py
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v102
+-# PARENT: v101 locally-qualified candidate / SHA256 b77766d2a4044bc4b87a47f1b95f0de58d7aeb9afde2e9e3659dc1c9c3c49dbe
+-# PRIMARY_CHANGE: extend consumer-native full-A feed to Case1 while preserving v101 Case2/Case3
++# GENERATED EXPERIMENT: v103
++# PARENT: v102 external-OJ SOTA / SHA256 5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801
++# PRIMARY_CHANGE: interleave Case3 Gate/Up half-weight producers after consumer-native full-A
+ # SAFETY: TileLang primitives only; no injection or async copy
+ import torch
+ import tilelang
+@@ -718,6 +718,15 @@
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if num_experts == 64:
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if (
+                                     use_case2_consumer_native_input
+                                     and use_consumer_native_split_gate0
+@@ -792,14 +801,15 @@
+                                     ],
+                                     gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                                 )
+-                                T.copy(
+-                                    up[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                        k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
+-                                    ],
+-                                    up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+-                                )
++                                if num_experts != 64:
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_even * block_dhidden_step1 : (k_even + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if not use_step1_tail_pruning:
+                                     T.copy(
+                                         input[
+@@ -948,6 +958,15 @@
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if num_experts == 64:
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if (
+                                     use_case2_consumer_native_input
+                                     and use_consumer_native_split_gate0
+@@ -1026,14 +1045,15 @@
+                                     ],
+                                     gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
+                                 )
+-                                T.copy(
+-                                    up[
+-                                        expert_id,
+-                                        by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                        k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
+-                                    ],
+-                                    up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+-                                )
++                                if num_experts != 64:
++                                    T.copy(
++                                        up[
++                                            expert_id,
++                                            by * block_dexpert_step1 : by * block_dexpert_step1 + block_dexpert_step1 // 2,
++                                            k_odd * block_dhidden_step1 : (k_odd + 1) * block_dhidden_step1,
++                                        ],
++                                        up_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
++                                    )
+                                 if k_pair + 1 < step1_k_tiles // 2:
+                                     if not use_step1_tail_pruning:
+                                         T.copy(
