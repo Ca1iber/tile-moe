@@ -1,6 +1,6 @@
-# GENERATED EXPERIMENT: v096
-# PARENT: v095 external-OJ-AC / SHA256 7e7f5b69a9a17fef7f6e155f7a07901af0e0aba9ec59edab788e6b4f15e90b8f
-# PRIMARY_CHANGE: inline split-A high-half row indices so the static race checker can prove injectivity
+# GENERATED EXPERIMENT: v101
+# PARENT: v095 external-OJ-AC development base / SHA256 7e7f5b69a9a17fef7f6e155f7a07901af0e0aba9ec59edab788e6b4f15e90b8f
+# PRIMARY_CHANGE: enable consumer-native full-A feed for Case3 while preserving v095 Case1/Case2
 # SAFETY: TileLang primitives only; no injection or async copy
 import torch
 import tilelang

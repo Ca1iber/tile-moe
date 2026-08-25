@@ -1,6 +1,6 @@
 # Correctness and compliance
 
-- Candidate SHA-256: `4f3c175ef5dd9e57d73f3950b5b99d208d2218311de449ecd2472427653d4efd`.
+- Candidate SHA-256: `5290d64c3a59ed3757634f762637427c48be40ae387a706798d39e7e53ef7801`.
 - OJ source validator: PASS.
 - OJ generated-device validator: PASS for Cases 1, 2, and 3.
 - Full padded-output reference check: PASS for official Case1 (`rtol=1e-2`, `atol=1e-2`).
