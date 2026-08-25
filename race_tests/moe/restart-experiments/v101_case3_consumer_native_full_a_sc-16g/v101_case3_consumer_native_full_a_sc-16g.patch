@@ -1,0 +1,161 @@
+diff --git a/tmp/v100_base.py b/tmp/case3_native_full_a.py
+index b3794b2..1d414aa 100755
+--- a/tmp/v100_base.py
++++ b/tmp/case3_native_full_a.py
+@@ -158,6 +158,7 @@ def run_kernel(
+     use_step2_input_prefetch = False
+     use_step2_half_interleave = False
+     use_case2_consumer_native_input = False
++    use_consumer_native_split_gate0 = False
+     use_non_native_a_before_gate0 = False
+     use_non_native_a_split_gate0 = False
+
+@@ -201,9 +202,10 @@ def run_kernel(
+                 and num_blocks_m == 48
+             )
+         )
+-        use_case2_consumer_native_input = num_experts == 32
+-        use_non_native_a_before_gate0 = num_experts == 64
+-        use_non_native_a_split_gate0 = num_experts == 64
++        use_case2_consumer_native_input = num_experts >= 32
++        use_consumer_native_split_gate0 = False
++        use_non_native_a_before_gate0 = False
++        use_non_native_a_split_gate0 = False
+     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+@@ -233,6 +235,7 @@ def run_kernel(
+         bool(use_step2_input_prefetch),
+         bool(use_step2_half_interleave),
+         bool(use_case2_consumer_native_input),
++        bool(use_consumer_native_split_gate0),
+         bool(use_non_native_a_before_gate0),
+         bool(use_non_native_a_split_gate0),
+     )
+@@ -452,6 +455,7 @@ def run_kernel(
+             use_step2_input_prefetch,
+             use_step2_half_interleave,
+             use_case2_consumer_native_input,
++            use_consumer_native_split_gate0,
+             use_non_native_a_before_gate0,
+             use_non_native_a_split_gate0,
+         ):
+@@ -671,7 +675,13 @@ def run_kernel(
+                                             (native_vec // 2) * 32
+                                             + ((native_thread % 64) // 16) * 8
+                                         )
+-                                        if native_row < actual_rows:
++                                        if (
++                                            native_row < actual_rows
++                                            and (
++                                                not use_consumer_native_split_gate0
++                                                or native_row < block_token // 2
++                                            )
++                                        ):
+                                             for native_elem in T.vectorized(8):
+                                                 input_prefetch[
+                                                     native_row, native_col + native_elem
+@@ -707,6 +717,34 @@ def run_kernel(
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if (
++                                    use_case2_consumer_native_input
++                                    and use_consumer_native_split_gate0
++                                ):
++                                    for native_vec in T.serial(4):
++                                        native_row = (
++                                            (native_thread // 64) * 32
++                                            + (native_vec % 2) * 16
++                                            + native_thread % 16
++                                        )
++                                        native_col = (
++                                            (native_vec // 2) * 32
++                                            + ((native_thread % 64) // 16) * 8
++                                        )
++                                        if (
++                                            native_row < actual_rows
++                                            and native_row >= block_token // 2
++                                        ):
++                                            for native_elem in T.vectorized(8):
++                                                input_prefetch[
++                                                    native_row, native_col + native_elem
++                                                ] = input[
++                                                    bx,
++                                                    k_odd,
++                                                    native_vec,
++                                                    native_thread,
++                                                    native_elem,
++                                                ]
+                                 if (
+                                     use_non_native_a_before_gate0
+                                     and use_non_native_a_split_gate0
+@@ -864,7 +902,13 @@ def run_kernel(
+                                             (native_vec // 2) * 32
+                                             + ((native_thread % 64) // 16) * 8
+                                         )
+-                                        if native_row < actual_rows:
++                                        if (
++                                            native_row < actual_rows
++                                            and (
++                                                not use_consumer_native_split_gate0
++                                                or native_row < block_token // 2
++                                            )
++                                        ):
+                                             for native_elem in T.vectorized(8):
+                                                 input_shared[
+                                                     native_row, native_col + native_elem
+@@ -903,6 +947,35 @@ def run_kernel(
+                                     ],
+                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
+                                 )
++                                if (
++                                    use_case2_consumer_native_input
++                                    and use_consumer_native_split_gate0
++                                    and k_pair + 1 < step1_k_tiles // 2
++                                ):
++                                    for native_vec in T.serial(4):
++                                        native_row = (
++                                            (native_thread // 64) * 32
++                                            + (native_vec % 2) * 16
++                                            + native_thread % 16
++                                        )
++                                        native_col = (
++                                            (native_vec // 2) * 32
++                                            + ((native_thread % 64) // 16) * 8
++                                        )
++                                        if (
++                                            native_row < actual_rows
++                                            and native_row >= block_token // 2
++                                        ):
++                                            for native_elem in T.vectorized(8):
++                                                input_shared[
++                                                    native_row, native_col + native_elem
++                                                ] = input[
++                                                    bx,
++                                                    k_odd + 1,
++                                                    native_vec,
++                                                    native_thread,
++                                                    native_elem,
++                                                ]
+                                 if (
+                                     use_non_native_a_before_gate0
+                                     and use_non_native_a_split_gate0
+@@ -1391,13 +1464,15 @@ def run_kernel(
+         _KERNEL_CACHE[key] = kernel
+
+     step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
+-    if use_case2_consumer_native_input:
++    if hidden == 7168 and intermediate == 2048 and num_experts == 32:
+         up_logits = _workspace(stacked_expert_tokens, intermediate + 128, out)
++    else:
++        up_logits = _v088_workspace(stacked_expert_tokens, intermediate + 128)
++    if use_case2_consumer_native_input:
+         tiled_input = _consumer_native_input_workspace(
+             stacked_expert_tokens, num_blocks_m, step1_k_tiles, out
+         )
+     else:
+-        up_logits = _v088_workspace(stacked_expert_tokens, intermediate + 128)
+         tiled_input = _v088_input_workspace(
+             stacked_expert_tokens, num_blocks_m, step1_k_tiles
+         )
