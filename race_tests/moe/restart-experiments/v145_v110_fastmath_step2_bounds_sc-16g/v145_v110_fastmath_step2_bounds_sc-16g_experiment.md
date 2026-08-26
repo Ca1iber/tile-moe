@@ -8,6 +8,13 @@
 - 唯一改动组：启用 TileLang 公共 `TL_ENABLE_FAST_MATH`；仅在 expert-grouped Step2 中补充 `bx/by` 与 routed-index 的合法范围 `T.assume`；复用 `routed_base` 地址表达式。
 - 安全性：仅使用允许的 TileLang 公共原语；无 async copy、代码注入、外部源码、固定 expert 排布假设或结果缓存。
 
+## 后置 OJ 历史审计（否决晋级）
+
+- 完成本地实验后回查发现：v129 已经在 exact v110 上单独启用同一个 `TL_ENABLE_FAST_MATH`，并由用户于 2026-08-25 报告 external OJ `WA`；v129 报告状态为 `rejected_external_oj_wa`。
+- v129→v145 的完整语义 diff 只有 Case1 Step2 的 `bx/by`/routed range proof 与 `routed_base` CSE；Step1 与全局 fast-math 配置完全相同。
+- 因而 v145 的本地正确性不能推翻 v129 在未知 OJ 数据上的既成 WA。Step2 range proof 没有消除 fast-math 的数值/后端风险，v145 不应送审或晋级。
+- 最终状态更正为 `rejected_known_external_oj_risk`。本报告保留下列计时/profile 作为机制证据，但它们不再构成 candidate promotion。
+
 ## 源码与正确性门禁
 
 - OJ 源码检查：通过。
@@ -28,7 +35,7 @@
 
 - Case1 五轮变化：`-1.909309% / -2.129693% / -1.957227% / -2.128551% / -1.871926%`，全部同向且均超过 1.2%。
 - 三 Case 本跳加速比几何平均：`1.009034x`。
-- 结论：Case1 达到 direct-parent 1.2% 晋级门槛，Case2/3 无可见回退；这是一个 locally-qualified、external-OJ-pending 候选。
+- 计时结论：Case1 达到本地 direct-parent 1.2% 性能门槛，Case2/3 无可见回退；但后置 OJ 历史审计已否决其资格，不能标为 locally-qualified candidate。
 - 外部 OJ 的 v110 延迟为 `2.243 / 3.954 / 7.680 ms`；本地比值只能用于预估，不能替代外部 OJ 实测。
 
 ## 生成代码与资源
@@ -85,6 +92,5 @@
 
 ## 状态与下一步
 
-- 状态：`locally-qualified / external OJ pending`。
-- 在外部 OJ 返回 AC 前，不更新 `restart-submission` 或 `SOTA.json`，也不把本候选作为下一可靠 parent。
-- 若 OJ AC，则 v145 成为 v110 后第一个可靠晋级点；后续优先以 v145 为 parent，分别隔离 fast-math 与 Step2 range-proof 的贡献，并继续针对 Step1 的非 MMA 指令/等待开销寻找下一跳。
+- 状态：`rejected_known_external_oj_risk`；不创建/更新 `restart-submission` 或 `SOTA.json`，也不把 v145 作为 parent。
+- 可靠 SOTA 仍为 v110。后续只从 exact v110 隔离 Step2 range proof，不携带已被 external OJ 否决的 fast-math；若 bounds-only 不达 1.2%，则作为反例归档而不编号。
