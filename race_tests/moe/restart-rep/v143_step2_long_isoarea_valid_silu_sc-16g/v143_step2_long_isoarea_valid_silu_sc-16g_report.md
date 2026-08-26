@@ -1,5 +1,7 @@
 # v143 Case3 长 expert 等面积 Step2 报告（sc-16g）
 
+> **最终状态：external-OJ-WA / rejected。** 后续外部 OJ 验证失败；同 shape 下仅置换 short/long expert ID 即可复现大规模错误。固定 `32x100 + 32x184` 的本地基准不足以证明正确性。根因与动态修复筛选见 `../../../restart-deped-trials/20260826_v143_external_oj_wa_root_cause_sc-16g.md`。下文只作为当时固定分布的历史证据保留。
+
 ## 结论
 
 v143 是从精确 v110 出发的首个累计目标有效跳。Case3 五轮 AB/BA 均超过 1.2%，配对中位延迟下降 `1.281834%`，对应加速比 `1.0129848x`；Case1/2 也分别下降 `0.520975% / 0.220410%`。三种官方 shape bit-exact，三 Case 生成代码合规检查通过。

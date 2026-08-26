@@ -1,5 +1,7 @@
 # v143 实验说明
 
+> **最终状态：external-OJ-WA / rejected。** 外部 OJ 已拒绝该版本；同 shape 下交错排列 short/long expert 可稳定复现错误。根因和动态修复筛选见 `../../restart-deped-trials/20260826_v143_external_oj_wa_root_cause_sc-16g.md`。本文件下方的 locally-qualified 结论仅保留为当时本地固定分布的历史记录，不得作为候选资格或收益证据。
+
 - 机器：sc-16g，C500 25% sGPU。
 - 精确父版本：v110 external-OJ-AC，SHA256 `439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e`。
 - 候选 SHA256：`adfd87cde345adeb8b3abe43b1350a13811c2ceae707beffbbf5bedad67c1b78`。
