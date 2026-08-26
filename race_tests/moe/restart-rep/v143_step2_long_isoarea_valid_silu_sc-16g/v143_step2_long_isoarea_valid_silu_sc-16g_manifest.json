@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "iteration_id": "v143_step2_long_isoarea_valid_silu_sc-16g",
+  "status": "locally-qualified-external-oj-pending",
+  "machine": "sc-16g",
+  "branch": "dorm",
+  "development_parent_id": "v110_case1_unpredicated_native_up_logits_sc-16g",
+  "development_parent_sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e",
+  "candidate_sha256": "adfd87cde345adeb8b3abe43b1350a13811c2ceae707beffbbf5bedad67c1b78",
+  "mechanism": "Case3 long-expert M256xN128 iso-area Step2 CTA with Down-weight reuse plus valid-row-only Step1 SiLU",
+  "correctness": "PASS_BIT_EXACT_ALL_3_OFFICIAL_CASES",
+  "oj_source_and_generated_validation": "PASS_3_CASES",
+  "benchmark": {
+    "protocol": "all-case same-process AB/BA 5 rounds warmup20 repeat50",
+    "paired_median_change_percent": [-0.5209749, -0.2204101, -1.2818343],
+    "paired_median_speedup": [1.0052370326, 1.0022089698, 1.0129847864],
+    "three_case_geomean_speedup": 1.0068000519,
+    "target_case": 3,
+    "promotion_threshold_percent": 1.2,
+    "target_case_passed": true,
+    "all_other_cases_non_regressing": true
+  },
+  "profile": {
+    "case3_mctracer_median_change_percent": {
+      "prepack": 0.310,
+      "step1": -0.4551,
+      "step2_total": -3.3413,
+      "gpu_span": -1.3283
+    },
+    "mcprofiler_perfcount": "PASS_BUT_STEP2_KERNEL_SELECTOR_UNRELIABLE"
+  },
+  "compound_goal": {
+    "origin": "v110",
+    "target_speedup": 1.05,
+    "qualified_hop_speedup_target_case": 1.0129847864,
+    "remaining_multiplier_target_case": 1.0365407399,
+    "strict_three_case_geomean_so_far": 1.0068000519,
+    "remaining_multiplier_three_case_geomean": 1.0429081703
+  },
+  "external_oj": {
+    "verdict": "PENDING"
+  },
+  "formal_sota_promotion": "NOT_PROMOTED_PENDING_EXTERNAL_OJ",
+  "formal_sota_remains": "v110_case1_unpredicated_native_up_logits_sc-16g"
+}
