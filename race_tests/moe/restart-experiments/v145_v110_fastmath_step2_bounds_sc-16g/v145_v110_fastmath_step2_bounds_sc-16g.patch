@@ -1,0 +1,30 @@
+--- v110_external_oj_ac.py
++++ v145_v110_fastmath_step2_bounds_sc-16g_custom_fusedmoe.py
+@@
+-        @tilelang.jit(pass_configs={tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True})
++        @tilelang.jit(
++            pass_configs={
++                tilelang.PassConfigKey.TL_DISABLE_WARP_SPECIALIZED: True,
++                tilelang.PassConfigKey.TL_ENABLE_FAST_MATH: True,
++            }
++        )
+@@
+                     else:
+                         bx = pid1 if use_grid_transpose_step2 else pid0
+                         by = pid0 if use_grid_transpose_step2 else pid1
++                    if use_step2_expert_grouped_grid:
++                        T.assume(0 <= bx)
++                        T.assume(bx < num_blocks_m)
++                        T.assume(0 <= by)
++                        T.assume(by < step2_col_tiles)
+@@
+                     token_offset = block_start - padded_start
+                     actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
++                    routed_base = raw_start + token_offset
++                    T.assume(0 <= routed_base)
++                    T.assume(routed_base + actual_rows <= total_valid)
+@@
+-                            routed_weight_local[row_slot] = routed_weights[raw_start + token_offset + routed_row]
++                            routed_weight_local[row_slot] = routed_weights[
++                                routed_base + routed_row
++                            ]
