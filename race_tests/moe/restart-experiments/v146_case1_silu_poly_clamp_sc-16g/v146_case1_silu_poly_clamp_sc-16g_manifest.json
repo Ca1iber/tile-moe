@@ -4,7 +4,7 @@
   "date": "2026-08-26",
   "machine": "sc-16g",
   "hardware": "MetaX C500 25% sGPU",
-  "status": "locally-qualified_external-oj-pending",
+  "status": "rejected_external_oj_performance_regression",
   "parent": {
     "version": "v110",
     "status": "external-OJ-AC",
@@ -14,7 +14,15 @@
     "sha256": "99745a82952ac37faea46a7f16dbe73877adf9c84328c2e02821e0cfd39fab58",
     "primary_change": "Case1-only clamped degree-11 sigmoid polynomial in the Step1 SiLU epilogue",
     "oj_compliance": "source and all three generated-code checks passed",
-    "external_oj": "pending"
+    "external_oj": {
+      "reported_source": "v146 candidate; platform did not return a source sha256",
+      "pass": true,
+      "latency_ms": [2.366, 6.253, 12.991],
+      "speedup_vs_baseline": [4.755, 2.976, 2.762],
+      "score_ratio": [0.826247, 0.748502, 0.734151],
+      "change_vs_v110_percent": [5.483727151136875, 58.14365199797673, 69.15364583333334],
+      "verdict": "rejected for performance regression"
+    }
   },
   "benchmark": {
     "protocol": "same-process 5-round AB/BA, warmup=3, repeat=50",
@@ -23,7 +31,8 @@
     "case3_median_change_percent": 0.001760260583161255,
     "case1_speedup": 1.0242343772228095,
     "direct_parent_gate_percent": 1.2,
-    "gate_passed": true
+    "local_direct_parent_gate_passed": true,
+    "authoritative_promotion_gate_passed": false
   },
   "correctness": {
     "official_shapes_strict": "PASS",

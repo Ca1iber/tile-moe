@@ -2,7 +2,7 @@
 
 - 日期：2026-08-26。
 - 机器：sc-16g，MetaX C500 25% sGPU，FP16。
-- 状态：`locally-qualified / external-OJ-pending`。
+- 状态：`rejected_external_oj_performance_regression`。
 - 精确父版本：external-OJ-AC v110，SHA-256 `439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e`。
 - 正式候选：v146，SHA-256 `99745a82952ac37faea46a7f16dbe73877adf9c84328c2e02821e0cfd39fab58`。
 - 安全边界：TileLang 公共原语；无 fast-math、async copy、代码注入、结果缓存或固定 expert 排布假设。
@@ -87,9 +87,11 @@ bash race_tests/moe/restart-scripts/v146_case1_silu_poly_clamp_sc-16g/run_formal
 |---|---:|---:|---:|---|---|
 | OJ baseline | 11.251 ms | 18.610 ms | 35.875 ms | baseline | 官方基线 |
 | v110 | 2.243 ms | 3.954 ms | 7.680 ms | 5.016x / 4.707x / 4.671x | external-OJ-AC |
-| v146 | TODO | TODO | TODO | TODO | external-OJ-pending |
+| v146 | 2.366 ms | 6.253 ms | 12.991 ms | 4.755x / 2.976x / 2.762x | correctness AC，性能否决 |
 
-TODO：提交 `candidate_submission.py` 到外部 OJ，记录三 Case AC/WA、延迟和 score。禁止用本地比例伪造 OJ 结果。
+外部 OJ 是晋级的权威数据。相对 external-OJ-AC v110，v146 三 Case 分别回退 `+5.483727% / +58.143652% / +69.153646%`。虽然三 Case 都显示 `Pass: OK`，但它只证明正确性通过，不能抵消性能灾难性回退。v146 立即判废，不进入 `restart-submission`，也不能作为后续 parent。
+
+该结果与本地证据存在未解释矛盾：本地正式 capture 中 Case2/3 generated C++ 与 v110 字节一致，而 OJ Case2/3 却慢 `1.58x/1.69x`。因此本地同进程 ABBA/codegen 流程至少有一环没有复现 OJ 的真实提交执行路径；在查清前，本地 `-2.366%` 只能保留为诊断记录，不能称为有效优化。
 
 ## 6. Profile 指标变化
 
@@ -141,11 +143,11 @@ Step1 三个样本由 v110 的 `1.415168 / 1.417984 / 1.416192 ms` 降为 v146 �
 
 ## 7. 实验总结
 
-v146 在本地达成预期：Case1 直接父版本五轮稳定提升 `2.366%`，Step1 tracer 缩短 `3.362%`；ISA 静态指令减少 `22.84%`，mcProfiler 的 total cycles、wave life、AP active 同向下降，而 CTA、waves、MMA、流量、资源和 occupancy 不变。主瓶颈没有迁移到访存；本次收益明确来自 Step1 非 MMA 数学路径。
+v146 的本地机制实验曾显示 Case1 直接父版本五轮提升 `2.366%`、Step1 tracer 缩短 `3.362%`、ISA 静态指令减少 `22.84%`，但这些信号没有转化为外部 OJ 收益。权威 OJ 实测三 Case 相对 v110 全面回退，且 Case2/3 分别达到 `58.14%/69.15%`，因此原先的 `locally-qualified` 判断被外部证据推翻。
 
 正确性方面，三官方 shape 均通过严格 fullcheck。Case1 对 grouped/alternating/reversed/permuted 四种 expert 次序与四个种子直接对 PyTorch `F.silu`，最大绝对差不超过 `0.00390625`、严格 mismatch 为 0；8 组含 `0.5x/1.5x` 输入和权重尺度的压力验证最坏绝对差 `0.00830078125`，严格/OJ mismatch 为 0，所有运行 deterministic。
 
-工程结论：授予 `locally-qualified / external-OJ-pending`，但近似数学的隐藏数据风险仍存在。可靠 SOTA 与 `restart-submission` 继续保持 v110。下一步最有价值的动作不是继续叠加优化，而是先让外部 OJ 判定 v146：若 AC，再以 v146 为可靠 parent；若 WA，按 Gate 尾部误差定位并回到 exact v110，不把本地性能当作 SOTA。
+工程结论：`rejected_external_oj_performance_regression`。可靠 SOTA 与 `restart-submission` 继续保持 exact v110。v146 不得继续叠加、不得作为 parent、不得称为 SOTA。下一步先核对实际上传文件的 SHA-256，并用独立进程、无跨模块缓存的方式复现 OJ 三 Case；在解释“本地 Case2/3 字节一致但 OJ 巨幅回退”的矛盾前，不再依据同进程 ABBA 晋级任何候选。
 
 ## 证据索引
 
