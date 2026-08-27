@@ -5,7 +5,8 @@
 - 基线：外部 OJ 已确认 AC 的 v110，SHA256 `439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e`
 - 候选：v147，SHA256 `380570a71771a76041627d4a7ad451773bfd5a4f646c562c56b7308fef647cdc`
 - 本地结论：达到 1.2% 候选门槛
-- 外部 OJ：待验证；不得标记为 AC、SOTA 或替换 `restart-submission`
+- 外部 OJ：三个 Case 均 AC；但 Case2/3 相对全局 SOTA v110 回退，SOTA gate **拒绝晋级**
+- 最终状态：`rejected-as-global-SOTA`；不创建同 ID 的 `restart-submission`
 
 ## 单一改动
 
@@ -67,6 +68,18 @@ v146 的 degree-11 版本在本地显示约 3% 加速，却在外部 OJ 上 Case
 
 哈希比较前仅将文件末尾的连续空行规范为一个换行；设备代码正文未作变换。Case2/3 的完整设备源、资源数及源长度均一致，因此 v147 不可能从设备 kernel 代码层面重现 v146 的 Case2/3 回退；外部运行环境和 Python/JIT 缓存行为仍由 OJ 最终验证。
 
+## 外部 OJ 与 SOTA gate
+
+权威来源：用户提供的外部 OJ SPJ 报告。全局 incumbent 为 `restart-submission/SOTA.json` 中的 v110，比较指标为越高越好的 `score_ratio`。
+
+| Case | v110 时间 | v147 时间 | 时间变化 | v110 score ratio | v147 score ratio | Gate |
+|---|---:|---:|---:|---:|---:|---|
+| 1 | 2.243 ms | 2.202 ms | **-1.83%** | 0.833778 | **0.836319** | improved |
+| 2 | 3.954 ms | 3.996 ms | +1.06% | **0.824765** | 0.823233 | regressed |
+| 3 | 7.680 ms | 7.814 ms | +1.74% | **0.823671** | 0.821145 | regressed |
+
+三个 Case 均 `Pass: OK`。不过单调 SOTA gate 要求所有 Case 不回退且至少一个严格提升；v147 在 Case2/3 回退，因此不得晋级。Case2/3 设备代码与 v110 相同，说明外部差异来自运行级波动/环境而非这两个 Case 的 kernel 源变化，但 gate 仍以 OJ 数字为准。
+
 ## 交付规则
 
-提交文件是 `candidate_submission.py`。在外部 OJ 返回 AC 且性能优于 v110 前，不创建 `restart-submission/v147...`，不移动全局提交入口。
+候选文件保留为 `candidate_submission.py` 供后续组合实验参考。v110 继续作为全局 SOTA；v147 不创建 `restart-submission/v147...`，不移动全局提交入口。
