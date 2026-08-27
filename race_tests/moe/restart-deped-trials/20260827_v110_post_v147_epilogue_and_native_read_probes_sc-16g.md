@@ -17,3 +17,7 @@ Removing native-read predicates passed correctness but regressed Case2 by about 
 ## Interpretation
 
 The useful part of v147 is shortening the FP32 SiLU dependency chain, not lowering its precision and not merely skipping padded rows. That evidence led to v148, which retains FP32 polynomial evaluation and applies it to all official Step1 shapes.
+
+## v148 clamp-5.0 degree-7 follow-up
+
+Removing one Horner stage with a least-squares degree-7 sigmoid polynomial failed the strict Case1 correctness gate before timing: 3307 of 6,291,456 output elements exceeded `rtol=1e-2, atol=1e-2`, and maximum absolute error reached `0.0224609375`. Degree-9 is therefore the current minimum safe single-polynomial order; do not repeat lower-order global approximations without a new piecewise error bound.
