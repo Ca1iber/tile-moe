@@ -10,6 +10,7 @@ Evidence in this directory:
 - `allcase_deg9_case2_stress.json`: eight route/scale stress variants.
 - `allcase_deg9_case3_stress_variant{6,7}.json`: saved high-scale Case3 variants.
 - `codegen/`: generated device C++ and compiler resource summaries for all official shapes.
+- `codegen/isa_case3/`: final xcore1000 v148 assembly and the v110/v148 opcode summary.
 - `mcprofiler_v110_case3/`: fresh native v110 Step1/Step2 profiler JSON used to choose this direction.
 - `mcprofiler_v148_case3_step1/`: the correctly selected `kernel_kernel_1` report; total cycles are 2.47% below v110 while VLS pipeline stalls remain.
 - `v148_source_validation.log`: source and generated-code compliance verdict.

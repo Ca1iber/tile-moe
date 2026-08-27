@@ -56,6 +56,8 @@ The correct Step1 symbol is `kernel_kernel_1`; `kernel_kernel` is an auxiliary n
 
 This causally supports the SiLU shortening: total/AP-active work falls and MMA duty rises, while the major VLS stall class remains. The next independent direction should target operand staging/VLS latency rather than lowering polynomial precision.
 
+The final xcore1000 Case3 ISA confirms the same mechanism. Step1 static instructions fall from `3081` to `2297` and `snop` from `363` to `203`; 64-site `exp/rcp/div-fixup` groups disappear. The structural work is invariant: 28 global loads, 64 shared loads, and 256 MMA instructions in both v110 and v148. The degree-9 polynomial adds 256 `fmak_f32` sites but is materially shorter than the precise special-function chain.
+
 ## External-OJ rule
 
 Submit `candidate_submission.py` unchanged. Record all three SPJ reports. Promote only if every external-OJ case is non-regressing against v110 and at least one is strictly better; otherwise retain v110 and mark v148 rejected as global SOTA.
