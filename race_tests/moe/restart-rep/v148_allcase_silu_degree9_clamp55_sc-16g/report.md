@@ -2,7 +2,7 @@
 
 v148 extends v147's externally AC Case1 SiLU approximation to Cases 2 and 3. It passes all three full-output checks and produces stable local gains: Case1 `-2.484%`, Case2 `-0.648%`, and Case3 `-0.596%` median under five-round 20x50 AB/BA testing.
 
-The experiment is locally qualified because Case1 exceeds the 1.2% candidate threshold and no local case regresses. It is not yet the global SOTA. v110 remains in `restart-submission` until the exact v148 bytes pass the external OJ monotonic gate.
+The experiment was locally qualified because Case1 exceeds the 1.2% candidate threshold and no local case regresses. It was subsequently reported AC on all three external OJ cases and promoted as the owner-approved SOTA exception on 2026-08-27.
 
 Evidence in this directory:
 
@@ -16,3 +16,11 @@ Evidence in this directory:
 - `v148_source_validation.log`: source and generated-code compliance verdict.
 
 The candidate source hash is `1079ec3d724ba479daf062a2d76f21d3c6842426ddc903254e9e256879a60840`.
+
+## External OJ and stability caveat
+
+The repeat run reported Case1 at `2.204 ms`, `5.105x`, ratio `0.836195`, display score `83`, PASS. Case2 and Case3 both displayed `82` and passed; their exact repeat-run latency and score ratios were not provided. An earlier run showed Case2/3 in the 70s, so the two OJ observations are inconsistent.
+
+Because the complete numeric vector is unavailable, the standard per-case monotonic gate is not claimed as proven. The owner explicitly approved v148 as the new SOTA despite that OJ anomaly. `external_oj_runs.json` preserves known values as numbers and unknown values as `null`.
+
+The unmodified AKO4ALL strict iteration validator consequently returns one expected error: a non-standard status may not own a `restart-submission/<id>/` directory. The validator was not weakened and the status was not mislabeled `accepted`; `promotion_validation.txt` archives this deliberate owner-override exception.

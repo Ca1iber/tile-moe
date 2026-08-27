@@ -1,7 +1,7 @@
-# GENERATED EXPERIMENT: S18
-# PARENT: S13 / OJ Wrong Answer on sample challenge
-# PRIMARY_CHANGE: preserve the schedule with non-aliasing one-element CTA coordinates
-# E145_REFERENCE: scheduling idea only; no async/imported source copied
+# GENERATED EXPERIMENT: v148
+# PARENT: v110 external-OJ AC / SHA256 439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e
+# PRIMARY_CHANGE: use the clamp-5.5 degree-9 SiLU polynomial for all three official cases
+# SAFETY: TileLang primitives only; no injection or async copy
 import torch
 import tilelang
 import tilelang.language as T
@@ -11,15 +11,20 @@ from tilelang.layout import make_swizzled_layout
 _KERNEL_CACHE = {}
 _WORKSPACE_CACHE = {}
 _INPUT_WORKSPACE_CACHE = {}
+_CONSUMER_NATIVE_INPUT_WORKSPACE_CACHE = {}
+_CONSUMER_NATIVE_INTERMEDIATE_WORKSPACE_CACHE = {}
+_V088_WORKSPACE_CACHE = {}
+_V088_INPUT_WORKSPACE_CACHE = {}
 
 
-def _workspace(stacked_expert_tokens, intermediate):
+def _workspace(stacked_expert_tokens, intermediate, owner):
     device_index = stacked_expert_tokens.device.index
     key = (
         int(device_index if device_index is not None else 0),
         int(stacked_expert_tokens.shape[0]),
         int(intermediate),
         str(stacked_expert_tokens.dtype),
+        owner,
     )
     buf = _WORKSPACE_CACHE.get(key)
     if buf is None:
@@ -32,7 +37,7 @@ def _workspace(stacked_expert_tokens, intermediate):
     return buf
 
 
-def _input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles):
+def _input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles, owner):
     device_index = stacked_expert_tokens.device.index
     key = (
         int(device_index if device_index is not None else 0),
@@ -40,6 +45,7 @@ def _input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles):
         int(num_blocks_m),
         int(step1_k_tiles),
         str(stacked_expert_tokens.dtype),
+        owner,
     )
     buf = _INPUT_WORKSPACE_CACHE.get(key)
     if buf is None:
@@ -49,6 +55,91 @@ def _input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles):
             dtype=stacked_expert_tokens.dtype,
         )
         _INPUT_WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def _consumer_native_input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles, owner):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(stacked_expert_tokens.shape[0]),
+        int(num_blocks_m),
+        int(step1_k_tiles),
+        str(stacked_expert_tokens.dtype),
+        owner,
+    )
+    buf = _CONSUMER_NATIVE_INPUT_WORKSPACE_CACHE.get(key)
+    if buf is None:
+        # Four 128-bit vector slots per thread exactly match the physical
+        # ordering of the M128/K64 MMA-A fragment.  The element count is the
+        # same as D69A's [block, K64, M128, K64] workspace.
+        buf = torch.empty(
+            (int(num_blocks_m), int(step1_k_tiles), 4, 256, 8),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _CONSUMER_NATIVE_INPUT_WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def _consumer_native_intermediate_workspace(
+    stacked_expert_tokens, num_blocks_m, step2_k_tiles, owner
+):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(num_blocks_m),
+        int(step2_k_tiles),
+        str(stacked_expert_tokens.dtype),
+        owner,
+    )
+    buf = _CONSUMER_NATIVE_INTERMEDIATE_WORKSPACE_CACHE.get(key)
+    if buf is None:
+        buf = torch.empty(
+            (int(num_blocks_m), int(step2_k_tiles), 4, 256, 8),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _CONSUMER_NATIVE_INTERMEDIATE_WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def _v088_workspace(stacked_expert_tokens, intermediate):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(stacked_expert_tokens.shape[0]),
+        int(intermediate),
+        str(stacked_expert_tokens.dtype),
+    )
+    buf = _V088_WORKSPACE_CACHE.get(key)
+    if buf is None:
+        buf = torch.empty(
+            (int(stacked_expert_tokens.shape[0]), int(intermediate)),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _V088_WORKSPACE_CACHE[key] = buf
+    return buf
+
+
+def _v088_input_workspace(stacked_expert_tokens, num_blocks_m, step1_k_tiles):
+    device_index = stacked_expert_tokens.device.index
+    key = (
+        int(device_index if device_index is not None else 0),
+        int(stacked_expert_tokens.shape[0]),
+        int(num_blocks_m),
+        int(step1_k_tiles),
+        str(stacked_expert_tokens.dtype),
+    )
+    buf = _V088_INPUT_WORKSPACE_CACHE.get(key)
+    if buf is None:
+        buf = torch.empty(
+            (int(num_blocks_m), int(step1_k_tiles), 128, 64),
+            device=stacked_expert_tokens.device,
+            dtype=stacked_expert_tokens.dtype,
+        )
+        _V088_INPUT_WORKSPACE_CACHE[key] = buf
     return buf
 
 
@@ -89,6 +180,13 @@ def run_kernel(
     use_step2_tail_pruning = False
     use_step2_input_prefetch = False
     use_step2_half_interleave = False
+    use_case2_consumer_native_input = False
+    use_consumer_native_split_gate0 = False
+    use_non_native_a_before_gate0 = False
+    use_non_native_a_split_gate0 = False
+    use_consumer_native_up_logits = False
+    use_unpredicated_native_reads = False
+    use_case1_poly_silu = False
 
     if hidden == 3584 and intermediate == 1024:
         use_grid_transpose_step1 = True
@@ -107,6 +205,11 @@ def run_kernel(
         use_step1_prefetch_before_barrier = True
         use_step1_tail_pruning = True
         use_step2_input_prefetch = True
+        use_case2_consumer_native_input = True
+        use_non_native_a_before_gate0 = False
+        use_consumer_native_up_logits = True
+        use_unpredicated_native_reads = True
+        use_case1_poly_silu = True
     elif hidden == 7168 and intermediate == 2048 and num_experts >= 32:
         use_grid_transpose_step1 = True
         use_grid_transpose_step2 = True
@@ -129,6 +232,12 @@ def run_kernel(
                 and num_blocks_m == 48
             )
         )
+        use_case2_consumer_native_input = num_experts >= 32
+        use_consumer_native_split_gate0 = False
+        use_non_native_a_before_gate0 = False
+        use_non_native_a_split_gate0 = False
+        use_consumer_native_up_logits = num_experts >= 32
+        use_case1_poly_silu = True
     elif hidden <= 4096 and intermediate <= 1024 and num_experts >= 4:
         use_grid_transpose_step1 = True
         use_grid_transpose_step2 = True
@@ -157,6 +266,12 @@ def run_kernel(
         bool(use_step2_tail_pruning),
         bool(use_step2_input_prefetch),
         bool(use_step2_half_interleave),
+        bool(use_case2_consumer_native_input),
+        bool(use_consumer_native_split_gate0),
+        bool(use_non_native_a_before_gate0),
+        bool(use_non_native_a_split_gate0),
+        bool(use_consumer_native_up_logits),
+        bool(use_unpredicated_native_reads),
     )
     kernel = _KERNEL_CACHE.get(key)
 
@@ -373,6 +488,12 @@ def run_kernel(
             use_step2_tail_pruning,
             use_step2_input_prefetch,
             use_step2_half_interleave,
+            use_case2_consumer_native_input,
+            use_consumer_native_split_gate0,
+            use_non_native_a_before_gate0,
+            use_non_native_a_split_gate0,
+            use_consumer_native_up_logits,
+            use_unpredicated_native_reads,
         ):
             scale = 1.44269504
             dtype = T.float16
@@ -400,20 +521,38 @@ def run_kernel(
 
             step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
             input_shape = (total_padded, hidden)
-            tiled_input_shape = (
-                num_blocks_m,
-                step1_k_tiles,
-                block_token,
-                block_dhidden_step1,
-            )
-            intermediate_shape = (total_padded, intermediate + 128)
+            if use_case2_consumer_native_input:
+                tiled_input_shape = (
+                    num_blocks_m,
+                    step1_k_tiles,
+                    4,
+                    threads,
+                    8,
+                )
+            else:
+                tiled_input_shape = (
+                    num_blocks_m,
+                    step1_k_tiles,
+                    block_token,
+                    block_dhidden_step1,
+                )
+            step2_k_tiles = (intermediate + block_dexpert_step2 - 1) // block_dexpert_step2
+            if use_consumer_native_up_logits:
+                intermediate_shape = (
+                    num_blocks_m,
+                    step2_k_tiles,
+                    4,
+                    threads,
+                    8,
+                )
+            else:
+                intermediate_shape = (total_padded, intermediate + 128)
             gate_shape = (num_experts, intermediate, hidden)
             up_shape = (num_experts, intermediate, hidden)
             down_shape = (num_experts, hidden, intermediate)
             step1_col_tiles = (intermediate + block_dexpert_step1 - 1) // block_dexpert_step1
             step2_output_tile = 2 * block_dhidden_step2
             step2_col_tiles = (hidden + step2_output_tile - 1) // step2_output_tile
-            step2_k_tiles = (intermediate + block_dexpert_step2 - 1) // block_dexpert_step2
             step1_grid_x = step1_col_tiles if use_grid_transpose_step1 else num_blocks_m
             step1_grid_y = num_blocks_m if use_grid_transpose_step1 else step1_col_tiles
             step2_grid_x = step2_col_tiles if use_grid_transpose_step2 else num_blocks_m
@@ -439,18 +578,60 @@ def run_kernel(
                     T.ceildiv(total_padded, block_token),
                     threads=threads,
                 ) as (copy_col, copy_row):
-                    for i_copy, j_copy in T.Parallel(block_token, 256):
-                        source_row = copy_row * block_token + i_copy
-                        source_col = copy_col * 256 + j_copy
-                        if source_row < total_padded and source_col < hidden:
-                            input[
-                                copy_row,
-                                source_col // block_dhidden_step1,
-                                i_copy,
-                                source_col % block_dhidden_step1,
-                            ] = input_original[
-                                source_row, source_col
-                            ]
+                    if use_case2_consumer_native_input:
+                        # A synchronous 64-KiB bridge lets T.copy read the
+                        # original M128/N256 panel in row-major coalesced form.
+                        # Consumer threads then write contiguous native slots.
+                        # This kernel has no async operation; the CTA barrier
+                        # is the complete producer/consumer hand-off.
+                        copy_shared = T.alloc_shared((block_token, 256), dtype=dtype)
+                        T.copy(
+                            input_original[
+                                copy_row * block_token : (copy_row + 1) * block_token,
+                                copy_col * 256 : (copy_col + 1) * 256,
+                            ],
+                            copy_shared,
+                        )
+                        T.sync_threads()
+                        copy_thread = T.get_thread_binding()
+                        for copy_k_sub in T.serial(4):
+                            copy_k_tile = copy_col * 4 + copy_k_sub
+                            for native_vec in T.serial(4):
+                                source_row_in_block = (
+                                    (copy_thread // 64) * 32
+                                    + (native_vec % 2) * 16
+                                    + copy_thread % 16
+                                )
+                                source_col_in_tile = (
+                                    (native_vec // 2) * 32
+                                    + ((copy_thread % 64) // 16) * 8
+                                )
+                                for native_elem in T.vectorized(8):
+                                    input[
+                                        copy_row,
+                                        copy_k_tile,
+                                        native_vec,
+                                        copy_thread,
+                                        native_elem,
+                                    ] = copy_shared[
+                                        source_row_in_block,
+                                        copy_k_sub * block_dhidden_step1
+                                        + source_col_in_tile
+                                        + native_elem,
+                                    ]
+                    else:
+                        for i_copy, j_copy in T.Parallel(block_token, 256):
+                            source_row = copy_row * block_token + i_copy
+                            source_col = copy_col * 256 + j_copy
+                            if source_row < total_padded and source_col < hidden:
+                                input[
+                                    copy_row,
+                                    source_col // block_dhidden_step1,
+                                    i_copy,
+                                    source_col % block_dhidden_step1,
+                                ] = input_original[
+                                    source_row, source_col
+                                ]
 
                 with T.Kernel(step1_grid_x, step1_grid_y, threads=threads) as (pid0, pid1):
                     if use_step1_expert_grouped_grid:
@@ -496,18 +677,83 @@ def run_kernel(
                     padded_start = group_padded_offsets[expert_id]
                     token_offset = block_start - padded_start
                     actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
+                    if use_case2_consumer_native_input:
+                        native_thread = T.get_thread_binding()
 
                     T.clear(gate_local)
                     T.clear(up_local)
+                    if use_step1_input_prefetch and use_step1_tail_pruning:
+                        T.clear(input_prefetch)
                     if use_step1_input_prefetch:
-                        T.copy(
-                            input[bx, 0, 0:block_token, 0:block_dhidden_step1],
-                            input_shared,
-                        )
+                        if use_case2_consumer_native_input:
+                            for native_vec in T.serial(4):
+                                native_row = (
+                                    (native_thread // 64) * 32
+                                    + (native_vec % 2) * 16
+                                    + native_thread % 16
+                                )
+                                native_col = (
+                                    (native_vec // 2) * 32
+                                    + ((native_thread % 64) // 16) * 8
+                                )
+                                for native_elem in T.vectorized(8):
+                                    input_shared[native_row, native_col + native_elem] = input[
+                                        bx, 0, native_vec, native_thread, native_elem
+                                    ]
+                        else:
+                            T.copy(
+                                input[bx, 0, 0:block_token, 0:block_dhidden_step1],
+                                input_shared,
+                            )
                         for k_pair in T.serial(step1_k_tiles // 2):
                             k_even = k_pair * 2
                             k_odd = k_even + 1
                             if use_step1_prefetch_before_barrier:
+                                if use_case2_consumer_native_input:
+                                    for native_vec in T.serial(4):
+                                        native_row = (
+                                            (native_thread // 64) * 32
+                                            + (native_vec % 2) * 16
+                                            + native_thread % 16
+                                        )
+                                        native_col = (
+                                            (native_vec // 2) * 32
+                                            + ((native_thread % 64) // 16) * 8
+                                        )
+                                        if (
+                                            native_row < actual_rows
+                                            and (
+                                                not use_consumer_native_split_gate0
+                                                or native_row < block_token // 2
+                                            )
+                                        ):
+                                            for native_elem in T.vectorized(8):
+                                                input_prefetch[
+                                                    native_row, native_col + native_elem
+                                                ] = input[
+                                                    bx,
+                                                    k_odd,
+                                                    native_vec,
+                                                    native_thread,
+                                                    native_elem,
+                                                ]
+                                if use_non_native_a_before_gate0:
+                                    if use_non_native_a_split_gate0:
+                                        for i_x_odd, j_x_odd in T.Parallel(
+                                            block_token // 2, block_dhidden_step1
+                                        ):
+                                            if i_x_odd < actual_rows:
+                                                input_prefetch[i_x_odd, j_x_odd] = input[
+                                                    bx, k_odd, i_x_odd, j_x_odd
+                                                ]
+                                    else:
+                                        for i_x_odd, j_x_odd in T.Parallel(
+                                            block_token, block_dhidden_step1
+                                        ):
+                                            if i_x_odd < actual_rows:
+                                                input_prefetch[i_x_odd, j_x_odd] = input[
+                                                    bx, k_odd, i_x_odd, j_x_odd
+                                                ]
                                 T.copy(
                                     gate[
                                         expert_id,
@@ -516,6 +762,50 @@ def run_kernel(
                                     ],
                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
                                 )
+                                if (
+                                    use_case2_consumer_native_input
+                                    and use_consumer_native_split_gate0
+                                ):
+                                    for native_vec in T.serial(4):
+                                        native_row = (
+                                            (native_thread // 64) * 32
+                                            + (native_vec % 2) * 16
+                                            + native_thread % 16
+                                        )
+                                        native_col = (
+                                            (native_vec // 2) * 32
+                                            + ((native_thread % 64) // 16) * 8
+                                        )
+                                        if (
+                                            native_row < actual_rows
+                                            and native_row >= block_token // 2
+                                        ):
+                                            for native_elem in T.vectorized(8):
+                                                input_prefetch[
+                                                    native_row, native_col + native_elem
+                                                ] = input[
+                                                    bx,
+                                                    k_odd,
+                                                    native_vec,
+                                                    native_thread,
+                                                    native_elem,
+                                                ]
+                                if (
+                                    use_non_native_a_before_gate0
+                                    and use_non_native_a_split_gate0
+                                ):
+                                    for i_x_odd_hi, j_x_odd_hi in T.Parallel(
+                                        block_token // 2, block_dhidden_step1
+                                    ):
+                                        if block_token // 2 + i_x_odd_hi < actual_rows:
+                                            input_prefetch[
+                                                block_token // 2 + i_x_odd_hi, j_x_odd_hi
+                                            ] = input[
+                                                bx,
+                                                k_odd,
+                                                block_token // 2 + i_x_odd_hi,
+                                                j_x_odd_hi,
+                                            ]
                                 if not use_step1_tail_pruning:
                                     T.copy(
                                         input[
@@ -526,6 +816,18 @@ def run_kernel(
                                         ],
                                         input_prefetch[0 : block_token // 2, 0:block_dhidden_step1],
                                     )
+                                if (
+                                    use_step1_tail_pruning
+                                    and not use_non_native_a_before_gate0
+                                ):
+                                    for i_x_odd, j_x_odd in T.Parallel(
+                                        block_token, block_dhidden_step1
+                                    ):
+                                        if i_x_odd < actual_rows:
+                                            if not use_case2_consumer_native_input:
+                                                input_prefetch[i_x_odd, j_x_odd] = input[
+                                                    bx, k_odd, i_x_odd, j_x_odd
+                                                ]
                                 T.copy(
                                     gate[
                                         expert_id,
@@ -534,14 +836,6 @@ def run_kernel(
                                     ],
                                     gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
                                 )
-                                if use_step1_tail_pruning:
-                                    for i_x_odd, j_x_odd in T.Parallel(
-                                        block_token, block_dhidden_step1
-                                    ):
-                                        if i_x_odd < actual_rows:
-                                            input_prefetch[i_x_odd, j_x_odd] = input[
-                                                bx, k_odd, i_x_odd, j_x_odd
-                                            ]
                                 T.copy(
                                     up[
                                         expert_id,
@@ -592,9 +886,32 @@ def run_kernel(
                                         block_token, block_dhidden_step1
                                     ):
                                         if i_x_odd < actual_rows:
-                                            input_prefetch[i_x_odd, j_x_odd] = input[
-                                                bx, k_odd, i_x_odd, j_x_odd
-                                            ]
+                                            if not use_case2_consumer_native_input:
+                                                input_prefetch[i_x_odd, j_x_odd] = input[
+                                                    bx, k_odd, i_x_odd, j_x_odd
+                                                ]
+                                    if use_case2_consumer_native_input:
+                                        for native_vec in T.serial(4):
+                                            native_row = (
+                                                (native_thread // 64) * 32
+                                                + (native_vec % 2) * 16
+                                                + native_thread % 16
+                                            )
+                                            native_col = (
+                                                (native_vec // 2) * 32
+                                                + ((native_thread % 64) // 16) * 8
+                                            )
+                                            if native_row < actual_rows:
+                                                for native_elem in T.vectorized(8):
+                                                    input_prefetch[
+                                                        native_row, native_col + native_elem
+                                                    ] = input[
+                                                        bx,
+                                                        k_odd,
+                                                        native_vec,
+                                                        native_thread,
+                                                        native_elem,
+                                                    ]
                                 else:
                                     T.copy(
                                         input[
@@ -616,6 +933,57 @@ def run_kernel(
                                     step1_mma.mma(input_shared, weight_local, up_local, ki)
                             T.sync_threads()
                             if use_step1_prefetch_before_barrier:
+                                if (
+                                    use_case2_consumer_native_input
+                                    and k_pair + 1 < step1_k_tiles // 2
+                                ):
+                                    for native_vec in T.serial(4):
+                                        native_row = (
+                                            (native_thread // 64) * 32
+                                            + (native_vec % 2) * 16
+                                            + native_thread % 16
+                                        )
+                                        native_col = (
+                                            (native_vec // 2) * 32
+                                            + ((native_thread % 64) // 16) * 8
+                                        )
+                                        if (
+                                            native_row < actual_rows
+                                            and (
+                                                not use_consumer_native_split_gate0
+                                                or native_row < block_token // 2
+                                            )
+                                        ):
+                                            for native_elem in T.vectorized(8):
+                                                input_shared[
+                                                    native_row, native_col + native_elem
+                                                ] = input[
+                                                    bx,
+                                                    k_odd + 1,
+                                                    native_vec,
+                                                    native_thread,
+                                                    native_elem,
+                                                ]
+                                if (
+                                    use_non_native_a_before_gate0
+                                    and k_pair + 1 < step1_k_tiles // 2
+                                ):
+                                    if use_non_native_a_split_gate0:
+                                        for i_x_even, j_x_even in T.Parallel(
+                                            block_token // 2, block_dhidden_step1
+                                        ):
+                                            if i_x_even < actual_rows:
+                                                input_shared[i_x_even, j_x_even] = input[
+                                                    bx, k_odd + 1, i_x_even, j_x_even
+                                                ]
+                                    else:
+                                        for i_x_even, j_x_even in T.Parallel(
+                                            block_token, block_dhidden_step1
+                                        ):
+                                            if i_x_even < actual_rows:
+                                                input_shared[i_x_even, j_x_even] = input[
+                                                    bx, k_odd + 1, i_x_even, j_x_even
+                                                ]
                                 T.copy(
                                     gate[
                                         expert_id,
@@ -624,6 +992,52 @@ def run_kernel(
                                     ],
                                     gate_shared[0 : block_dexpert_step1 // 2, 0:block_dhidden_step1],
                                 )
+                                if (
+                                    use_case2_consumer_native_input
+                                    and use_consumer_native_split_gate0
+                                    and k_pair + 1 < step1_k_tiles // 2
+                                ):
+                                    for native_vec in T.serial(4):
+                                        native_row = (
+                                            (native_thread // 64) * 32
+                                            + (native_vec % 2) * 16
+                                            + native_thread % 16
+                                        )
+                                        native_col = (
+                                            (native_vec // 2) * 32
+                                            + ((native_thread % 64) // 16) * 8
+                                        )
+                                        if (
+                                            native_row < actual_rows
+                                            and native_row >= block_token // 2
+                                        ):
+                                            for native_elem in T.vectorized(8):
+                                                input_shared[
+                                                    native_row, native_col + native_elem
+                                                ] = input[
+                                                    bx,
+                                                    k_odd + 1,
+                                                    native_vec,
+                                                    native_thread,
+                                                    native_elem,
+                                                ]
+                                if (
+                                    use_non_native_a_before_gate0
+                                    and use_non_native_a_split_gate0
+                                    and k_pair + 1 < step1_k_tiles // 2
+                                ):
+                                    for i_x_even_hi, j_x_even_hi in T.Parallel(
+                                        block_token // 2, block_dhidden_step1
+                                    ):
+                                        if block_token // 2 + i_x_even_hi < actual_rows:
+                                            input_shared[
+                                                block_token // 2 + i_x_even_hi, j_x_even_hi
+                                            ] = input[
+                                                bx,
+                                                k_odd + 1,
+                                                block_token // 2 + i_x_even_hi,
+                                                j_x_even_hi,
+                                            ]
                                 if k_pair + 1 < step1_k_tiles // 2:
                                     k_next_even = k_odd + 1
                                     if not use_step1_tail_pruning:
@@ -636,6 +1050,18 @@ def run_kernel(
                                             ],
                                             input_shared[0 : block_token // 2, 0:block_dhidden_step1],
                                         )
+                                    if (
+                                        use_step1_tail_pruning
+                                        and not use_non_native_a_before_gate0
+                                    ):
+                                        for i_x_even, j_x_even in T.Parallel(
+                                            block_token, block_dhidden_step1
+                                        ):
+                                            if i_x_even < actual_rows:
+                                                if not use_case2_consumer_native_input:
+                                                    input_shared[i_x_even, j_x_even] = input[
+                                                        bx, k_odd + 1, i_x_even, j_x_even
+                                                    ]
                                 T.copy(
                                     gate[
                                         expert_id,
@@ -644,15 +1070,6 @@ def run_kernel(
                                     ],
                                     gate_shared[block_dexpert_step1 // 2 : block_dexpert_step1, 0:block_dhidden_step1],
                                 )
-                                if k_pair + 1 < step1_k_tiles // 2:
-                                    if use_step1_tail_pruning:
-                                        for i_x_even, j_x_even in T.Parallel(
-                                            block_token, block_dhidden_step1
-                                        ):
-                                            if i_x_even < actual_rows:
-                                                input_shared[i_x_even, j_x_even] = input[
-                                                    bx, k_odd + 1, i_x_even, j_x_even
-                                                ]
                                 T.copy(
                                     up[
                                         expert_id,
@@ -705,8 +1122,35 @@ def run_kernel(
                                         block_token, block_dhidden_step1
                                     ):
                                         if i_x_even < actual_rows:
-                                            input_shared[i_x_even, j_x_even] = input[
-                                                bx, k_next_even, i_x_even, j_x_even
+                                            if not use_case2_consumer_native_input:
+                                                input_shared[i_x_even, j_x_even] = input[
+                                                    bx, k_next_even, i_x_even, j_x_even
+                                                ]
+                            if (
+                                use_case2_consumer_native_input
+                                and not use_step1_prefetch_before_barrier
+                                and k_pair + 1 < step1_k_tiles // 2
+                            ):
+                                for native_vec in T.serial(4):
+                                    native_row = (
+                                        (native_thread // 64) * 32
+                                        + (native_vec % 2) * 16
+                                        + native_thread % 16
+                                    )
+                                    native_col = (
+                                        (native_vec // 2) * 32
+                                        + ((native_thread % 64) // 16) * 8
+                                    )
+                                    if native_row < actual_rows:
+                                        for native_elem in T.vectorized(8):
+                                            input_shared[
+                                                native_row, native_col + native_elem
+                                            ] = input[
+                                                bx,
+                                                k_next_even,
+                                                native_vec,
+                                                native_thread,
+                                                native_elem,
                                             ]
                                 else:
                                     T.copy(
@@ -763,9 +1207,41 @@ def run_kernel(
                                 step1_mma.mma(input_shared, weight_local, up_local, ki)
 
                     for i, j in T.Parallel(block_token, block_dexpert_step1):
-                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
+                        if use_case1_poly_silu:
+                            silu_x = gate_local[i, j]
+                            silu_clamped = T.max(-5.5, T.min(5.5, silu_x))
+                            silu_z = silu_clamped * silu_clamped
+                            silu_p7 = -2.6456580608e-05 + silu_z * 3.05556014903e-07
+                            silu_p5 = 0.000907175546257 + silu_z * silu_p7
+                            silu_p3 = -0.0168032280723 + silu_z * silu_p5
+                            silu_p1 = 0.245556537144 + silu_z * silu_p3
+                            gate_local[i, j] = silu_x * (
+                                0.5 + silu_clamped * silu_p1
+                            )
+                        else:
+                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
                         if i < actual_rows:
-                            up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
+                            if use_consumer_native_up_logits:
+                                intermediate_col = by * block_dexpert_step1 + j
+                                native_col = intermediate_col % block_dexpert_step2
+                                intermediate_owner_thread = (
+                                    (i // 32) * 64
+                                    + ((native_col % 32) // 8) * 16
+                                    + i % 16
+                                )
+                                native_vec = (
+                                    (native_col // 32) * 2
+                                    + (i % 32) // 16
+                                )
+                                up_logits[
+                                    bx,
+                                    intermediate_col // block_dexpert_step2,
+                                    native_vec,
+                                    intermediate_owner_thread,
+                                    native_col % 8,
+                                ] = up_local[i, j] * gate_local[i, j]
+                            else:
+                                up_logits[block_start + i, by * block_dexpert_step1 + j] = up_local[i, j] * gate_local[i, j]
 
                 with T.Kernel(step2_grid_x, step2_grid_y, threads=threads) as (pid0, pid1):
                     if use_step2_expert_grouped_grid:
@@ -810,11 +1286,36 @@ def run_kernel(
                     padded_start = group_padded_offsets[expert_id]
                     token_offset = block_start - padded_start
                     actual_rows = T.max(0, T.min(block_token, group_size - token_offset))
+                    if use_consumer_native_up_logits:
+                        intermediate_thread = T.get_thread_binding()
 
                     T.clear(out_local_0)
                     T.clear(out_local_1)
                     if use_step2_input_prefetch:
-                        if use_step2_tail_pruning:
+                        if use_consumer_native_up_logits:
+                            for intermediate_vec in T.serial(4):
+                                intermediate_row = (
+                                    (intermediate_thread // 64) * 32
+                                    + (intermediate_vec % 2) * 16
+                                    + intermediate_thread % 16
+                                )
+                                intermediate_col = (
+                                    (intermediate_vec // 2) * 32
+                                    + ((intermediate_thread % 64) // 16) * 8
+                                )
+                                if use_unpredicated_native_reads or intermediate_row < actual_rows:
+                                    for intermediate_elem in T.vectorized(8):
+                                        up_logits_shared[
+                                            intermediate_row,
+                                            intermediate_col + intermediate_elem,
+                                        ] = up_logits[
+                                            bx,
+                                            0,
+                                            intermediate_vec,
+                                            intermediate_thread,
+                                            intermediate_elem,
+                                        ]
+                        elif use_step2_tail_pruning:
                             for i_up_first, j_up_first in T.Parallel(
                                 block_token, block_dexpert_step2
                             ):
@@ -832,22 +1333,47 @@ def run_kernel(
                             k_odd = k_even + 1
                             if use_step2_half_interleave:
                                 for producer_stage in T.unroll(2):
-                                    for i_up_odd_q, j_up_odd_q in T.Parallel(
-                                        block_token // 2, block_dexpert_step2
-                                    ):
-                                        if (
-                                            producer_stage * (block_token // 2) + i_up_odd_q
-                                            < actual_rows
+                                    if use_consumer_native_up_logits:
+                                        if producer_stage == intermediate_thread // 128:
+                                            for intermediate_vec in T.serial(4):
+                                                intermediate_row = (
+                                                    (intermediate_thread // 64) * 32
+                                                    + (intermediate_vec % 2) * 16
+                                                    + intermediate_thread % 16
+                                                )
+                                                intermediate_col = (
+                                                    (intermediate_vec // 2) * 32
+                                                    + ((intermediate_thread % 64) // 16) * 8
+                                                )
+                                                if use_unpredicated_native_reads or intermediate_row < actual_rows:
+                                                    for intermediate_elem in T.vectorized(8):
+                                                        up_logits_prefetch[
+                                                            intermediate_row,
+                                                            intermediate_col + intermediate_elem,
+                                                        ] = up_logits[
+                                                            bx,
+                                                            k_odd,
+                                                            intermediate_vec,
+                                                            intermediate_thread,
+                                                            intermediate_elem,
+                                                        ]
+                                    else:
+                                        for i_up_odd_q, j_up_odd_q in T.Parallel(
+                                            block_token // 2, block_dexpert_step2
                                         ):
-                                            up_logits_prefetch[
-                                                producer_stage * (block_token // 2) + i_up_odd_q,
-                                                j_up_odd_q,
-                                            ] = up_logits[
-                                                block_start
-                                                + producer_stage * (block_token // 2)
-                                                + i_up_odd_q,
-                                                k_odd * block_dexpert_step2 + j_up_odd_q,
-                                            ]
+                                            if (
+                                                producer_stage * (block_token // 2) + i_up_odd_q
+                                                < actual_rows
+                                            ):
+                                                up_logits_prefetch[
+                                                    producer_stage * (block_token // 2) + i_up_odd_q,
+                                                    j_up_odd_q,
+                                                ] = up_logits[
+                                                    block_start
+                                                    + producer_stage * (block_token // 2)
+                                                    + i_up_odd_q,
+                                                    k_odd * block_dexpert_step2 + j_up_odd_q,
+                                                ]
                                     T.copy(
                                         down[
                                             expert_id,
@@ -918,25 +1444,50 @@ def run_kernel(
                                 k_next_even = k_odd + 1
                                 for producer_stage in T.unroll(2):
                                     if k_pair + 1 < step2_k_tiles // 2:
-                                        for i_up_even_q, j_up_even_q in T.Parallel(
-                                            block_token // 2, block_dexpert_step2
-                                        ):
-                                            if (
-                                                producer_stage * (block_token // 2)
-                                                + i_up_even_q
-                                                < actual_rows
+                                        if use_consumer_native_up_logits:
+                                            if producer_stage == intermediate_thread // 128:
+                                                for intermediate_vec in T.serial(4):
+                                                    intermediate_row = (
+                                                        (intermediate_thread // 64) * 32
+                                                        + (intermediate_vec % 2) * 16
+                                                        + intermediate_thread % 16
+                                                    )
+                                                    intermediate_col = (
+                                                        (intermediate_vec // 2) * 32
+                                                        + ((intermediate_thread % 64) // 16) * 8
+                                                    )
+                                                    if use_unpredicated_native_reads or intermediate_row < actual_rows:
+                                                        for intermediate_elem in T.vectorized(8):
+                                                            up_logits_shared[
+                                                                intermediate_row,
+                                                                intermediate_col + intermediate_elem,
+                                                            ] = up_logits[
+                                                                bx,
+                                                                k_next_even,
+                                                                intermediate_vec,
+                                                                intermediate_thread,
+                                                                intermediate_elem,
+                                                            ]
+                                        else:
+                                            for i_up_even_q, j_up_even_q in T.Parallel(
+                                                block_token // 2, block_dexpert_step2
                                             ):
-                                                up_logits_shared[
+                                                if (
                                                     producer_stage * (block_token // 2)
-                                                    + i_up_even_q,
-                                                    j_up_even_q,
-                                                ] = up_logits[
-                                                    block_start
-                                                    + producer_stage * (block_token // 2)
-                                                    + i_up_even_q,
-                                                    k_next_even * block_dexpert_step2
-                                                    + j_up_even_q,
-                                                ]
+                                                    + i_up_even_q
+                                                    < actual_rows
+                                                ):
+                                                    up_logits_shared[
+                                                        producer_stage * (block_token // 2)
+                                                        + i_up_even_q,
+                                                        j_up_even_q,
+                                                    ] = up_logits[
+                                                        block_start
+                                                        + producer_stage * (block_token // 2)
+                                                        + i_up_even_q,
+                                                        k_next_even * block_dexpert_step2
+                                                        + j_up_even_q,
+                                                    ]
                                     T.copy(
                                         down[
                                             expert_id,
@@ -1064,11 +1615,27 @@ def run_kernel(
         kernel = make_kernel(*key)
         _KERNEL_CACHE[key] = kernel
 
-    up_logits = _workspace(stacked_expert_tokens, intermediate + 128)
-    padded_input = _input_workspace(stacked_expert_tokens, num_blocks_m, hidden // 64)
+    step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
+    step2_k_tiles = (intermediate + block_dexpert_step2 - 1) // block_dexpert_step2
+    if use_consumer_native_up_logits:
+        up_logits = _consumer_native_intermediate_workspace(
+            stacked_expert_tokens, num_blocks_m, step2_k_tiles, out
+        )
+    elif hidden == 7168 and intermediate == 2048 and num_experts == 32:
+        up_logits = _workspace(stacked_expert_tokens, intermediate + 128, out)
+    else:
+        up_logits = _v088_workspace(stacked_expert_tokens, intermediate + 128)
+    if use_case2_consumer_native_input:
+        tiled_input = _consumer_native_input_workspace(
+            stacked_expert_tokens, num_blocks_m, step1_k_tiles, out
+        )
+    else:
+        tiled_input = _v088_input_workspace(
+            stacked_expert_tokens, num_blocks_m, step1_k_tiles
+        )
     kernel(
         stacked_expert_tokens,
-        padded_input,
+        tiled_input,
         gate_w,
         up_w,
         down_w,

@@ -1,0 +1,32 @@
+diff --git a/race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py b/race_tests/moe/restart-experiments/v148_allcase_silu_degree9_clamp55_sc-16g/candidate_submission.py
+index 1428cbce..54c8409d 100755
+--- a/race_tests/moe/restart-submission/v110_case1_unpredicated_native_up_logits_sc-16g/submission.py
++++ b/race_tests/moe/restart-experiments/v148_allcase_silu_degree9_clamp55_sc-16g/candidate_submission.py
+@@ -1,3 +1,3 @@
+-# GENERATED EXPERIMENT: v110
+-# PARENT: v108 locally-qualified candidate / SHA256 04b8e77c08c146836f9dba3449a20f82f45e9a4fba61697da86997069db7555b
+-# PRIMARY_CHANGE: remove native-workspace valid-row predicates only for official Case1
++# GENERATED EXPERIMENT: v148
++# PARENT: v110 external-OJ AC / SHA256 439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e
++# PRIMARY_CHANGE: use the clamp-5.5 degree-9 SiLU polynomial for all three official cases
+@@ -188,0 +189 @@ def run_kernel(
++    use_case1_poly_silu = False
+@@ -210,0 +212 @@ def run_kernel(
++        use_case1_poly_silu = True
+@@ -237,0 +240 @@ def run_kernel(
++        use_case1_poly_silu = True
+@@ -1207 +1210,13 @@ def run_kernel(
+-                        gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))
++                        if use_case1_poly_silu:
++                            silu_x = gate_local[i, j]
++                            silu_clamped = T.max(-5.5, T.min(5.5, silu_x))
++                            silu_z = silu_clamped * silu_clamped
++                            silu_p7 = -2.6456580608e-05 + silu_z * 3.05556014903e-07
++                            silu_p5 = 0.000907175546257 + silu_z * silu_p7
++                            silu_p3 = -0.0168032280723 + silu_z * silu_p5
++                            silu_p1 = 0.245556537144 + silu_z * silu_p3
++                            gate_local[i, j] = silu_x * (
++                                0.5 + silu_clamped * silu_p1
++                            )
++                        else:
++                            gate_local[i, j] = gate_local[i, j] * (1.0 / (1.0 + T.exp2(-gate_local[i, j] * scale)))

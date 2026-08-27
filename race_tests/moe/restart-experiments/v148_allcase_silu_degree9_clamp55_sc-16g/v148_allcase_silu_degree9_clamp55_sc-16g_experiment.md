@@ -4,8 +4,9 @@
 
 - Parent: v110 external-OJ AC, SHA256 `439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e`
 - Candidate: v148, SHA256 `1079ec3d724ba479daf062a2d76f21d3c6842426ddc903254e9e256879a60840`
-- Local status: `locally-qualified / external-OJ-pending`
-- Global SOTA: v110 remains authoritative; no v148 `restart-submission` is created before external OJ
+- External OJ status: AC on all three official cases.
+- Global status: promoted as the owner-approved SOTA exception on 2026-08-27.
+- Evidence caveat: the first OJ run showed anomalous Case2/3 scores in the 70s, while the repeat run showed 82/82. Exact repeat-run latency and ratio were supplied only for Case1.
 
 ## Single primary change
 
@@ -58,6 +59,8 @@ This causally supports the SiLU shortening: total/AP-active work falls and MMA d
 
 The final xcore1000 Case3 ISA confirms the same mechanism. Step1 static instructions fall from `3081` to `2297` and `snop` from `363` to `203`; 64-site `exp/rcp/div-fixup` groups disappear. The structural work is invariant: 28 global loads, 64 shared loads, and 256 MMA instructions in both v110 and v148. The degree-9 polynomial adds 256 `fmak_f32` sites but is materially shorter than the precise special-function chain.
 
-## External-OJ rule
+## External OJ verdict and promotion exception
 
-Submit `candidate_submission.py` unchanged. Record all three SPJ reports. Promote only if every external-OJ case is non-regressing against v110 and at least one is strictly better; otherwise retain v110 and mark v148 rejected as global SOTA.
+The exact candidate SHA-256 was reported AC. On the repeat run, Case1 measured `2.204 ms`, `5.105x`, score ratio `0.836195`, display score `83`; Case2 and Case3 both displayed `82` and passed, but their exact latency and score ratio were not provided. The earlier run's Case2/3 display scores fell into the 70s, which conflicts with the repeat run and is retained as an OJ-stability anomaly.
+
+This does not prove the normal complete numeric monotonic gate. The repository owner nevertheless explicitly approved v148 as the new SOTA on 2026-08-27. The promotion is therefore labeled an owner override, not a fabricated standard-gate pass. The exact external record is archived in `restart-rep`.

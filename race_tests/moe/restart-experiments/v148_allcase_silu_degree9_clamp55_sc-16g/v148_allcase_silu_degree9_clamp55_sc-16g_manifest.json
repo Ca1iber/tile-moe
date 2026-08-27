@@ -8,9 +8,9 @@
   },
   "candidate": {
     "sha256": "1079ec3d724ba479daf062a2d76f21d3c6842426ddc903254e9e256879a60840",
-    "external_oj_status": "pending"
+    "external_oj_status": "AC"
   },
-  "status": "locally-qualified-external-OJ-pending",
+  "status": "owner-approved-global-SOTA-exception",
   "primary_change": "Apply the clamp-5.5 degree-9 SiLU polynomial to all three official Step1 shapes",
   "local_protocol": {
     "rounds": 5,
@@ -31,6 +31,49 @@
     "source_validator": "PASS",
     "generated_sources_checked": 3
   },
-  "promote_to_restart_submission": false,
-  "promotion_blocker": "external OJ result not yet available"
+  "external_oj": {
+    "authority": "user-provided external OJ SPJ reports and explicit owner promotion approval",
+    "reported_on": "2026-08-27",
+    "candidate_sha256": "1079ec3d724ba479daf062a2d76f21d3c6842426ddc903254e9e256879a60840",
+    "all_cases_pass": true,
+    "run_1": {
+      "case1": null,
+      "case2_display_score": "70s (exact value not provided)",
+      "case3_display_score": "70s (exact value not provided)",
+      "assessment": "anomalous and inconsistent with the repeat run"
+    },
+    "run_2": {
+      "case1": {
+        "baseline_ms": 11.251,
+        "latency_ms": 2.204,
+        "speedup": 5.105,
+        "score_ratio": 0.836195,
+        "display_score": 83,
+        "pass": true
+      },
+      "case2": {
+        "display_score": 82,
+        "pass": true,
+        "latency_ms": null,
+        "score_ratio": null
+      },
+      "case3": {
+        "display_score": 82,
+        "pass": true,
+        "latency_ms": null,
+        "score_ratio": null
+      }
+    }
+  },
+  "sota_gate": {
+    "standard_numeric_monotonic_gate_proven": false,
+    "reason": "repeat-run Case2 and Case3 exact latency and score ratio were not provided; the first run was anomalously low",
+    "owner_override": true,
+    "owner_decision": "promote v148 as the new SOTA",
+    "incumbent_id": "v110_case1_unpredicated_native_up_logits_sc-16g",
+    "incumbent_submission_sha256": "439a2b80fa9b1ad3c12860bc16153a8c0303326ff48334a048ca8b2bd510509e",
+    "candidate_submission_sha256": "1079ec3d724ba479daf062a2d76f21d3c6842426ddc903254e9e256879a60840"
+  },
+  "promote_to_restart_submission": true,
+  "promotion_blocker": null
 }
