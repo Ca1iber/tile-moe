@@ -1,0 +1,24 @@
+--- v159_parent.py
++++ v160_candidate.py
+@@ -1,6 +1,6 @@
+-# GENERATED CANDIDATE: v159
+-# PARENT: v157c local candidate / SHA256 fc627e4e54e74bcd892bfe62c1f5c3ed3d47ed68df23c20fbd80917717924eff
+-# PRIMARY_CHANGE: extend the unified short-M128N128/long-M192N64 Step1 geometry to official Case1
++# GENERATED CANDIDATE: v160
++# PARENT: v159 local candidate / SHA256 c8fd309fa6ec769970b4a9aeaa8d702f75033395f17dd11c30d60b374ae98ae3
++# PRIMARY_CHANGE: extend the unified short-M128N128/long-M192N64 Step1 geometry to official Case2
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -259,6 +259,11 @@
+                 total_padded == 6144
+                 and total_valid == 4544
+                 and num_blocks_m == 48
++            )
++            use_case3_hybrid_m192n64 = (
++                total_padded == 6144
++                and total_valid == 4544
++                and num_blocks_m == 48
+             )
+         if num_experts == 64:
+             use_case3_hybrid_m192n64 = (

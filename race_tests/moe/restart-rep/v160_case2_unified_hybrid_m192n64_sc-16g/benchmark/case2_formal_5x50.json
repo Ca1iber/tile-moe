@@ -1,0 +1,78 @@
+{
+  "case": 2,
+  "sources": {
+    "parent": "/tmp/v159_case1_unified_hybrid_m192n64_sc-16g_custom_fusedmoe.py",
+    "candidate": "/tmp/v160_case12_unified_hybrid_m192n64_sc-16g_custom_fusedmoe.py"
+  },
+  "protocol": {
+    "rounds": 5,
+    "warmup": 10,
+    "repeat": 50,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 3.7739111328125,
+      "candidate": 3.4993716430664064,
+      "change_percent": -7.274667581838202
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 3.498321838378906,
+      "parent": 3.7758514404296877,
+      "change_percent": -7.3501197393295525
+    },
+    {
+      "round": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 3.776317443847656,
+      "candidate": 3.503723449707031,
+      "change_percent": -7.218513755636002
+    },
+    {
+      "round": 4,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 3.498659973144531,
+      "parent": 3.7730303955078126,
+      "change_percent": -7.271884761117963
+    },
+    {
+      "round": 5,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 3.7801470947265625,
+      "candidate": 3.499949951171875,
+      "change_percent": -7.412334402160492
+    }
+  ],
+  "change": {
+    "samples": [
+      -7.274667581838202,
+      -7.3501197393295525,
+      -7.218513755636002,
+      -7.271884761117963,
+      -7.412334402160492
+    ],
+    "mean": -7.305504048016442,
+    "median": -7.274667581838202,
+    "pstdev": 0.06789954277349482
+  }
+}
