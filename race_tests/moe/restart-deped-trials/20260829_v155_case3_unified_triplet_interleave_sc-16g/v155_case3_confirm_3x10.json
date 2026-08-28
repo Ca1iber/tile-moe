@@ -1,0 +1,56 @@
+{
+  "case": 3,
+  "sources": {
+    "parent": "/tmp/v154_case3_unified_m192_sharedreuse_sc-16g_custom_fusedmoe.py",
+    "candidate": "/tmp/v155_case3_unified_triplet_interleave_trial.py"
+  },
+  "protocol": {
+    "rounds": 3,
+    "warmup": 5,
+    "repeat": 10,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 6.884735870361328,
+      "candidate": 7.138457489013672,
+      "change_percent": 3.6852774518861597
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 7.1160835266113285,
+      "parent": 6.877951812744141,
+      "change_percent": 3.4622474880669163
+    },
+    {
+      "round": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 6.888883209228515,
+      "candidate": 7.125299072265625,
+      "change_percent": 3.431846002562522
+    }
+  ],
+  "change": {
+    "samples": [
+      3.6852774518861597,
+      3.4622474880669163,
+      3.431846002562522
+    ],
+    "mean": 3.526456980838533,
+    "median": 3.4622474880669163,
+    "pstdev": 0.11298678122701225
+  }
+}
