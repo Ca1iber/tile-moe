@@ -1,0 +1,68 @@
+--- v157_parent.py
++++ v159_candidate.py
+@@ -1,6 +1,6 @@
+-# GENERATED CANDIDATE: v157
+-# PARENT: v154 local candidate / SHA256 c1bb9f120ecd66c6626e97189c6a073e2c2670462e61b47daa9a454913e43e3d
+-# PRIMARY_CHANGE: unify exact Case3 Step1 bodies over one explicit 32-KiB raw shared weight workspace
++# GENERATED CANDIDATE: v159
++# PARENT: v157c local candidate / SHA256 fc627e4e54e74bcd892bfe62c1f5c3ed3d47ed68df23c20fbd80917717924eff
++# PRIMARY_CHANGE: extend the unified short-M128N128/long-M192N64 Step1 geometry to official Case1
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -226,6 +226,15 @@
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+     elif hidden == 2048 and intermediate == 8192 and num_experts == 16:
++        use_case3_hybrid_m192n64 = (
++            total_padded == 3072
++            and total_valid == 2272
++            and num_blocks_m == 24
++        )
++        if use_case3_hybrid_m192n64:
++            step1_block_token = 192
++            step1_num_blocks_m = num_experts // 2
++            block_dexpert_step1 = 64
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+         use_step1_expert_grouped_grid = False
+@@ -3268,22 +3277,23 @@
+                         map_thread = T.get_thread_binding()
+                         map_rank = T.alloc_local((1,), dtype=T.int32)
+                         map_rank[0] = 0
+-                        if group_sizes[map_thread] <= block_token:
+-                            for map_expert in T.serial(num_experts):
+-                                if (
+-                                    map_expert < map_thread
+-                                    and group_sizes[map_expert] <= block_token
+-                                ):
+-                                    map_rank[0] = map_rank[0] + 1
+-                            expert_rank[map_rank[0]] = map_thread
+-                        else:
+-                            for map_expert in T.serial(num_experts):
+-                                if (
+-                                    map_expert < map_thread
+-                                    and group_sizes[map_expert] > block_token
+-                                ):
+-                                    map_rank[0] = map_rank[0] + 1
+-                            expert_rank[num_experts // 2 + map_rank[0]] = map_thread
++                        if map_thread < num_experts:
++                            if group_sizes[map_thread] <= block_token:
++                                for map_expert in T.serial(num_experts):
++                                    if (
++                                        map_expert < map_thread
++                                        and group_sizes[map_expert] <= block_token
++                                    ):
++                                        map_rank[0] = map_rank[0] + 1
++                                expert_rank[map_rank[0]] = map_thread
++                            else:
++                                for map_expert in T.serial(num_experts):
++                                    if (
++                                        map_expert < map_thread
++                                        and group_sizes[map_expert] > block_token
++                                    ):
++                                        map_rank[0] = map_rank[0] + 1
++                                expert_rank[num_experts // 2 + map_rank[0]] = map_thread
+ 
+                     with T.Kernel(
+                         T.ceildiv(hidden, 256),
