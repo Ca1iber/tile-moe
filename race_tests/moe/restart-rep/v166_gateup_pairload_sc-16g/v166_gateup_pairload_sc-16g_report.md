@@ -112,3 +112,19 @@ Gate uint4 load -> Up uint4 load -> Gate shared uint4 store -> Up shared uint4 s
 - 状态：`local-candidate-external-oj-pending`。
 - v166 是 **external-OJ-ready candidate**，不是 accepted，也不是当前 SOTA。
 - 在完整外部 OJ Case1/2/3 数值返回前，不创建 `restart-submission/v166_gateup_pairload_sc-16g/`，不更新 `SOTA.json`。
+
+## 2026-08-29 external OJ partial result
+
+提交字节仍为 SHA256 `02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a`。
+
+| Case | OJ kernel ms | Score ratio | Display | Correctness | Promotion judgment |
+|---:|---:|---:|---:|---|---|
+| 1 | `2.189` | `0.837128` | `83` | AC | 相比 v148 Case1 `2.204 ms / 0.836195` 数值非回退且严格改善 |
+| 2 | `5.549` | `0.770313` | `77` | AC | 当前样本明显回退；需 exact-source 复测 |
+| 3 | TODO | TODO | TODO | pending | 尚无外部 OJ 回执 |
+
+Case2 的 `5.549 ms` 相比已知 v110 Case2 `3.954 ms` 慢约 `40.34%`，相比本地 exact-v166 `3.441982 ms` 慢约 `61.21%`，远离噪声区间。按当前证据，v166 不满足逐 Case 单调 promotion gate。
+
+Case1/2 编译均出现相同的 `verify_parallel_loop` potential-race warning。警告给出的反例没有遵守源码标量关系：例如 `by=0, j=1` 时仍声称 `intermediate_col=0`。真实 native tuple 中，`col%8`、`owner_thread` 与 `native_vec` 联合编码并可恢复 row/column，因此这是静态分析器无法跟踪派生标量造成的误报；保留 checker，不增加 `TL_DISABLE_DATA_RACE_CHECK`。
+
+历史上同一 OJ 曾出现 Case2/3 首次掉到 70 多分、复测恢复 82 的异常。该历史只构成复测理由，不能推翻当前回退样本；只有 exact candidate 的重复外部 OJ 数值可以决定它是平台异常还是可复现回退。

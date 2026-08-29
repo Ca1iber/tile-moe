@@ -1,0 +1,41 @@
+v166 exact candidate external OJ partial ledger
+Date: 2026-08-29
+Candidate SHA-256: 02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a
+Authority: user-provided external OJ checker/SPJ output
+Status: partial; Case3 pending; Case2 recheck requested
+
+Case1 checker:
+[06:49:04] TileLang verify_parallel_loop emitted two possible data-race warnings for the short and long native up_logits write mappings.
+{"schema_version":2,"time_ms":2.189,"speedup":5.52444,"tk_time_ms":2.189,"tb_time_ms":12.093,"pass":true}
+
+Case1 SPJ:
+experts=16, hidden=2048, intermediate=8192, total_tokens=2272
+baseline_ms=11.251000
+user_kernel_ms=2.189000
+speedup_vs_base=5.140
+score_ratio=0.837128
+display_score=83
+pass=OK
+
+Case2 checker:
+[06:50:03] TileLang verify_parallel_loop emitted the same two possible data-race warnings for the short and long native up_logits write mappings.
+{"schema_version":2,"time_ms":5.549,"speedup":3.710218,"tk_time_ms":5.549,"tb_time_ms":20.588,"pass":true}
+
+Case2 SPJ:
+experts=32, hidden=7168, intermediate=2048, total_tokens=4544
+baseline_ms=18.610000
+user_kernel_ms=5.549000
+speedup_vs_base=3.354
+score_ratio=0.770313
+display_score=77
+pass=OK
+
+Warning audit:
+- The reported counterexamples are internally inconsistent with the source.  For example, with by=0 and j=1, intermediate_col=by*tile+j cannot remain 0.
+- The native output tuple is injective within the warned (i,j) loop: col%8 gives the lane; owner_thread encodes the 32-row group, 8-column group, and row%16; native_vec encodes the 32-column half and the row's 16-row half.  Together these fields reconstruct row and column.
+- The warnings are therefore recorded as static-analysis false positives.  The race checker remains enabled; no disabling pass was added.
+
+Current promotion verdict:
+- Case1 is AC and numerically improves the incumbent v148 Case1: 2.204 -> 2.189 ms, score_ratio 0.836195 -> 0.837128.
+- Case2 is AC for correctness but is a large performance regression in this sample.  Relative to v110 Case2 3.954 ms, 5.549 ms is 40.34% slower.
+- v166 cannot be promoted from this partial result.  Repeat the exact unchanged candidate for Case2 to distinguish a repeatable OJ regression from the previously observed OJ low-score anomaly.
