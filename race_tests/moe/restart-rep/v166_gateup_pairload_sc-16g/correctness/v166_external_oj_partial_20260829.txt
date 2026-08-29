@@ -39,3 +39,13 @@ Current promotion verdict:
 - Case1 is AC and numerically improves the incumbent v148 Case1: 2.204 -> 2.189 ms, score_ratio 0.836195 -> 0.837128.
 - Case2 is AC for correctness but is a large performance regression in this sample.  Relative to v110 Case2 3.954 ms, 5.549 ms is 40.34% slower.
 - v166 cannot be promoted from this partial result.  Repeat the exact unchanged candidate for Case2 to distinguish a repeatable OJ regression from the previously observed OJ low-score anomaly.
+
+Local Case2 recheck after the OJ sample:
+- Machine was idle sc-16g; candidate SHA-256 remained 02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a.
+- Protocol: 5 rounds, warmup 10, repeat 50, AB/BA against exact v148.
+- Correctness: PASS on all valid rows at rtol=1e-2, atol=1e-2.
+- v148 mean: 3.9229808959960937 ms.
+- v166 mean: 3.439743957519531 ms; range 3.4376806640625 to 3.44174072265625 ms.
+- Relative mean change: -12.318095436537044%; pstdev 0.03982503652398601 pp.
+- The previous local formal v166 mean was 3.4419815063476564 ms, so the local result reproduced within about 0.065%.
+- The external OJ 5.549 ms sample is about 61.32% slower than this local recheck and was not reproduced locally.  External OJ re-submission is still required.

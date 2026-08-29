@@ -128,3 +128,14 @@ Case2 的 `5.549 ms` 相比已知 v110 Case2 `3.954 ms` 慢约 `40.34%`，相比
 Case1/2 编译均出现相同的 `verify_parallel_loop` potential-race warning。警告给出的反例没有遵守源码标量关系：例如 `by=0, j=1` 时仍声称 `intermediate_col=0`。真实 native tuple 中，`col%8`、`owner_thread` 与 `native_vec` 联合编码并可恢复 row/column，因此这是静态分析器无法跟踪派生标量造成的误报；保留 checker，不增加 `TL_DISABLE_DATA_RACE_CHECK`。
 
 历史上同一 OJ 曾出现 Case2/3 首次掉到 70 多分、复测恢复 82 的异常。该历史只构成复测理由，不能推翻当前回退样本；只有 exact candidate 的重复外部 OJ 数值可以决定它是平台异常还是可复现回退。
+
+### Local Case2 recheck after the 5.549 ms OJ sample
+
+在 GPU 空闲、candidate SHA256 仍为 `02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a` 的 sc-16g 上，重新执行 5 rounds、warmup 10、repeat 50、AB/BA：
+
+| Local run | v148 mean | v166 mean | Mean change | v166 min–max | pstdev |
+|---|---:|---:|---:|---:|---:|
+| 首次 formal | `3.925491 ms` | `3.441982 ms` | `-12.3171%` | `3.440927–3.443087 ms` | `0.0530 pp` |
+| 2026-08-29 recheck | `3.922981 ms` | `3.439744 ms` | `-12.3181%` | `3.437681–3.441741 ms` | `0.0398 pp` |
+
+复测全有效行正确性 PASS。两次本地 v166 均值仅相差约 `0.065%`，而 OJ `5.549 ms` 比本次本地均值慢约 `61.32%`，因此 OJ 低分无法在当前机器复现。该证据支持“本地性能稳定”，但不能自行把 OJ 样本判无效；promotion 状态继续保持 `partial-regressing-recheck-requested`，必须由 exact 文件的 OJ 复测裁决。
