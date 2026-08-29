@@ -1,0 +1,20 @@
+Candidate: race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/candidate_submission.py
+SHA256: 02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a
+
+Source validation:
+VALID OJ SUBMISSION SOURCE: /root/tilelang-metax/race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/candidate_submission.py
+
+Source plus all official-case generated-device validation:
+VALID OJ SUBMISSION SOURCE: /root/tilelang-metax/race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/candidate_submission.py; generated device sources checked: 3
+
+Generated-device scan:
+- Case1/2/3 memcpy_async sites: 0
+- Case1/2/3 barrier_wait sites: 0
+- No maca_async, import_source, call_extern, call_packed, or call_cpacked match
+
+Final xcore1000 ISA scan:
+- Case1/2/3 ldg/ldu with bsm operand: 0
+- Case1/2/3 private/spill match: 0
+- Ordinary arrive bsmcnt waits are present. They are also present in the known synchronous v005 and OJ-accepted v084/v148 ISA; no BSM load instruction feeds them, so they are not classified as async-copy materialization.
+
+Verdict: candidate packaging and local static/codegen/ISA compliance PASS; external OJ performance result pending.

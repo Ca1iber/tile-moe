@@ -4,6 +4,7 @@
 
 - 仓库所有者于 2026-08-29（Asia/Shanghai）决定结束 Fused MoE GEMM 性能优化。
 - 最后一周只整理提交、实验、profile、技术报告与答辩材料；不再生成、组合、benchmark、profile 或提交新的性能候选。
+- 例外：仓库所有者随后明确要求将既有 v166 按 submission 流程复核一遍；该动作只冻结和验证原始字节，不修改 Kernel，也不恢复新优化探索。
 - 未完成草稿（包括计划中的 v190）不编号、不归档为有效实验、不进入 `dorm`，也不进入 `restart-submission`。
 - 本文是收尾状态索引，不改变 kernel、benchmark、OJ 元数据或既有实验结论。
 
@@ -14,7 +15,7 @@
 1. **外部 OJ SOTA：v148**。它已由外部 OJ 判定 AC，并由仓库所有者明确指定为 SOTA；显示分为 `[83, 82, 82]`，聚合显示分 `82.33`。
 2. **本地最佳候选：v166**。它在 C500 sc-16g 的 Case2 正式 AB/BA 长测中相对 v160 稳定提升超过 `1.2%` 门槛，但从未获得外部 OJ 结果，因此状态只能是 `local-candidate-external-oj-pending`。
 
-因此，不能因为 v166 本地更快就覆盖已 AC 的 `restart-submission`。优化工作在该验证缺口仍存在时结束，缺口不再补测。
+因此，不能因为 v166 本地更快就覆盖已 AC 的 `restart-submission`。2026-08-29 已补齐 exact candidate 的本地三 Case submission 门禁，但外部 OJ 三 Case 数值仍缺；在 OJ 返回前继续保持 pending。
 
 ## 2. 问题原因分析
 
@@ -61,7 +62,8 @@
 - SHA256：`02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a`
 - 证据：`race_tests/moe/restart-rep/v166_gateup_pairload_sc-16g/`
 - 核心报告：`race_tests/moe/restart-rep/v166_gateup_pairload_sc-16g/v166_gateup_pairload_sc-16g_report.md`
-- 状态：本地正确性 PASS、本地正式性能门禁 PASS、外部 OJ pending；未生成 submission。
+- 状态：本地正确性 PASS、本地正式性能门禁 PASS、外部 OJ pending；已生成 candidate staging，但未创建 `restart-submission` promotion。
+- OJ candidate staging：`race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/candidate_submission.py`，与上述源码 byte-identical；本地相对 v148 正式 AB/BA 为 Case1 `-8.0110%`、Case2 `-12.3171%`、Case3 `-12.8408%`。
 
 ### 最后闭环材料
 
@@ -114,7 +116,7 @@ v148 的 `SOTA.json` 明确记录：Case2/3 曾出现 OJ 异常低分，后续�
 
 - MoE 优化于 2026-08-29 正式结束；没有待继续执行的优化任务。
 - 最终对外提交权威状态是 **v148 external-OJ AC**，不是 v166。
-- v166 是最后一个越过本地 `1.2%` 门槛的候选，作为研究材料保留，但因缺少外部 OJ 证据不晋级 submission。
+- v166 是最后一个越过本地 `1.2%` 门槛的候选；现已完成 exact candidate 三 Case 正确性、正式 AB/BA、generated C++ 与 ISA 合规复核，是 external-OJ-ready candidate，但因缺少外部 OJ 数值仍不晋级 `restart-submission`。
 - v187-v189 提供了有价值的反例：更多 operand live range、用更小 N tile 换 occupancy、同步 register-prefetch 都不能改善当前内核。
 - 最终性能图景是：Step2 已接近 compulsory global bytes，核心矛盾转为延迟隐藏和依赖链；在现有 OJ 合规 TileLang 原语下，普通预处理与同步搬运没有收益闭环。
 - 后续只做材料整理：核对 SOTA SHA、整理优化时间线、挑选 v148/v166/v187-v189 数据与图表、形成复现命令和答辩叙事；不再改 kernel。

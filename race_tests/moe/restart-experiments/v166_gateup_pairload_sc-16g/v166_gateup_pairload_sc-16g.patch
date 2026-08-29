@@ -1,0 +1,264 @@
+diff --git a/race_tests/moe/restart-experiments/v160_case2_unified_hybrid_m192n64_sc-16g/v160_case2_unified_hybrid_m192n64_sc-16g_custom_fusedmoe.py b/race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/v166_gateup_pairload_sc-16g_custom_fusedmoe.py
+index 7dc5c61c..a550f2a8 100644
+--- a/race_tests/moe/restart-experiments/v160_case2_unified_hybrid_m192n64_sc-16g/v160_case2_unified_hybrid_m192n64_sc-16g_custom_fusedmoe.py
++++ b/race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/v166_gateup_pairload_sc-16g_custom_fusedmoe.py
+@@ -1,6 +1,6 @@
+-# GENERATED CANDIDATE: v160
+-# PARENT: v159 local candidate / SHA256 c8fd309fa6ec769970b4a9aeaa8d702f75033395f17dd11c30d60b374ae98ae3
+-# PRIMARY_CHANGE: extend the unified short-M128N128/long-M192N64 Step1 geometry to official Case2
++# GENERATED TRIAL: v166
++# PARENT: v160 local candidate / SHA256 5273ba444f66f956c339f3d7f38a38326d49b7d59fbb79046dc10cd7fba6f4f1
++# PRIMARY_CHANGE: issue paired Gate/Up long-Step1 vector reads before their shared stores
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -788,6 +788,45 @@ def run_kernel(
+                         ],
+                     )
+ 
++            @T.macro
++            def copy_step1_gate_up_half(
++                gate_weight,
++                up_weight,
++                shared,
++                copy_expert,
++                global_row_start,
++                global_col_start,
++                shared_gate_row_start,
++                shared_up_row_start,
++            ):
++                weight_thread = T.get_thread_binding()
++                weight_row = weight_thread // 8
++                weight_col = (weight_thread % 8) * 8
++                gate_vec = T.alloc_local((8,), dtype=dtype)
++                up_vec = T.alloc_local((8,), dtype=dtype)
++                for weight_elem in T.vectorized(8):
++                    gate_vec[weight_elem] = gate_weight[
++                        copy_expert,
++                        global_row_start + weight_row,
++                        global_col_start + weight_col + weight_elem,
++                    ]
++                for weight_elem in T.vectorized(8):
++                    up_vec[weight_elem] = up_weight[
++                        copy_expert,
++                        global_row_start + weight_row,
++                        global_col_start + weight_col + weight_elem,
++                    ]
++                for weight_elem in T.vectorized(8):
++                    shared[
++                        shared_gate_row_start + weight_row,
++                        weight_col + weight_elem,
++                    ] = gate_vec[weight_elem]
++                for weight_elem in T.vectorized(8):
++                    shared[
++                        shared_up_row_start + weight_row,
++                        weight_col + weight_elem,
++                    ] = up_vec[weight_elem]
++
+             @T.macro
+             def run_short_step1(
+                 short_bx, short_by, short_input, gate, up, expert_rank,
+@@ -2740,13 +2779,15 @@ def run_kernel(
+                                             input_prefetch[i_x_odd, j_x_odd] = input[
+                                                 bx, k_odd, i_x_odd, j_x_odd
+                                             ]
+-                            copy_step1_weight_half(
++                            copy_step1_gate_up_half(
+                                 gate,
++                                up,
+                                 weight_shared,
+                                 expert_id,
+                                 by * block_dexpert_step1,
+                                 k_even * block_dhidden_step1,
+                                 0,
++                                short_block_dexpert,
+                             )
+                             if (
+                                 use_case2_consumer_native_input
+@@ -2814,21 +2855,15 @@ def run_kernel(
+                                             input_prefetch[i_x_odd, j_x_odd] = input[
+                                                 bx, k_odd, i_x_odd, j_x_odd
+                                             ]
+-                            copy_step1_weight_half(
++                            copy_step1_gate_up_half(
+                                 gate,
++                                up,
+                                 weight_shared,
+                                 expert_id,
+                                 by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                 k_even * block_dhidden_step1,
+                                 block_dexpert_step1 // 2,
+-                            )
+-                            copy_step1_weight_half(
+-                                up,
+-                                weight_shared,
+-                                expert_id,
+-                                by * block_dexpert_step1,
+-                                k_even * block_dhidden_step1,
+-                                short_block_dexpert + 0,
++                                short_block_dexpert + block_dexpert_step1 // 2,
+                             )
+                             if not use_step1_tail_pruning:
+                                 T.copy(
+@@ -2840,37 +2875,19 @@ def run_kernel(
+                                     ],
+                                     input_prefetch[step1_block_token // 2 : step1_block_token, 0:block_dhidden_step1],
+                                 )
+-                            copy_step1_weight_half(
+-                                up,
+-                                weight_shared,
+-                                expert_id,
+-                                by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                k_even * block_dhidden_step1,
+-                                short_block_dexpert + block_dexpert_step1 // 2,
+-                            )
+                         else:
+-                            copy_step1_weight_half(
+-                                gate, weight_shared, expert_id,
++                            copy_step1_gate_up_half(
++                                gate, up, weight_shared, expert_id,
+                                 by * block_dexpert_step1,
+                                 k_even * block_dhidden_step1,
+                                 0,
++                                short_block_dexpert,
+                             )
+-                            copy_step1_weight_half(
+-                                gate, weight_shared, expert_id,
++                            copy_step1_gate_up_half(
++                                gate, up, weight_shared, expert_id,
+                                 by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                 k_even * block_dhidden_step1,
+                                 block_dexpert_step1 // 2,
+-                            )
+-                            copy_step1_weight_half(
+-                                up, weight_shared, expert_id,
+-                                by * block_dexpert_step1,
+-                                k_even * block_dhidden_step1,
+-                                short_block_dexpert + 0,
+-                            )
+-                            copy_step1_weight_half(
+-                                up, weight_shared, expert_id,
+-                                by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                k_even * block_dhidden_step1,
+                                 short_block_dexpert + block_dexpert_step1 // 2,
+                             )
+                         T.sync_threads()
+@@ -2978,13 +2995,15 @@ def run_kernel(
+                                             input_shared[i_x_even, j_x_even] = input[
+                                                 bx, k_odd + 1, i_x_even, j_x_even
+                                             ]
+-                            copy_step1_weight_half(
++                            copy_step1_gate_up_half(
+                                 gate,
++                                up,
+                                 weight_shared,
+                                 expert_id,
+                                 by * block_dexpert_step1,
+                                 k_odd * block_dhidden_step1,
+                                 0,
++                                short_block_dexpert,
+                             )
+                             if (
+                                 use_case2_consumer_native_input
+@@ -3056,21 +3075,15 @@ def run_kernel(
+                                                 input_shared[i_x_even, j_x_even] = input[
+                                                     bx, k_odd + 1, i_x_even, j_x_even
+                                                 ]
+-                            copy_step1_weight_half(
++                            copy_step1_gate_up_half(
+                                 gate,
++                                up,
+                                 weight_shared,
+                                 expert_id,
+                                 by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                 k_odd * block_dhidden_step1,
+                                 block_dexpert_step1 // 2,
+-                            )
+-                            copy_step1_weight_half(
+-                                up,
+-                                weight_shared,
+-                                expert_id,
+-                                by * block_dexpert_step1,
+-                                k_odd * block_dhidden_step1,
+-                                short_block_dexpert + 0,
++                                short_block_dexpert + block_dexpert_step1 // 2,
+                             )
+                             if k_pair + 1 < step1_k_tiles // 2:
+                                 if not use_step1_tail_pruning:
+@@ -3083,37 +3096,19 @@ def run_kernel(
+                                         ],
+                                         input_shared[step1_block_token // 2 : step1_block_token, 0:block_dhidden_step1],
+                                     )
+-                            copy_step1_weight_half(
+-                                up,
+-                                weight_shared,
+-                                expert_id,
+-                                by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                k_odd * block_dhidden_step1,
+-                                short_block_dexpert + block_dexpert_step1 // 2,
+-                            )
+                         else:
+-                            copy_step1_weight_half(
+-                                gate, weight_shared, expert_id,
++                            copy_step1_gate_up_half(
++                                gate, up, weight_shared, expert_id,
+                                 by * block_dexpert_step1,
+                                 k_odd * block_dhidden_step1,
+                                 0,
++                                short_block_dexpert,
+                             )
+-                            copy_step1_weight_half(
+-                                gate, weight_shared, expert_id,
++                            copy_step1_gate_up_half(
++                                gate, up, weight_shared, expert_id,
+                                 by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                                 k_odd * block_dhidden_step1,
+                                 block_dexpert_step1 // 2,
+-                            )
+-                            copy_step1_weight_half(
+-                                up, weight_shared, expert_id,
+-                                by * block_dexpert_step1,
+-                                k_odd * block_dhidden_step1,
+-                                short_block_dexpert + 0,
+-                            )
+-                            copy_step1_weight_half(
+-                                up, weight_shared, expert_id,
+-                                by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                                k_odd * block_dhidden_step1,
+                                 short_block_dexpert + block_dexpert_step1 // 2,
+                             )
+                         T.sync_threads()
+@@ -3186,28 +3181,18 @@ def run_kernel(
+                             ],
+                             input_shared,
+                         )
+-                        copy_step1_weight_half(
+-                            gate, weight_shared, expert_id,
++                        copy_step1_gate_up_half(
++                            gate, up, weight_shared, expert_id,
+                             by * block_dexpert_step1,
+                             k * block_dhidden_step1,
+                             0,
++                            short_block_dexpert,
+                         )
+-                        copy_step1_weight_half(
+-                            gate, weight_shared, expert_id,
++                        copy_step1_gate_up_half(
++                            gate, up, weight_shared, expert_id,
+                             by * block_dexpert_step1 + block_dexpert_step1 // 2,
+                             k * block_dhidden_step1,
+                             block_dexpert_step1 // 2,
+-                        )
+-                        copy_step1_weight_half(
+-                            up, weight_shared, expert_id,
+-                            by * block_dexpert_step1,
+-                            k * block_dhidden_step1,
+-                            short_block_dexpert + 0,
+-                        )
+-                        copy_step1_weight_half(
+-                            up, weight_shared, expert_id,
+-                            by * block_dexpert_step1 + block_dexpert_step1 // 2,
+-                            k * block_dhidden_step1,
+                             short_block_dexpert + block_dexpert_step1 // 2,
+                         )
+                         for ki in T.serial(0, block_dhidden_step1 // 32):

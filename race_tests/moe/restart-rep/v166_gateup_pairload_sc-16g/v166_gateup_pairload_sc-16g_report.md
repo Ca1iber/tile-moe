@@ -75,3 +75,40 @@ Gate uint4 load -> Up uint4 load -> Gate shared uint4 store -> Up shared uint4 s
 
 - Case2 正式五轮稳定越过 `1.2%` floor，作为本地候选保留。
 - 外部 OJ pending；不得标记 accepted，不得移动 `restart-submission`。
+
+## 2026-08-29 candidate submission packaging gate
+
+### Exact candidate identity
+
+- Staging path：`race_tests/moe/restart-experiments/v166_gateup_pairload_sc-16g/candidate_submission.py`
+- SHA256：`02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a`
+- 与已归档 v166 development source：byte-identical。
+- Incumbent OJ SOTA：v148，SHA256 `1079ec3d724ba479daf062a2d76f21d3c6842426ddc903254e9e256879a60840`，显示分 `[83,82,82]`。
+
+### Compliance and correctness
+
+- Exact candidate source validator：PASS。
+- Case1/2/3 generated-device validator：PASS；`memcpy_async`、`barrier_wait`、foreign injection/call 均为 0。
+- Case1/2/3 最终 xcore1000 ISA：`ldg/ldu ... bsm` 均为 0，private/spill 均为 0。
+- ISA 中普通 `arrive bsmcnt` 等待也存在于同步 v005 与已 AC 的 v084/v148；没有 BSM load 指令，故不判作 async-copy materialization。
+- Exact candidate 三 Case 全有效行正确性：PASS，`rtol=1e-2`、`atol=1e-2`。
+
+### Formal local gate versus external-OJ SOTA v148
+
+协议：每 Case 5 rounds、warmup 10、repeat 50、AB/BA 交替；同进程 exact `run_kernel` source 对比。
+
+| Case | v148 mean | v166 candidate mean | Mean change | Median change | pstdev |
+|---:|---:|---:|---:|---:|---:|
+| 1 | `2.154412 ms` | `1.981821 ms` | `-8.0110%` | `-8.0348%` | `0.0963 pp` |
+| 2 | `3.925491 ms` | `3.441982 ms` | `-12.3171%` | `-12.3216%` | `0.0530 pp` |
+| 3 | `7.595843 ms` | `6.620474 ms` | `-12.8408%` | `-12.8536%` | `0.0443 pp` |
+
+三 Case 本地均明显越过 `1.2%` floor，且没有 Case 回退。该结果证明 v166 值得提交外部 OJ，但不能代替 OJ 平台数值。
+
+仓库旧 `fusedmoe_benchmark.py` / `oj_benchmark.py` 接收 development-only `RoutedMoEKernel`，而 exact submission 只暴露 `run_kernel`。本轮没有改写 candidate 或 benchmark 来强行适配；使用冻结的 `run_v110_fullcheck.py` 对 OJ 三个 exact shape、固定 token distribution 和 submission wrapper 做正确性与事件计时。外部 OJ 仍是最终 authority。
+
+### Updated decision
+
+- 状态：`local-candidate-external-oj-pending`。
+- v166 是 **external-OJ-ready candidate**，不是 accepted，也不是当前 SOTA。
+- 在完整外部 OJ Case1/2/3 数值返回前，不创建 `restart-submission/v166_gateup_pairload_sc-16g/`，不更新 `SOTA.json`。
