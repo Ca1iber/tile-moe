@@ -1,0 +1,52 @@
+--- race_tests/moe/restart-experiments/v202_case23_linear_rank_builder_sc-16g/candidate_submission.py	2026-08-30 07:41:49.033471192 +0000
++++ race_tests/moe/restart-experiments/v203_case23_parallel_rank_builder_sc-16g/candidate_submission.py	2026-08-30 08:03:21.026537914 +0000
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v202
+-# PARENT: v191 local candidate / SHA256 f4cf60816c8b56a683e1325d477645563ed1add4b5f83668a0c8785275ab982a
+-# PRIMARY_CHANGE: replace per-expert rank prefix scans with one linear rank builder inside the unified Case2/3 prepack
++# GENERATED EXPERIMENT: v203
++# PARENT: v202 local candidate / SHA256 fac648642911ce415dd8a4cef03c59f5e8d23109fde964c21f034744bf1d2404
++# PRIMARY_CHANGE: build Case2/3 short/long expert ranks in parallel across one producer CTA
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -3426,18 +3426,29 @@
+                                 use_physical_expert_prepack
+                                 and copy_col == 0
+                                 and copy_row == 0
+-                                and copy_thread == 0
++                                and copy_thread < num_experts
+                             ):
+-                                prepack_ranks = T.alloc_local((2,), dtype=T.int32)
+-                                prepack_ranks[0] = 0
+-                                prepack_ranks[1] = num_experts // 2
++                                prepack_rank = T.alloc_local((1,), dtype=T.int32)
++                                prepack_rank[0] = 0
+                                 for prepack_expert in T.serial(num_experts):
+-                                    if group_sizes[prepack_expert] <= block_token:
+-                                        expert_rank[prepack_ranks[0]] = prepack_expert
+-                                        prepack_ranks[0] = prepack_ranks[0] + 1
+-                                    else:
+-                                        expert_rank[prepack_ranks[1]] = prepack_expert
+-                                        prepack_ranks[1] = prepack_ranks[1] + 1
++                                    if (
++                                        prepack_expert < copy_thread
++                                        and (
++                                            group_sizes[prepack_expert]
++                                            <= block_token
++                                        )
++                                        == (
++                                            group_sizes[copy_thread]
++                                            <= block_token
++                                        )
++                                    ):
++                                        prepack_rank[0] = prepack_rank[0] + 1
++                                if group_sizes[copy_thread] <= block_token:
++                                    expert_rank[prepack_rank[0]] = copy_thread
++                                else:
++                                    expert_rank[
++                                        num_experts // 2 + prepack_rank[0]
++                                    ] = copy_thread
+                             copy_input_row = (
+                                 copy_expert
+                                 if use_physical_expert_prepack

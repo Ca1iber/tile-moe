@@ -1,0 +1,56 @@
+{
+  "case": 1,
+  "sources": {
+    "parent": "/root/tilelang-metax/race_tests/moe/restart-submission/v166_gateup_pairload_sc-16g/submission.py",
+    "candidate": "/tmp/v203_case23_parallel_rank_builder_sc-16g_probe.py"
+  },
+  "protocol": {
+    "rounds": 3,
+    "warmup": 10,
+    "repeat": 20,
+    "order": "AB/BA"
+  },
+  "correctness": "PASS on all valid rows, rtol=1e-2 atol=1e-2",
+  "rows": [
+    {
+      "round": 1,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 1.9849472045898438,
+      "candidate": 1.9849599838256835,
+      "change_percent": 0.0006438073420822477
+    },
+    {
+      "round": 2,
+      "order": [
+        "candidate",
+        "parent"
+      ],
+      "candidate": 1.9937919616699218,
+      "parent": 1.9881856918334961,
+      "change_percent": 0.2819791863231558
+    },
+    {
+      "round": 3,
+      "order": [
+        "parent",
+        "candidate"
+      ],
+      "parent": 1.9826431274414062,
+      "candidate": 1.9837696075439453,
+      "change_percent": 0.05681708861002832
+    }
+  ],
+  "change": {
+    "samples": [
+      0.0006438073420822477,
+      0.2819791863231558,
+      0.05681708861002832
+    ],
+    "mean": 0.11314669409175544,
+    "median": 0.05681708861002832,
+    "pstdev": 0.12156525602024436
+  }
+}
