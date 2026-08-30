@@ -1,0 +1,421 @@
+diff --git a/tmp/v166_static_mtail.py b/tmp/v190_case2_unified_prepack64_sc-16g_candidate_submission.py
+index a550f2a..e56b567 100644
+--- a/tmp/v166_static_mtail.py
++++ b/tmp/v190_case2_unified_prepack64_sc-16g_candidate_submission.py
+@@ -1,6 +1,6 @@
+-# GENERATED TRIAL: v166
+-# PARENT: v160 local candidate / SHA256 5273ba444f66f956c339f3d7f38a38326d49b7d59fbb79046dc10cd7fba6f4f1
+-# PRIMARY_CHANGE: issue paired Gate/Up long-Step1 vector reads before their shared stores
++# GENERATED EXPERIMENT: v190
++# PARENT: v166 external-OJ SOTA / SHA256 02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a
++# PRIMARY_CHANGE: use two M64 phases for short experts and three M64 phases for long experts in the unified Case2 prepack
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -221,6 +221,8 @@ def run_kernel(
+     use_case3_hybrid_m192n64 = False
+     use_step2_dynamic_m192n128 = False
+     use_unified_m192_sharedreuse_step2 = False
++    use_physical_expert_prepack = False
++    use_physical_step1_mapping = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -265,6 +267,7 @@ def run_kernel(
+                 and total_valid == 4544
+                 and num_blocks_m == 48
+             )
++            use_physical_expert_prepack = use_case3_hybrid_m192n64
+         if num_experts == 64:
+             use_case3_hybrid_m192n64 = (
+                 total_padded == 12288
+@@ -342,6 +345,8 @@ def run_kernel(
+         bool(use_unpredicated_native_reads),
+         bool(use_step2_dynamic_m192n128),
+         bool(use_unified_m192_sharedreuse_step2),
++        bool(use_physical_expert_prepack),
++        bool(use_physical_step1_mapping),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -611,6 +616,8 @@ def run_kernel(
+             use_unpredicated_native_reads,
+             use_step2_dynamic_m192n128,
+             use_unified_m192_sharedreuse_step2,
++            use_physical_expert_prepack,
++            use_physical_step1_mapping,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -677,7 +684,7 @@ def run_kernel(
+             input_shape = (total_padded, hidden)
+             if use_case2_consumer_native_input:
+                 tiled_input_shape = (
+-                    step1_num_blocks_m,
++                    num_experts if use_physical_expert_prepack else step1_num_blocks_m,
+                     step1_k_tiles,
+                     step1_native_vecs,
+                     step1_threads,
+@@ -691,15 +698,19 @@ def run_kernel(
+                     block_dhidden_step1,
+                 )
+             short_input_shape = (
+-                (
+-                    num_experts // 2,
+-                    step1_k_tiles,
+-                    4,
+-                    threads,
+-                    8,
++                tiled_input_shape
++                if use_physical_expert_prepack
++                else (
++                    (
++                        num_experts // 2,
++                        step1_k_tiles,
++                        4,
++                        threads,
++                        8,
++                    )
++                    if use_case3_hybrid_m192n64
++                    else tiled_input_shape
+                 )
+-                if use_case3_hybrid_m192n64
+-                else tiled_input_shape
+             )
+             step2_k_tiles = (intermediate + block_dexpert_step2 - 1) // block_dexpert_step2
+             if use_consumer_native_up_logits:
+@@ -852,7 +863,11 @@ def run_kernel(
+                 )
+                 T.use_swizzle(10, enable=False)
+ 
+-                short_expert_id = expert_rank[short_bx]
++                short_expert_id = (
++                    short_bx
++                    if use_physical_expert_prepack
++                    else expert_rank[short_bx]
++                )
+                 T.assume(0 <= short_expert_id)
+                 T.assume(short_expert_id < num_experts)
+                 short_group_size = group_sizes[short_expert_id]
+@@ -1454,7 +1469,11 @@ def run_kernel(
+ 
+                 if step1_block_token == 192:
+                     if use_case3_hybrid_m192n64:
+-                        expert_id = expert_rank[num_experts // 2 + bx]
++                        expert_id = (
++                            bx
++                            if use_physical_expert_prepack
++                            else expert_rank[num_experts // 2 + bx]
++                        )
+                     else:
+                         expert_id = bx
+                 else:
+@@ -2088,7 +2107,11 @@ def run_kernel(
+                 )
+                 T.use_swizzle(10, enable=False)
+ 
+-                short_expert_id = expert_rank[short_bx]
++                short_expert_id = (
++                    short_bx
++                    if use_physical_expert_prepack
++                    else expert_rank[short_bx]
++                )
+                 T.assume(0 <= short_expert_id)
+                 T.assume(short_expert_id < num_experts)
+                 short_group_size = group_sizes[short_expert_id]
+@@ -2686,7 +2709,11 @@ def run_kernel(
+ 
+                 if step1_block_token == 192:
+                     if use_case3_hybrid_m192n64:
+-                        expert_id = expert_rank[num_experts // 2 + bx]
++                        expert_id = (
++                            bx
++                            if use_physical_expert_prepack
++                            else expert_rank[num_experts // 2 + bx]
++                        )
+                     else:
+                         expert_id = bx
+                 else:
+@@ -3262,7 +3289,11 @@ def run_kernel(
+                 up_logits: T.Tensor(intermediate_shape, dtype),
+                 output: T.Tensor(input_shape, dtype),
+             ):
+-                if use_case3_hybrid_m192n64:
++                if (
++                    use_case3_hybrid_m192n64
++                    and not use_physical_expert_prepack
++                    and not use_physical_step1_mapping
++                ):
+                     with T.Kernel(1, threads=64) as map_block:
+                         map_thread = T.get_thread_binding()
+                         map_rank = T.alloc_local((1,), dtype=T.int32)
+@@ -3357,41 +3388,93 @@ def run_kernel(
+                     T.ceildiv(
+                         hidden, input_prepack_cols * input_prepack_col_panels
+                     ),
+-                    step1_num_blocks_m,
++                    num_experts if use_physical_expert_prepack else step1_num_blocks_m,
+                     threads=input_prepack_threads,
+                 ) as (copy_col, copy_row):
+                     if use_case2_consumer_native_input:
+-                        # A synchronous 64-KiB bridge lets T.copy read the
+-                        # original M128/N256 panel in row-major coalesced form.
+-                        # Consumer threads then write contiguous native slots.
++                        # A synchronous 16-KiB bridge reads one M64/N128 phase
++                        # in row-major coalesced form. Consumer threads then
++                        # write contiguous native slots.
+                         # This kernel has no async operation; the CTA barrier
+                         # is the complete producer/consumer hand-off.
+                         copy_thread = T.get_thread_binding()
+                         if step1_block_token == 192:
++                            copy_phase_rows = (
++                                64
++                                if use_physical_expert_prepack
++                                else step1_block_token // 2
++                            )
++                            copy_phase_vecs = (
++                                2 if use_physical_expert_prepack else 3
++                            )
+                             copy_shared = T.alloc_shared(
+-                                (step1_block_token // 2, input_prepack_cols),
++                                (copy_phase_rows, input_prepack_cols),
+                                 dtype=dtype,
+                             )
+                             if use_case3_hybrid_m192n64:
+-                                copy_expert = expert_rank[
+-                                    num_experts // 2 + copy_row
+-                                ]
++                                copy_expert = (
++                                    copy_row
++                                    if use_physical_expert_prepack
++                                    else expert_rank[num_experts // 2 + copy_row]
++                                )
+                             else:
+                                 copy_expert = copy_row
+                             copy_padded_start = group_padded_offsets[copy_expert]
+                             copy_group_size = group_sizes[copy_expert]
++                            if (
++                                use_physical_expert_prepack
++                                and copy_col == 0
++                                and copy_thread == 0
++                            ):
++                                prepack_rank = T.alloc_local((1,), dtype=T.int32)
++                                prepack_rank[0] = 0
++                                if copy_group_size <= block_token:
++                                    for prepack_expert in T.serial(num_experts):
++                                        if (
++                                            prepack_expert < copy_expert
++                                            and group_sizes[prepack_expert]
++                                            <= block_token
++                                        ):
++                                            prepack_rank[0] = prepack_rank[0] + 1
++                                    expert_rank[prepack_rank[0]] = copy_expert
++                                else:
++                                    for prepack_expert in T.serial(num_experts):
++                                        if (
++                                            prepack_expert < copy_expert
++                                            and group_sizes[prepack_expert]
++                                            > block_token
++                                        ):
++                                            prepack_rank[0] = prepack_rank[0] + 1
++                                    expert_rank[
++                                        num_experts // 2 + prepack_rank[0]
++                                    ] = copy_expert
++                            copy_input_row = (
++                                copy_expert
++                                if use_physical_expert_prepack
++                                else copy_row
++                            )
++                            copy_num_phases = (
++                                T.if_then_else(
++                                    copy_group_size <= block_token, 2, 3
++                                )
++                                if use_physical_expert_prepack
++                                else 2
++                            )
+                             for copy_panel in T.serial(input_prepack_col_panels):
+                                 copy_panel_col = (
+                                     copy_col * input_prepack_col_panels + copy_panel
+                                 )
+-                                for copy_phase in T.serial(2):
+-                                    for copy_vec in T.serial(3):
+-                                        copy_linear_vec = copy_thread * 3 + copy_vec
++                                for copy_phase in T.serial(copy_num_phases):
++                                    for copy_vec in T.serial(copy_phase_vecs):
++                                        copy_linear_vec = (
++                                            copy_thread * copy_phase_vecs
++                                            + copy_vec
++                                        )
+                                         copy_phase_row = copy_linear_vec // (
+                                             input_prepack_cols // 8
+                                         )
+                                         copy_source_row = (
+-                                            copy_phase * (step1_block_token // 2)
++                                            copy_phase * copy_phase_rows
+                                             + copy_phase_row
+                                         )
+                                         copy_source_col = (
+@@ -3432,6 +3515,15 @@ def run_kernel(
+                                         for native_vec in T.serial(
+                                             step1_native_vecs
+                                         ):
++                                            short_source_row_in_block = (
++                                                (copy_thread // 64) * 32
++                                                + (native_vec % 2) * 16
++                                                + copy_thread % 16
++                                            )
++                                            short_source_col_in_tile = (
++                                                (native_vec // 2) * 32
++                                                + ((copy_thread % 64) // 16) * 8
++                                            )
+                                             source_row_in_block = (
+                                                 (copy_thread // 64)
+                                                 * step1_warp_row_tiles
+@@ -3450,18 +3542,45 @@ def run_kernel(
+                                                 * 32
+                                                 + ((copy_thread % 64) // 16) * 8
+                                             )
+-                                            if (
++                                            if copy_group_size <= block_token:
++                                                if (
++                                                    copy_thread < threads
++                                                    and native_vec < 4
++                                                    and short_source_row_in_block
++                                                    >= copy_phase
++                                                    * copy_phase_rows
++                                                    and short_source_row_in_block
++                                                    < (copy_phase + 1)
++                                                    * copy_phase_rows
++                                                ):
++                                                    for native_elem in T.vectorized(8):
++                                                        input[
++                                                            copy_input_row,
++                                                            copy_k_tile,
++                                                            native_vec,
++                                                            copy_thread,
++                                                            native_elem,
++                                                        ] = copy_shared[
++                                                            short_source_row_in_block
++                                                            - copy_phase
++                                                            * copy_phase_rows,
++                                                            copy_k_sub
++                                                            * block_dhidden_step1
++                                                            + short_source_col_in_tile
++                                                            + native_elem,
++                                                        ]
++                                            elif (
+                                                 copy_thread < step1_threads
+                                                 and source_row_in_block
+                                                 >= copy_phase
+-                                                * (step1_block_token // 2)
++                                                * copy_phase_rows
+                                                 and source_row_in_block
+                                                 < (copy_phase + 1)
+-                                                * (step1_block_token // 2)
++                                                * copy_phase_rows
+                                             ):
+                                                 for native_elem in T.vectorized(8):
+                                                     input[
+-                                                        copy_row,
++                                                        copy_input_row,
+                                                         copy_k_tile,
+                                                         native_vec,
+                                                         copy_thread,
+@@ -3469,17 +3588,14 @@ def run_kernel(
+                                                     ] = copy_shared[
+                                                         source_row_in_block
+                                                         - copy_phase
+-                                                        * (
+-                                                            step1_block_token
+-                                                            // 2
+-                                                        ),
++                                                        * copy_phase_rows,
+                                                         copy_k_sub
+                                                         * block_dhidden_step1
+                                                         + source_col_in_tile
+                                                         + native_elem,
+                                                     ]
+                                     if (
+-                                        copy_phase + 1 < 2
++                                        copy_phase + 1 < copy_num_phases
+                                         or copy_panel + 1
+                                         < input_prepack_col_panels
+                                     ):
+@@ -3572,14 +3688,45 @@ def run_kernel(
+                         T.annotate_layout(
+                             {weight_shared: make_swizzled_layout(weight_shared)}
+                         )
+-                        if mixed_pid1 < num_experts // 2:
++                        if use_physical_step1_mapping:
++                            physical_expert = group_idx_for_bx[mixed_pid1]
++                            T.assume(0 <= physical_expert)
++                            T.assume(physical_expert < num_experts)
++                            physical_slot = (
++                                mixed_pid1
++                                - group_padded_offsets[physical_expert]
++                                // block_token
++                            )
++                            if group_sizes[physical_expert] <= block_token:
++                                run_short_step1_shared(
++                                    physical_expert, mixed_pid0, input, gate, up, expert_rank, group_sizes, group_padded_offsets, up_logits, weight_shared,
++                                )
++                            else:
++                                run_long_step1_shared(
++                                    physical_expert,
++                                    mixed_pid0 * 2 + physical_slot,
++                                    input, gate, up, expert_rank, group_idx_for_bx, group_sizes, group_padded_offsets, up_logits, weight_shared,
++                                )
++                        elif mixed_pid1 < num_experts // 2:
++                            mixed_short_expert = (
++                                expert_rank[mixed_pid1]
++                                if use_physical_expert_prepack
++                                else mixed_pid1
++                            )
+                             run_short_step1_shared(
+-                                mixed_pid1, mixed_pid0, short_input, gate, up, expert_rank, group_sizes, group_padded_offsets, up_logits, weight_shared,
++                                mixed_short_expert, mixed_pid0, short_input, gate, up, expert_rank, group_sizes, group_padded_offsets, up_logits, weight_shared,
+                             )
+                         else:
+                             mixed_long_slot = mixed_pid1 - num_experts // 2
++                            mixed_long_expert = (
++                                expert_rank[
++                                    num_experts // 2 + mixed_long_slot // 2
++                                ]
++                                if use_physical_expert_prepack
++                                else mixed_long_slot // 2
++                            )
+                             run_long_step1_shared(
+-                                mixed_long_slot // 2,
++                                mixed_long_expert,
+                                 mixed_pid0 * 2 + mixed_long_slot % 2,
+                                 input, gate, up, expert_rank, group_idx_for_bx, group_sizes, group_padded_offsets, up_logits, weight_shared,
+                             )
+@@ -4307,7 +4454,7 @@ def run_kernel(
+         )
+         tiled_input = _consumer_native_input_workspace(
+             stacked_expert_tokens,
+-            step1_num_blocks_m,
++            num_experts if use_physical_expert_prepack else step1_num_blocks_m,
+             step1_k_tiles,
+             step1_native_vecs_host,
+             step1_threads_host,
+@@ -4317,7 +4464,9 @@ def run_kernel(
+         tiled_input = _v088_input_workspace(
+             stacked_expert_tokens, num_blocks_m, step1_k_tiles
+         )
+-    if use_case3_hybrid_m192n64:
++    if use_physical_expert_prepack:
++        short_tiled_input = tiled_input
++    elif use_case3_hybrid_m192n64:
+         short_tiled_input = _consumer_native_input_workspace(
+             stacked_expert_tokens,
+             num_experts // 2,
+@@ -4328,7 +4477,7 @@ def run_kernel(
+         )
+     else:
+         short_tiled_input = tiled_input
+-    if use_case3_hybrid_m192n64:
++    if use_case3_hybrid_m192n64 and not use_physical_step1_mapping:
+         expert_rank = _expert_rank_workspace(
+             stacked_expert_tokens, num_experts, out
+         )
