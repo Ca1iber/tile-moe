@@ -1,0 +1,17041 @@
+	.text
+	.weak	__cxa_pure_virtual              ; -- Begin function __cxa_pure_virtual
+	.p2align	3
+	.type	__cxa_pure_virtual,@function
+__cxa_pure_virtual:                     ; @__cxa_pure_virtual
+.Lfunc_begin0:
+	.file	1 "/opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include" "__clang_maca_runtime_wrapper.h"
+	.loc	1 38 0                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_runtime_wrapper.h:38:0
+; %bb.0:                                ; %entry
+	arrive 0
+.Ltmp0:
+	.loc	1 39 3 prologue_end             ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_runtime_wrapper.h:39:3
+	trap 2
+.Ltmp1:
+.Lfunc_end0:
+	.size	__cxa_pure_virtual, .Lfunc_end0-__cxa_pure_virtual
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 16
+; NumSTRegs: 0
+; NumMTRegs: 1
+; PrivateSize: 0
+	.text
+	.weak	__cxa_deleted_virtual           ; -- Begin function __cxa_deleted_virtual
+	.p2align	3
+	.type	__cxa_deleted_virtual,@function
+__cxa_deleted_virtual:                  ; @__cxa_deleted_virtual
+.Lfunc_begin1:
+	.loc	1 43 0                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_runtime_wrapper.h:43:0
+; %bb.0:                                ; %entry
+	arrive 0
+.Ltmp2:
+	.loc	1 44 3 prologue_end             ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_runtime_wrapper.h:44:3
+	trap 2
+.Ltmp3:
+.Lfunc_end1:
+	.size	__cxa_deleted_virtual, .Lfunc_end1-__cxa_deleted_virtual
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 16
+; NumSTRegs: 0
+; NumMTRegs: 1
+; PrivateSize: 0
+	.text
+	.protected	kernel_kernel           ; -- Begin function kernel_kernel
+	.globl	kernel_kernel
+	.p2align	8
+	.type	kernel_kernel,@function
+kernel_kernel:                          ; @kernel_kernel
+.Lfunc_begin2:
+	.file	2 "/root" "moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp"
+	.loc	2 14 0                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:14:0
+; %bb.0:                                ; %entry
+	ldu_b128 s0, s0, 0x0
+	and_b32 r0, 0x3ff, r0
+.Ltmp4:
+	.loc	2 17 26 prologue_end            ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:17:26
+	cmp_lt_u32 s4, r0, 16
+	.loc	2 17 7 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:17:7
+	snop 3
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB2_5
+; %bb.1:                                ; %if.then
+	.loc	2 18 9 is_stmt 1                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:9
+	shl_b32 r1, 2, r0
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	cmp_lg_u32 s4, r0, 0
+	smov_b64 s6, 0
+	.loc	2 18 9                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:9
+	arrive slcnt(0)
+	ldg_b32 r1, s2, r1, 0x0
+                                        ; implicit-def: $mtreg_64bits_2
+	.loc	2 18 41                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:41
+	arrive gvmcnt(0)
+	cmp_lt_i32 s8, 0x80, r1
+	.loc	2 18 9                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:9
+	snop 3
+	and_xmsk s10, s8
+	sxor_b64 s8, xmsk, s10
+	bra_xmsks LBB2_6
+; %bb.2:                                ; %Flow
+	or_xmsk s8, s8
+	sxor_b64 xmsk, xmsk, s8
+	snop 0
+	bra_xmsks LBB2_25
+LBB2_3:                                 ; %Flow2
+	.loc	2 0 9                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s8
+	.loc	2 18 9                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:9
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB2_5
+LBB2_4:                                 ; %if.end60.sink.split
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	stg_b32 r2, 0x0, r0 devc
+LBB2_5:                                 ; %if.end60
+	.loc	2 42 1 is_stmt 1                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:42:1
+	endk
+LBB2_6:                                 ; %for.body32.preheader
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	mov_b32 r1, 0
+	.loc	2 31 49 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB2_44
+; %bb.7:                                ; %for.inc44
+	.loc	2 0 49 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 1
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_45
+LBB2_8:                                 ; %for.inc44.1
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 2
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_46
+LBB2_9:                                 ; %for.inc44.2
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 3
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_47
+LBB2_10:                                ; %for.inc44.3
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 4
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_48
+LBB2_11:                                ; %for.inc44.4
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 5
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_49
+LBB2_12:                                ; %for.inc44.5
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 6
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_50
+LBB2_13:                                ; %for.inc44.6
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 7
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_51
+LBB2_14:                                ; %for.inc44.7
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 8
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_52
+LBB2_15:                                ; %for.inc44.8
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 9
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_53
+LBB2_16:                                ; %for.inc44.9
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 10
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_54
+LBB2_17:                                ; %for.inc44.10
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 11
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_55
+LBB2_18:                                ; %for.inc44.11
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 12
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_56
+LBB2_19:                                ; %for.inc44.12
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 13
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_57
+LBB2_20:                                ; %for.inc44.13
+	.loc	2 0 49                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:49
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_eq_u32 s10, r0, 15
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_22
+LBB2_21:                                ; %land.lhs.true35.14
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x38
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+LBB2_22:                                ; %for.inc44.15
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 35 11 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:35:11
+	add_u32 r2, r1, 8
+	cmp_lt_u32 s6, r2, 16
+	smov_b64 s10, 0
+                                        ; implicit-def: $mtreg_64bits_2
+	snop 2
+	and_xmsk s12, s6
+	sxor_b64 s6, xmsk, s12
+	bra_xmskz LBB2_24
+; %bb.23:                               ; %if.then52
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	shl_b32 r2, 2, r1
+	add_co_u32 r1, s0, r2
+	mov_b32 r3, 0
+	mov_b32 r2, s1
+	addc_co_u32 r3, r2, r3
+	add_co_u32 r2, r1, 32
+	smov_b64 s10, xmsk
+	sandn_b64 s12, 0, xmsk
+	addc_co_u32 r3, r3, 0
+	sor_b64 s10, s12, s10
+LBB2_24:                                ; %Flow1
+	sor_b64 xmsk, xmsk, s6
+	sandn_b64 s6, 0, xmsk
+	sand_b64 s10, s10, xmsk
+	sor_b64 s6, s6, s10
+	.loc	2 18 9 is_stmt 1                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:9
+	or_xmsk s8, s8
+	sxor_b64 xmsk, xmsk, s8
+	snop 0
+	bra_xmskz LBB2_3
+LBB2_25:                                ; %for.body.preheader
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	mov_b32 r1, 0
+	.loc	2 20 47 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	and_xmsk s10, s4
+	snop 0
+	bra_xmsks LBB2_58
+; %bb.26:                               ; %for.inc
+	.loc	2 0 47 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s10
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 1
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_59
+LBB2_27:                                ; %for.inc.1
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 2
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_60
+LBB2_28:                                ; %for.inc.2
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 3
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_61
+LBB2_29:                                ; %for.inc.3
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 4
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_62
+LBB2_30:                                ; %for.inc.4
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 5
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_63
+LBB2_31:                                ; %for.inc.5
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 6
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_64
+LBB2_32:                                ; %for.inc.6
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 7
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_65
+LBB2_33:                                ; %for.inc.7
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 8
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_66
+LBB2_34:                                ; %for.inc.8
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 9
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_67
+LBB2_35:                                ; %for.inc.9
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 10
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_68
+LBB2_36:                                ; %for.inc.10
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 11
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_69
+LBB2_37:                                ; %for.inc.11
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 12
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_70
+LBB2_38:                                ; %for.inc.12
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 13
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_71
+LBB2_39:                                ; %for.inc.13
+	.loc	2 0 47                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:47
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_eq_u32 s10, r0, 15
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_41
+LBB2_40:                                ; %land.lhs.true.14
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s2, s2, 0x38
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s2, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+LBB2_41:                                ; %for.inc.15
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 24 11 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:24:11
+	cmp_lt_u32 s10, r1, 16
+	smov_b64 s4, s6
+                                        ; implicit-def: $mtreg_64bits_2
+	snop 2
+	and_xmsk s2, s10
+	snop 0
+	bra_xmskz LBB2_43
+; %bb.42:                               ; %if.then21
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	shl_b32 r2, 2, r1
+	smov_b64 s4, xmsk
+	mov_b32 r3, 0
+	add_co_u32 r2, s0, r2
+	mov_b32 r1, s1
+	sandn_b64 s0, s6, xmsk
+	addc_co_u32 r3, r1, r3
+	sor_b64 s4, s0, s4
+LBB2_43:                                ; %Flow3
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 18 9 is_stmt 1                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:18:9
+	sandn_b64 s0, s6, xmsk
+	sand_b64 s2, s4, xmsk
+	sor_b64 s6, s0, s2
+	sor_b64 xmsk, xmsk, s8
+	and_xmsk s0, s6
+	snop 0
+	bra_xmsks LBB2_4
+	bra LBB2_5
+LBB2_44:                                ; %land.lhs.true35
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x0
+	.loc	2 31 57 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r1, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 s10, s10, r1
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	snop 3
+	csel_b32 r1, 1, 0, s10
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 1
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_8
+LBB2_45:                                ; %land.lhs.true35.1
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x4
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 2
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_9
+LBB2_46:                                ; %land.lhs.true35.2
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x8
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 3
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_10
+LBB2_47:                                ; %land.lhs.true35.3
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0xc
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 4
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_11
+LBB2_48:                                ; %land.lhs.true35.4
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x10
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 5
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_12
+LBB2_49:                                ; %land.lhs.true35.5
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x14
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 6
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_13
+LBB2_50:                                ; %land.lhs.true35.6
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x18
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 7
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_14
+LBB2_51:                                ; %land.lhs.true35.7
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x1c
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 8
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_15
+LBB2_52:                                ; %land.lhs.true35.8
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x20
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 9
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_16
+LBB2_53:                                ; %land.lhs.true35.9
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x24
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 10
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_17
+LBB2_54:                                ; %land.lhs.true35.10
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x28
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 11
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_18
+LBB2_55:                                ; %land.lhs.true35.11
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x2c
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 12
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_19
+LBB2_56:                                ; %land.lhs.true35.12
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x30
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_gt_u32 s10, r0, 13
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmskz LBB2_20
+LBB2_57:                                ; %land.lhs.true35.13
+	.loc	2 31 59                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:59
+	ldu_b32 s10, s2, 0x34
+	.loc	2 31 57                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:57
+	mov_b32 r2, 0x80
+	arrive slcnt(0)
+	cmp_gt_i32 cmsk, s10, r2
+	.loc	2 31 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 31 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:27
+	cmp_eq_u32 s10, r0, 15
+	.loc	2 31 49                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:31:49
+	snop 3
+	and_xmsk s6, s10
+	snop 0
+	bra_xmsks LBB2_21
+	bra LBB2_22
+LBB2_58:                                ; %land.lhs.true
+	.loc	2 20 51 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s4, s2, 0x0
+	.loc	2 20 75 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r1, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 s4, s4, r1
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	snop 3
+	csel_b32 r1, 1, 0, s4
+	sor_b64 xmsk, xmsk, s10
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 1
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_27
+LBB2_59:                                ; %land.lhs.true.1
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x4
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 2
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_28
+LBB2_60:                                ; %land.lhs.true.2
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x8
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 3
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_29
+LBB2_61:                                ; %land.lhs.true.3
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0xc
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 4
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_30
+LBB2_62:                                ; %land.lhs.true.4
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x10
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 5
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_31
+LBB2_63:                                ; %land.lhs.true.5
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x14
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 6
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_32
+LBB2_64:                                ; %land.lhs.true.6
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x18
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 7
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_33
+LBB2_65:                                ; %land.lhs.true.7
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x1c
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 8
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_34
+LBB2_66:                                ; %land.lhs.true.8
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x20
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 9
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_35
+LBB2_67:                                ; %land.lhs.true.9
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x24
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 10
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_36
+LBB2_68:                                ; %land.lhs.true.10
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x28
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 11
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_37
+LBB2_69:                                ; %land.lhs.true.11
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x2c
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 12
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_38
+LBB2_70:                                ; %land.lhs.true.12
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x30
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_gt_u32 s10, r0, 13
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB2_39
+LBB2_71:                                ; %land.lhs.true.13
+	.loc	2 20 51                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:51
+	ldu_b32 s10, s2, 0x34
+	.loc	2 20 75                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:75
+	mov_b32 r2, 0x81
+	arrive slcnt(0)
+	cmp_lt_i32 cmsk, s10, r2
+	.loc	2 20 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:13
+	addc_co_u32 r1, r1, 0
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 20 25                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:25
+	cmp_eq_u32 s10, r0, 15
+	.loc	2 20 47                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:20:47
+	snop 3
+	and_xmsk s4, s10
+	snop 0
+	bra_xmsks LBB2_40
+	bra LBB2_41
+.Ltmp5:
+	.section	.rodata,#alloc
+	.p2align	6, 0x0
+	.macahca_kernel kernel_kernel
+		.macahca_mtreg_size 1
+		.macahca_streg_size 2
+		.macahca_priority 0
+		.macahca_float_mode 240
+		.macahca_privilege 0
+		.macahca_debug_mode 0
+		.macahca_ieee_mode 1
+		.macahca_bulky_mode 0
+		.macahca_fp16_overflow_mode 0
+		.macahca_perf_on 0
+		.macahca_priv_segm_on 0
+		.macahca_user_streg_count 4
+		.macahca_user_trap_handler_on 0
+		.macahca_streg_block_id_x_on 1
+		.macahca_streg_block_id_y_on 0
+		.macahca_streg_block_id_z_on 0
+		.macahca_streg_block_info_on 0
+		.macahca_enable_mtreg_thread_id 0
+		.macahca_exception_address_watch_on 0
+		.macahca_exception_memory_violation_on 0
+		.macahca_bsm_size 0
+		.macahca_exception_on 0
+		.macahca_streg_kernarg_segm_ptr_on 1
+		.macahca_streg_dispatch_ptr_on 0
+		.macahca_streg_prvt_init_on 0
+		.macahca_streg_prvt_segm_size_on 0
+		.macahca_unorder_dispatch_on 0
+		.macahca_warps_per_dpc 416
+		.macahca_blocks_per_ap 16
+	.end_macahca_kernel
+	.text
+	.fill 4, 8, 0x2320
+	.p2align 8
+.Lfunc_end2:
+	.size	kernel_kernel, .Lfunc_end2-kernel_kernel
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 4608
+; NumMTRegsForWarps/PEU: 4
+; NumSTRegsForWarps/PEU: 18
+; MaxWarpsPerPEU: 8
+	.text
+	.protected	kernel_kernel_1         ; -- Begin function kernel_kernel_1
+	.globl	kernel_kernel_1
+	.p2align	8
+	.type	kernel_kernel_1,@function
+kernel_kernel_1:                        ; @kernel_kernel_1
+.Lfunc_begin3:
+	.loc	2 44 0 is_stmt 1                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:44:0
+; %bb.0:                                ; %entry
+	ldu_b256 s8, s0, 0x0
+	smov_b32 s2, s5
+.Ltmp6:
+	.loc	2 46 27 prologue_end            ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:46:27
+	smov_b32 s3, 0
+	sshl_b64 s0, 2, s2
+	arrive slcnt(0)
+	sadd_co_u32 s0, s8, s0
+	saddc_co_u32 s1, s9, s1
+	ldu_b32 s0, s0, 0x0
+	.loc	2 48 33                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:48:33
+	arrive slcnt(0)
+	scmp_gt_u32 s0, 16
+	snop 0
+	bra_smsks LBB3_2
+; %bb.1:                                ; %if.then
+	.loc	2 0 33 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:33
+	smov_b32 s1, 0
+	sshl_b64 s0, 2, s0
+	sadd_co_u32 s0, s10, s0
+	saddc_co_u32 s1, s11, s1
+	.loc	2 49 15 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:49:15
+	ldu_b32 s3, s0, 0x0
+LBB3_2:                                 ; %if.end
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	and_b32 r0, 0x3ff, r0
+	shr_b32 r1, 5, r0
+	arrive slcnt(0)
+	add_u32 r4, s3, r1
+	ashr_i32 r5, 3, r4
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x180, r5
+	cmp_gt_i32 s6, r4, -1
+	.loc	2 55 8                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:55:8
+	smov_b32 s5, 0
+	sshl_b64 s8, 8, s4
+	shl_b32 r1, 6, r0
+	and_b32 r3, 0xf800, r1
+	shl_b32 r1, 3, r0
+	smov_b32 s5, 0xf8
+	mov_b32 r6, s8
+	shl_add_u32 r2, 4, r0, 0
+	and_or_b32 r6, r1, s5, r6
+	mov_b32 r7, s9
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s6, s0
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_4
+; %bb.3:                                ; %if.then18
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_4:                                 ; %if.end57
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 8
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x17f, r5
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	arrive gvmcnt(0)
+	sts_b128 r2, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_6
+; %bb.5:                                ; %if.then18.1
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x8000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_6:                                 ; %if.end57.1
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 16
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x17e, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x1000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_8
+; %bb.7:                                ; %if.then18.2
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x10000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_8:                                 ; %if.end57.2
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 24
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x17d, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x2000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_10
+; %bb.9:                                ; %if.then18.3
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x18000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_10:                                ; %if.end57.3
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 32
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x17c, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x3000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_12
+; %bb.11:                               ; %if.then18.4
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	mov_b32 r8, 0x20000
+	shl_or_b32 r8, 1, r3, r8
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_12:                                ; %if.end57.4
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 40
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x17b, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x4000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_14
+; %bb.13:                               ; %if.then18.5
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x28000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_14:                                ; %if.end57.5
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 48
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x17a, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x5000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_16
+; %bb.15:                               ; %if.then18.6
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x30000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_16:                                ; %if.end57.6
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 56
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x179, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x6000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_18
+; %bb.17:                               ; %if.then18.7
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x38000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_18:                                ; %if.end57.7
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, r4, 64
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x178, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x7000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_20
+; %bb.19:                               ; %if.then18.8
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	mov_b32 r8, 0x40000
+	shl_or_b32 r8, 1, r3, r8
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_20:                                ; %if.end57.8
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, 0x48, r4
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x177, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x8000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_22
+; %bb.21:                               ; %if.then18.9
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x48000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_22:                                ; %if.end57.9
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, 0x50, r4
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x176, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0x9000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_24
+; %bb.23:                               ; %if.then18.10
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x50000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_24:                                ; %if.end57.10
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, 0x58, r4
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x175, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0xa000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_26
+; %bb.25:                               ; %if.then18.11
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x58000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_26:                                ; %if.end57.11
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, 0x60, r4
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x174, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0xb000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_28
+; %bb.27:                               ; %if.then18.12
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	mov_b32 r8, 0x60000
+	shl_or_b32 r8, 1, r3, r8
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_28:                                ; %if.end57.12
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, 0x68, r4
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x173, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0xc000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_30
+; %bb.29:                               ; %if.then18.13
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x68000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_30:                                ; %if.end57.13
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r12, 0x70, r4
+	cmp_gt_i32 s6, r12, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x172, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r12, 0xd000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r12, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_32
+; %bb.31:                               ; %if.then18.14
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r8, 1, r6
+	add_co_u32 r10, s12, r8
+	mov_b32 r8, s13
+	addc_co_u32 r11, r8, r9
+	mov_b32 r8, 0x1000
+	mad_i32 r10, s3, r8, r10
+	shl_b32 r8, 1, r3
+	add_co_u32 r8, r10, r8
+	addc_co_u32 r9, r11, 0
+	add_co_u32 r8, 0x70000, r8
+	addc_co_u32 r9, r9, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB3_32:                                ; %if.end57.14
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	add_u32 r4, 0x78, r4
+	cmp_gt_i32 s6, r4, -1
+	.loc	2 58 78 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:78
+	cmp_gt_i32 s0, 0x171, r5
+	.loc	2 63 76                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r4, 0xe000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r4, 0x0, r8
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 58 85                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:58:85
+	sand_b64 s6, s0, s6
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB3_34
+; %bb.33:                               ; %if.then18.15
+	.loc	2 0 85 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:85
+	shl_b64 r4, 1, r6
+	add_co_u32 r6, s12, r4
+	mov_b32 r4, s13
+	addc_co_u32 r7, r4, r5
+	mov_b32 r4, 0x1000
+	mad_i32 r4, s3, r4, r6
+	shl_b32 r3, 1, r3
+	add_co_u32 r3, r4, r3
+	addc_co_u32 r4, r5, 0
+	add_co_u32 r6, 0x78000, r3
+	addc_co_u32 r7, r4, 0
+	.loc	2 59 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:59:17
+	snop 1
+	ldg_b128 r8, r6, 0x0
+LBB3_34:                                ; %if.end57.15
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	sor_b64 xmsk, xmsk, s0
+	.loc	2 63 76 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:63:76
+	add_i32 r2, 0xf000, r2
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r2, 0x0, r8
+.Ltmp7:
+	.file	3 "/opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include" "__clang_maca_device_functions.h"
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	shl_b32 r2, 7, r0
+	shl_b32 r3, 8, r0
+	shr_b32 r0, 1, r0
+	sshl_b32 s0, 18, s2
+	sshl_b32 s1, 15, s4
+	sadd_co_i32 s0, s0, s1
+	and_b32 r2, 0x1e000, r2
+	and_b32 r3, 0xf00, r3
+	and_b32 r0, r0, 24
+	or3_b32 r0, r3, r2, r0
+	or_b32 r4, s0, r1
+.Ltmp8:
+	.loc	2 66 3                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:66:3
+	mov_b32 r5, 0
+	.loc	2 68 212                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:212
+	shl_add_u32 r0, 1, r0, 0
+	.loc	2 68 29 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	shl_b64 r2, 1, r4
+	add_co_u32 r6, s14, r2
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	add_i32 r2, 0x2000, r0
+	lds_b128 r8, r0, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	mov_b32 r1, s15
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	lds_b128 r12, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	addc_co_u32 r7, r1, r3
+	add_co_u32 r2, 0x1000, r6
+	addc_co_u32 r3, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r6, 0x0, r8 devc
+	add_i32 r1, 64, r0
+	arrive bsmcnt(0)
+	stg_b128 r2, 0x0, r12 devc
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r8, 0x2000, r6
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	lds_b128 r10, r1, 0x0
+	add_i32 r2, 0x2040, r0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	addc_co_u32 r9, r7, 0
+	or_b32 r1, 0x2000, r4
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	lds_b128 r14, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r2, 0x3000, r6
+	addc_co_u32 r3, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r8, 0x0, r10 devc
+	arrive bsmcnt(0)
+	stg_b128 r2, 0x0, r14 devc
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	mad_u32 r8, r1, 2, s14
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	add_i32 r1, 0x80, r0
+	add_i32 r2, 0x2080, r0
+	snop 0
+	lds_b128 r10, r1, 0x0
+	add_i32 r1, 0xc0, r0
+	lds_b128 r14, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r2, 0x5000, r6
+	addc_co_u32 r3, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r8, 0x0, r10 devc
+	lds_b128 r10, r1, 0x0
+	or_b32 r1, 0x4000, r4
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r14 devc
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r8, 0x6000, r6
+	addc_co_u32 r9, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	add_i32 r2, 0x20c0, r0
+	snop 1
+	lds_b128 r14, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r2, 0x7000, r6
+	addc_co_u32 r3, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r8, 0x0, r10 devc
+	arrive bsmcnt(0)
+	stg_b128 r2, 0x0, r14 devc
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	mad_u32 r8, r1, 2, s14
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	add_i32 r1, 0x100, r0
+	add_i32 r2, 0x2100, r0
+	snop 0
+	lds_b128 r10, r1, 0x0
+	add_i32 r1, 0x140, r0
+	lds_b128 r14, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r2, 0x9000, r6
+	addc_co_u32 r3, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r8, 0x0, r10 devc
+	lds_b128 r10, r1, 0x0
+	or_b32 r1, 0x6000, r4
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r14 devc
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r8, 0xa000, r6
+	addc_co_u32 r9, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	add_i32 r2, 0x2140, r0
+	snop 1
+	lds_b128 r14, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r2, 0xb000, r6
+	addc_co_u32 r3, r7, 0
+	mad_u32 r4, r1, 2, s14
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r8, 0x0, r10 devc
+	add_i32 r1, 0x180, r0
+	arrive bsmcnt(0)
+	stg_b128 r2, 0x0, r14 devc
+	snop 1
+	add_i32 r2, 0x2180, r0
+	lds_b128 r8, r1, 0x0
+	add_i32 r1, 0x1c0, r0
+	lds_b128 r12, r2, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	add_co_u32 r2, 0xd000, r6
+	addc_co_u32 r3, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	add_i32 r0, 0x21c0, r0
+	arrive bsmcnt(1)
+	stg_b128 r4, 0x0, r8 devc
+	lds_b128 r8, r1, 0x0
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r12 devc
+	lds_b128 r12, r0, 0x0
+	.loc	2 68 29                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:29
+	snop 0
+	add_co_u32 r2, 0xe000, r6
+	addc_co_u32 r3, r7, 0
+	add_co_u32 r0, 0xf000, r6
+	addc_co_u32 r1, r7, 0
+	.loc	2 68 182                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:68:182
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r8 devc
+	arrive bsmcnt(0)
+	stg_b128 r0, 0x0, r12 devc
+	.loc	2 71 1 is_stmt 1                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:71:1
+	snop 1
+	endk
+.Ltmp9:
+	.section	.rodata,#alloc
+	.p2align	6, 0x0
+	.macahca_kernel kernel_kernel_1
+		.macahca_mtreg_size 3
+		.macahca_streg_size 2
+		.macahca_priority 0
+		.macahca_float_mode 240
+		.macahca_privilege 0
+		.macahca_debug_mode 0
+		.macahca_ieee_mode 1
+		.macahca_bulky_mode 0
+		.macahca_fp16_overflow_mode 0
+		.macahca_perf_on 0
+		.macahca_priv_segm_on 0
+		.macahca_user_streg_count 4
+		.macahca_user_trap_handler_on 0
+		.macahca_streg_block_id_x_on 1
+		.macahca_streg_block_id_y_on 1
+		.macahca_streg_block_id_z_on 0
+		.macahca_streg_block_info_on 0
+		.macahca_enable_mtreg_thread_id 0
+		.macahca_exception_address_watch_on 0
+		.macahca_exception_memory_violation_on 0
+		.macahca_bsm_size 0
+		.macahca_exception_on 0
+		.macahca_streg_kernarg_segm_ptr_on 1
+		.macahca_streg_dispatch_ptr_on 0
+		.macahca_streg_prvt_init_on 0
+		.macahca_streg_prvt_segm_size_on 0
+		.macahca_unorder_dispatch_on 0
+		.macahca_warps_per_dpc 416
+		.macahca_blocks_per_ap 16
+	.end_macahca_kernel
+	.text
+	.fill 4, 8, 0x2320
+	.p2align 8
+.Lfunc_end3:
+	.size	kernel_kernel_1, .Lfunc_end3-kernel_kernel_1
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 4616
+; NumMTRegsForWarps/PEU: 18
+; NumSTRegsForWarps/PEU: 20
+; MaxWarpsPerPEU: 8
+	.text
+	.protected	kernel_kernel_2         ; -- Begin function kernel_kernel_2
+	.globl	kernel_kernel_2
+	.p2align	8
+	.type	kernel_kernel_2,@function
+kernel_kernel_2:                        ; @kernel_kernel_2
+.Lfunc_begin4:
+	.loc	2 73 0                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:73:0
+; %bb.0:                                ; %entry
+	ldu_b256 s8, s0, 0x0
+	smov_b32 s24, s5
+.Ltmp10:
+	.loc	2 75 21 prologue_end            ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:75:21
+	smov_b32 s25, 0
+	sshl_b64 s2, 2, s24
+	smov_b32 s6, 0
+	arrive slcnt(0)
+	sadd_co_u32 s2, s8, s2
+	saddc_co_u32 s3, s9, s3
+	ldu_b32 s8, s2, 0x20
+	ldu_b64 s2, s0, 0x20
+	.loc	2 77 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:77:27
+	arrive slcnt(0)
+	scmp_gt_u32 s8, 16
+	snop 0
+	bra_smsks LBB4_2
+; %bb.1:                                ; %if.then
+	.loc	2 0 27 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:27
+	smov_b32 s9, 0
+	sshl_b64 s0, 2, s8
+	sadd_co_u32 s0, s10, s0
+	saddc_co_u32 s1, s11, s1
+	.loc	2 78 15 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:78:15
+	ldu_b32 s6, s0, 0x0
+LBB4_2:                                 ; %if.end
+	.loc	2 84 27                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:84:27
+	scmp_gt_u32 s8, 15
+	snop 0
+	bra_smsks LBB4_4
+; %bb.3:                                ; %if.then11
+	.loc	2 0 27 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:27
+	smov_b32 s9, 0
+	sshl_b64 s0, 2, s8
+	sadd_co_u32 s0, s12, s0
+	saddc_co_u32 s1, s13, s1
+	.loc	2 85 17 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:85:17
+	ldu_b32 s25, s0, 0x0
+LBB4_4:                                 ; %if.end15
+	.loc	2 0 17 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	and_b32 r3, 0x3ff, r0
+	smov_b32 s5, 0
+	arrive slcnt(0)
+	sashr_i32 s7, 31, s6
+	mul_u24 r5, r3, 3
+	sshl_b64 s8, 11, s6
+	snot_b32 s0, s6
+	sshl_b64 s10, 8, s4
+	sadd_co_u32 s8, s8, s10
+	.loc	2 93 73 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:73
+	shr_b32 r6, 4, r5
+	saddc_co_u32 s9, s9, s11
+	smul_i32 s7, 0xc000, s4
+	.loc	2 93 80 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:80
+	cmp_lt_i32 s4, r6, s25
+	cmp_gt_i32 s10, r6, s0
+	shr_b32 r0, 6, r3
+	shl_b32 r2, 7, r3
+	shr_b32 r4, 1, r3
+	smul_i32 s1, 0x60000, s24
+	mul_u24 r0, 0x1800, r0
+	and_b32 r2, 0x780, r2
+	and_b32 r4, r4, 24
+	sadd_co_i32 s1, s1, s7
+	or3_b32 r2, r2, r0, r4
+	mov_b32 r0, s1
+	mad_u24 r1, r3, 48, 0
+	shl_or_b32 r0, 3, r3, r0
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	sand_b64 s16, s4, s10
+	shl_b64 r8, 0, 0
+	shl_b64 r10, 0, 0
+	and_xmsk s4, s16
+	snop 0
+	bra_xmskz LBB4_8
+; %bb.5:                                ; %land.lhs.true39
+	.loc	2 96 165 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r4, s6, r6
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r7, 0x2aaaaaab, r4
+	shr_b32 r8, 31, r7
+	ashr_i32 r7, 4, r7
+	add_u32 r7, r7, r8
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r8, 0xffffffa0, r7
+	add_u32 r4, r8, r4
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r4, 31, r4
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r4, r4, r7
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s12, r4, 32
+	shl_b64 r10, 0, 0
+	shl_b64 r8, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s10, s12
+	snop 0
+	bra_xmskz LBB4_7
+; %bb.6:                                ; %if.then54
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mul_u24 r4, r3, 24
+	smov_b32 s1, 0x78
+	mov_b32 r7, s8
+	and_or_b32 r8, r4, s1, r7
+	mov_b32 r9, s9
+	shl_b64 r8, 1, r8
+	add_co_u32 r4, s2, r8
+	mul_u24 r8, 0x180, r3
+	and_b32 r8, 0x7f800, r8
+	mov_b32 r7, s3
+	addc_co_u32 r7, r7, r9
+	shl_b32 r8, 1, r8
+	add_co_u32 r8, r4, r8
+	addc_co_u32 r9, r7, 0
+	.loc	2 97 23 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r8, r8, 0x0
+LBB4_7:                                 ; %Flow103
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s10
+LBB4_8:                                 ; %for.inc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 93 61 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:61
+	add_u32 r4, r5, 1
+	.loc	2 93 73 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:73
+	shr_b32 r7, 4, r4
+	.loc	2 93 80                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:80
+	cmp_lt_i32 s4, r7, s25
+	cmp_gt_i32 s10, r7, s0
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	arrive gvmcnt(0)
+	sts_b128 r1, 0x0, r8
+	shl_b64 r10, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	sand_b64 s18, s4, s10
+	and_xmsk s4, s18
+	snop 0
+	bra_xmskz LBB4_12
+; %bb.9:                                ; %land.lhs.true39.1
+	.loc	2 96 165 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r8, s6, r7
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r9, 0x2aaaaaab, r8
+	shr_b32 r10, 31, r9
+	ashr_i32 r9, 4, r9
+	add_u32 r9, r9, r10
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r10, 0xffffffa0, r9
+	add_u32 r8, r10, r8
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r8, 31, r8
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r8, r8, r9
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s12, r8, 32
+	shl_b64 r12, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s10, s12
+	snop 0
+	bra_xmskz LBB4_11
+; %bb.10:                               ; %if.then54.1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	shl_b32 r8, 3, r4
+	smov_b32 s1, 0x78
+	mov_b32 r9, s8
+	and_or_b32 r8, r8, s1, r9
+	mov_b32 r9, s9
+	shl_b64 r10, 1, r8
+	add_co_u32 r8, s2, r10
+	shl_b32 r10, 8, r4
+	mov_b32 r9, s3
+	addc_co_u32 r9, r9, r11
+	and_b32 r10, 0x1ff000, r10
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	.loc	2 97 23 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r10, r8, 0x0
+LBB4_11:                                ; %Flow102
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s10
+LBB4_12:                                ; %for.inc.1
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 93 61 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:61
+	add_u32 r5, r5, 2
+	.loc	2 93 73 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:73
+	shr_b32 r8, 4, r5
+	.loc	2 93 80                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:80
+	cmp_lt_i32 s4, r8, s25
+	cmp_gt_i32 s10, r8, s0
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	add_i32 r9, 16, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r9, 0x0, r10
+	shl_b64 r10, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	sand_b64 s20, s4, s10
+	and_xmsk s4, s20
+	snop 0
+	bra_xmskz LBB4_16
+; %bb.13:                               ; %land.lhs.true39.2
+	.loc	2 96 165 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r8
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r10, 0x2aaaaaab, r9
+	shr_b32 r11, 31, r10
+	ashr_i32 r10, 4, r10
+	add_u32 r10, r10, r11
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r11, 0xffffffa0, r10
+	add_u32 r9, r11, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, r10
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s12, r9, 32
+	shl_b64 r12, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s10, s12
+	snop 0
+	bra_xmskz LBB4_15
+; %bb.14:                               ; %if.then54.2
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	shl_b32 r9, 3, r5
+	smov_b32 s1, 0x78
+	mov_b32 r10, s8
+	and_or_b32 r10, r9, s1, r10
+	mov_b32 r11, s9
+	shl_b64 r10, 1, r10
+	add_co_u32 r9, s2, r10
+	mov_b32 r10, s3
+	addc_co_u32 r10, r10, r11
+	shl_b32 r11, 8, r5
+	and_b32 r11, 0x1ff000, r11
+	add_co_u32 r12, r9, r11
+	addc_co_u32 r13, r10, 0
+	.loc	2 97 23 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r10, r12, 0x0
+LBB4_15:                                ; %Flow101
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s10
+LBB4_16:                                ; %for.inc.2
+	sor_b64 xmsk, xmsk, s4
+	add_i32 r9, 32, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r9, 0x0, r10
+.Ltmp11:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	cmp_gt_u32 s22, 0x80, r3
+.Ltmp12:
+	.loc	2 108 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:108:38
+	snop 3
+	and_xmsk s4, s22
+	snop 0
+	bra_xmskz LBB4_18
+; %bb.17:                               ; %for.cond145.preheader
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	shl_add_u32 r9, 1, r2, 0
+	.loc	2 111 196 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r11, 0x1000, r9
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r14, r9, 0x0
+	lds_b128 r18, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r12, r0, 2, s14
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r12, 0x0, r14 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r18 devc
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	snop 1
+	or_b32 r10, 0x1000, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r14, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r10, 0x2000, r9
+	add_i32 r11, 64, r9
+	snop 0
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x1800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r14, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	snop 1
+	or_b32 r10, 0x2000, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r14, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r10, 0x1040, r9
+	add_i32 r11, 0x2040, r9
+	snop 0
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x2800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r14, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	snop 1
+	or_b32 r10, 0x3000, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r14, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r10, 0x80, r9
+	add_i32 r11, 0x1080, r9
+	snop 0
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x3800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r14, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	snop 1
+	add_i32 r10, 0x2080, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r14, 0x8000, r12
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r11, 0xc0, r9
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r15, r13, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r10, 0x9000, r12
+	addc_co_u32 r11, r13, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r14, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	snop 1
+	add_i32 r10, 0x10c0, r9
+	add_i32 r9, 0x20c0, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r14, 0xa000, r12
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r16, r10, 0x0
+	lds_b128 r20, r9, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r15, r13, 0
+	add_co_u32 r10, 0xb000, r12
+	addc_co_u32 r11, r13, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r14, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+LBB4_18:                                ; %if.then201
+	.loc	2 0 196                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:196
+	sor_b64 xmsk, xmsk, s4
+.Ltmp13:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive gvmcnt(0) & bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp14:
+	.loc	2 93 32                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:32
+	add_u32 r9, 0x60, r6
+	.loc	2 93 80 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:80
+	cmp_lt_i32 s4, r9, s25
+	cmp_gt_i32 s10, r9, s0
+	shl_b64 r10, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	snop 1
+	sand_b64 s4, s4, s10
+	and_xmsk s10, s4
+	snop 0
+	bra_xmskz LBB4_22
+; %bb.19:                               ; %land.lhs.true39.1345
+	.loc	2 96 165 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r6
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r10, 0x2aaaaaab, r9
+	shr_b32 r11, 31, r10
+	ashr_i32 r10, 4, r10
+	add_u32 r10, r10, r11
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r11, 0xffffffa0, r10
+	add_u32 r9, r11, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 192                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:192
+	add_u32 r9, r10, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, 1
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s26, r9, 32
+	shl_b64 r12, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s12, s26
+	snop 0
+	bra_xmskz LBB4_21
+; %bb.20:                               ; %if.then54.1356
+	.loc	2 97 434 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:434
+	mul_u24 r10, r3, 24
+	smov_b32 s1, 0x78
+	.loc	2 97 304 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:304
+	mov_b32 r11, s8
+	and_or_b32 r10, r10, s1, r11
+	mov_b32 r11, s9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	shl_b64 r12, 1, r10
+	.loc	2 97 187                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:187
+	mul_u24 r9, 0x180, r3
+	and_b32 r9, 0x7f800, r9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	add_co_u32 r10, s2, r12
+	mov_b32 r11, s3
+	addc_co_u32 r11, r11, r13
+	shl_b32 r9, 1, r9
+	add_co_u32 r9, r10, r9
+	addc_co_u32 r10, r11, 0
+	add_co_u32 r12, 0x60000, r9
+	addc_co_u32 r13, r10, 0
+	.loc	2 97 23                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r10, r12, 0x0
+LBB4_21:                                ; %Flow100
+	.loc	2 0 23                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s12
+LBB4_22:                                ; %for.inc.1365
+	sor_b64 xmsk, xmsk, s10
+	.loc	2 93 32 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:32
+	add_u32 r9, 0x60, r7
+	.loc	2 93 80 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:80
+	cmp_lt_i32 s10, r9, s25
+	cmp_gt_i32 s12, r9, s0
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	arrive gvmcnt(0)
+	sts_b128 r1, 0x0, r10
+	shl_b64 r10, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	sand_b64 s10, s10, s12
+	and_xmsk s12, s10
+	snop 0
+	bra_xmskz LBB4_26
+; %bb.23:                               ; %land.lhs.true39.1.1
+	.loc	2 96 165 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r7
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r10, 0x2aaaaaab, r9
+	shr_b32 r11, 31, r10
+	ashr_i32 r10, 4, r10
+	add_u32 r10, r10, r11
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r11, 0xffffffa0, r10
+	add_u32 r9, r11, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 192                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:192
+	add_u32 r9, r10, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, 1
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s30, r9, 32
+	shl_b64 r12, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s26, s30
+	snop 0
+	bra_xmskz LBB4_25
+; %bb.24:                               ; %if.then54.1.1
+	.loc	2 97 434 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:434
+	shl_b32 r9, 3, r4
+	smov_b32 s1, 0x78
+	.loc	2 97 304 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:304
+	mov_b32 r10, s8
+	and_or_b32 r10, r9, s1, r10
+	mov_b32 r11, s9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	shl_b64 r10, 1, r10
+	add_co_u32 r9, s2, r10
+	mov_b32 r10, s3
+	addc_co_u32 r10, r10, r11
+	shl_b32 r11, 8, r4
+	and_b32 r11, 0x1ff000, r11
+	add_co_u32 r9, r9, r11
+	addc_co_u32 r10, r10, 0
+	add_co_u32 r12, 0x60000, r9
+	addc_co_u32 r13, r10, 0
+	.loc	2 97 23                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r10, r12, 0x0
+LBB4_25:                                ; %Flow99
+	.loc	2 0 23                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s26
+LBB4_26:                                ; %for.inc.1.1
+	sor_b64 xmsk, xmsk, s12
+	.loc	2 93 32 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:32
+	add_u32 r9, 0x60, r8
+	.loc	2 93 80 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:80
+	cmp_lt_i32 s12, r9, s25
+	cmp_gt_i32 s0, r9, s0
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	add_i32 r9, 16, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r9, 0x0, r10
+	shl_b64 r10, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	sand_b64 s0, s12, s0
+	and_xmsk s12, s0
+	snop 0
+	bra_xmskz LBB4_30
+; %bb.27:                               ; %land.lhs.true39.2.1
+	.loc	2 96 165 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r8
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r10, 0x2aaaaaab, r9
+	shr_b32 r11, 31, r10
+	ashr_i32 r10, 4, r10
+	add_u32 r10, r10, r11
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r11, 0xffffffa0, r10
+	add_u32 r9, r11, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 192                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:192
+	add_u32 r9, r10, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, 1
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s26, r9, 32
+	shl_b64 r12, 0, 0
+	shl_b64 r10, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s24, s26
+	snop 0
+	bra_xmskz LBB4_29
+; %bb.28:                               ; %if.then54.2.1
+	.loc	2 97 434 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:434
+	shl_b32 r9, 3, r5
+	smov_b32 s7, 0x78
+	.loc	2 97 304 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:304
+	mov_b32 r10, s8
+	and_or_b32 r10, r9, s7, r10
+	mov_b32 r11, s9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	shl_b64 r10, 1, r10
+	add_co_u32 r9, s2, r10
+	mov_b32 r10, s3
+	addc_co_u32 r10, r10, r11
+	shl_b32 r11, 8, r5
+	and_b32 r11, 0x1ff000, r11
+	add_co_u32 r9, r9, r11
+	addc_co_u32 r10, r10, 0
+	add_co_u32 r12, 0x60000, r9
+	addc_co_u32 r13, r10, 0
+	.loc	2 97 23                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r10, r12, 0x0
+LBB4_29:                                ; %Flow98
+	.loc	2 0 23                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s24
+LBB4_30:                                ; %for.inc.2.1
+	sor_b64 xmsk, xmsk, s12
+	add_i32 r9, 32, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r9, 0x0, r10
+.Ltmp15:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp16:
+	.loc	2 108 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:108:38
+	and_b32 r9, 0x380, r3
+	cmp_eq_u32 s12, 0x80, r9
+	snop 3
+	and_xmsk s24, s12
+	snop 0
+	bra_xmskz LBB4_32
+; %bb.31:                               ; %for.cond145.preheader.1
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	shl_add_u32 r9, 1, r2, 0
+	add_u32 r10, 0xffffa000, r9
+	add_u32 r11, 0xffffb000, r9
+	.loc	2 111 167 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r12, 0x800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r16, r10, 0x0
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r14, r0, 2, s14
+	mad_u32 r10, r12, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r14, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	snop 1
+	or_b32 r11, 0x1000, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r12, r11, 2, s14
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r10, 0xffffc000, r9
+	add_u32 r11, 0xffffa040, r9
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	snop 0
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x1800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r12, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	snop 1
+	or_b32 r11, 0x2000, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r12, r11, 2, s14
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r10, 0xffffb040, r9
+	add_u32 r11, 0xffffc040, r9
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	snop 0
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x2800, r0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r12, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	snop 1
+	or_b32 r10, 0x3000, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r12, r10, 2, s14
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r11, 0xffffa080, r9
+	add_u32 r10, 0xffffb080, r9
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	snop 0
+	lds_b128 r16, r11, 0x0
+	lds_b128 r20, r10, 0x0
+	.loc	2 111 167                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:167
+	or_b32 r10, 0x3800, r0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mad_u32 r10, r10, 2, s14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r12, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	snop 1
+	add_u32 r10, 0xffffc080, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r12, 0x8000, r14
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r11, 0xffffa0c0, r9
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r16, r10, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r13, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r11, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r10, 0x9000, r14
+	addc_co_u32 r11, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r12, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	snop 1
+	add_u32 r10, 0xffffb0c0, r9
+	add_u32 r9, 0xffffc0c0, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r12, 0xa000, r14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r16, r10, 0x0
+	lds_b128 r20, r9, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r13, r15, 0
+	add_co_u32 r10, 0xb000, r14
+	addc_co_u32 r11, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r12, 0x0, r16 devc
+	arrive bsmcnt(0)
+	stg_b128 r10, 0x0, r20 devc
+LBB4_32:                                ; %if.then201.1
+	.loc	2 0 196                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:196
+	sor_b64 xmsk, xmsk, s24
+.Ltmp17:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive gvmcnt(0) & bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	sor_b64 s8, 0x80, s8
+	add_co_u32 r10, 0x6000, r0
+	addc_co_u32 r11, 0, 0
+	shl_b64 r12, 0, 0
+	shl_b64 r14, 0, 0
+.Ltmp18:
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	and_xmsk s24, s16
+	snop 0
+	bra_xmskz LBB4_36
+; %bb.33:                               ; %land.lhs.true39.1392
+	.loc	2 96 165                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r6
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r12, 0x2aaaaaab, r9
+	shr_b32 r13, 31, r12
+	ashr_i32 r12, 4, r12
+	add_u32 r12, r12, r13
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r13, 0xffffffa0, r12
+	add_u32 r9, r13, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, r12
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s26, r9, 32
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s16, s26
+	snop 0
+	bra_xmskz LBB4_35
+; %bb.34:                               ; %if.then54.1403
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mul_u24 r9, r3, 24
+	smov_b32 s7, 0x78
+	mov_b32 r12, s8
+	and_or_b32 r12, r9, s7, r12
+	mov_b32 r13, s9
+	shl_b64 r12, 1, r12
+	add_co_u32 r9, s2, r12
+	mov_b32 r12, s3
+	addc_co_u32 r12, r12, r13
+	mul_u24 r13, 0x180, r3
+	and_b32 r13, 0x7f800, r13
+	shl_b32 r13, 1, r13
+	add_co_u32 r14, r9, r13
+	addc_co_u32 r15, r12, 0
+	.loc	2 97 23 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r12, r14, 0x0
+LBB4_35:                                ; %Flow97
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s16
+LBB4_36:                                ; %for.inc.1414
+	sor_b64 xmsk, xmsk, s24
+	arrive gvmcnt(0)
+	sts_b128 r1, 0x0, r12
+	shl_b64 r12, 0, 0
+	shl_b64 r14, 0, 0
+	.loc	2 93 13 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	and_xmsk s16, s18
+	snop 0
+	bra_xmskz LBB4_40
+; %bb.37:                               ; %land.lhs.true39.1.1427
+	.loc	2 96 165                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r7
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r12, 0x2aaaaaab, r9
+	shr_b32 r13, 31, r12
+	ashr_i32 r12, 4, r12
+	add_u32 r12, r12, r13
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r13, 0xffffffa0, r12
+	add_u32 r9, r13, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, r12
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s24, r9, 32
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s18, s24
+	snop 0
+	bra_xmskz LBB4_39
+; %bb.38:                               ; %if.then54.1.1438
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	shl_b32 r9, 3, r4
+	smov_b32 s7, 0x78
+	mov_b32 r12, s8
+	and_or_b32 r12, r9, s7, r12
+	mov_b32 r13, s9
+	shl_b64 r12, 1, r12
+	add_co_u32 r9, s2, r12
+	mov_b32 r12, s3
+	addc_co_u32 r12, r12, r13
+	shl_b32 r13, 8, r4
+	and_b32 r13, 0x1ff000, r13
+	add_co_u32 r14, r9, r13
+	addc_co_u32 r15, r12, 0
+	.loc	2 97 23 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r12, r14, 0x0
+LBB4_39:                                ; %Flow96
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s18
+LBB4_40:                                ; %for.inc.1.1450
+	sor_b64 xmsk, xmsk, s16
+	add_i32 r9, 16, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r9, 0x0, r12
+	shl_b64 r12, 0, 0
+	shl_b64 r14, 0, 0
+	.loc	2 93 13 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	and_xmsk s16, s20
+	snop 0
+	bra_xmskz LBB4_44
+; %bb.41:                               ; %land.lhs.true39.2.1463
+	.loc	2 96 165                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r9, s6, r8
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r12, 0x2aaaaaab, r9
+	shr_b32 r13, 31, r12
+	ashr_i32 r12, 4, r12
+	add_u32 r12, r12, r13
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r13, 0xffffffa0, r12
+	add_u32 r9, r13, r9
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r9, 31, r9
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r9, r9, r12
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s20, r9, 32
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s18, s20
+	snop 0
+	bra_xmskz LBB4_43
+; %bb.42:                               ; %if.then54.2.1474
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	shl_b32 r9, 3, r5
+	smov_b32 s7, 0x78
+	mov_b32 r12, s8
+	and_or_b32 r12, r9, s7, r12
+	mov_b32 r13, s9
+	shl_b64 r12, 1, r12
+	add_co_u32 r9, s2, r12
+	mov_b32 r12, s3
+	addc_co_u32 r12, r12, r13
+	shl_b32 r13, 8, r5
+	and_b32 r13, 0x1ff000, r13
+	add_co_u32 r14, r9, r13
+	addc_co_u32 r15, r12, 0
+	.loc	2 97 23 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r12, r14, 0x0
+LBB4_43:                                ; %Flow95
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s18
+LBB4_44:                                ; %for.inc.2.1486
+	sor_b64 xmsk, xmsk, s16
+	add_i32 r9, 32, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r9, 0x0, r12
+.Ltmp19:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp20:
+	.loc	2 108 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:108:38
+	and_xmsk s16, s22
+	snop 0
+	bra_xmskz LBB4_46
+; %bb.45:                               ; %for.cond145.preheader.1487
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	shl_add_u32 r9, 1, r2, 0
+	.loc	2 111 29 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	shl_b64 r14, 1, r10
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r13, 0x1000, r9
+	lds_b128 r16, r9, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r14, s14, r14
+	mov_b32 r12, s15
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r20, r13, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r15, r12, r15
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	snop 0
+	stg_b128 r14, 0x0, r16 devc
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	snop 1
+	mad_u32 r14, r0, 2, s14
+	add_co_u32 r12, 0xd000, r14
+	addc_co_u32 r13, r15, 0
+	add_co_u32 r16, 0xe000, r14
+	addc_co_u32 r17, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(0)
+	stg_b128 r12, 0x0, r20 devc
+	snop 1
+	add_i32 r12, 0x2000, r9
+	add_i32 r13, 64, r9
+	snop 0
+	lds_b128 r18, r12, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r12, 0xf000, r14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r22, r13, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r13, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r16, 0x0, r18 devc
+	arrive bsmcnt(0)
+	stg_b128 r12, 0x0, r22 devc
+	snop 1
+	add_i32 r12, 0x1040, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r16, 0x10000, r14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r13, 0x2040, r9
+	lds_b128 r18, r12, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r17, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r22, r13, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r12, 0x11000, r14
+	addc_co_u32 r13, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r16, 0x0, r18 devc
+	arrive bsmcnt(0)
+	stg_b128 r12, 0x0, r22 devc
+	snop 1
+	add_i32 r12, 0x80, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r16, 0x12000, r14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r13, 0x1080, r9
+	lds_b128 r18, r12, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r17, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r22, r13, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r12, 0x13000, r14
+	addc_co_u32 r13, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r16, 0x0, r18 devc
+	arrive bsmcnt(0)
+	stg_b128 r12, 0x0, r22 devc
+	snop 1
+	add_i32 r12, 0x2080, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r16, 0x14000, r14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	add_i32 r13, 0xc0, r9
+	lds_b128 r18, r12, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r17, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r22, r13, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r12, 0x15000, r14
+	addc_co_u32 r13, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r16, 0x0, r18 devc
+	arrive bsmcnt(0)
+	stg_b128 r12, 0x0, r22 devc
+	snop 1
+	add_i32 r12, 0x10c0, r9
+	add_i32 r9, 0x20c0, r9
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r16, 0x16000, r14
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r18, r12, 0x0
+	lds_b128 r22, r9, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r17, r15, 0
+	add_co_u32 r12, 0x17000, r14
+	addc_co_u32 r13, r15, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r16, 0x0, r18 devc
+	arrive bsmcnt(0)
+	stg_b128 r12, 0x0, r22 devc
+LBB4_46:                                ; %if.then201.1510
+	.loc	2 0 196                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:196
+	sor_b64 xmsk, xmsk, s16
+.Ltmp21:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive gvmcnt(0) & bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+.Ltmp22:
+	.loc	2 93 13                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	and_xmsk s16, s4
+	snop 0
+	bra_xmskz LBB4_50
+; %bb.47:                               ; %land.lhs.true39.1345.1
+	.loc	2 96 165                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r6, s6, r6
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r9, 0x2aaaaaab, r6
+	shr_b32 r12, 31, r9
+	ashr_i32 r9, 4, r9
+	add_u32 r9, r9, r12
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r12, 0xffffffa0, r9
+	add_u32 r6, r12, r6
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r6, 31, r6
+	.loc	2 96 192                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:192
+	add_u32 r6, r9, r6
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r6, r6, 1
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s18, r6, 32
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s4, s18
+	snop 0
+	bra_xmskz LBB4_49
+; %bb.48:                               ; %if.then54.1356.1
+	.loc	2 97 187 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:187
+	mul_u24 r6, 0x180, r3
+	.loc	2 97 434 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:434
+	mul_u24 r3, r3, 24
+	smov_b32 s7, 0x78
+	.loc	2 97 304                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:304
+	mov_b32 r9, s8
+	and_or_b32 r12, r3, s7, r9
+	mov_b32 r13, s9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	shl_b64 r12, 1, r12
+	.loc	2 97 187                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:187
+	and_b32 r6, 0x7f800, r6
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	add_co_u32 r3, s2, r12
+	mov_b32 r9, s3
+	addc_co_u32 r9, r9, r13
+	shl_b32 r6, 1, r6
+	add_co_u32 r3, r3, r6
+	addc_co_u32 r6, r9, 0
+	add_co_u32 r12, 0x60000, r3
+	addc_co_u32 r13, r6, 0
+	.loc	2 97 23                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r12, r12, 0x0
+LBB4_49:                                ; %Flow94
+	.loc	2 0 23                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s4
+LBB4_50:                                ; %for.inc.1365.1
+	sor_b64 xmsk, xmsk, s16
+	arrive gvmcnt(0)
+	sts_b128 r1, 0x0, r12
+	shl_b64 r12, 0, 0
+	shl_b64 r14, 0, 0
+	.loc	2 93 13 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	and_xmsk s4, s10
+	snop 0
+	bra_xmskz LBB4_54
+; %bb.51:                               ; %land.lhs.true39.1.1.1
+	.loc	2 96 165                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r3, s6, r7
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r6, 0x2aaaaaab, r3
+	shr_b32 r7, 31, r6
+	ashr_i32 r6, 4, r6
+	add_u32 r6, r6, r7
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r7, 0xffffffa0, r6
+	add_u32 r3, r7, r3
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r3, 31, r3
+	.loc	2 96 192                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:192
+	add_u32 r3, r6, r3
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r3, r3, 1
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s16, r3, 32
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s10, s16
+	snop 0
+	bra_xmskz LBB4_53
+; %bb.52:                               ; %if.then54.1.1.1
+	.loc	2 97 434 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:434
+	shl_b32 r3, 3, r4
+	smov_b32 s7, 0x78
+	.loc	2 97 304 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:304
+	mov_b32 r6, s8
+	and_or_b32 r6, r3, s7, r6
+	mov_b32 r7, s9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	shl_b64 r6, 1, r6
+	shl_b32 r4, 8, r4
+	add_co_u32 r3, s2, r6
+	mov_b32 r6, s3
+	addc_co_u32 r6, r6, r7
+	and_b32 r4, 0x1ff000, r4
+	add_co_u32 r3, r3, r4
+	addc_co_u32 r4, r6, 0
+	add_co_u32 r6, 0x60000, r3
+	addc_co_u32 r7, r4, 0
+	.loc	2 97 23                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r12, r6, 0x0
+LBB4_53:                                ; %Flow93
+	.loc	2 0 23                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s10
+LBB4_54:                                ; %for.inc.1.1.1
+	sor_b64 xmsk, xmsk, s4
+	add_i32 r3, 16, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r3, 0x0, r12
+	shl_b64 r12, 0, 0
+	shl_b64 r14, 0, 0
+	.loc	2 93 13 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:93:13
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB4_58
+; %bb.55:                               ; %land.lhs.true39.2.1.1
+	.loc	2 96 165                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:165
+	add_u32 r3, s6, r8
+	.loc	2 96 186 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:186
+	mul_hi_i32 r4, 0x2aaaaaab, r3
+	shr_b32 r6, 31, r4
+	ashr_i32 r4, 4, r4
+	add_u32 r4, r4, r6
+	.loc	2 96 263                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:263
+	mul_u32 r6, 0xffffffa0, r4
+	add_u32 r3, r6, r3
+	.loc	2 96 269                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:269
+	ashr_i32 r3, 31, r3
+	.loc	2 96 192                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:192
+	add_u32 r3, r4, r3
+	.loc	2 96 277                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:277
+	add_u32 r3, r3, 1
+	.loc	2 96 291                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:291
+	cmp_lt_i32 s6, r3, 32
+	shl_b64 r14, 0, 0
+	shl_b64 r12, 0, 0
+	.loc	2 96 15                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:96:15
+	snop 1
+	and_xmsk s0, s6
+	snop 0
+	bra_xmskz LBB4_57
+; %bb.56:                               ; %if.then54.2.1.1
+	.loc	2 97 434 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:434
+	shl_b32 r3, 3, r5
+	smov_b32 s6, 0x78
+	.loc	2 97 304 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:304
+	mov_b32 r4, s8
+	and_or_b32 r6, r3, s6, r4
+	mov_b32 r7, s9
+	.loc	2 97 50                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:50
+	shl_b64 r6, 1, r6
+	shl_b32 r5, 8, r5
+	add_co_u32 r3, s2, r6
+	mov_b32 r4, s3
+	addc_co_u32 r4, r4, r7
+	and_b32 r5, 0x1ff000, r5
+	add_co_u32 r3, r3, r5
+	addc_co_u32 r4, r4, 0
+	add_co_u32 r6, 0x60000, r3
+	addc_co_u32 r7, r4, 0
+	.loc	2 97 23                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:97:23
+	snop 1
+	ldg_b128 r12, r6, 0x0
+LBB4_57:                                ; %Flow
+	.loc	2 0 23                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s0
+LBB4_58:                                ; %for.inc.2.1.1
+	sor_b64 xmsk, xmsk, s4
+	add_i32 r1, 32, r1
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r1, 0x0, r12
+.Ltmp23:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp24:
+	.loc	2 108 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:108:38
+	and_xmsk s0, s12
+	snop 0
+	bra_xmskz LBB4_60
+; %bb.59:                               ; %for.cond145.preheader.1.1
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	shl_add_u32 r1, 1, r2, 0
+	.loc	2 111 29 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	shl_b64 r4, 1, r10
+	add_co_u32 r6, s14, r4
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r2, 0xffffa000, r1
+	add_u32 r4, 0xffffb000, r1
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	mov_b32 r3, s15
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r8, r2, 0x0
+	lds_b128 r12, r4, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r7, r3, r5
+	mad_u32 r4, r0, 2, s14
+	add_co_u32 r2, 0xd000, r4
+	addc_co_u32 r3, r5, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r6, 0x0, r8 devc
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r0, 0xffffc000, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(0)
+	stg_b128 r2, 0x0, r12 devc
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r6, 0xe000, r4
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r8, r0, 0x0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r2, 0xffffa040, r1
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	addc_co_u32 r7, r5, 0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r0, 0xffffb040, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r12, r2, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r2, 0xf000, r4
+	addc_co_u32 r3, r5, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r6, 0x0, r8 devc
+	lds_b128 r8, r0, 0x0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r0, 0xffffa080, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r12 devc
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r6, 0x10000, r4
+	addc_co_u32 r7, r5, 0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r2, 0xffffc040, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	snop 1
+	lds_b128 r12, r2, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r2, 0x11000, r4
+	addc_co_u32 r3, r5, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r6, 0x0, r8 devc
+	lds_b128 r8, r0, 0x0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r0, 0xffffc080, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r12 devc
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r6, 0x12000, r4
+	addc_co_u32 r7, r5, 0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r2, 0xffffb080, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	snop 1
+	lds_b128 r12, r2, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r2, 0x13000, r4
+	addc_co_u32 r3, r5, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r6, 0x0, r8 devc
+	lds_b128 r8, r0, 0x0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r0, 0xffffb0c0, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r12 devc
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r6, 0x14000, r4
+	addc_co_u32 r7, r5, 0
+	.loc	2 111 220                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:220
+	add_u32 r2, 0xffffa0c0, r1
+	add_u32 r1, 0xffffc0c0, r1
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(0)
+	stg_b128 r6, 0x0, r8 devc
+	lds_b128 r12, r2, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	add_co_u32 r2, 0x15000, r4
+	addc_co_u32 r3, r5, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	lds_b128 r6, r0, 0x0
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r12 devc
+	lds_b128 r10, r1, 0x0
+	.loc	2 111 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:29
+	snop 0
+	add_co_u32 r2, 0x16000, r4
+	addc_co_u32 r3, r5, 0
+	add_co_u32 r0, 0x17000, r4
+	addc_co_u32 r1, r5, 0
+	.loc	2 111 196                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:111:196
+	arrive bsmcnt(1)
+	stg_b128 r2, 0x0, r6 devc
+	arrive bsmcnt(0)
+	stg_b128 r0, 0x0, r10 devc
+LBB4_60:                                ; %for.inc203.1.1
+	.loc	2 120 1 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:120:1
+	snop 1
+	endk
+.Ltmp25:
+	.section	.rodata,#alloc
+	.p2align	6, 0x0
+	.macahca_kernel kernel_kernel_2
+		.macahca_mtreg_size 4
+		.macahca_streg_size 3
+		.macahca_priority 0
+		.macahca_float_mode 240
+		.macahca_privilege 0
+		.macahca_debug_mode 0
+		.macahca_ieee_mode 1
+		.macahca_bulky_mode 0
+		.macahca_fp16_overflow_mode 0
+		.macahca_perf_on 0
+		.macahca_priv_segm_on 0
+		.macahca_user_streg_count 4
+		.macahca_user_trap_handler_on 0
+		.macahca_streg_block_id_x_on 1
+		.macahca_streg_block_id_y_on 1
+		.macahca_streg_block_id_z_on 0
+		.macahca_streg_block_info_on 0
+		.macahca_enable_mtreg_thread_id 0
+		.macahca_exception_address_watch_on 0
+		.macahca_exception_memory_violation_on 0
+		.macahca_bsm_size 0
+		.macahca_exception_on 0
+		.macahca_streg_kernarg_segm_ptr_on 1
+		.macahca_streg_dispatch_ptr_on 0
+		.macahca_streg_prvt_init_on 0
+		.macahca_streg_prvt_segm_size_on 0
+		.macahca_unorder_dispatch_on 0
+		.macahca_warps_per_dpc 416
+		.macahca_blocks_per_ap 16
+	.end_macahca_kernel
+	.text
+	.fill 4, 8, 0x2320
+	.p2align 8
+.Lfunc_end4:
+	.size	kernel_kernel_2, .Lfunc_end4-kernel_kernel_2
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 7696
+; NumMTRegsForWarps/PEU: 26
+; NumSTRegsForWarps/PEU: 36
+; MaxWarpsPerPEU: 8
+	.text
+	.protected	kernel_kernel_3         ; -- Begin function kernel_kernel_3
+	.globl	kernel_kernel_3
+	.p2align	8
+	.type	kernel_kernel_3,@function
+kernel_kernel_3:                        ; @kernel_kernel_3
+.Lfunc_begin5:
+	.loc	2 122 0                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:122:0
+; %bb.0:                                ; %entry
+	ldu_b256 s8, s0, 0x20
+	ldu_b256 s16, s0, 0x0
+.Ltmp26:
+	.loc	2 142 25 prologue_end           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:142:25
+	scmp_gt_u32 s5, 7
+	smov_b32 s6, s5
+	smov_b64 s26, 0
+	smov_b64 s2, 0
+	.loc	2 142 7 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:142:7
+	bra_smskz LBB5_35
+; %bb.1:                                ; %if.else
+	.loc	2 395 55 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:395:55
+	sshr_b32 s0, 1, s6
+	.loc	2 395 23 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:395:23
+	sshl_b32 s1, 2, s0
+	arrive slcnt(0)
+	sadd_co_u32 s2, s16, s1
+	saddc_co_u32 s3, s17, 0
+	ldu_b32 s2, s2, 0x10
+	and_b32 r2, 0x3ff, r0
+	shl_b32 r3, 3, r2
+	smul_i32 s0, 0x60000, s0
+	or_b32 r102, s0, r3
+	.loc	2 413 5 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:413:5
+	mov_b32 r103, 0
+	.loc	2 414 68                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:68
+	shl_b64 r4, 1, r102
+	.loc	2 395 23                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:395:23
+	arrive slcnt(0)
+	sashr_i32 s3, 31, s2
+	.loc	2 396 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:396:22
+	sshl_b64 s24, 2, s2
+	sadd_co_u32 s0, s22, s24
+	saddc_co_u32 s1, s23, s25
+	.loc	2 397 23                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:397:23
+	sadd_co_u32 s24, s20, s24
+	saddc_co_u32 s25, s21, s25
+	.loc	2 396 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:396:22
+	ldu_b32 s1, s0, 0x0
+	.loc	2 397 23                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:397:23
+	ldu_b32 s0, s24, 0x0
+	.loc	2 413 5                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:413:5
+	sadd_co_u32 s24, 0xffd00000, s8
+	saddc_co_u32 s25, s9, -1
+	.loc	2 414 68                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:68
+	add_co_u32 r4, s24, r4
+	mov_b32 r1, s25
+	addc_co_u32 r5, r1, r5
+	add_co_u32 r6, 0x1000, r4
+	addc_co_u32 r7, r5, 0
+	.loc	2 414 132 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:132
+	or_b32 r1, 0x2000, r102
+	.loc	2 414 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:50
+	ldg_b128 r108, r4, 0x0
+	ldg_b128 r112, r6, 0x0
+	.loc	2 414 68                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:68
+	add_co_u32 r6, 0x2000, r4
+	addc_co_u32 r7, r5, 0
+	add_co_u32 r8, 0x3000, r4
+	addc_co_u32 r9, r5, 0
+	.loc	2 414 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:50
+	ldg_b128 r116, r6, 0x0
+	.loc	2 414 68                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:68
+	mad_u32 r6, r1, 2, s24
+	add_co_u32 r4, 0x5000, r4
+	addc_co_u32 r5, r5, 0
+	.loc	2 414 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:414:50
+	ldg_b128 r124, r6, 0x0
+	ldg_b128 r120, r8, 0x0
+	ldg_b128 r128, r4, 0x0
+	and_b32 r6, r3, 16
+	shl_b32 r4, 8, r2
+	and_b32 r13, r3, 32
+	sadd_co_u32 s30, 0xffd06000, s8
+	add_u32 r5, r13, r2
+	add_u32 r6, r6, r2
+	and_b32 r17, 0x3f800, r4
+	shr_b32 r1, 6, r2
+	and_b32 r4, 0x1fc0, r3
+	mul_u24 r7, r2, 9
+	saddc_co_u32 s31, s9, -1
+	mul_u24 r9, r1, 48
+	sshl_b32 s5, 24, s2
+	sshl_b32 s2, 17, s6
+	and_b32 r5, r5, 32
+	and_b32 r6, r6, 16
+	and_or_b32 r4, r7, 8, r4
+	shr_b32 r10, 5, r2
+	shr_b32 r11, 1, r2
+	add_shl_u32 r10, r10, r11, 4
+	or3_b32 r4, r4, r5, r6
+	shr_b32 r11, 4, r2
+	arrive slcnt(0)
+	cmp_lt_i32 s34, r9, s1
+	and_or_b32 r9, r2, 15, r9
+	sshl_b32 s7, 18, s4
+	sand_b32 s28, 0x20000, s2
+	shl_add_u32 r5, 1, r4, 0
+	sadd_co_u32 s36, 0xffd0c000, s8
+	shl_b32 r4, 6, r2
+	and_b32 r10, r10, 16
+	add_shl_u32 r11, r11, r2, 3
+	cmp_lt_i32 s24, r9, s1
+	add_u32 r14, r9, 16
+	add_u32 r9, r9, 32
+	and_b32 r12, 0x3c0, r4
+	and_or_b32 r16, r11, 8, r10
+	saddc_co_u32 s37, s9, -1
+	cmp_lt_i32 s2, r14, s1
+	cmp_lt_i32 s8, r9, s1
+	.loc	2 416 5 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:416:5
+	sadd_co_i32 s1, s5, s7
+	sor_b32 s1, s1, s28
+	or_b32 r15, 0x400, r12
+	or_b32 r18, r16, r13
+	or_b32 r19, 0x800, r12
+	or_b32 r20, 0xc00, r12
+	or_b32 r10, r18, r15
+	or_b32 r11, r18, r19
+	add_u32 r17, s1, r17
+	or_b32 r14, r16, r12
+	or_b32 r12, r18, r20
+	xor_b32 r18, r13, 32
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	shl_b64 r22, 0, 0
+	shl_b64 r146, 0, 0
+	or_b32 r9, r14, r13
+	or_b32 r13, r14, r18
+	or3_b32 r14, r16, r15, r18
+	or3_b32 r15, r16, r19, r18
+	or3_b32 r16, r16, r20, r18
+	.loc	2 416 5                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:416:5
+	and_or_b32 r17, r3, 56, r17
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	shl_b64 r24, 0, 0
+	shl_b64 r30, 0, r22
+	shl_b64 r38, 0, r22
+	shl_b64 r42, 0, r22
+	shl_b64 r50, 0, r22
+	shl_b64 r58, 0, r22
+	shl_b64 r66, 0, r22
+	shl_b64 r74, 0, r22
+	shl_b64 r82, 0, r22
+	shl_b64 r90, 0, r22
+	shl_b64 r98, 0, r22
+	shl_b64 r132, 0, r22
+	shl_b64 r18, 0, r22
+	shl_b64 r26, 0, r22
+	shl_b64 r34, 0, r22
+	shl_b64 r46, 0, r22
+	shl_b64 r54, 0, r22
+	shl_b64 r62, 0, r22
+	shl_b64 r70, 0, r22
+	shl_b64 r78, 0, r22
+	shl_b64 r86, 0, r22
+	shl_b64 r94, 0, r22
+	shl_b64 r104, 0, r22
+	shl_b64 r136, 0, r22
+	add_u32 r6, 0x4000, r5
+	add_u32 r7, 0x1000, r5
+	add_u32 r8, 0x5000, r5
+	shr_b32 r4, 2, r2
+	shl_add_u32 r9, 1, r9, 0
+	shl_add_u32 r10, 1, r10, 0
+	shl_add_u32 r11, 1, r11, 0
+	shl_add_u32 r12, 1, r12, 0
+	shl_add_u32 r13, 1, r13, 0
+	shl_add_u32 r14, 1, r14, 0
+	shl_add_u32 r15, 1, r15, 0
+	shl_add_u32 r16, 1, r16, 0
+	.loc	2 416 5                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:416:5
+	mad_i32 r140, r17, 2, s18
+	mad_i32 r142, r17, 2, s12
+	shl_b64 r32, 0, r24
+	shl_b64 r40, 0, r24
+	shl_b64 r44, 0, r24
+	shl_b64 r52, 0, r24
+	shl_b64 r60, 0, r24
+	shl_b64 r68, 0, r24
+	shl_b64 r76, 0, r24
+	shl_b64 r84, 0, r24
+	shl_b64 r92, 0, r24
+	shl_b64 r100, 0, r24
+	shl_b64 r134, 0, r24
+	shl_b64 r20, 0, r24
+	shl_b64 r28, 0, r24
+	shl_b64 r36, 0, r24
+	shl_b64 r144, 0, r146
+	shl_b64 r150, 0, r146
+	shl_b64 r148, 0, r146
+	shl_b64 r158, 0, r146
+	shl_b64 r156, 0, r146
+	shl_b64 r162, 0, r146
+	shl_b64 r160, 0, r146
+	shl_b64 r166, 0, r146
+	shl_b64 r164, 0, r146
+	shl_b64 r154, 0, r146
+	shl_b64 r152, 0, r146
+	shl_b64 r48, 0, r24
+	shl_b64 r56, 0, r24
+	shl_b64 r64, 0, r24
+	shl_b64 r72, 0, r24
+	shl_b64 r80, 0, r24
+	shl_b64 r88, 0, r24
+	shl_b64 r96, 0, r24
+	shl_b64 r106, 0, r24
+	shl_b64 r138, 0, r24
+	bra LBB5_3
+	.p2align	5
+LBB5_2:                                 ; %for.inc2371
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 416 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:416:33
+	sadd_co_u32 s26, 0x100, s26
+	saddc_co_u32 s27, s27, 0
+	scmp_eq_u64 0x1000, s26
+	add_u32 r102, 0x6000, r102
+	.loc	2 416 5                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:416:5
+	bra_smsks LBB5_38
+LBB5_3:                                 ; %for.cond1442.preheader
+                                        ; =>This Inner Loop Header: Depth=1
+	.loc	2 418 13 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s24
+	snop 0
+	bra_xmskz LBB5_9
+; %bb.4:                                ; %if.then1455
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r152, r102, 2, s30
+	.loc	2 419 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:419:58
+	snop 1
+	ldg_b128 r152, r152, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s2
+	snop 0
+	bra_xmsks LBB5_10
+LBB5_5:                                 ; %for.inc1474.1
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s8
+	snop 0
+	bra_xmskz LBB5_11
+LBB5_6:                                 ; %if.then1455.2
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r160, r102, 2, s30
+	add_co_u32 r160, 0x2000, r160
+	addc_co_u32 r161, r161, 0
+	.loc	2 419 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:419:58
+	snop 1
+	ldg_b128 r160, r160, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s24
+	snop 0
+	bra_xmsks LBB5_12
+LBB5_7:                                 ; %for.inc1474.3
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s2
+	snop 0
+	bra_xmskz LBB5_13
+LBB5_8:                                 ; %if.then1455.4
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r148, r102, 2, s30
+	add_co_u32 r148, 0x4000, r148
+	addc_co_u32 r149, r149, 0
+	.loc	2 419 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:419:58
+	snop 1
+	ldg_b128 r148, r148, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s8
+	snop 0
+	bra_xmsks LBB5_14
+	bra LBB5_15
+	.p2align	5
+LBB5_9:                                 ; %for.inc1474
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s2
+	snop 0
+	bra_xmskz LBB5_5
+LBB5_10:                                ; %if.then1455.1
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r164, r102, 2, s30
+	add_co_u32 r164, 0x1000, r164
+	addc_co_u32 r165, r165, 0
+	.loc	2 419 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:419:58
+	snop 1
+	ldg_b128 r164, r164, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s8
+	snop 0
+	bra_xmsks LBB5_6
+LBB5_11:                                ; %for.inc1474.2
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s24
+	snop 0
+	bra_xmskz LBB5_7
+LBB5_12:                                ; %if.then1455.3
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r156, r102, 2, s30
+	add_co_u32 r156, 0x3000, r156
+	addc_co_u32 r157, r157, 0
+	.loc	2 419 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:419:58
+	snop 1
+	ldg_b128 r156, r156, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s2
+	snop 0
+	bra_xmsks LBB5_8
+LBB5_13:                                ; %for.inc1474.4
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 418 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:418:13
+	and_xmsk s38, s8
+	snop 0
+	bra_xmskz LBB5_15
+LBB5_14:                                ; %if.then1455.5
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r144, r102, 2, s30
+	add_co_u32 r144, 0x5000, r144
+	addc_co_u32 r145, r145, 0
+	.loc	2 419 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:419:58
+	snop 1
+	ldg_b128 r144, r144, 0x0
+LBB5_15:                                ; %for.inc1474.5
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 58 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:58
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 423 44 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:423:44
+	add_co_u32 r170, r140, s26
+	mov_b32 r17, s27
+	addc_co_u32 r171, r141, r17
+	.loc	2 424 317                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:424:317
+	add_co_u32 r168, r142, s26
+	addc_co_u32 r169, r143, r17
+	ldg_b128 r172, r170, 0x0
+	.loc	2 427 46                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:427:46
+	add_co_u32 r180, 0x20000, r170
+	addc_co_u32 r181, r171, 0
+	.loc	2 428 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:428:326
+	add_co_u32 r182, 0x20000, r168
+	addc_co_u32 r183, r169, 0
+	.loc	2 425 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:425:326
+	ldg_b128 r176, r168, 0x0
+	.loc	2 428 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:428:326
+	ldg_b128 r184, r180, 0x0
+	.loc	2 424 317                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:424:317
+	arrive gvmcnt(2)
+	sts_b128 r5, 0x0, r172
+	.loc	2 429 327                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:429:327
+	ldg_b128 r172, r182, 0x0
+	.loc	2 425 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:425:326
+	arrive gvmcnt(2)
+	sts_b128 r6, 0x0, r176
+	.loc	2 428 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:428:326
+	arrive gvmcnt(1)
+	sts_b128 r7, 0x0, r184
+	.loc	2 429 327                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:429:327
+	arrive gvmcnt(0)
+	sts_b128 r8, 0x0, r172
+.Ltmp27:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp28:
+	.loc	2 431 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:431:11
+	and_xmsk s38, s34
+	snop 0
+	bra_xmskz LBB5_17
+; %bb.16:                               ; %for.cond1723.preheader.preheader
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 434 49                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:434:49
+	lds_b128 r172, r9, 0x0
+	lds_b128 r176, r10, 0x0
+	lds_b128 r180, r11, 0x0
+	lds_b128 r184, r12, 0x0
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	add_i32 r17, 0x4000, r9
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r132, r172, r108, r132
+	mma_16x16x16f16 r74, r172, r112, r74
+	mma_16x16x16f16 r42, r172, r116, r42
+	mma_16x16x16f16 r132, r174, r110, r132
+	mma_16x16x16f16 r74, r174, r114, r74
+	mma_16x16x16f16 r42, r174, r118, r42
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r172, r17, 0x0
+	add_i32 r17, 0x4000, r10
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r98, r176, r108, r98
+	mma_16x16x16f16 r66, r176, r112, r66
+	mma_16x16x16f16 r38, r176, r116, r38
+	mma_16x16x16f16 r98, r178, r110, r98
+	mma_16x16x16f16 r66, r178, r114, r66
+	mma_16x16x16f16 r38, r178, r118, r38
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r176, r17, 0x0
+	add_i32 r17, 0x4000, r11
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r90, r180, r108, r90
+	mma_16x16x16f16 r58, r180, r112, r58
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r188, r17, 0x0
+	add_i32 r17, 0x4000, r12
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	mma_16x16x16f16 r30, r180, r116, r30
+	mma_16x16x16f16 r90, r182, r110, r90
+	mma_16x16x16f16 r58, r182, r114, r58
+	mma_16x16x16f16 r30, r182, r118, r30
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r180, r17, 0x0
+	add_i32 r17, 0x4000, r13
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	arrive bsmcnt(4)
+	mma_16x16x16f16 r82, r184, r108, r82
+	mma_16x16x16f16 r50, r184, r112, r50
+	mma_16x16x16f16 r22, r184, r116, r22
+	mma_16x16x16f16 r82, r186, r110, r82
+	mma_16x16x16f16 r50, r186, r114, r50
+	mma_16x16x16f16 r22, r186, r118, r22
+	.loc	2 434 49                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:434:49
+	lds_b128 r184, r13, 0x0
+	lds_b128 r192, r14, 0x0
+	.loc	2 454 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:454:57
+	arrive bsmcnt(5)
+	mma_16x16x16f16 r136, r172, r108, r136
+	mma_16x16x16f16 r78, r172, r112, r78
+	mma_16x16x16f16 r46, r172, r116, r46
+	mma_16x16x16f16 r136, r174, r110, r136
+	mma_16x16x16f16 r78, r174, r114, r78
+	mma_16x16x16f16 r46, r174, r118, r46
+	.loc	2 434 49                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:434:49
+	lds_b128 r172, r15, 0x0
+	.loc	2 454 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:454:57
+	arrive bsmcnt(5)
+	mma_16x16x16f16 r104, r176, r108, r104
+	mma_16x16x16f16 r70, r176, r112, r70
+	mma_16x16x16f16 r34, r176, r116, r34
+	mma_16x16x16f16 r104, r178, r110, r104
+	mma_16x16x16f16 r70, r178, r114, r70
+	mma_16x16x16f16 r34, r178, r118, r34
+	.loc	2 434 49                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:434:49
+	lds_b128 r176, r16, 0x0
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r196, r17, 0x0
+	add_i32 r17, 0x4000, r14
+	.loc	2 454 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:454:57
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r94, r188, r108, r94
+	mma_16x16x16f16 r62, r188, r112, r62
+	mma_16x16x16f16 r26, r188, r116, r26
+	mma_16x16x16f16 r94, r190, r110, r94
+	mma_16x16x16f16 r62, r190, r114, r62
+	mma_16x16x16f16 r26, r190, r118, r26
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r188, r17, 0x0
+	add_i32 r17, 0x4000, r15
+	.loc	2 454 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:454:57
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r86, r180, r108, r86
+	mma_16x16x16f16 r54, r180, r112, r54
+	mma_16x16x16f16 r18, r180, r116, r18
+	mma_16x16x16f16 r86, r182, r110, r86
+	mma_16x16x16f16 r54, r182, r114, r54
+	mma_16x16x16f16 r18, r182, r118, r18
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r180, r17, 0x0
+	add_i32 r17, 0x4000, r16
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r132, r184, r120, r132
+	mma_16x16x16f16 r74, r184, r124, r74
+	.loc	2 448 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:448:50
+	lds_b128 r200, r17, 0x0
+	.loc	2 440 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:440:58
+	mma_16x16x16f16 r42, r184, r128, r42
+	mma_16x16x16f16 r132, r186, r122, r132
+	mma_16x16x16f16 r74, r186, r126, r74
+	mma_16x16x16f16 r42, r186, r130, r42
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r98, r192, r120, r98
+	mma_16x16x16f16 r66, r192, r124, r66
+	mma_16x16x16f16 r38, r192, r128, r38
+	mma_16x16x16f16 r98, r194, r122, r98
+	mma_16x16x16f16 r66, r194, r126, r66
+	mma_16x16x16f16 r38, r194, r130, r38
+	arrive bsmcnt(5)
+	mma_16x16x16f16 r90, r172, r120, r90
+	mma_16x16x16f16 r58, r172, r124, r58
+	mma_16x16x16f16 r30, r172, r128, r30
+	mma_16x16x16f16 r90, r174, r122, r90
+	mma_16x16x16f16 r58, r174, r126, r58
+	mma_16x16x16f16 r30, r174, r130, r30
+	arrive bsmcnt(4)
+	mma_16x16x16f16 r82, r176, r120, r82
+	mma_16x16x16f16 r50, r176, r124, r50
+	mma_16x16x16f16 r22, r176, r128, r22
+	mma_16x16x16f16 r82, r178, r122, r82
+	mma_16x16x16f16 r50, r178, r126, r50
+	mma_16x16x16f16 r22, r178, r130, r22
+	.loc	2 454 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:454:57
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r136, r196, r120, r136
+	mma_16x16x16f16 r78, r196, r124, r78
+	mma_16x16x16f16 r46, r196, r128, r46
+	mma_16x16x16f16 r136, r198, r122, r136
+	mma_16x16x16f16 r78, r198, r126, r78
+	mma_16x16x16f16 r46, r198, r130, r46
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r104, r188, r120, r104
+	mma_16x16x16f16 r70, r188, r124, r70
+	mma_16x16x16f16 r34, r188, r128, r34
+	mma_16x16x16f16 r104, r190, r122, r104
+	mma_16x16x16f16 r70, r190, r126, r70
+	mma_16x16x16f16 r34, r190, r130, r34
+	arrive bsmcnt(1)
+	mma_16x16x16f16 r94, r180, r120, r94
+	mma_16x16x16f16 r62, r180, r124, r62
+	mma_16x16x16f16 r26, r180, r128, r26
+	mma_16x16x16f16 r94, r182, r122, r94
+	mma_16x16x16f16 r62, r182, r126, r62
+	mma_16x16x16f16 r26, r182, r130, r26
+	arrive bsmcnt(0)
+	mma_16x16x16f16 r86, r200, r120, r86
+	mma_16x16x16f16 r54, r200, r124, r54
+	mma_16x16x16f16 r18, r200, r128, r18
+	mma_16x16x16f16 r86, r202, r122, r86
+	mma_16x16x16f16 r54, r202, r126, r54
+	mma_16x16x16f16 r18, r202, r130, r18
+LBB5_17:                                ; %if.end1901
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 57 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:57
+	sor_b64 xmsk, xmsk, s38
+.Ltmp29:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp30:
+	.loc	2 464 18                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:464:18
+	mov_b32 r172, 0xf00
+	mov_b32 r173, 0
+	cmp_lg_u64 s38, s26, r172
+	scmp_eq_u64 0xf00, s26
+	.loc	2 464 11 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:464:11
+	snop 0
+	bra_smsks LBB5_31
+; %bb.18:                               ; %for.cond1904.preheader
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 466 15 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s24
+	snop 0
+	bra_xmskz LBB5_24
+; %bb.19:                               ; %if.then1918
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r108, r102, 2, s36
+	.loc	2 467 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:467:58
+	snop 1
+	ldg_b128 r108, r108, 0x0
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s2
+	snop 0
+	bra_xmsks LBB5_25
+LBB5_20:                                ; %for.inc1937.1
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s8
+	snop 0
+	bra_xmskz LBB5_26
+LBB5_21:                                ; %if.then1918.2
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r116, r102, 2, s36
+	add_co_u32 r116, 0x2000, r116
+	addc_co_u32 r117, r117, 0
+	.loc	2 467 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:467:58
+	snop 1
+	ldg_b128 r116, r116, 0x0
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s24
+	snop 0
+	bra_xmsks LBB5_27
+LBB5_22:                                ; %for.inc1937.3
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s2
+	snop 0
+	bra_xmskz LBB5_28
+LBB5_23:                                ; %if.then1918.4
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r124, r102, 2, s36
+	add_co_u32 r124, 0x4000, r124
+	addc_co_u32 r125, r125, 0
+	.loc	2 467 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:467:58
+	snop 1
+	ldg_b128 r124, r124, 0x0
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s8
+	snop 0
+	bra_xmsks LBB5_29
+	bra LBB5_30
+	.p2align	5
+LBB5_24:                                ; %for.inc1937
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s2
+	snop 0
+	bra_xmskz LBB5_20
+LBB5_25:                                ; %if.then1918.1
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r112, r102, 2, s36
+	add_co_u32 r112, 0x1000, r112
+	addc_co_u32 r113, r113, 0
+	.loc	2 467 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:467:58
+	snop 1
+	ldg_b128 r112, r112, 0x0
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s8
+	snop 0
+	bra_xmsks LBB5_21
+LBB5_26:                                ; %for.inc1937.2
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s24
+	snop 0
+	bra_xmskz LBB5_22
+LBB5_27:                                ; %if.then1918.3
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r120, r102, 2, s36
+	add_co_u32 r120, 0x3000, r120
+	addc_co_u32 r121, r121, 0
+	.loc	2 467 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:467:58
+	snop 1
+	ldg_b128 r120, r120, 0x0
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s2
+	snop 0
+	bra_xmsks LBB5_23
+LBB5_28:                                ; %for.inc1937.4
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 466 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:466:15
+	and_xmsk s40, s8
+	snop 0
+	bra_xmskz LBB5_30
+LBB5_29:                                ; %if.then1918.5
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r128, r102, 2, s36
+	add_co_u32 r128, 0x5000, r128
+	addc_co_u32 r129, r129, 0
+	.loc	2 467 58 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:467:58
+	snop 1
+	ldg_b128 r128, r128, 0x0
+LBB5_30:                                ; %Flow427
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 58 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:58
+	sor_b64 xmsk, xmsk, s40
+LBB5_31:                                ; %if.end1940
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 473 317 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:473:317
+	snop 0
+	ldg_b128 r172, r170, 0x80
+	.loc	2 476 46                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:476:46
+	add_co_u32 r170, 0x20080, r170
+	addc_co_u32 r171, r171, 0
+	.loc	2 474 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:474:326
+	ldg_b128 r176, r168, 0x80
+	.loc	2 477 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:477:326
+	add_co_u32 r168, 0x20080, r168
+	addc_co_u32 r169, r169, 0
+	ldg_b128 r180, r170, 0x0
+	.loc	2 478 327                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:478:327
+	snop 0
+	ldg_b128 r168, r168, 0x0
+	.loc	2 473 317                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:473:317
+	arrive gvmcnt(3)
+	sts_b128 r5, 0x0, r172
+	.loc	2 474 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:474:326
+	arrive gvmcnt(2)
+	sts_b128 r6, 0x0, r176
+	.loc	2 477 326                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:477:326
+	arrive gvmcnt(1)
+	sts_b128 r7, 0x0, r180
+	.loc	2 478 327                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:478:327
+	arrive gvmcnt(0)
+	sts_b128 r8, 0x0, r168
+.Ltmp31:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp32:
+	.loc	2 480 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:480:11
+	and_xmsk s40, s34
+	snop 0
+	bra_xmskz LBB5_33
+; %bb.32:                               ; %for.cond2189.preheader.preheader
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 483 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:483:50
+	lds_b128 r168, r9, 0x0
+	lds_b128 r172, r10, 0x0
+	lds_b128 r176, r11, 0x0
+	lds_b128 r180, r12, 0x0
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	add_i32 r17, 0x4000, r9
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r132, r168, r152, r132
+	mma_16x16x16f16 r74, r168, r164, r74
+	mma_16x16x16f16 r42, r168, r160, r42
+	mma_16x16x16f16 r132, r170, r154, r132
+	mma_16x16x16f16 r74, r170, r166, r74
+	mma_16x16x16f16 r42, r170, r162, r42
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r168, r17, 0x0
+	add_i32 r17, 0x4000, r10
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r98, r172, r152, r98
+	mma_16x16x16f16 r66, r172, r164, r66
+	mma_16x16x16f16 r38, r172, r160, r38
+	mma_16x16x16f16 r98, r174, r154, r98
+	mma_16x16x16f16 r66, r174, r166, r66
+	mma_16x16x16f16 r38, r174, r162, r38
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r172, r17, 0x0
+	add_i32 r17, 0x4000, r11
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r90, r176, r152, r90
+	mma_16x16x16f16 r58, r176, r164, r58
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r184, r17, 0x0
+	add_i32 r17, 0x4000, r12
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	mma_16x16x16f16 r30, r176, r160, r30
+	mma_16x16x16f16 r90, r178, r154, r90
+	mma_16x16x16f16 r58, r178, r166, r58
+	mma_16x16x16f16 r30, r178, r162, r30
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r176, r17, 0x0
+	add_i32 r17, 0x4000, r13
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	arrive bsmcnt(4)
+	mma_16x16x16f16 r82, r180, r152, r82
+	mma_16x16x16f16 r50, r180, r164, r50
+	mma_16x16x16f16 r22, r180, r160, r22
+	mma_16x16x16f16 r82, r182, r154, r82
+	mma_16x16x16f16 r50, r182, r166, r50
+	mma_16x16x16f16 r22, r182, r162, r22
+	.loc	2 483 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:483:50
+	lds_b128 r180, r13, 0x0
+	lds_b128 r188, r14, 0x0
+	.loc	2 503 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:503:57
+	arrive bsmcnt(5)
+	mma_16x16x16f16 r136, r168, r152, r136
+	mma_16x16x16f16 r78, r168, r164, r78
+	mma_16x16x16f16 r46, r168, r160, r46
+	mma_16x16x16f16 r136, r170, r154, r136
+	mma_16x16x16f16 r78, r170, r166, r78
+	mma_16x16x16f16 r46, r170, r162, r46
+	.loc	2 483 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:483:50
+	lds_b128 r168, r15, 0x0
+	.loc	2 503 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:503:57
+	arrive bsmcnt(5)
+	mma_16x16x16f16 r104, r172, r152, r104
+	mma_16x16x16f16 r70, r172, r164, r70
+	mma_16x16x16f16 r34, r172, r160, r34
+	mma_16x16x16f16 r104, r174, r154, r104
+	mma_16x16x16f16 r70, r174, r166, r70
+	mma_16x16x16f16 r34, r174, r162, r34
+	.loc	2 483 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:483:50
+	lds_b128 r172, r16, 0x0
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r192, r17, 0x0
+	add_i32 r17, 0x4000, r14
+	.loc	2 503 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:503:57
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r94, r184, r152, r94
+	mma_16x16x16f16 r62, r184, r164, r62
+	mma_16x16x16f16 r26, r184, r160, r26
+	mma_16x16x16f16 r94, r186, r154, r94
+	mma_16x16x16f16 r62, r186, r166, r62
+	mma_16x16x16f16 r26, r186, r162, r26
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r184, r17, 0x0
+	add_i32 r17, 0x4000, r15
+	.loc	2 503 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:503:57
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r86, r176, r152, r86
+	mma_16x16x16f16 r54, r176, r164, r54
+	mma_16x16x16f16 r18, r176, r160, r18
+	mma_16x16x16f16 r86, r178, r154, r86
+	mma_16x16x16f16 r54, r178, r166, r54
+	mma_16x16x16f16 r18, r178, r162, r18
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r176, r17, 0x0
+	add_i32 r17, 0x4000, r16
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r132, r180, r156, r132
+	mma_16x16x16f16 r74, r180, r148, r74
+	.loc	2 497 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:497:50
+	lds_b128 r196, r17, 0x0
+	.loc	2 489 59                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:489:59
+	mma_16x16x16f16 r42, r180, r144, r42
+	mma_16x16x16f16 r132, r182, r158, r132
+	mma_16x16x16f16 r74, r182, r150, r74
+	mma_16x16x16f16 r42, r182, r146, r42
+	arrive bsmcnt(6)
+	mma_16x16x16f16 r98, r188, r156, r98
+	mma_16x16x16f16 r66, r188, r148, r66
+	mma_16x16x16f16 r38, r188, r144, r38
+	mma_16x16x16f16 r98, r190, r158, r98
+	mma_16x16x16f16 r66, r190, r150, r66
+	mma_16x16x16f16 r38, r190, r146, r38
+	arrive bsmcnt(5)
+	mma_16x16x16f16 r90, r168, r156, r90
+	mma_16x16x16f16 r58, r168, r148, r58
+	mma_16x16x16f16 r30, r168, r144, r30
+	mma_16x16x16f16 r90, r170, r158, r90
+	mma_16x16x16f16 r58, r170, r150, r58
+	mma_16x16x16f16 r30, r170, r146, r30
+	arrive bsmcnt(4)
+	mma_16x16x16f16 r82, r172, r156, r82
+	mma_16x16x16f16 r50, r172, r148, r50
+	mma_16x16x16f16 r22, r172, r144, r22
+	mma_16x16x16f16 r82, r174, r158, r82
+	mma_16x16x16f16 r50, r174, r150, r50
+	mma_16x16x16f16 r22, r174, r146, r22
+	.loc	2 503 57                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:503:57
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r136, r192, r156, r136
+	mma_16x16x16f16 r78, r192, r148, r78
+	mma_16x16x16f16 r46, r192, r144, r46
+	mma_16x16x16f16 r136, r194, r158, r136
+	mma_16x16x16f16 r78, r194, r150, r78
+	mma_16x16x16f16 r46, r194, r146, r46
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r104, r184, r156, r104
+	mma_16x16x16f16 r70, r184, r148, r70
+	mma_16x16x16f16 r34, r184, r144, r34
+	mma_16x16x16f16 r104, r186, r158, r104
+	mma_16x16x16f16 r70, r186, r150, r70
+	mma_16x16x16f16 r34, r186, r146, r34
+	arrive bsmcnt(1)
+	mma_16x16x16f16 r94, r176, r156, r94
+	mma_16x16x16f16 r62, r176, r148, r62
+	mma_16x16x16f16 r26, r176, r144, r26
+	mma_16x16x16f16 r94, r178, r158, r94
+	mma_16x16x16f16 r62, r178, r150, r62
+	mma_16x16x16f16 r26, r178, r146, r26
+	arrive bsmcnt(0)
+	mma_16x16x16f16 r86, r196, r156, r86
+	mma_16x16x16f16 r54, r196, r148, r54
+	mma_16x16x16f16 r18, r196, r144, r18
+	mma_16x16x16f16 r86, r198, r158, r86
+	mma_16x16x16f16 r54, r198, r150, r54
+	mma_16x16x16f16 r18, r198, r146, r18
+LBB5_33:                                ; %if.end2367
+                                        ;   in Loop: Header=BB5_3 Depth=1
+	.loc	2 0 57 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:57
+	sor_b64 xmsk, xmsk, s40
+	.loc	2 512 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:512:11
+	sandn_b64 cmsk, xmsk, s38
+	snop 0
+	bra_cmsks LBB5_2
+; %bb.34:                               ; %if.then2369
+                                        ;   in Loop: Header=BB5_3 Depth=1
+.Ltmp33:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	bra LBB5_2
+.Ltmp34:
+LBB5_35:
+                                        ; implicit-def: $mtreg_64bits_14
+                                        ; implicit-def: $mtreg_32bit_4
+                                        ; implicit-def: $mtreg_32bit_7
+                                        ; implicit-def: $mtreg_32bit_8
+                                        ; implicit-def: $mtreg_32bit_9
+	.loc	3 0 3 is_stmt 0                 ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:0:3
+	bra_xmsks LBB5_87
+LBB5_36:                                ; %Flow434
+	.loc	2 142 7 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:142:7
+	and_xmsk s0, s2
+	snop 0
+	bra_xmskz LBB5_132
+LBB5_37:                                ; %if.end2758.sink.split
+.Ltmp35:
+	.file	4 "/opt/maca-3.7.1/include/common" "maca_fp16.hpp"
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	cvt_f32tof16 r2_lo, r9
+.Ltmp36:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	cvt_f32tof16 r0_lo, r4
+.Ltmp37:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	cvt_f32tof16 r3_lo, r7
+.Ltmp38:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	cvt_f32tof16 r1_lo, r8
+.Ltmp39:
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	shl_b32 r2, 16, r2
+	add_u16 r1_hi, 0, 0
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r3
+	and_b32 r0, 0xffff, r0
+	or_b32 r4, r1, r0
+	snop 1
+	stg_b64 r14, 0x0, r4 devc
+	.loc	2 631 1 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:631:1
+	snop 2
+	endk
+LBB5_38:                                ; %for.cond2374.preheader
+	.loc	2 0 1 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:1
+	shl_b32 r2, 2, r2
+.Ltmp40:
+	.file	5 "/opt/maca-3.7.1/include/common" "__clang_macac_math.h"
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r133, r133
+.Ltmp41:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r134, r134
+.Ltmp42:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r135, r135
+	and_b32 r6, 0x80, r2
+	and_b32 r2, r4, 4
+.Ltmp43:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r132, r132
+	min_f32 r4, 0x40b00000, r4
+.Ltmp44:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp45:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp46:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp47:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp48:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp49:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp50:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp51:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	sashr_i32 s26, 7, s0
+	sshl_b32 s0, 13, s6
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	smov_b32 s5, 0
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	sashr_i32 s27, 31, s26
+	sshl_b64 s34, 14, s4
+	sand_b32 s0, 0x2000, s0
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	sshl_b64 s30, 20, s26
+	sor_b32 s0, s34, s0
+	sadd_co_u32 s0, s0, s30
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	mul_u24 r5, r1, 3
+	saddc_co_u32 s1, s35, s31
+	and_b32 r3, 0x78, r3
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r132, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r133, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r134, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r135, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s30, s24
+	snop 0
+	bra_xmskz LBB5_42
+; %bb.39:                               ; %if.then2628
+	.loc	2 613 89                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r5
+	.loc	2 613 38 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s36, r10, 24
+	snop 3
+	and_xmsk s34, s36
+	snop 0
+	bra_xmskz LBB5_41
+; %bb.40:                               ; %if.then2648
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r136, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r137, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r138, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r139, r9
+.Ltmp52:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp53:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp54:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp55:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp56:
+	.loc	2 625 221 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	snop 0
+	shl_b32 r8, 17, r5
+	and_b32 r10, 0x700000, r8
+	.loc	2 625 358 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	add_co_u32 r9, s0, r10
+	.loc	2 625 221                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	mov_b32 r13, 0
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_b32 r8, 11, r1
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r10, s1
+	smov_b32 s5, 0x800
+	addc_co_u32 r15, r10, r13
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	and_or_b32 r14, r8, s5, r9
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r14, 1, r14
+	shl_b32 r10, 9, r5
+	add_co_u32 r8, s14, r14
+	mov_b32 r9, s15
+	addc_co_u32 r9, r9, r15
+	and_b32 r10, 0xc00, r10
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x0, r8 devc
+LBB5_41:                                ; %Flow426
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s34
+LBB5_42:                                ; %if.end2754
+	sor_b64 xmsk, xmsk, s30
+.Ltmp57:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r98, r98
+.Ltmp58:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r99, r99
+.Ltmp59:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r100, r100
+.Ltmp60:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r101, r101
+.Ltmp61:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp62:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp63:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp64:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp65:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp66:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp67:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp68:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp69:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r98, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r99, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r100, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r101, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s30, s24
+	snop 0
+	bra_xmskz LBB5_46
+; %bb.43:                               ; %if.then2628.1
+	.loc	2 613 89                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r5
+	.loc	2 613 38 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s36, r10, 24
+	snop 3
+	and_xmsk s34, s36
+	snop 0
+	bra_xmskz LBB5_45
+; %bb.44:                               ; %if.then2648.1
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r104, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r105, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r106, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r107, r9
+.Ltmp70:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp71:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp72:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp73:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp74:
+	.loc	2 625 221 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	snop 0
+	shl_b32 r8, 17, r5
+	and_b32 r10, 0x700000, r8
+	.loc	2 625 358 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	add_co_u32 r9, s0, r10
+	.loc	2 625 221                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	mov_b32 r13, 0
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_b32 r8, 11, r1
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r10, s1
+	smov_b32 s5, 0x800
+	addc_co_u32 r15, r10, r13
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	and_or_b32 r14, r8, s5, r9
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r14, 1, r14
+	shl_b32 r10, 9, r5
+	add_co_u32 r8, s14, r14
+	mov_b32 r9, s15
+	addc_co_u32 r9, r9, r15
+	and_b32 r10, 0xc00, r10
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x200, r8 devc
+LBB5_45:                                ; %Flow425
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s34
+LBB5_46:                                ; %if.end2754.1
+	sor_b64 xmsk, xmsk, s30
+.Ltmp75:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r90, r90
+.Ltmp76:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r91, r91
+.Ltmp77:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r92, r92
+.Ltmp78:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r93, r93
+.Ltmp79:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp80:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp81:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp82:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp83:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp84:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp85:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp86:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp87:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r90, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r91, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r92, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r93, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s30, s24
+	snop 0
+	bra_xmskz LBB5_50
+; %bb.47:                               ; %if.then2628.2
+	.loc	2 613 89                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r5
+	.loc	2 613 38 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s36, r10, 24
+	snop 3
+	and_xmsk s34, s36
+	snop 0
+	bra_xmskz LBB5_49
+; %bb.48:                               ; %if.then2648.2
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r94, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r95, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r96, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r97, r9
+.Ltmp88:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp89:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp90:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp91:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp92:
+	.loc	2 625 221 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	snop 0
+	shl_b32 r8, 17, r5
+	.loc	2 625 541 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_or_b32 r8, 11, r1, r8
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	and_b32 r8, 0x700800, r8
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	mov_b32 r9, 0x2000
+	shl_or_b32 r8, 1, r8, r9
+	mov_b32 r13, 0
+	add_co_u32 r8, s14, r8
+	mov_b32 r9, s15
+	sshl_b64 s36, 1, s0
+	addc_co_u32 r9, r9, r13
+	add_co_u32 r8, r8, s36
+	mov_b32 r10, s37
+	addc_co_u32 r9, r9, r10
+	shl_b32 r10, 9, r5
+	and_b32 r10, 0xc00, r10
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x0, r8 devc
+LBB5_49:                                ; %Flow424
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s34
+LBB5_50:                                ; %if.end2754.2
+	sor_b64 xmsk, xmsk, s30
+.Ltmp93:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r82, r82
+.Ltmp94:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r83, r83
+.Ltmp95:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r84, r84
+.Ltmp96:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r85, r85
+.Ltmp97:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp98:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp99:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp100:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp101:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp102:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp103:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp104:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp105:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r82, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r83, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r84, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r85, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s30, s24
+	snop 0
+	bra_xmskz LBB5_54
+; %bb.51:                               ; %if.then2628.3
+	.loc	2 613 89                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r5
+	.loc	2 613 38 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s34, r10, 24
+	snop 3
+	and_xmsk s24, s34
+	snop 0
+	bra_xmskz LBB5_53
+; %bb.52:                               ; %if.then2648.3
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r86, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r87, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r88, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r89, r9
+.Ltmp106:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp107:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp108:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp109:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp110:
+	.loc	2 625 221 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	snop 0
+	shl_b32 r8, 17, r5
+	.loc	2 625 541 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_or_b32 r8, 11, r1, r8
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	and_b32 r8, 0x700800, r8
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	mov_b32 r9, 0x2000
+	shl_or_b32 r8, 1, r8, r9
+	mov_b32 r13, 0
+	add_co_u32 r8, s14, r8
+	mov_b32 r9, s15
+	sshl_b64 s34, 1, s0
+	addc_co_u32 r9, r9, r13
+	add_co_u32 r8, r8, s34
+	mov_b32 r10, s35
+	addc_co_u32 r9, r9, r10
+	shl_b32 r10, 9, r5
+	and_b32 r10, 0xc00, r10
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x200, r8 devc
+LBB5_53:                                ; %Flow423
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s24
+LBB5_54:                                ; %if.end2754.3
+	sor_b64 xmsk, xmsk, s30
+.Ltmp111:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r74, r74
+.Ltmp112:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r75, r75
+.Ltmp113:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r76, r76
+.Ltmp114:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r77, r77
+.Ltmp115:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp116:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp117:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp118:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp119:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp120:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp121:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp122:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp123:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r74, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r75, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r76, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r77, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s24, s2
+	snop 0
+	bra_xmskz LBB5_58
+; %bb.55:                               ; %if.then2628.4
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 1
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s34, r10, 24
+	snop 3
+	and_xmsk s30, s34
+	snop 0
+	bra_xmskz LBB5_57
+; %bb.56:                               ; %if.then2648.4
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r78, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r79, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r80, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r81, r9
+.Ltmp124:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp125:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp126:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp127:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r13_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp128:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 1
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	and_b32 r10, 0xf00000, r9
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_b32 r9, 11, r1
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	add_co_u32 r10, s0, r10
+	smov_b32 s5, 0x800
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	and_or_b32 r9, r9, s5, r10
+	.loc	2 625 221                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	mov_b32 r15, 0
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r11, s1
+	addc_co_u32 r11, r11, r15
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	xor_b32 r10, 0x800, r9
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r10, 1, r10
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, s14, r10
+	mov_b32 r10, s15
+	addc_co_u32 r10, r10, r11
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r10, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r13
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r11, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r12
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+LBB5_57:                                ; %Flow422
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s30
+LBB5_58:                                ; %if.end2754.4
+	sor_b64 xmsk, xmsk, s24
+.Ltmp129:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r66, r66
+.Ltmp130:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r67, r67
+.Ltmp131:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r68, r68
+.Ltmp132:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r69, r69
+.Ltmp133:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp134:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp135:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp136:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp137:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp138:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp139:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp140:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp141:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r66, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r67, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r68, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r69, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s24, s2
+	snop 0
+	bra_xmskz LBB5_62
+; %bb.59:                               ; %if.then2628.5
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 1
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s34, r10, 24
+	snop 3
+	and_xmsk s30, s34
+	snop 0
+	bra_xmskz LBB5_61
+; %bb.60:                               ; %if.then2648.5
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r70, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r71, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r72, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r73, r9
+.Ltmp142:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp143:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp144:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp145:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r13_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp146:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 1
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	and_b32 r10, 0xf00000, r9
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_b32 r9, 11, r1
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	add_co_u32 r10, s0, r10
+	smov_b32 s5, 0x800
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	and_or_b32 r9, r9, s5, r10
+	.loc	2 625 221                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	mov_b32 r15, 0
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r11, s1
+	addc_co_u32 r11, r11, r15
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	xor_b32 r10, 0x800, r9
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r10, 1, r10
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, s14, r10
+	mov_b32 r10, s15
+	addc_co_u32 r10, r10, r11
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r10, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r13
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r11, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r12
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r10, 0x200, r8 devc
+LBB5_61:                                ; %Flow421
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s30
+LBB5_62:                                ; %if.end2754.5
+	sor_b64 xmsk, xmsk, s24
+.Ltmp147:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r58, r58
+.Ltmp148:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r59, r59
+.Ltmp149:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r60, r60
+.Ltmp150:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r61, r61
+.Ltmp151:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp152:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp153:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp154:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp155:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp156:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp157:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp158:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp159:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r58, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r59, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r60, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r61, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s24, s2
+	snop 0
+	bra_xmskz LBB5_66
+; %bb.63:                               ; %if.then2628.6
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 1
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s34, r10, 24
+	snop 3
+	and_xmsk s30, s34
+	snop 0
+	bra_xmskz LBB5_65
+; %bb.64:                               ; %if.then2648.6
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r62, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r63, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r64, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r65, r9
+.Ltmp160:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp161:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp162:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp163:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp164:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 1
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_or_b32 r9, 11, r1, r9
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	and_b32 r10, 0xf00800, r9
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	add_co_u32 r9, s0, r10
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r13, 0
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	mov_b32 r10, s1
+	addc_co_u32 r10, r10, r13
+	add_co_u32 r9, 0x1000, r9
+	addc_co_u32 r15, r10, 0
+	xor_b32 r14, 0x800, r9
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r14, 1, r14
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, s14, r14
+	mov_b32 r10, s15
+	addc_co_u32 r10, r10, r15
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x0, r8 devc
+LBB5_65:                                ; %Flow420
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s30
+LBB5_66:                                ; %if.end2754.6
+	sor_b64 xmsk, xmsk, s24
+.Ltmp165:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r50, r50
+.Ltmp166:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r51, r51
+.Ltmp167:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r52, r52
+.Ltmp168:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r53, r53
+.Ltmp169:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp170:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp171:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp172:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp173:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp174:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp175:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp176:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp177:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r50, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r51, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r52, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r53, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s24, s2
+	snop 0
+	bra_xmskz LBB5_70
+; %bb.67:                               ; %if.then2628.7
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 1
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s30, r10, 24
+	snop 3
+	and_xmsk s2, s30
+	snop 0
+	bra_xmskz LBB5_69
+; %bb.68:                               ; %if.then2648.7
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r54, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r55, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r56, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r57, r9
+.Ltmp178:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp179:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp180:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp181:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp182:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 1
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_or_b32 r9, 11, r1, r9
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	and_b32 r10, 0xf00800, r9
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	add_co_u32 r9, s0, r10
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r13, 0
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	mov_b32 r10, s1
+	addc_co_u32 r10, r10, r13
+	add_co_u32 r9, 0x1000, r9
+	addc_co_u32 r15, r10, 0
+	xor_b32 r14, 0x800, r9
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r14, 1, r14
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, s14, r14
+	mov_b32 r10, s15
+	addc_co_u32 r10, r10, r15
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x200, r8 devc
+LBB5_69:                                ; %Flow419
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s2
+LBB5_70:                                ; %if.end2754.7
+	sor_b64 xmsk, xmsk, s24
+.Ltmp183:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r42, r42
+.Ltmp184:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r43, r43
+.Ltmp185:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r44, r44
+.Ltmp186:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r45, r45
+.Ltmp187:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp188:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp189:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp190:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp191:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp192:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp193:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp194:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp195:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r42, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r43, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r44, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r45, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s2, s8
+	snop 0
+	bra_xmskz LBB5_74
+; %bb.71:                               ; %if.then2628.8
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 2
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s30, r10, 24
+	snop 3
+	and_xmsk s24, s30
+	snop 0
+	bra_xmskz LBB5_73
+; %bb.72:                               ; %if.then2648.8
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r46, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r47, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r48, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r49, r9
+.Ltmp196:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp197:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp198:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp199:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r13_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp200:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 2
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	and_b32 r10, 0xf00000, r9
+	mov_b32 r15, 0
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_b32 r9, 11, r1
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	add_co_u32 r10, s0, r10
+	mov_b32 r11, s1
+	smov_b32 s5, 0x800
+	addc_co_u32 r11, r11, r15
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	and_or_b32 r10, r9, s5, r10
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r10, 1, r10
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, s14, r10
+	mov_b32 r10, s15
+	addc_co_u32 r10, r10, r11
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r10, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r13
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r11, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r12
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+LBB5_73:                                ; %Flow418
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s24
+LBB5_74:                                ; %if.end2754.8
+	sor_b64 xmsk, xmsk, s2
+.Ltmp201:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r38, r38
+.Ltmp202:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r39, r39
+.Ltmp203:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r40, r40
+.Ltmp204:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r41, r41
+.Ltmp205:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp206:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp207:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp208:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp209:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp210:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp211:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp212:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp213:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r38, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r39, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r40, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r41, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s2, s8
+	snop 0
+	bra_xmskz LBB5_78
+; %bb.75:                               ; %if.then2628.9
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 2
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s30, r10, 24
+	snop 3
+	and_xmsk s24, s30
+	snop 0
+	bra_xmskz LBB5_77
+; %bb.76:                               ; %if.then2648.9
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r34, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r35, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r36, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r37, r9
+.Ltmp214:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp215:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp216:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp217:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r13_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp218:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 2
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	and_b32 r10, 0xf00000, r9
+	mov_b32 r15, 0
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_b32 r9, 11, r1
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	add_co_u32 r10, s0, r10
+	mov_b32 r11, s1
+	smov_b32 s5, 0x800
+	addc_co_u32 r11, r11, r15
+	.loc	2 625 426                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:426
+	and_or_b32 r10, r9, s5, r10
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	shl_b64 r10, 1, r10
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, s14, r10
+	mov_b32 r10, s15
+	addc_co_u32 r10, r10, r11
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r10, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r13
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r11, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r12
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r10, 0x200, r8 devc
+LBB5_77:                                ; %Flow417
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s24
+LBB5_78:                                ; %if.end2754.9
+	sor_b64 xmsk, xmsk, s2
+.Ltmp219:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r30, r30
+.Ltmp220:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r31, r31
+.Ltmp221:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r32, r32
+.Ltmp222:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r33, r33
+.Ltmp223:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp224:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp225:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp226:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp227:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp228:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp229:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp230:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp231:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r4, r30, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r7, r31, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r8, r32, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r9, r33, r9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s2, s8
+	snop 0
+	bra_xmskz LBB5_82
+; %bb.79:                               ; %if.then2628.10
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r10, r5, 2
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r10, 3, r10
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r10, s26, r10
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s30, r10, 24
+	snop 3
+	and_xmsk s24, s30
+	snop 0
+	bra_xmskz LBB5_81
+; %bb.80:                               ; %if.then2648.10
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r26, r4
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r27, r7
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r28, r8
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r29, r9
+.Ltmp232:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp233:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r11_lo, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp234:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp235:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r12_lo, r9
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp236:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r8, r5, 2
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r9, 17, r8
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_or_b32 r9, 11, r1, r9
+	smov_b32 s5, 0xf00800
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r10, 0x1000
+	and_or_b32 r9, r9, s5, r10
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	mad_u32 r14, r9, 2, s14
+	sshl_b64 s30, 1, s0
+	shl_b32 r8, 9, r8
+	add_co_u32 r9, r14, s30
+	mov_b32 r10, s31
+	addc_co_u32 r10, r15, r10
+	and_b32 r8, 0xc00, r8
+	add_co_u32 r8, r9, r8
+	addc_co_u32 r9, r10, 0
+	shl_b32 r10, 1, r6
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r3
+	add_co_u32 r8, r8, r10
+	addc_co_u32 r9, r9, 0
+	shl_b32 r10, 1, r2
+	add_co_u32 r14, r8, r10
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	shl_b32 r8, 16, r12
+	add_u16 r7_hi, 0, 0
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	addc_co_u32 r15, r9, 0
+	.loc	2 625 985                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:985
+	or_b32 r9, r8, r7
+	shl_b32 r7, 16, r11
+	and_b32 r4, 0xffff, r4
+	or_b32 r8, r7, r4
+	snop 1
+	stg_b64 r14, 0x0, r8 devc
+LBB5_81:                                ; %Flow
+	.loc	2 0 985                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:985
+	sor_b64 xmsk, xmsk, s24
+LBB5_82:                                ; %if.end2754.10
+	sor_b64 xmsk, xmsk, s2
+.Ltmp237:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r22, r22
+.Ltmp238:
+	.loc	5 354 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r7, r23, r23
+.Ltmp239:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r8, r24, r24
+.Ltmp240:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r9, r25, r25
+.Ltmp241:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r4, 0x40b00000, r4
+.Ltmp242:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r7, 0x40b00000, r7
+.Ltmp243:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r8, 0x40b00000, r8
+.Ltmp244:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	min_f32 r9, 0x40b00000, r9
+.Ltmp245:
+	.loc	5 351 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp246:
+	.loc	5 351 10 is_stmt 0              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r7, 0xc0b00000, r7
+.Ltmp247:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r8, 0xc0b00000, r8
+.Ltmp248:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r9, 0xc0b00000, r9
+.Ltmp249:
+	.loc	2 535 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:535:33
+	mul_f32 r10, r4, r4
+	.loc	2 536 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:536:33
+	mul_f32 r11, r7, r7
+	.loc	2 537 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:537:33
+	mul_f32 r12, r8, r8
+	.loc	2 538 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:538:33
+	mul_f32 r13, r9, r9
+	mov_b32 r14, 0xb7ddef13
+	.loc	2 550 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:550:26
+	fmka_f32 r15, r10, 0x34a40b4d, r14
+	.loc	2 551 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:551:26
+	fmka_f32 r16, r11, 0x34a40b4d, r14
+	.loc	2 552 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:552:26
+	fmka_f32 r17, r12, 0x34a40b4d, r14
+	.loc	2 553 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:553:26
+	fmka_f32 r14, r13, 0x34a40b4d, r14
+	.loc	2 563 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:563:26
+	fmak_f32 r15, r10, r15, 0x3a6dcf85
+	.loc	2 564 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:564:26
+	fmak_f32 r16, r11, r16, 0x3a6dcf85
+	.loc	2 565 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:565:26
+	fmak_f32 r17, r12, r17, 0x3a6dcf85
+	.loc	2 566 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:566:26
+	fmak_f32 r14, r13, r14, 0x3a6dcf85
+	.loc	2 576 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:576:26
+	fmak_f32 r15, r10, r15, 0xbc89a6ec
+	.loc	2 577 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:577:26
+	fmak_f32 r16, r11, r16, 0xbc89a6ec
+	.loc	2 578 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:578:26
+	fmak_f32 r17, r12, r17, 0xbc89a6ec
+	.loc	2 579 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:579:26
+	fmak_f32 r14, r13, r14, 0xbc89a6ec
+	.loc	2 589 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:589:26
+	fmak_f32 r10, r10, r15, 0x3e7b732c
+	.loc	2 590 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:590:26
+	fmak_f32 r11, r11, r16, 0x3e7b732c
+	.loc	2 591 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:591:26
+	fmak_f32 r12, r12, r17, 0x3e7b732c
+	.loc	2 592 26                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:592:26
+	fmak_f32 r13, r13, r14, 0x3e7b732c
+	.loc	2 603 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:603:28
+	fmak_f32 r4, r4, r10, 0x3f000000
+	.loc	2 604 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:604:28
+	fmak_f32 r7, r7, r11, 0x3f000000
+	.loc	2 605 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:605:28
+	fmak_f32 r8, r8, r12, 0x3f000000
+	.loc	2 606 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:606:28
+	fmak_f32 r9, r9, r13, 0x3f000000
+	.loc	2 607 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:607:27
+	mul_f32 r10, r22, r4
+	.loc	2 608 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:608:27
+	mul_f32 r11, r23, r7
+	.loc	2 609 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:609:27
+	mul_f32 r12, r24, r8
+	.loc	2 610 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:610:27
+	mul_f32 r13, r25, r9
+	smov_b64 s24, 0
+	smov_b64 s2, 0
+                                        ; implicit-def: $mtreg_64bits_14
+                                        ; implicit-def: $mtreg_32bit_4
+                                        ; implicit-def: $mtreg_32bit_7
+                                        ; implicit-def: $mtreg_32bit_8
+                                        ; implicit-def: $mtreg_32bit_9
+	.loc	2 612 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:612:11
+	and_xmsk s30, s8
+	snop 0
+	bra_xmskz LBB5_86
+; %bb.83:                               ; %if.then2628.11
+	.loc	2 613 74                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:74
+	add_u32 r4, r5, 2
+	.loc	2 613 89 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:89
+	shr_b32 r4, 3, r4
+	.loc	2 613 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:38
+	add_u32 r4, s26, r4
+	.loc	2 613 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:613:13
+	cmp_lt_u32 s2, r4, 24
+	smov_b64 s8, 0
+                                        ; implicit-def: $mtreg_64bits_14
+                                        ; implicit-def: $mtreg_32bit_4
+                                        ; implicit-def: $mtreg_32bit_7
+                                        ; implicit-def: $mtreg_32bit_8
+                                        ; implicit-def: $mtreg_32bit_9
+	snop 2
+	and_xmsk s26, s2
+	sxor_b64 s2, xmsk, s26
+	bra_xmskz LBB5_85
+; %bb.84:                               ; %if.then2648.11
+	.loc	2 619 32 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:619:32
+	mul_f32 r4, r18, r10
+	.loc	2 620 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:620:32
+	mul_f32 r7, r19, r11
+	.loc	2 621 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:621:32
+	mul_f32 r8, r20, r12
+	.loc	2 622 32                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:622:32
+	mul_f32 r9, r21, r13
+.Ltmp250:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp251:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp252:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp253:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s5, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s5
+.Ltmp254:
+	.loc	2 625 171 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:171
+	snop 0
+	add_u32 r5, r5, 2
+	.loc	2 625 221 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:221
+	shl_b32 r10, 17, r5
+	.loc	2 625 541                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:541
+	shl_or_b32 r1, 11, r1, r10
+	smov_b32 s5, 0xf00800
+	.loc	2 625 358                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:358
+	mov_b32 r10, 0x1000
+	and_or_b32 r1, r1, s5, r10
+	.loc	2 625 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:625:33
+	mad_u32 r10, r1, 2, s14
+	sshl_b64 s0, 1, s0
+	shl_b32 r5, 9, r5
+	add_co_u32 r1, r10, s0
+	mov_b32 r10, s1
+	addc_co_u32 r10, r11, r10
+	and_b32 r5, 0xc00, r5
+	add_co_u32 r1, r1, r5
+	addc_co_u32 r5, r10, 0
+	shl_b32 r6, 1, r6
+	add_co_u32 r1, r1, r6
+	addc_co_u32 r5, r5, 0
+	shl_b32 r3, 1, r3
+	add_co_u32 r1, r1, r3
+	addc_co_u32 r3, r5, 0
+	shl_b32 r2, 1, r2
+	add_co_u32 r1, r1, r2
+	addc_co_u32 r2, r3, 0
+	add_co_u32 r14, 0x200, r1
+	smov_b64 s8, xmsk
+	sandn_b64 s0, 0, xmsk
+	addc_co_u32 r15, r2, 0
+	sor_b64 s8, s0, s8
+LBB5_85:                                ; %Flow433
+	.loc	2 0 33                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:33
+	sor_b64 xmsk, xmsk, s2
+	sandn_b64 s0, 0, xmsk
+	sand_b64 s2, s8, xmsk
+	sor_b64 s2, s0, s2
+LBB5_86:                                ; %Flow432
+	sor_b64 xmsk, xmsk, s30
+	.loc	2 142 7 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:142:7
+	sand_b64 cmsk, xmsk, s24
+	snop 0
+	bra_cmskz LBB5_36
+LBB5_87:                                ; %if.then
+	.loc	2 0 7 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:7
+	and_b32 r0, 0x3ff, r0
+	shl_b32 r1, 3, r0
+	mov_b32 r2, s6
+	shl_or_b32 r2, 18, r2, r1
+	.loc	2 162 86 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:162:86
+	shl_b32 r6, 1, r2
+	mov_b32 r5, 0
+	arrive slcnt(0)
+	add_co_u32 r3, s10, r6
+	mov_b32 r4, s11
+	addc_co_u32 r4, r4, r5
+	add_co_u32 r8, 0x1000, r3
+	addc_co_u32 r9, r4, 0
+	add_co_u32 r10, 0x2000, r3
+	addc_co_u32 r11, r4, 0
+	.loc	2 162 62 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:162:62
+	ldg_b128 r142, r8, 0x0
+	.loc	2 162 86                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:162:86
+	add_co_u32 r8, 0x3000, r3
+	addc_co_u32 r9, r4, 0
+	.loc	2 162 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:162:62
+	ldg_b128 r146, r10, 0x0
+	ldg_b128 r150, s10, r6, 0x0
+	ldg_b128 r158, r8, 0x0
+	.loc	2 143 27 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:143:27
+	smov_b32 s7, 0
+	sshl_b64 s0, 2, s6
+	sadd_co_u32 s0, s16, s0
+	saddc_co_u32 s1, s17, s1
+	ldu_b32 s16, s0, 0x0
+	shr_b32 r4, 1, r0
+	shr_b32 r10, 5, r0
+	and_b32 r20, r1, 32
+	and_b32 r3, 0x1e0, r4
+	add_shl_u32 r4, r10, r4, 4
+	add_u32 r7, r20, r0
+	arrive slcnt(0)
+	sashr_i32 s17, 31, s16
+	.loc	2 144 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:144:28
+	sshl_b64 s6, 2, s16
+	sadd_co_u32 s0, s22, s6
+	saddc_co_u32 s1, s23, s7
+	.loc	2 145 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:145:29
+	sadd_co_u32 s6, s20, s6
+	saddc_co_u32 s7, s21, s7
+	sadd_co_u32 s8, 0x4000, s10
+	saddc_co_u32 s9, s11, 0
+	sshl_b32 s5, 24, s16
+	sshl_b32 s28, 18, s4
+	sadd_co_u32 s16, 0x40000, s18
+	saddc_co_u32 s17, s19, 0
+	sadd_co_u32 s20, 0x40000, s12
+	saddc_co_u32 s21, s13, 0
+	.loc	2 144 28                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:144:28
+	ldu_b32 s1, s0, 0x0
+	sadd_co_u32 s24, 0x40080, s18
+	saddc_co_u32 s25, s19, 0
+	sadd_co_u32 s26, 0x40080, s12
+	and_b32 r8, r1, 16
+	mul_u24 r9, r0, 9
+	saddc_co_u32 s27, s13, 0
+	shl_b32 r6, 8, r0
+	and_b32 r12, r4, 16
+	shr_b32 r4, 4, r0
+	and_or_b32 r5, r0, 15, r3
+	add_u32 r8, r8, r0
+	sadd_co_u32 s30, 0x8000, s10
+	and_b32 r28, 0x3f800, r6
+	add_shl_u32 r13, r4, r0, 3
+	and_b32 r6, 0x1fc0, r1
+	and_b32 r7, r7, 32
+	and_b32 r9, r9, 8
+	or_b32 r4, r5, 16
+	saddc_co_u32 s31, s11, 0
+	arrive slcnt(0)
+	cmp_lt_i32 s10, r5, s1
+	.loc	2 145 29                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:145:29
+	ldu_b32 s0, s6, 0x0
+	cmp_lt_i32 s6, r4, s1
+	and_b32 r8, r8, 16
+	or_b32 r4, r7, r9
+	or_b32 r5, r6, r7
+	or3_b32 r4, r4, r6, r8
+	cmp_lt_i32 s22, r3, s1
+	shl_b32 r3, 6, r0
+	or3_b32 r5, r5, r8, r9
+	mov_b32 r6, 0x1000
+	and_b32 r19, 0x3c0, r3
+	shl_b32 r10, 1, r4
+	shl_add_u32 r11, 1, r5, r6
+	and_or_b32 r27, r13, 8, r12
+	sadd_co_i32 s1, 0x2000, 0
+	or_b32 r21, r27, r19
+	add_u32 r6, s1, r10
+	add_u32 r7, s1, r11
+	sadd_co_i32 s1, 0x4000, 0
+	or_b32 r22, 0x400, r19
+	or_b32 r23, r27, r20
+	or_b32 r24, 0x800, r19
+	or_b32 r25, 0xc00, r19
+	or_b32 r26, 0x1000, r19
+	or_b32 r30, 0x1400, r19
+	or_b32 r31, 0x1800, r19
+	or_b32 r32, 0x1c00, r19
+	xor_b32 r33, r20, 32
+	or_b32 r12, r21, r20
+	or_b32 r20, r21, r33
+	or_b32 r13, r23, r22
+	or_b32 r14, r23, r24
+	or_b32 r15, r23, r25
+	or_b32 r16, r23, r26
+	or_b32 r17, r23, r30
+	or_b32 r18, r23, r31
+	or_b32 r19, r23, r32
+	or3_b32 r23, r27, r25, r33
+	or3_b32 r21, r27, r22, r33
+	or3_b32 r22, r27, r24, r33
+	or3_b32 r24, r27, r26, r33
+	or3_b32 r25, r27, r30, r33
+	or3_b32 r26, r27, r31, r33
+	add_u32 r8, s1, r10
+	add_u32 r9, s1, r11
+	sadd_co_i32 s1, 0x6000, 0
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	shl_b64 r30, 0, 0
+	shl_b64 r178, 0, 0
+	or3_b32 r27, r27, r32, r33
+	shl_b64 r32, 0, 0
+	shl_b64 r38, 0, r30
+	shl_b64 r46, 0, r30
+	shl_b64 r54, 0, r30
+	shl_b64 r62, 0, r30
+	shl_b64 r70, 0, r30
+	shl_b64 r78, 0, r30
+	shl_b64 r86, 0, r30
+	shl_b64 r94, 0, r30
+	shl_b64 r102, 0, r30
+	shl_b64 r110, 0, r30
+	shl_b64 r118, 0, r30
+	shl_b64 r126, 0, r30
+	shl_b64 r134, 0, r30
+	shl_b64 r154, 0, r30
+	shl_b64 r166, 0, r30
+	shl_b64 r34, 0, r30
+	shl_b64 r42, 0, r30
+	shl_b64 r50, 0, r30
+	shl_b64 r58, 0, r30
+	shl_b64 r66, 0, r30
+	shl_b64 r74, 0, r30
+	shl_b64 r82, 0, r30
+	shl_b64 r90, 0, r30
+	shl_b64 r98, 0, r30
+	shl_b64 r106, 0, r30
+	shl_b64 r114, 0, r30
+	shl_b64 r122, 0, r30
+	shl_b64 r130, 0, r30
+	shl_b64 r138, 0, r30
+	shl_b64 r162, 0, r30
+	shl_b64 r170, 0, r30
+	and_b32 r29, r1, 56
+	add_u32 r4, 0, r10
+	add_u32 r5, 0, r11
+	add_u32 r10, s1, r10
+	add_u32 r11, s1, r11
+	.loc	2 164 5 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:164:5
+	sadd_co_i32 s1, s5, s28
+	shr_b32 r3, 2, r0
+	shl_add_u32 r12, 1, r12, 0
+	shl_add_u32 r13, 1, r13, 0
+	shl_add_u32 r14, 1, r14, 0
+	shl_add_u32 r15, 1, r15, 0
+	shl_add_u32 r16, 1, r16, 0
+	shl_add_u32 r17, 1, r17, 0
+	shl_add_u32 r18, 1, r18, 0
+	shl_add_u32 r19, 1, r19, 0
+	shl_add_u32 r20, 1, r20, 0
+	shl_add_u32 r21, 1, r21, 0
+	shl_add_u32 r22, 1, r22, 0
+	shl_add_u32 r23, 1, r23, 0
+	shl_add_u32 r24, 1, r24, 0
+	shl_add_u32 r25, 1, r25, 0
+	shl_add_u32 r26, 1, r26, 0
+	shl_add_u32 r27, 1, r27, 0
+	or3_b32 r174, s1, r28, r29
+	smov_b64 s34, 0
+	shl_b64 r40, 0, r32
+	shl_b64 r48, 0, r32
+	shl_b64 r56, 0, r32
+	shl_b64 r64, 0, r32
+	shl_b64 r72, 0, r32
+	shl_b64 r80, 0, r32
+	shl_b64 r88, 0, r32
+	shl_b64 r96, 0, r32
+	shl_b64 r104, 0, r32
+	shl_b64 r112, 0, r32
+	shl_b64 r120, 0, r32
+	shl_b64 r128, 0, r32
+	shl_b64 r136, 0, r32
+	shl_b64 r156, 0, r32
+	shl_b64 r168, 0, r32
+	shl_b64 r36, 0, r32
+	shl_b64 r44, 0, r32
+	shl_b64 r52, 0, r32
+	shl_b64 r176, 0, r178
+	shl_b64 r186, 0, r178
+	shl_b64 r184, 0, r178
+	shl_b64 r190, 0, r178
+	shl_b64 r188, 0, r178
+	shl_b64 r182, 0, r178
+	shl_b64 r180, 0, r178
+	shl_b64 r60, 0, r32
+	shl_b64 r68, 0, r32
+	shl_b64 r76, 0, r32
+	shl_b64 r84, 0, r32
+	shl_b64 r92, 0, r32
+	shl_b64 r100, 0, r32
+	shl_b64 r108, 0, r32
+	shl_b64 r116, 0, r32
+	shl_b64 r124, 0, r32
+	shl_b64 r132, 0, r32
+	shl_b64 r140, 0, r32
+	shl_b64 r164, 0, r32
+	shl_b64 r172, 0, r32
+	bra LBB5_89
+	.p2align	5
+LBB5_88:                                ; %for.inc1026
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 164 45 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:164:45
+	sadd_co_u32 s34, 0x80, s34
+	saddc_co_u32 s35, s35, 0
+	scmp_eq_u64 0x800, s34
+	add_u32 r2, 0x4000, r2
+	.loc	2 164 5                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:164:5
+	bra_smsks LBB5_113
+LBB5_89:                                ; %for.cond77.preheader
+                                        ; =>This Inner Loop Header: Depth=1
+	.loc	2 166 13 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s10
+	snop 0
+	bra_xmskz LBB5_93
+; %bb.90:                               ; %if.then89
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r28, r2, 2, s8
+	.loc	2 167 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:167:70
+	snop 1
+	ldg_b128 r180, r28, 0x0
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 166 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s6
+	snop 0
+	bra_xmsks LBB5_94
+LBB5_91:                                ; %for.inc106.1
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 166 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s10
+	snop 0
+	bra_xmskz LBB5_95
+LBB5_92:                                ; %if.then89.2
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r28, r2, 2, s8
+	add_co_u32 r28, 0x2000, r28
+	addc_co_u32 r29, r29, 0
+	.loc	2 167 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:167:70
+	snop 1
+	ldg_b128 r184, r28, 0x0
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 166 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s6
+	snop 0
+	bra_xmsks LBB5_96
+	bra LBB5_97
+	.p2align	5
+LBB5_93:                                ; %for.inc106
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 166 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s6
+	snop 0
+	bra_xmskz LBB5_91
+LBB5_94:                                ; %if.then89.1
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r28, r2, 2, s8
+	add_co_u32 r28, 0x1000, r28
+	addc_co_u32 r29, r29, 0
+	.loc	2 167 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:167:70
+	snop 1
+	ldg_b128 r188, r28, 0x0
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 166 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s10
+	snop 0
+	bra_xmsks LBB5_92
+LBB5_95:                                ; %for.inc106.2
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 166 13                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:166:13
+	and_xmsk s36, s6
+	snop 0
+	bra_xmskz LBB5_97
+LBB5_96:                                ; %if.then89.3
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 13                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:13
+	mad_u32 r28, r2, 2, s8
+	add_co_u32 r28, 0x3000, r28
+	addc_co_u32 r29, r29, 0
+	.loc	2 167 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:167:70
+	snop 1
+	ldg_b128 r176, r28, 0x0
+LBB5_97:                                ; %for.inc106.3
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 70 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:70
+	sor_b64 xmsk, xmsk, s36
+	.loc	2 172 353 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:172:353
+	add_co_u32 r28, r174, s34
+	add_u32 r29, 0x10000, r28
+	mad_i32 r192, r28, 2, s18
+	mad_i32 r194, r29, 2, s18
+	.loc	2 176 362                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:176:362
+	mad_i32 r200, r28, 2, s16
+	mad_i32 r202, r29, 2, s16
+	.loc	2 180 360                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:180:360
+	mad_i32 r208, r28, 2, s12
+	mad_i32 r210, r29, 2, s12
+	.loc	2 184 361                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:184:361
+	mad_i32 r216, r28, 2, s20
+	mad_i32 r218, r29, 2, s20
+	.loc	2 172 336                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:172:336
+	ldg_b128 r196, r192, 0x0
+	ldg_b128 r192, r194, 0x0
+	.loc	2 176 345                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:176:345
+	ldg_b128 r204, r200, 0x0
+	ldg_b128 r200, r202, 0x0
+	.loc	2 180 345                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:180:345
+	ldg_b128 r212, r208, 0x0
+	ldg_b128 r208, r210, 0x0
+	.loc	2 184 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:184:346
+	ldg_b128 r220, r216, 0x0
+	ldg_b128 r216, r218, 0x0
+	.loc	2 172 336                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:172:336
+	arrive gvmcnt(7)
+	sts_b128 r4, 0x0, r196
+	arrive gvmcnt(6)
+	sts_b128 r5, 0x0, r192
+	.loc	2 176 345                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:176:345
+	arrive gvmcnt(5)
+	sts_b128 r6, 0x0, r204
+	arrive gvmcnt(4)
+	sts_b128 r7, 0x0, r200
+	.loc	2 180 345                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:180:345
+	arrive gvmcnt(3)
+	sts_b128 r8, 0x0, r212
+	arrive gvmcnt(2)
+	sts_b128 r9, 0x0, r208
+	.loc	2 184 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:184:346
+	arrive gvmcnt(1)
+	sts_b128 r10, 0x0, r220
+	arrive gvmcnt(0)
+	sts_b128 r11, 0x0, r216
+.Ltmp255:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0) & slcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp256:
+	.loc	2 187 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:187:11
+	and_xmsk s36, s22
+	snop 0
+	bra_xmskz LBB5_99
+; %bb.98:                               ; %for.cond367.preheader.preheader
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r192, r12, 0x0
+	lds_b128 r196, r13, 0x0
+	lds_b128 r200, r14, 0x0
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	add_i32 r175, 0x4000, r12
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r166, r192, r150, r166
+	mma_16x16x16f16 r86, r192, r142, r86
+	mma_16x16x16f16 r166, r194, r152, r166
+	mma_16x16x16f16 r86, r194, r144, r86
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r192, r15, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r154, r196, r150, r154
+	mma_16x16x16f16 r78, r196, r142, r78
+	mma_16x16x16f16 r154, r198, r152, r154
+	mma_16x16x16f16 r78, r198, r144, r78
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r196, r16, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r134, r200, r150, r134
+	mma_16x16x16f16 r70, r200, r142, r70
+	mma_16x16x16f16 r134, r202, r152, r134
+	mma_16x16x16f16 r70, r202, r144, r70
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r200, r17, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r126, r192, r150, r126
+	mma_16x16x16f16 r62, r192, r142, r62
+	mma_16x16x16f16 r126, r194, r152, r126
+	mma_16x16x16f16 r62, r194, r144, r62
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r192, r18, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r118, r196, r150, r118
+	mma_16x16x16f16 r54, r196, r142, r54
+	mma_16x16x16f16 r118, r198, r152, r118
+	mma_16x16x16f16 r54, r198, r144, r54
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r196, r19, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r110, r200, r150, r110
+	mma_16x16x16f16 r46, r200, r142, r46
+	mma_16x16x16f16 r110, r202, r152, r110
+	mma_16x16x16f16 r46, r202, r144, r46
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r200, r175, 0x0
+	add_i32 r175, 0x4000, r13
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r102, r192, r150, r102
+	mma_16x16x16f16 r38, r192, r142, r38
+	mma_16x16x16f16 r102, r194, r152, r102
+	mma_16x16x16f16 r38, r194, r144, r38
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r192, r175, 0x0
+	add_i32 r175, 0x4000, r14
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r94, r196, r150, r94
+	mma_16x16x16f16 r30, r196, r142, r30
+	mma_16x16x16f16 r94, r198, r152, r94
+	mma_16x16x16f16 r30, r198, r144, r30
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r196, r175, 0x0
+	add_i32 r175, 0x4000, r15
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r170, r200, r150, r170
+	mma_16x16x16f16 r90, r200, r142, r90
+	mma_16x16x16f16 r170, r202, r152, r170
+	mma_16x16x16f16 r90, r202, r144, r90
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r200, r175, 0x0
+	add_i32 r175, 0x4000, r16
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r162, r192, r150, r162
+	mma_16x16x16f16 r82, r192, r142, r82
+	mma_16x16x16f16 r162, r194, r152, r162
+	mma_16x16x16f16 r82, r194, r144, r82
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r192, r175, 0x0
+	add_i32 r175, 0x4000, r17
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r138, r196, r150, r138
+	mma_16x16x16f16 r74, r196, r142, r74
+	mma_16x16x16f16 r138, r198, r152, r138
+	mma_16x16x16f16 r74, r198, r144, r74
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r196, r175, 0x0
+	add_i32 r175, 0x4000, r18
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r130, r200, r150, r130
+	mma_16x16x16f16 r66, r200, r142, r66
+	mma_16x16x16f16 r130, r202, r152, r130
+	mma_16x16x16f16 r66, r202, r144, r66
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r200, r175, 0x0
+	add_i32 r175, 0x4000, r19
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r122, r192, r150, r122
+	mma_16x16x16f16 r58, r192, r142, r58
+	mma_16x16x16f16 r122, r194, r152, r122
+	mma_16x16x16f16 r58, r194, r144, r58
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r192, r175, 0x0
+	add_i32 r175, 0x4000, r20
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r114, r196, r150, r114
+	mma_16x16x16f16 r50, r196, r142, r50
+	mma_16x16x16f16 r114, r198, r152, r114
+	mma_16x16x16f16 r50, r198, r144, r50
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r196, r20, 0x0
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r106, r200, r150, r106
+	mma_16x16x16f16 r42, r200, r142, r42
+	mma_16x16x16f16 r106, r202, r152, r106
+	mma_16x16x16f16 r42, r202, r144, r42
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r200, r21, 0x0
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r98, r192, r150, r98
+	mma_16x16x16f16 r34, r192, r142, r34
+	mma_16x16x16f16 r98, r194, r152, r98
+	mma_16x16x16f16 r34, r194, r144, r34
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r192, r22, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r166, r196, r146, r166
+	mma_16x16x16f16 r86, r196, r158, r86
+	mma_16x16x16f16 r166, r198, r148, r166
+	mma_16x16x16f16 r86, r198, r160, r86
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r196, r23, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r154, r200, r146, r154
+	mma_16x16x16f16 r78, r200, r158, r78
+	mma_16x16x16f16 r154, r202, r148, r154
+	mma_16x16x16f16 r78, r202, r160, r78
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r200, r24, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r134, r192, r146, r134
+	mma_16x16x16f16 r70, r192, r158, r70
+	mma_16x16x16f16 r134, r194, r148, r134
+	mma_16x16x16f16 r70, r194, r160, r70
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r192, r25, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r126, r196, r146, r126
+	mma_16x16x16f16 r62, r196, r158, r62
+	mma_16x16x16f16 r126, r198, r148, r126
+	mma_16x16x16f16 r62, r198, r160, r62
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r196, r26, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r118, r200, r146, r118
+	mma_16x16x16f16 r54, r200, r158, r54
+	mma_16x16x16f16 r118, r202, r148, r118
+	mma_16x16x16f16 r54, r202, r160, r54
+	.loc	2 190 53                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:190:53
+	lds_b128 r200, r27, 0x0
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r110, r192, r146, r110
+	mma_16x16x16f16 r46, r192, r158, r46
+	mma_16x16x16f16 r110, r194, r148, r110
+	mma_16x16x16f16 r46, r194, r160, r46
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r192, r175, 0x0
+	add_i32 r175, 0x4000, r21
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r102, r196, r146, r102
+	mma_16x16x16f16 r38, r196, r158, r38
+	mma_16x16x16f16 r102, r198, r148, r102
+	mma_16x16x16f16 r38, r198, r160, r38
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r196, r175, 0x0
+	add_i32 r175, 0x4000, r22
+	.loc	2 196 63                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:196:63
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r94, r200, r146, r94
+	mma_16x16x16f16 r30, r200, r158, r30
+	mma_16x16x16f16 r94, r202, r148, r94
+	mma_16x16x16f16 r30, r202, r160, r30
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r200, r175, 0x0
+	add_i32 r175, 0x4000, r23
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r170, r192, r146, r170
+	mma_16x16x16f16 r90, r192, r158, r90
+	mma_16x16x16f16 r170, r194, r148, r170
+	mma_16x16x16f16 r90, r194, r160, r90
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r192, r175, 0x0
+	add_i32 r175, 0x4000, r24
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r162, r196, r146, r162
+	mma_16x16x16f16 r82, r196, r158, r82
+	mma_16x16x16f16 r162, r198, r148, r162
+	mma_16x16x16f16 r82, r198, r160, r82
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r196, r175, 0x0
+	add_i32 r175, 0x4000, r25
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r138, r200, r146, r138
+	mma_16x16x16f16 r74, r200, r158, r74
+	mma_16x16x16f16 r138, r202, r148, r138
+	mma_16x16x16f16 r74, r202, r160, r74
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r200, r175, 0x0
+	add_i32 r175, 0x4000, r26
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r130, r192, r146, r130
+	mma_16x16x16f16 r66, r192, r158, r66
+	mma_16x16x16f16 r130, r194, r148, r130
+	mma_16x16x16f16 r66, r194, r160, r66
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r192, r175, 0x0
+	add_i32 r175, 0x4000, r27
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r122, r196, r146, r122
+	mma_16x16x16f16 r58, r196, r158, r58
+	mma_16x16x16f16 r122, r198, r148, r122
+	mma_16x16x16f16 r58, r198, r160, r58
+	.loc	2 204 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:204:55
+	lds_b128 r196, r175, 0x0
+	.loc	2 210 61                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:210:61
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r114, r200, r146, r114
+	mma_16x16x16f16 r50, r200, r158, r50
+	mma_16x16x16f16 r114, r202, r148, r114
+	mma_16x16x16f16 r50, r202, r160, r50
+	arrive bsmcnt(1)
+	mma_16x16x16f16 r106, r192, r146, r106
+	mma_16x16x16f16 r42, r192, r158, r42
+	mma_16x16x16f16 r106, r194, r148, r106
+	mma_16x16x16f16 r42, r194, r160, r42
+	arrive bsmcnt(0)
+	mma_16x16x16f16 r98, r196, r146, r98
+	mma_16x16x16f16 r34, r196, r158, r34
+	mma_16x16x16f16 r98, r198, r148, r98
+	mma_16x16x16f16 r34, r198, r160, r34
+LBB5_99:                                ; %if.end545
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 61 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:61
+	sor_b64 xmsk, xmsk, s36
+.Ltmp257:
+	.loc	3 60 3 is_stmt 1                ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp258:
+	.loc	2 220 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:220:24
+	mov_b32 r192, 0x780
+	mov_b32 r193, 0
+	cmp_lg_u64 s36, s34, r192
+	scmp_eq_u64 0x780, s34
+	.loc	2 220 11 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:220:11
+	snop 0
+	bra_smsks LBB5_109
+; %bb.100:                              ; %for.cond548.preheader
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 222 15 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s10
+	snop 0
+	bra_xmskz LBB5_104
+; %bb.101:                              ; %if.then562
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r150, r2, 2, s30
+	.loc	2 223 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:223:70
+	snop 1
+	ldg_b128 r150, r150, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 222 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s6
+	snop 0
+	bra_xmsks LBB5_105
+LBB5_102:                               ; %for.inc580.1
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 222 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s10
+	snop 0
+	bra_xmskz LBB5_106
+LBB5_103:                               ; %if.then562.2
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r146, r2, 2, s30
+	add_co_u32 r146, 0x2000, r146
+	addc_co_u32 r147, r147, 0
+	.loc	2 223 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:223:70
+	snop 1
+	ldg_b128 r146, r146, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 222 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s6
+	snop 0
+	bra_xmsks LBB5_107
+	bra LBB5_108
+	.p2align	5
+LBB5_104:                               ; %for.inc580
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 222 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s6
+	snop 0
+	bra_xmskz LBB5_102
+LBB5_105:                               ; %if.then562.1
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r142, r2, 2, s30
+	add_co_u32 r142, 0x1000, r142
+	addc_co_u32 r143, r143, 0
+	.loc	2 223 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:223:70
+	snop 1
+	ldg_b128 r142, r142, 0x0
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 222 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s10
+	snop 0
+	bra_xmsks LBB5_103
+LBB5_106:                               ; %for.inc580.2
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 222 15                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:222:15
+	and_xmsk s38, s6
+	snop 0
+	bra_xmskz LBB5_108
+LBB5_107:                               ; %if.then562.3
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 15                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:15
+	mad_u32 r158, r2, 2, s30
+	add_co_u32 r158, 0x3000, r158
+	addc_co_u32 r159, r159, 0
+	.loc	2 223 70 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:223:70
+	snop 1
+	ldg_b128 r158, r158, 0x0
+LBB5_108:                               ; %Flow429
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 70 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:70
+	sor_b64 xmsk, xmsk, s38
+LBB5_109:                               ; %if.end583
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 229 353 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:229:353
+	add_u32 r175, r28, 64
+	add_u32 r192, 0x10040, r28
+	mad_i32 r194, r175, 2, s18
+	mad_i32 r196, r192, 2, s18
+	.loc	2 233 363                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:233:363
+	mad_i32 r202, r28, 2, s24
+	mad_i32 r204, r29, 2, s24
+	.loc	2 237 361                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:237:361
+	mad_i32 r210, r175, 2, s12
+	mad_i32 r192, r192, 2, s12
+	.loc	2 229 336                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:229:336
+	ldg_b128 r198, r194, 0x0
+	ldg_b128 r194, r196, 0x0
+	.loc	2 233 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:233:346
+	ldg_b128 r206, r202, 0x0
+	ldg_b128 r202, r204, 0x0
+	.loc	2 237 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:237:346
+	ldg_b128 r210, r210, 0x0
+	ldg_b128 r214, r192, 0x0
+	.loc	2 241 362                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:241:362
+	mad_i32 r192, r28, 2, s26
+	mad_i32 r28, r29, 2, s26
+	.loc	2 241 347 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:241:347
+	snop 0
+	ldg_b128 r218, r192, 0x0
+	ldg_b128 r222, r28, 0x0
+	.loc	2 229 336 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:229:336
+	arrive gvmcnt(7)
+	sts_b128 r4, 0x0, r198
+	arrive gvmcnt(6)
+	sts_b128 r5, 0x0, r194
+	.loc	2 233 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:233:346
+	arrive gvmcnt(5)
+	sts_b128 r6, 0x0, r206
+	arrive gvmcnt(4)
+	sts_b128 r7, 0x0, r202
+	.loc	2 237 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:237:346
+	arrive gvmcnt(3)
+	sts_b128 r8, 0x0, r210
+	arrive gvmcnt(2)
+	sts_b128 r9, 0x0, r214
+	.loc	2 241 347                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:241:347
+	arrive gvmcnt(1)
+	sts_b128 r10, 0x0, r218
+	arrive gvmcnt(0)
+	sts_b128 r11, 0x0, r222
+.Ltmp259:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp260:
+	.loc	2 244 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:244:11
+	and_xmsk s38, s22
+	snop 0
+	bra_xmskz LBB5_111
+; %bb.110:                              ; %for.cond844.preheader.preheader
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r192, r12, 0x0
+	lds_b128 r196, r13, 0x0
+	lds_b128 r200, r14, 0x0
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	add_i32 r28, 0x4000, r12
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r166, r192, r180, r166
+	mma_16x16x16f16 r86, r192, r188, r86
+	mma_16x16x16f16 r166, r194, r182, r166
+	mma_16x16x16f16 r86, r194, r190, r86
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r192, r15, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r154, r196, r180, r154
+	mma_16x16x16f16 r78, r196, r188, r78
+	mma_16x16x16f16 r154, r198, r182, r154
+	mma_16x16x16f16 r78, r198, r190, r78
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r196, r16, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r134, r200, r180, r134
+	mma_16x16x16f16 r70, r200, r188, r70
+	mma_16x16x16f16 r134, r202, r182, r134
+	mma_16x16x16f16 r70, r202, r190, r70
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r200, r17, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r126, r192, r180, r126
+	mma_16x16x16f16 r62, r192, r188, r62
+	mma_16x16x16f16 r126, r194, r182, r126
+	mma_16x16x16f16 r62, r194, r190, r62
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r192, r18, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r118, r196, r180, r118
+	mma_16x16x16f16 r54, r196, r188, r54
+	mma_16x16x16f16 r118, r198, r182, r118
+	mma_16x16x16f16 r54, r198, r190, r54
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r196, r19, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r110, r200, r180, r110
+	mma_16x16x16f16 r46, r200, r188, r46
+	mma_16x16x16f16 r110, r202, r182, r110
+	mma_16x16x16f16 r46, r202, r190, r46
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r200, r28, 0x0
+	add_i32 r28, 0x4000, r13
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r102, r192, r180, r102
+	mma_16x16x16f16 r38, r192, r188, r38
+	mma_16x16x16f16 r102, r194, r182, r102
+	mma_16x16x16f16 r38, r194, r190, r38
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r192, r28, 0x0
+	add_i32 r28, 0x4000, r14
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r94, r196, r180, r94
+	mma_16x16x16f16 r30, r196, r188, r30
+	mma_16x16x16f16 r94, r198, r182, r94
+	mma_16x16x16f16 r30, r198, r190, r30
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r196, r28, 0x0
+	add_i32 r28, 0x4000, r15
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r170, r200, r180, r170
+	mma_16x16x16f16 r90, r200, r188, r90
+	mma_16x16x16f16 r170, r202, r182, r170
+	mma_16x16x16f16 r90, r202, r190, r90
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r200, r28, 0x0
+	add_i32 r28, 0x4000, r16
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r162, r192, r180, r162
+	mma_16x16x16f16 r82, r192, r188, r82
+	mma_16x16x16f16 r162, r194, r182, r162
+	mma_16x16x16f16 r82, r194, r190, r82
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r192, r28, 0x0
+	add_i32 r28, 0x4000, r17
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r138, r196, r180, r138
+	mma_16x16x16f16 r74, r196, r188, r74
+	mma_16x16x16f16 r138, r198, r182, r138
+	mma_16x16x16f16 r74, r198, r190, r74
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r196, r28, 0x0
+	add_i32 r28, 0x4000, r18
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r130, r200, r180, r130
+	mma_16x16x16f16 r66, r200, r188, r66
+	mma_16x16x16f16 r130, r202, r182, r130
+	mma_16x16x16f16 r66, r202, r190, r66
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r200, r28, 0x0
+	add_i32 r28, 0x4000, r19
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r122, r192, r180, r122
+	mma_16x16x16f16 r58, r192, r188, r58
+	mma_16x16x16f16 r122, r194, r182, r122
+	mma_16x16x16f16 r58, r194, r190, r58
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r192, r28, 0x0
+	add_i32 r28, 0x4000, r20
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r114, r196, r180, r114
+	mma_16x16x16f16 r50, r196, r188, r50
+	mma_16x16x16f16 r114, r198, r182, r114
+	mma_16x16x16f16 r50, r198, r190, r50
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r196, r20, 0x0
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r106, r200, r180, r106
+	mma_16x16x16f16 r42, r200, r188, r42
+	mma_16x16x16f16 r106, r202, r182, r106
+	mma_16x16x16f16 r42, r202, r190, r42
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r200, r21, 0x0
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r98, r192, r180, r98
+	mma_16x16x16f16 r34, r192, r188, r34
+	mma_16x16x16f16 r98, r194, r182, r98
+	mma_16x16x16f16 r34, r194, r190, r34
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r192, r22, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r166, r196, r184, r166
+	mma_16x16x16f16 r86, r196, r176, r86
+	mma_16x16x16f16 r166, r198, r186, r166
+	mma_16x16x16f16 r86, r198, r178, r86
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r196, r23, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r154, r200, r184, r154
+	mma_16x16x16f16 r78, r200, r176, r78
+	mma_16x16x16f16 r154, r202, r186, r154
+	mma_16x16x16f16 r78, r202, r178, r78
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r200, r24, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r134, r192, r184, r134
+	mma_16x16x16f16 r70, r192, r176, r70
+	mma_16x16x16f16 r134, r194, r186, r134
+	mma_16x16x16f16 r70, r194, r178, r70
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r192, r25, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r126, r196, r184, r126
+	mma_16x16x16f16 r62, r196, r176, r62
+	mma_16x16x16f16 r126, r198, r186, r126
+	mma_16x16x16f16 r62, r198, r178, r62
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r196, r26, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r118, r200, r184, r118
+	mma_16x16x16f16 r54, r200, r176, r54
+	mma_16x16x16f16 r118, r202, r186, r118
+	mma_16x16x16f16 r54, r202, r178, r54
+	.loc	2 247 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:247:55
+	lds_b128 r200, r27, 0x0
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r110, r192, r184, r110
+	mma_16x16x16f16 r46, r192, r176, r46
+	mma_16x16x16f16 r110, r194, r186, r110
+	mma_16x16x16f16 r46, r194, r178, r46
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r192, r28, 0x0
+	add_i32 r28, 0x4000, r21
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r102, r196, r184, r102
+	mma_16x16x16f16 r38, r196, r176, r38
+	mma_16x16x16f16 r102, r198, r186, r102
+	mma_16x16x16f16 r38, r198, r178, r38
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r196, r28, 0x0
+	add_i32 r28, 0x4000, r22
+	.loc	2 253 64                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:253:64
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r94, r200, r184, r94
+	mma_16x16x16f16 r30, r200, r176, r30
+	mma_16x16x16f16 r94, r202, r186, r94
+	mma_16x16x16f16 r30, r202, r178, r30
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r200, r28, 0x0
+	add_i32 r28, 0x4000, r23
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r170, r192, r184, r170
+	mma_16x16x16f16 r90, r192, r176, r90
+	mma_16x16x16f16 r170, r194, r186, r170
+	mma_16x16x16f16 r90, r194, r178, r90
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r192, r28, 0x0
+	add_i32 r28, 0x4000, r24
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r162, r196, r184, r162
+	mma_16x16x16f16 r82, r196, r176, r82
+	mma_16x16x16f16 r162, r198, r186, r162
+	mma_16x16x16f16 r82, r198, r178, r82
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r196, r28, 0x0
+	add_i32 r28, 0x4000, r25
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r138, r200, r184, r138
+	mma_16x16x16f16 r74, r200, r176, r74
+	mma_16x16x16f16 r138, r202, r186, r138
+	mma_16x16x16f16 r74, r202, r178, r74
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r200, r28, 0x0
+	add_i32 r28, 0x4000, r26
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r130, r192, r184, r130
+	mma_16x16x16f16 r66, r192, r176, r66
+	mma_16x16x16f16 r130, r194, r186, r130
+	mma_16x16x16f16 r66, r194, r178, r66
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r192, r28, 0x0
+	add_i32 r28, 0x4000, r27
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r122, r196, r184, r122
+	mma_16x16x16f16 r58, r196, r176, r58
+	mma_16x16x16f16 r122, r198, r186, r122
+	mma_16x16x16f16 r58, r198, r178, r58
+	.loc	2 261 55                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:261:55
+	lds_b128 r196, r28, 0x0
+	.loc	2 267 62                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:267:62
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r114, r200, r184, r114
+	mma_16x16x16f16 r50, r200, r176, r50
+	mma_16x16x16f16 r114, r202, r186, r114
+	mma_16x16x16f16 r50, r202, r178, r50
+	arrive bsmcnt(1)
+	mma_16x16x16f16 r106, r192, r184, r106
+	mma_16x16x16f16 r42, r192, r176, r42
+	mma_16x16x16f16 r106, r194, r186, r106
+	mma_16x16x16f16 r42, r194, r178, r42
+	arrive bsmcnt(0)
+	mma_16x16x16f16 r98, r196, r184, r98
+	mma_16x16x16f16 r34, r196, r176, r34
+	mma_16x16x16f16 r98, r198, r186, r98
+	mma_16x16x16f16 r34, r198, r178, r34
+LBB5_111:                               ; %if.end1022
+                                        ;   in Loop: Header=BB5_89 Depth=1
+	.loc	2 0 62 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:62
+	sor_b64 xmsk, xmsk, s38
+	.loc	2 276 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:276:11
+	sandn_b64 cmsk, xmsk, s36
+	snop 0
+	bra_cmsks LBB5_88
+; %bb.112:                              ; %if.then1024
+                                        ;   in Loop: Header=BB5_89 Depth=1
+.Ltmp261:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	bra LBB5_88
+.Ltmp262:
+LBB5_113:                               ; %for.cond1029.preheader
+	.loc	3 0 3 is_stmt 0                 ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:0:3
+	mov_b32 r2, 0xc00
+	cmp_lt_u32 s8, s0, r2
+	shl_b32 r0, 2, r0
+	and_b32 r2, 0x1e00, r1
+	sshl_b32 s1, 14, s4
+	and_b32 r0, 0x80, r0
+	sshl_b32 s0, 13, s0
+	and_b32 r1, 0x78, r1
+	and_b32 r3, r3, 4
+	or3_b32 r0, r2, s1, r0
+	sand_b32 s0, 0x1f00000, s0
+	or3_b32 r0, r0, r1, r3
+	add_u32 r0, r0, s0
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	sand_b64 s0, s10, s8
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_133
+; %bb.114:                              ; %if.then1283
+.Ltmp263:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r169, r169
+	min_f32 r1, 0x40b00000, r1
+.Ltmp264:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp265:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp266:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r168, r168
+	min_f32 r2, 0x40b00000, r2
+.Ltmp267:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp268:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp269:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r167, r167
+	min_f32 r4, 0x40b00000, r4
+.Ltmp270:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp271:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp272:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r166, r166
+	min_f32 r5, 0x40b00000, r5
+.Ltmp273:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp274:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r169, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r168, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r167, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r166, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r170
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r171
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r172
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r173
+.Ltmp275:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp276:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp277:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp278:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp279:
+	.loc	2 389 346 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	snop 0
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_134
+LBB5_115:                               ; %if.end1355.1
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_135
+LBB5_116:                               ; %if.then1283.2
+.Ltmp280:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r137, r137
+	min_f32 r1, 0x40b00000, r1
+.Ltmp281:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp282:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp283:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r136, r136
+	min_f32 r2, 0x40b00000, r2
+.Ltmp284:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp285:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp286:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r135, r135
+	min_f32 r4, 0x40b00000, r4
+.Ltmp287:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp288:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp289:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r134, r134
+	min_f32 r5, 0x40b00000, r5
+.Ltmp290:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp291:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r137, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r136, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r135, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r134, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r138
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r139
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r140
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r141
+.Ltmp292:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp293:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp294:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp295:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp296:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x2000, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_136
+LBB5_117:                               ; %if.end1355.3
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_137
+LBB5_118:                               ; %if.then1283.4
+.Ltmp297:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r121, r121
+	min_f32 r1, 0x40b00000, r1
+.Ltmp298:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp299:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp300:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r120, r120
+	min_f32 r2, 0x40b00000, r2
+.Ltmp301:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp302:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp303:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r119, r119
+	min_f32 r4, 0x40b00000, r4
+.Ltmp304:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp305:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp306:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r118, r118
+	min_f32 r5, 0x40b00000, r5
+.Ltmp307:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp308:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r121, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r120, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r119, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r118, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r122
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r123
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r124
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r125
+.Ltmp309:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp310:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp311:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp312:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp313:
+	.loc	2 389 165 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:165
+	snop 0
+	or_b32 r1, 0x2000, r0
+	.loc	2 389 33 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	mad_i32 r6, r1, 2, s14
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r5
+	add_u16 r2_hi, 0, 0
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_138
+LBB5_119:                               ; %if.end1355.5
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_139
+LBB5_120:                               ; %if.then1283.6
+.Ltmp314:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r105, r105
+	min_f32 r1, 0x40b00000, r1
+.Ltmp315:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp316:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp317:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r104, r104
+	min_f32 r2, 0x40b00000, r2
+.Ltmp318:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp319:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp320:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r103, r103
+	min_f32 r4, 0x40b00000, r4
+.Ltmp321:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp322:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp323:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r102, r102
+	min_f32 r5, 0x40b00000, r5
+.Ltmp324:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp325:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r105, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r104, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r103, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r102, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r106
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r107
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r108
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r109
+.Ltmp326:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp327:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp328:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp329:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp330:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x6000, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_140
+LBB5_121:                               ; %if.end1355.7
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	sand_b64 s0, s6, s8
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_141
+LBB5_122:                               ; %if.then1283.8
+.Ltmp331:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r89, r89
+	min_f32 r1, 0x40b00000, r1
+.Ltmp332:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp333:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp334:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r88, r88
+	min_f32 r2, 0x40b00000, r2
+.Ltmp335:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp336:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp337:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r87, r87
+	min_f32 r4, 0x40b00000, r4
+.Ltmp338:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp339:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp340:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r86, r86
+	min_f32 r5, 0x40b00000, r5
+.Ltmp341:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp342:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r89, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r88, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r87, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r86, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r90
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r91
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r92
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r93
+.Ltmp343:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp344:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp345:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp346:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp347:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x1000, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_142
+LBB5_123:                               ; %if.end1355.9
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_143
+LBB5_124:                               ; %if.then1283.10
+.Ltmp348:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r73, r73
+	min_f32 r1, 0x40b00000, r1
+.Ltmp349:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp350:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp351:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r72, r72
+	min_f32 r2, 0x40b00000, r2
+.Ltmp352:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp353:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp354:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r71, r71
+	min_f32 r4, 0x40b00000, r4
+.Ltmp355:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp356:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp357:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r70, r70
+	min_f32 r5, 0x40b00000, r5
+.Ltmp358:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp359:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r73, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r72, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r71, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r70, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r74
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r75
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r76
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r77
+.Ltmp360:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp361:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp362:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp363:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp364:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x3000, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_144
+LBB5_125:                               ; %if.end1355.11
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_145
+LBB5_126:                               ; %if.then1283.12
+.Ltmp365:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r57, r57
+	min_f32 r1, 0x40b00000, r1
+.Ltmp366:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp367:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp368:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r56, r56
+	min_f32 r2, 0x40b00000, r2
+.Ltmp369:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp370:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp371:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r55, r55
+	min_f32 r4, 0x40b00000, r4
+.Ltmp372:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp373:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp374:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r54, r54
+	min_f32 r5, 0x40b00000, r5
+.Ltmp375:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp376:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r57, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r56, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r55, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r54, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r58
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r59
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r60
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r61
+.Ltmp377:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp378:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp379:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp380:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp381:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x5000, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_146
+LBB5_127:                               ; %if.end1355.13
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_129
+LBB5_128:                               ; %if.then1283.14
+.Ltmp382:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r41, r41
+	min_f32 r1, 0x40b00000, r1
+.Ltmp383:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp384:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp385:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r40, r40
+	min_f32 r2, 0x40b00000, r2
+.Ltmp386:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp387:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp388:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r39, r39
+	min_f32 r4, 0x40b00000, r4
+.Ltmp389:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp390:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp391:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r38, r38
+	min_f32 r5, 0x40b00000, r5
+.Ltmp392:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp393:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r41, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r40, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r39, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r38, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r42
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r43
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r44
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r45
+.Ltmp394:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp395:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp396:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp397:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp398:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x7000, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+LBB5_129:                               ; %if.end1355.14
+	.loc	2 0 346                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:346
+	sor_b64 xmsk, xmsk, s4
+                                        ; implicit-def: $mtreg_64bits_14
+                                        ; implicit-def: $mtreg_32bit_4
+                                        ; implicit-def: $mtreg_32bit_7
+                                        ; implicit-def: $mtreg_32bit_8
+                                        ; implicit-def: $mtreg_32bit_9
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_131
+; %bb.130:                              ; %if.then1283.15
+.Ltmp399:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r33, r33
+	min_f32 r1, 0x40b00000, r1
+.Ltmp400:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp401:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp402:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r32, r32
+	min_f32 r2, 0x40b00000, r2
+.Ltmp403:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp404:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp405:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r31, r31
+	min_f32 r4, 0x40b00000, r4
+.Ltmp406:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp407:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r5, r31, r4
+.Ltmp408:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r30, r30
+	min_f32 r4, 0x40b00000, r4
+.Ltmp409:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp410:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r4, r4
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r4, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r33, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r32, r2
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r30, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r4, r3, r34
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r7, r5, r35
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r8, r2, r36
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r9, r1, r37
+.Ltmp411:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp412:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp413:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp414:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp415:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r0, r0, 2, s14
+	add_co_u32 r14, 0x7200, r0
+	smov_b64 s0, xmsk
+	sandn_b64 s2, s2, xmsk
+	addc_co_u32 r15, r1, 0
+	sor_b64 s2, s2, s0
+LBB5_131:                               ; %Flow435
+	.loc	2 0 33 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:33
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 142 7 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:142:7
+	and_xmsk s0, s2
+	snop 0
+	bra_xmsks LBB5_37
+LBB5_132:                               ; %if.end2758
+	.loc	2 631 1                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:631:1
+	snop 0
+	endk
+LBB5_133:                               ; %if.end1355
+	.loc	2 0 1 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:1
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_115
+LBB5_134:                               ; %if.then1283.1
+.Ltmp416:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r157, r157
+	min_f32 r1, 0x40b00000, r1
+.Ltmp417:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp418:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp419:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r156, r156
+	min_f32 r2, 0x40b00000, r2
+.Ltmp420:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp421:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp422:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r155, r155
+	min_f32 r4, 0x40b00000, r4
+.Ltmp423:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp424:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp425:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r154, r154
+	min_f32 r5, 0x40b00000, r5
+.Ltmp426:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp427:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r157, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r156, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r155, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r154, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r162
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r163
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r164
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r165
+.Ltmp428:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp429:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp430:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp431:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp432:
+	.loc	2 389 303 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:303
+	snop 0
+	or_b32 r1, 0x100, r0
+	.loc	2 389 33 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	mad_i32 r6, r1, 2, s14
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r5
+	add_u16 r2_hi, 0, 0
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_116
+LBB5_135:                               ; %if.end1355.2
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_117
+LBB5_136:                               ; %if.then1283.3
+.Ltmp433:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r129, r129
+	min_f32 r1, 0x40b00000, r1
+.Ltmp434:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp435:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp436:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r128, r128
+	min_f32 r2, 0x40b00000, r2
+.Ltmp437:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp438:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp439:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r127, r127
+	min_f32 r4, 0x40b00000, r4
+.Ltmp440:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp441:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp442:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r126, r126
+	min_f32 r5, 0x40b00000, r5
+.Ltmp443:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp444:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r129, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r128, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r127, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r126, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r130
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r131
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r132
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r133
+.Ltmp445:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp446:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp447:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp448:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp449:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x2200, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_118
+LBB5_137:                               ; %if.end1355.4
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_119
+LBB5_138:                               ; %if.then1283.5
+.Ltmp450:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r113, r113
+	min_f32 r1, 0x40b00000, r1
+.Ltmp451:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp452:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp453:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r112, r112
+	min_f32 r2, 0x40b00000, r2
+.Ltmp454:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp455:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp456:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r111, r111
+	min_f32 r4, 0x40b00000, r4
+.Ltmp457:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp458:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp459:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r110, r110
+	min_f32 r5, 0x40b00000, r5
+.Ltmp460:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp461:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r113, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r112, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r111, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r110, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r114
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r115
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r116
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r117
+.Ltmp462:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp463:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp464:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp465:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s10, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s10
+.Ltmp466:
+	.loc	2 389 303 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:303
+	snop 0
+	or_b32 r1, 0x2100, r0
+	.loc	2 389 33 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	mad_i32 r6, r1, 2, s14
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r5
+	add_u16 r2_hi, 0, 0
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_120
+LBB5_139:                               ; %if.end1355.6
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_121
+LBB5_140:                               ; %if.then1283.7
+.Ltmp467:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r97, r97
+	min_f32 r1, 0x40b00000, r1
+.Ltmp468:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp469:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp470:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r96, r96
+	min_f32 r2, 0x40b00000, r2
+.Ltmp471:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp472:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp473:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r95, r95
+	min_f32 r4, 0x40b00000, r4
+.Ltmp474:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp475:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp476:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r94, r94
+	min_f32 r5, 0x40b00000, r5
+.Ltmp477:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp478:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r97, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r96, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r95, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r94, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r98
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r99
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r100
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r101
+.Ltmp479:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp480:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp481:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp482:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s0, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s0
+.Ltmp483:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x6200, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	sand_b64 s0, s6, s8
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_122
+LBB5_141:                               ; %if.end1355.8
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_123
+LBB5_142:                               ; %if.then1283.9
+.Ltmp484:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r81, r81
+	min_f32 r1, 0x40b00000, r1
+.Ltmp485:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp486:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp487:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r80, r80
+	min_f32 r2, 0x40b00000, r2
+.Ltmp488:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp489:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp490:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r79, r79
+	min_f32 r4, 0x40b00000, r4
+.Ltmp491:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp492:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp493:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r78, r78
+	min_f32 r5, 0x40b00000, r5
+.Ltmp494:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp495:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r81, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r80, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r79, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r78, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r82
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r83
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r84
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r85
+.Ltmp496:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp497:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp498:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp499:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp500:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x1200, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_124
+LBB5_143:                               ; %if.end1355.10
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_125
+LBB5_144:                               ; %if.then1283.11
+.Ltmp501:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r65, r65
+	min_f32 r1, 0x40b00000, r1
+.Ltmp502:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp503:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp504:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r64, r64
+	min_f32 r2, 0x40b00000, r2
+.Ltmp505:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp506:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp507:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r63, r63
+	min_f32 r4, 0x40b00000, r4
+.Ltmp508:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp509:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp510:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r62, r62
+	min_f32 r5, 0x40b00000, r5
+.Ltmp511:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp512:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r65, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r64, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r63, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r62, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r66
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r67
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r68
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r69
+.Ltmp513:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp514:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp515:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp516:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp517:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x3200, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmsks LBB5_126
+LBB5_145:                               ; %if.end1355.12
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_127
+LBB5_146:                               ; %if.then1283.13
+.Ltmp518:
+	.loc	5 354 10 is_stmt 1              ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r1, r49, r49
+	min_f32 r1, 0x40b00000, r1
+.Ltmp519:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r1, 0xc0b00000, r1
+.Ltmp520:
+	.loc	2 302 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:302:38
+	mul_f32 r2, r1, r1
+	mov_b32 r3, 0xb7ddef13
+	.loc	2 317 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:317:24
+	fmka_f32 r4, r2, 0x34a40b4d, r3
+	.loc	2 330 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:330:24
+	fmak_f32 r4, r2, r4, 0x3a6dcf85
+	.loc	2 343 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:343:24
+	fmak_f32 r4, r2, r4, 0xbc89a6ec
+	.loc	2 356 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:356:25
+	fmak_f32 r2, r2, r4, 0x3e7b732c
+	.loc	2 370 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:370:27
+	fmak_f32 r1, r1, r2, 0x3f000000
+.Ltmp521:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r2, r48, r48
+	min_f32 r2, 0x40b00000, r2
+.Ltmp522:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r2, 0xc0b00000, r2
+.Ltmp523:
+	.loc	2 301 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:301:38
+	mul_f32 r4, r2, r2
+	.loc	2 316 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:316:24
+	fmka_f32 r5, r4, 0x34a40b4d, r3
+	.loc	2 329 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:329:24
+	fmak_f32 r5, r4, r5, 0x3a6dcf85
+	.loc	2 342 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:342:24
+	fmak_f32 r5, r4, r5, 0xbc89a6ec
+	.loc	2 355 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:355:25
+	fmak_f32 r4, r4, r5, 0x3e7b732c
+	.loc	2 369 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:369:27
+	fmak_f32 r2, r2, r4, 0x3f000000
+.Ltmp524:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r4, r47, r47
+	min_f32 r4, 0x40b00000, r4
+.Ltmp525:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r4, 0xc0b00000, r4
+.Ltmp526:
+	.loc	2 300 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:300:38
+	mul_f32 r5, r4, r4
+	.loc	2 315 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:315:24
+	fmka_f32 r6, r5, 0x34a40b4d, r3
+	.loc	2 328 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:328:24
+	fmak_f32 r6, r5, r6, 0x3a6dcf85
+	.loc	2 341 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:341:24
+	fmak_f32 r6, r5, r6, 0xbc89a6ec
+	.loc	2 354 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:354:25
+	fmak_f32 r5, r5, r6, 0x3e7b732c
+	.loc	2 368 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:368:27
+	fmak_f32 r4, r4, r5, 0x3f000000
+.Ltmp527:
+	.loc	5 354 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:354:10
+	max_f32 r5, r46, r46
+	min_f32 r5, 0x40b00000, r5
+.Ltmp528:
+	.loc	5 351 10                        ; /opt/maca-3.7.1/include/common/__clang_macac_math.h:351:10
+	max_f32 r5, 0xc0b00000, r5
+.Ltmp529:
+	.loc	2 299 38                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:299:38
+	mul_f32 r6, r5, r5
+	.loc	2 314 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:314:24
+	fmka_f32 r3, r6, 0x34a40b4d, r3
+	.loc	2 327 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:327:24
+	fmak_f32 r3, r6, r3, 0x3a6dcf85
+	.loc	2 340 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:340:24
+	fmak_f32 r3, r6, r3, 0xbc89a6ec
+	.loc	2 353 25                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:353:25
+	fmak_f32 r3, r6, r3, 0x3e7b732c
+	.loc	2 367 27                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:367:27
+	fmak_f32 r3, r5, r3, 0x3f000000
+	.loc	2 374 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:374:33
+	mul_f32 r1, r49, r1
+	.loc	2 373 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:373:33
+	mul_f32 r2, r48, r2
+	.loc	2 372 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:372:33
+	mul_f32 r4, r47, r4
+	.loc	2 371 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:371:33
+	mul_f32 r3, r46, r3
+	.loc	2 383 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:383:31
+	mul_f32 r3, r3, r50
+	.loc	2 384 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:384:31
+	mul_f32 r4, r4, r51
+	.loc	2 385 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:385:31
+	mul_f32 r2, r2, r52
+	.loc	2 386 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:386:31
+	mul_f32 r1, r1, r53
+.Ltmp530:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r3_lo, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp531:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp532:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r2_lo, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp533:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r1_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp534:
+	.loc	2 389 33 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	snop 0
+	mad_i32 r6, r0, 2, s14
+	.loc	2 389 346 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	shl_b32 r1, 16, r1
+	add_u16 r2_hi, 0, 0
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	add_co_u32 r6, 0x5200, r6
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r5, r1, r2
+	shl_b32 r1, 16, r4
+	and_b32 r2, 0xffff, r3
+	.loc	2 389 33                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:33
+	addc_co_u32 r7, r7, 0
+	.loc	2 389 346                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:389:346
+	or_b32 r4, r1, r2
+	snop 1
+	stg_b64 r6, 0x0, r4 devc
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 376 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:376:11
+	and_xmsk s4, s0
+	snop 0
+	bra_xmskz LBB5_129
+	bra LBB5_128
+.Ltmp535:
+	.section	.rodata,#alloc
+	.p2align	6, 0x0
+	.macahca_kernel kernel_kernel_3
+		.macahca_mtreg_size 29
+		.macahca_streg_size 3
+		.macahca_priority 0
+		.macahca_float_mode 240
+		.macahca_privilege 0
+		.macahca_debug_mode 0
+		.macahca_ieee_mode 1
+		.macahca_bulky_mode 0
+		.macahca_fp16_overflow_mode 0
+		.macahca_perf_on 0
+		.macahca_priv_segm_on 0
+		.macahca_user_streg_count 4
+		.macahca_user_trap_handler_on 0
+		.macahca_streg_block_id_x_on 1
+		.macahca_streg_block_id_y_on 1
+		.macahca_streg_block_id_z_on 0
+		.macahca_streg_block_info_on 0
+		.macahca_enable_mtreg_thread_id 0
+		.macahca_exception_address_watch_on 0
+		.macahca_exception_memory_violation_on 0
+		.macahca_bsm_size 0
+		.macahca_exception_on 0
+		.macahca_streg_kernarg_segm_ptr_on 1
+		.macahca_streg_dispatch_ptr_on 0
+		.macahca_streg_prvt_init_on 0
+		.macahca_streg_prvt_segm_size_on 0
+		.macahca_unorder_dispatch_on 0
+		.macahca_warps_per_dpc 416
+		.macahca_blocks_per_ap 16
+	.end_macahca_kernel
+	.text
+	.fill 4, 8, 0x2320
+	.p2align 8
+.Lfunc_end5:
+	.size	kernel_kernel_3, .Lfunc_end5-kernel_kernel_3
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 34704
+; NumMTRegsForWarps/PEU: 226
+; NumSTRegsForWarps/PEU: 46
+; MaxWarpsPerPEU: 2
+	.text
+	.protected	kernel_kernel_4         ; -- Begin function kernel_kernel_4
+	.globl	kernel_kernel_4
+	.p2align	8
+	.type	kernel_kernel_4,@function
+kernel_kernel_4:                        ; @kernel_kernel_4
+.Lfunc_begin6:
+	.loc	2 633 0                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:633:0
+; %bb.0:                                ; %entry
+	ldu_b256 s8, s0, 0x20
+	ldu_b256 s40, s0, 0x0
+.Ltmp536:
+	.loc	2 645 25 prologue_end           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:645:25
+	scmp_gt_u32 s5, 7
+	.loc	2 645 7 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:645:7
+	snop 0
+	bra_smskz LBB6_2
+; %bb.1:                                ; %if.else
+	.loc	2 649 46 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:649:46
+	sand_b32 s0, 0x7ffffffe, s5
+	.loc	2 649 72 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:649:72
+	sand_b32 s1, s4, 1
+	.loc	2 649 51                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:649:51
+	sor_b32 s6, s0, s1
+	.loc	2 650 45 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:650:45
+	sshl_b32 s0, 2, s5
+	sand_b32 s0, s0, 4
+	.loc	2 650 71 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:650:71
+	sshr_b32 s1, 1, s4
+	.loc	2 650 50                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:650:50
+	sadd_co_i32 s16, s0, s1
+	.loc	2 645 7 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:645:7
+	bra_xmskz LBB6_3
+	bra LBB6_4
+LBB6_2:
+                                        ; implicit-def: $streg_32bit_6
+                                        ; implicit-def: $streg_32bit_16
+LBB6_3:                                 ; %if.then
+	.loc	2 0 7 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:7
+	smov_b32 s16, s4
+	smov_b32 s6, s5
+LBB6_4:                                 ; %if.end
+	cmp_lt_u32 s4, s6, 24
+	scmp_gt_u32 s6, 23
+	smov_b64 s20, 0
+	.loc	2 655 18 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:655:18
+	bra_smsks LBB6_6
+; %bb.5:                                ; %if.then26
+	.loc	2 0 18 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:18
+	smov_b32 s7, 0
+	sshl_b64 s0, 2, s6
+	arrive slcnt(0)
+	sadd_co_u32 s0, s42, s0
+	saddc_co_u32 s1, s43, s1
+	.loc	2 656 15 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:656:15
+	ldu_b32 s20, s0, 0x0
+	arrive slcnt(0)
+	sashr_i32 s21, 31, s20
+LBB6_6:                                 ; %if.end29
+	.loc	2 661 20                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:661:20
+	sshl_b64 s2, 2, s20
+	arrive slcnt(0)
+	sadd_co_u32 s0, s8, s2
+	saddc_co_u32 s1, s9, s3
+	.loc	2 662 19                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:662:19
+	sadd_co_u32 s8, s44, s2
+	and_b32 r0, 0x3ff, r0
+	saddc_co_u32 s9, s45, s3
+	shl_b32 r2, 3, r0
+	.loc	2 682 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:682:58
+	shl_b64 r166, 0, 0
+	.loc	2 663 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:663:22
+	sadd_co_u32 s18, s46, s2
+	.loc	2 674 3                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:674:3
+	mad_u32 r4, r2, 2, s14
+	.loc	2 663 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:663:22
+	saddc_co_u32 s19, s47, s3
+	sshl_b32 s3, 20, s6
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	smov_b32 s17, 0
+	sandn_b64 cmsk, xmsk, s4
+	shl_b64 r164, 0, r166
+	shl_b64 r162, 0, r166
+	shl_b64 r160, 0, r166
+	shl_b64 r158, 0, r166
+	shl_b64 r156, 0, r166
+	shl_b64 r154, 0, r166
+	shl_b64 r152, 0, r166
+	bra_cmsks LBB6_8
+; %bb.7:                                ; %for.body56.us.preheader
+	.loc	2 678 78 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:78
+	sor_b32 s2, 0x800, s3
+	.loc	2 678 39 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:39
+	mad_u32 r8, s2, 2, r4
+	mad_u32 r6, s3, 2, r4
+	.loc	2 678 78                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:78
+	sor_b32 s2, 0x1000, s3
+	.loc	2 678 17                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:17
+	ldg_b128 r156, r8, 0x0
+	ldg_b128 r152, r6, 0x0
+	.loc	2 678 39                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:39
+	mad_u32 r6, s2, 2, r4
+	.loc	2 678 78                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:78
+	sor_b32 s2, 0x1800, s3
+	.loc	2 678 39                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:39
+	mad_u32 r4, s2, 2, r4
+	.loc	2 678 17                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:678:17
+	ldg_b128 r160, r6, 0x0
+	snop 0
+	ldg_b128 r164, r4, 0x0
+LBB6_8:                                 ; %for.cond100.preheader
+	.loc	2 0 17                          ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:17
+	and_b32 r3, r2, 32
+	and_b32 r4, r2, 16
+	add_u32 r3, r3, r0
+	add_u32 r4, r4, r0
+	and_b32 r1, 0x1fc0, r2
+	mul_u24 r5, r0, 9
+	and_or_b32 r1, r5, 8, r1
+	and_b32 r3, r3, 32
+	and_b32 r4, r4, 16
+	or3_b32 r4, r1, r3, r4
+	shr_b32 r5, 5, r0
+	shr_b32 r3, 1, r0
+	add_shl_u32 r5, r5, r3, 4
+	sshl_b64 s22, 25, s20
+	.loc	2 684 3 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:684:3
+	sshl_b64 s24, 22, s16
+	sadd_co_u32 s7, s22, s24
+	shl_b32 r1, 10, r0
+	and_b32 r6, r5, 16
+	shr_b32 r5, 4, r0
+	or_b32 r22, r1, r2
+	add_shl_u32 r7, r5, r0, 3
+	saddc_co_u32 s17, s23, s25
+	shl_b32 r2, 6, r0
+	shl_b32 r8, 3, r0
+	and_b32 r13, 0x3c0, r2
+	and_b32 r22, 0xfe038, r22
+	sadd_co_u32 s7, s40, s7
+	and_b32 r14, r8, 32
+	and_or_b32 r21, r7, 8, r6
+	or_b32 r15, r21, r13
+	or_b32 r16, 0x400, r13
+	or_b32 r17, r21, r14
+	or_b32 r18, 0x800, r13
+	or_b32 r19, 0xc00, r13
+	or_b32 r20, 0x1000, r13
+	or_b32 r23, 0x1400, r13
+	or_b32 r24, 0x1800, r13
+	or_b32 r25, 0x1c00, r13
+	xor_b32 r26, r14, 32
+	shl_b32 r22, 1, r22
+	saddc_co_u32 s17, s41, s17
+	or_b32 r6, r15, r14
+	or_b32 r14, r15, r26
+	or_b32 r7, r17, r16
+	or_b32 r8, r17, r18
+	or_b32 r9, r17, r19
+	or_b32 r10, r17, r20
+	or_b32 r11, r17, r23
+	or_b32 r12, r17, r24
+	or_b32 r13, r17, r25
+	or3_b32 r17, r21, r19, r26
+	or3_b32 r19, r21, r23, r26
+	or3_b32 r15, r21, r16, r26
+	or3_b32 r16, r21, r18, r26
+	or3_b32 r18, r21, r20, r26
+	or3_b32 r20, r21, r24, r26
+	or3_b32 r21, r21, r25, r26
+	shl_b64 r26, 0, s14
+	mov_b32 r25, 0
+	add_co_u32 r22, s7, r22
+	mov_b32 r23, s17
+	ldu_b32 s2, s0, 0x0
+	ldu_b32 s1, s8, 0x0
+	ldu_b32 s0, s18, 0x0
+	addc_co_u32 r23, r23, r25
+	shl_b32 r24, 4, r0
+	mad_u32 r26, s3, 2, r26
+	add_co_u32 r24, r26, r24
+	and_b32 r5, 0x380, r0
+	addc_co_u32 r25, r27, 0
+	cmp_lt_i32 s8, s16, 8
+	cmp_gt_u32 s18, 0x80, r0
+	cmp_eq_u32 s20, 0x80, r5
+	add_co_u32 r168, 0x6000, r24
+	.loc	2 0 0 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	shl_b64 r88, 0, 0
+	shl_add_u32 r4, 1, r4, 0
+	.loc	2 684 3                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:684:3
+	addc_co_u32 r169, r25, 0
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	shl_b64 r90, 0, 0
+	shl_b64 r92, 0, r88
+	shl_b64 r96, 0, r88
+	shl_b64 r100, 0, r88
+	shl_b64 r104, 0, r88
+	shl_b64 r108, 0, r88
+	shl_b64 r112, 0, r88
+	shl_b64 r116, 0, r88
+	shl_b64 r120, 0, r88
+	shl_b64 r124, 0, r88
+	shl_b64 r128, 0, r88
+	shl_b64 r132, 0, r88
+	shl_b64 r136, 0, r88
+	shl_b64 r140, 0, r88
+	shl_b64 r144, 0, r88
+	shl_b64 r148, 0, r88
+	shl_b64 r24, 0, r88
+	shl_b64 r28, 0, r88
+	shl_b64 r32, 0, r88
+	shl_b64 r36, 0, r88
+	shl_b64 r40, 0, r88
+	shl_b64 r44, 0, r88
+	shl_b64 r48, 0, r88
+	shl_b64 r52, 0, r88
+	shl_b64 r56, 0, r88
+	shl_b64 r60, 0, r88
+	shl_b64 r64, 0, r88
+	shl_b64 r68, 0, r88
+	shl_b64 r72, 0, r88
+	shl_b64 r76, 0, r88
+	shl_b64 r80, 0, r88
+	shl_b64 r84, 0, r88
+	shr_b32 r2, 2, r0
+	add_u32 r5, 0x4000, r4
+	shl_add_u32 r6, 1, r6, 0
+	shl_add_u32 r7, 1, r7, 0
+	shl_add_u32 r8, 1, r8, 0
+	shl_add_u32 r9, 1, r9, 0
+	shl_add_u32 r10, 1, r10, 0
+	shl_add_u32 r11, 1, r11, 0
+	shl_add_u32 r12, 1, r12, 0
+	shl_add_u32 r13, 1, r13, 0
+	shl_add_u32 r14, 1, r14, 0
+	shl_add_u32 r15, 1, r15, 0
+	shl_add_u32 r16, 1, r16, 0
+	shl_add_u32 r17, 1, r17, 0
+	shl_add_u32 r18, 1, r18, 0
+	shl_add_u32 r19, 1, r19, 0
+	shl_add_u32 r20, 1, r20, 0
+	shl_add_u32 r21, 1, r21, 0
+	smov_b64 s14, 0
+	shl_b64 r94, 0, r90
+	shl_b64 r98, 0, r90
+	shl_b64 r102, 0, r90
+	shl_b64 r106, 0, r90
+	shl_b64 r110, 0, r90
+	shl_b64 r114, 0, r90
+	shl_b64 r118, 0, r90
+	shl_b64 r122, 0, r90
+	shl_b64 r126, 0, r90
+	shl_b64 r130, 0, r90
+	shl_b64 r134, 0, r90
+	shl_b64 r138, 0, r90
+	shl_b64 r142, 0, r90
+	shl_b64 r146, 0, r90
+	shl_b64 r150, 0, r90
+	shl_b64 r26, 0, r90
+	shl_b64 r30, 0, r90
+	shl_b64 r34, 0, r90
+	shl_b64 r38, 0, r90
+	shl_b64 r42, 0, r90
+	shl_b64 r46, 0, r90
+	shl_b64 r50, 0, r90
+	shl_b64 r54, 0, r90
+	shl_b64 r58, 0, r90
+	shl_b64 r62, 0, r90
+	shl_b64 r66, 0, r90
+	shl_b64 r70, 0, r90
+	shl_b64 r74, 0, r90
+	shl_b64 r78, 0, r90
+	shl_b64 r82, 0, r90
+	shl_b64 r86, 0, r90
+                                        ; implicit-def: $mtreg_64bits_184
+                                        ; implicit-def: $mtreg_64bits_176
+                                        ; implicit-def: $mtreg_64bits_172
+                                        ; implicit-def: $mtreg_64bits_180
+	bra LBB6_10
+	.p2align	5
+LBB6_9:                                 ; %for.inc802
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 684 31                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:684:31
+	sadd_co_u32 s14, 0x100, s14
+	saddc_co_u32 s15, s15, 0
+	add_co_u32 r168, 0x8000, r168
+	scmp_eq_u64 0x4000, s14
+	addc_co_u32 r169, r169, 0
+	.loc	2 684 3                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:684:3
+	bra_smsks LBB6_32
+LBB6_10:                                ; %for.cond105.preheader
+                                        ; =>This Inner Loop Header: Depth=1
+	.loc	2 687 11 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:687:11
+	and_xmsk s22, s18
+	snop 0
+	bra_xmskz LBB6_13
+; %bb.11:                               ; %for.cond113.preheader
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	shl_b64 r178, 0, 0
+	shl_b64 r180, 0, r178
+	sandn_b64 cmsk, xmsk, s4
+	shl_b64 r170, 0, r178
+	shl_b64 r172, 0, r178
+	shl_b64 r174, 0, r178
+	shl_b64 r176, 0, r178
+	shl_b64 r182, 0, r178
+	shl_b64 r184, 0, r178
+	bra_cmsks LBB6_13
+; %bb.12:                               ; %for.body116.us.preheader
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 692 23 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:692:23
+	add_co_u32 r178, 0xffffe000, r168
+	addc_co_u32 r179, r169, -1
+	add_co_u32 r182, 0x1000, r168
+	addc_co_u32 r183, r169, 0
+	ldg_b128 r170, r168, -0x1000
+	ldg_b128 r174, r168, 0x0
+	ldg_b128 r178, r178, 0x0
+	ldg_b128 r182, r182, 0x0
+LBB6_13:                                ; %if.end166
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s22
+	shl_b64 r186, 0, 0
+	sandn_b64 cmsk, xmsk, s8
+	shl_b64 r188, 0, 0
+	shl_b64 r190, 0, 0
+	shl_b64 r192, 0, 0
+	shl_b64 r194, 0, 0
+	shl_b64 r196, 0, 0
+	shl_b64 r198, 0, 0
+	shl_b64 r200, 0, 0
+	bra_cmsks LBB6_15
+; %bb.14:                               ; %for.body170.us.preheader
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 704 21 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:704:21
+	add_co_u32 r194, r22, s14
+	mov_b32 r186, s15
+	addc_co_u32 r195, r23, r186
+	add_co_u32 r190, 0x80000, r194
+	addc_co_u32 r191, r195, 0
+	add_co_u32 r196, 0x100000, r194
+	addc_co_u32 r197, r195, 0
+	add_co_u32 r198, 0x180000, r194
+	addc_co_u32 r199, r195, 0
+	ldg_b128 r186, r194, 0x0
+	ldg_b128 r190, r190, 0x0
+	ldg_b128 r194, r196, 0x0
+	ldg_b128 r198, r198, 0x0
+LBB6_15:                                ; %for.cond.cleanup169
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 708 362                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:708:362
+	arrive gvmcnt(3)
+	sts_b128 r4, 0x0, r186
+	add_i32 r186, 0x1000, r4
+	arrive gvmcnt(2)
+	snop 0
+	sts_b128 r186, 0x0, r190
+	add_i32 r186, 0x2000, r4
+	arrive gvmcnt(1)
+	snop 0
+	sts_b128 r186, 0x0, r194
+	add_i32 r186, 0x3000, r4
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r186, 0x0, r198
+	.loc	2 687 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:687:11
+	and_xmsk s22, s20
+	snop 0
+	bra_xmskz LBB6_18
+; %bb.16:                               ; %for.cond113.preheader.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	shl_b64 r178, 0, 0
+	shl_b64 r180, 0, r178
+	sandn_b64 cmsk, xmsk, s4
+	shl_b64 r170, 0, r178
+	shl_b64 r172, 0, r178
+	shl_b64 r174, 0, r178
+	shl_b64 r176, 0, r178
+	shl_b64 r182, 0, r178
+	shl_b64 r184, 0, r178
+	bra_cmsks LBB6_18
+; %bb.17:                               ; %for.body116.us.preheader.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 692 23 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:692:23
+	add_co_u32 r178, 0xffffe000, r168
+	addc_co_u32 r179, r169, -1
+	add_co_u32 r182, 0x1000, r168
+	addc_co_u32 r183, r169, 0
+	ldg_b128 r170, r168, -0x1000
+	ldg_b128 r174, r168, 0x0
+	ldg_b128 r178, r178, 0x0
+	ldg_b128 r182, r182, 0x0
+LBB6_18:                                ; %if.end166.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 23 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:23
+	sor_b64 xmsk, xmsk, s22
+	shl_b64 r186, 0, 0
+	sandn_b64 cmsk, xmsk, s8
+	shl_b64 r188, 0, 0
+	shl_b64 r190, 0, 0
+	shl_b64 r192, 0, 0
+	shl_b64 r194, 0, 0
+	shl_b64 r196, 0, 0
+	shl_b64 r198, 0, 0
+	shl_b64 r200, 0, 0
+	bra_cmsks LBB6_20
+; %bb.19:                               ; %for.body170.us.preheader.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 704 21 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:704:21
+	add_co_u32 r194, r22, s14
+	mov_b32 r186, s15
+	addc_co_u32 r195, r23, r186
+	add_co_u32 r186, 0x200000, r194
+	addc_co_u32 r187, r195, 0
+	add_co_u32 r190, 0x280000, r194
+	addc_co_u32 r191, r195, 0
+	add_co_u32 r196, 0x300000, r194
+	addc_co_u32 r197, r195, 0
+	add_co_u32 r198, 0x380000, r194
+	addc_co_u32 r199, r195, 0
+	ldg_b128 r186, r186, 0x0
+	ldg_b128 r190, r190, 0x0
+	ldg_b128 r194, r196, 0x0
+	ldg_b128 r198, r198, 0x0
+LBB6_20:                                ; %for.cond.cleanup169.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 708 362                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:708:362
+	arrive gvmcnt(3)
+	sts_b128 r5, 0x0, r186
+	add_i32 r186, 0x1000, r5
+	arrive gvmcnt(2)
+	snop 0
+	sts_b128 r186, 0x0, r190
+	add_i32 r186, 0x2000, r5
+	arrive gvmcnt(1)
+	snop 0
+	sts_b128 r186, 0x0, r194
+	add_i32 r186, 0x3000, r5
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r186, 0x0, r198
+.Ltmp537:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0) & slcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp538:
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r186, r6, 0x0
+	lds_b128 r190, r7, 0x0
+	lds_b128 r194, r8, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r148, r186, r152, r148
+	mma_16x16x16f16 r116, r186, r156, r116
+	mma_16x16x16f16 r148, r188, r154, r148
+	mma_16x16x16f16 r116, r188, r158, r116
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r186, r9, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r144, r190, r152, r144
+	mma_16x16x16f16 r112, r190, r156, r112
+	mma_16x16x16f16 r144, r192, r154, r144
+	mma_16x16x16f16 r112, r192, r158, r112
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r190, r10, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r140, r194, r152, r140
+	mma_16x16x16f16 r108, r194, r156, r108
+	mma_16x16x16f16 r140, r196, r154, r140
+	mma_16x16x16f16 r108, r196, r158, r108
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r194, r11, 0x0
+	lds_b128 r198, r12, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r136, r186, r152, r136
+	mma_16x16x16f16 r104, r186, r156, r104
+	mma_16x16x16f16 r136, r188, r154, r136
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	add_i32 r186, 0x4000, r6
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r104, r188, r158, r104
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r132, r190, r152, r132
+	mma_16x16x16f16 r100, r190, r156, r100
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r188, r13, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r132, r192, r154, r132
+	mma_16x16x16f16 r100, r192, r158, r100
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r128, r194, r152, r128
+	mma_16x16x16f16 r96, r194, r156, r96
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r7
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r128, r196, r154, r128
+	mma_16x16x16f16 r96, r196, r158, r96
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r124, r198, r152, r124
+	mma_16x16x16f16 r92, r198, r156, r92
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r8
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r124, r200, r154, r124
+	mma_16x16x16f16 r92, r200, r158, r92
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r120, r188, r152, r120
+	mma_16x16x16f16 r88, r188, r156, r88
+	mma_16x16x16f16 r120, r190, r154, r120
+	mma_16x16x16f16 r88, r190, r158, r88
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r9
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r84, r192, r152, r84
+	mma_16x16x16f16 r52, r192, r156, r52
+	mma_16x16x16f16 r84, r194, r154, r84
+	mma_16x16x16f16 r52, r194, r158, r52
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r10
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r80, r196, r152, r80
+	mma_16x16x16f16 r48, r196, r156, r48
+	mma_16x16x16f16 r80, r198, r154, r80
+	mma_16x16x16f16 r48, r198, r158, r48
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r11
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r76, r188, r152, r76
+	mma_16x16x16f16 r44, r188, r156, r44
+	mma_16x16x16f16 r76, r190, r154, r76
+	mma_16x16x16f16 r44, r190, r158, r44
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r12
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r72, r192, r152, r72
+	mma_16x16x16f16 r40, r192, r156, r40
+	mma_16x16x16f16 r72, r194, r154, r72
+	mma_16x16x16f16 r40, r194, r158, r40
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r13
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r68, r196, r152, r68
+	mma_16x16x16f16 r36, r196, r156, r36
+	mma_16x16x16f16 r68, r198, r154, r68
+	mma_16x16x16f16 r36, r198, r158, r36
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r196, r186, 0x0
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r64, r188, r152, r64
+	mma_16x16x16f16 r32, r188, r156, r32
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r186, r14, 0x0
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	mma_16x16x16f16 r64, r190, r154, r64
+	mma_16x16x16f16 r32, r190, r158, r32
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r60, r192, r152, r60
+	mma_16x16x16f16 r28, r192, r156, r28
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r190, r15, 0x0
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	mma_16x16x16f16 r60, r194, r154, r60
+	mma_16x16x16f16 r28, r194, r158, r28
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r56, r196, r152, r56
+	mma_16x16x16f16 r24, r196, r156, r24
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r194, r16, 0x0
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	mma_16x16x16f16 r56, r198, r154, r56
+	mma_16x16x16f16 r24, r198, r158, r24
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r148, r186, r160, r148
+	mma_16x16x16f16 r116, r186, r164, r116
+	mma_16x16x16f16 r148, r188, r162, r148
+	mma_16x16x16f16 r116, r188, r166, r116
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r186, r17, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r144, r190, r160, r144
+	mma_16x16x16f16 r112, r190, r164, r112
+	mma_16x16x16f16 r144, r192, r162, r144
+	mma_16x16x16f16 r112, r192, r166, r112
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r190, r18, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r140, r194, r160, r140
+	mma_16x16x16f16 r108, r194, r164, r108
+	mma_16x16x16f16 r140, r196, r162, r140
+	mma_16x16x16f16 r108, r196, r166, r108
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r194, r19, 0x0
+	lds_b128 r198, r20, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r136, r186, r160, r136
+	mma_16x16x16f16 r104, r186, r164, r104
+	mma_16x16x16f16 r136, r188, r162, r136
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	add_i32 r186, 0x4000, r14
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r104, r188, r166, r104
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r132, r190, r160, r132
+	mma_16x16x16f16 r100, r190, r164, r100
+	.loc	2 714 41                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:714:41
+	lds_b128 r188, r21, 0x0
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r132, r192, r162, r132
+	mma_16x16x16f16 r100, r192, r166, r100
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r128, r194, r160, r128
+	mma_16x16x16f16 r96, r194, r164, r96
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r15
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r128, r196, r162, r128
+	mma_16x16x16f16 r96, r196, r166, r96
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r124, r198, r160, r124
+	mma_16x16x16f16 r92, r198, r164, r92
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r16
+	.loc	2 720 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:720:58
+	mma_16x16x16f16 r124, r200, r162, r124
+	mma_16x16x16f16 r92, r200, r166, r92
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r120, r188, r160, r120
+	mma_16x16x16f16 r88, r188, r164, r88
+	mma_16x16x16f16 r120, r190, r162, r120
+	mma_16x16x16f16 r88, r190, r166, r88
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r17
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r84, r192, r160, r84
+	mma_16x16x16f16 r52, r192, r164, r52
+	mma_16x16x16f16 r84, r194, r162, r84
+	mma_16x16x16f16 r52, r194, r166, r52
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r18
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r80, r196, r160, r80
+	mma_16x16x16f16 r48, r196, r164, r48
+	mma_16x16x16f16 r80, r198, r162, r80
+	mma_16x16x16f16 r48, r198, r166, r48
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r19
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r76, r188, r160, r76
+	mma_16x16x16f16 r44, r188, r164, r44
+	mma_16x16x16f16 r76, r190, r162, r76
+	mma_16x16x16f16 r44, r190, r166, r44
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r20
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r72, r192, r160, r72
+	mma_16x16x16f16 r40, r192, r164, r40
+	mma_16x16x16f16 r72, r194, r162, r72
+	mma_16x16x16f16 r40, r194, r166, r40
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r21
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r68, r196, r160, r68
+	mma_16x16x16f16 r36, r196, r164, r36
+	mma_16x16x16f16 r68, r198, r162, r68
+	mma_16x16x16f16 r36, r198, r166, r36
+	.loc	2 728 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:728:43
+	lds_b128 r196, r186, 0x0
+	.loc	2 734 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:734:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r64, r188, r160, r64
+	mma_16x16x16f16 r32, r188, r164, r32
+	mma_16x16x16f16 r64, r190, r162, r64
+	mma_16x16x16f16 r32, r190, r166, r32
+	arrive bsmcnt(1)
+	mma_16x16x16f16 r60, r192, r160, r60
+	mma_16x16x16f16 r28, r192, r164, r28
+	mma_16x16x16f16 r60, r194, r162, r60
+	mma_16x16x16f16 r28, r194, r166, r28
+	arrive bsmcnt(0)
+	mma_16x16x16f16 r56, r196, r160, r56
+	mma_16x16x16f16 r24, r196, r164, r24
+	mma_16x16x16f16 r56, r198, r162, r56
+	mma_16x16x16f16 r24, r198, r166, r24
+.Ltmp539:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	mov_b32 r186, 0x3f00
+	mov_b32 r187, 0
+	cmp_lg_u64 s22, s14, r186
+.Ltmp540:
+	.loc	2 745 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:745:11
+	snop 3
+	sand_b64 s26, s18, s22
+	and_xmsk s24, s26
+	snop 0
+	bra_xmskz LBB6_23
+; %bb.21:                               ; %for.cond460.preheader
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	shl_b64 r152, 0, 0
+	shl_b64 r154, 0, r152
+	sandn_b64 cmsk, xmsk, s4
+	shl_b64 r156, 0, r152
+	shl_b64 r158, 0, r152
+	shl_b64 r160, 0, r152
+	shl_b64 r162, 0, r152
+	shl_b64 r164, 0, r152
+	shl_b64 r166, 0, r152
+	bra_cmsks LBB6_23
+; %bb.22:                               ; %for.body463.us.preheader
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 751 25 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:751:25
+	add_co_u32 r152, 0x2000, r168
+	addc_co_u32 r153, r169, 0
+	add_co_u32 r156, 0x3000, r168
+	addc_co_u32 r157, r169, 0
+	add_co_u32 r160, 0x4000, r168
+	addc_co_u32 r161, r169, 0
+	add_co_u32 r164, 0x5000, r168
+	addc_co_u32 r165, r169, 0
+	ldg_b128 r152, r152, 0x0
+	ldg_b128 r156, r156, 0x0
+	ldg_b128 r160, r160, 0x0
+	ldg_b128 r164, r164, 0x0
+LBB6_23:                                ; %if.end514
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 25 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:25
+	sor_b64 xmsk, xmsk, s24
+	shl_b64 r186, 0, 0
+	sandn_b64 cmsk, xmsk, s8
+	shl_b64 r188, 0, 0
+	shl_b64 r190, 0, 0
+	shl_b64 r192, 0, 0
+	shl_b64 r194, 0, 0
+	shl_b64 r196, 0, 0
+	shl_b64 r198, 0, 0
+	shl_b64 r200, 0, 0
+	bra_cmsks LBB6_25
+; %bb.24:                               ; %for.body518.us.preheader
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 764 21 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:764:21
+	add_co_u32 r194, r22, s14
+	mov_b32 r186, s15
+	addc_co_u32 r195, r23, r186
+	add_co_u32 r190, 0x80080, r194
+	addc_co_u32 r191, r195, 0
+	add_co_u32 r196, 0x100080, r194
+	addc_co_u32 r197, r195, 0
+	add_co_u32 r198, 0x180080, r194
+	addc_co_u32 r199, r195, 0
+	ldg_b128 r186, r194, 0x80
+	ldg_b128 r190, r190, 0x0
+	ldg_b128 r194, r196, 0x0
+	ldg_b128 r198, r198, 0x0
+LBB6_25:                                ; %for.cond.cleanup517
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 768 364                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:768:364
+	arrive gvmcnt(3)
+	sts_b128 r4, 0x0, r186
+	add_i32 r186, 0x1000, r4
+	.loc	2 745 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:745:11
+	sand_b64 s24, s20, s22
+	.loc	2 768 364                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:768:364
+	arrive gvmcnt(2)
+	sts_b128 r186, 0x0, r190
+	add_i32 r186, 0x2000, r4
+	arrive gvmcnt(1)
+	snop 0
+	sts_b128 r186, 0x0, r194
+	add_i32 r186, 0x3000, r4
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r186, 0x0, r198
+	.loc	2 745 11                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:745:11
+	and_xmsk s22, s24
+	snop 0
+	bra_xmskz LBB6_28
+; %bb.26:                               ; %for.cond460.preheader.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 11 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:11
+	shl_b64 r152, 0, 0
+	shl_b64 r154, 0, r152
+	sandn_b64 cmsk, xmsk, s4
+	shl_b64 r156, 0, r152
+	shl_b64 r158, 0, r152
+	shl_b64 r160, 0, r152
+	shl_b64 r162, 0, r152
+	shl_b64 r164, 0, r152
+	shl_b64 r166, 0, r152
+	bra_cmsks LBB6_28
+; %bb.27:                               ; %for.body463.us.preheader.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 751 25 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:751:25
+	add_co_u32 r152, 0x2000, r168
+	addc_co_u32 r153, r169, 0
+	add_co_u32 r156, 0x3000, r168
+	addc_co_u32 r157, r169, 0
+	add_co_u32 r160, 0x4000, r168
+	addc_co_u32 r161, r169, 0
+	add_co_u32 r164, 0x5000, r168
+	addc_co_u32 r165, r169, 0
+	ldg_b128 r152, r152, 0x0
+	ldg_b128 r156, r156, 0x0
+	ldg_b128 r160, r160, 0x0
+	ldg_b128 r164, r164, 0x0
+LBB6_28:                                ; %if.end514.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 0 25 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:25
+	sor_b64 xmsk, xmsk, s22
+	shl_b64 r186, 0, 0
+	sandn_b64 cmsk, xmsk, s8
+	shl_b64 r188, 0, 0
+	shl_b64 r190, 0, 0
+	shl_b64 r192, 0, 0
+	shl_b64 r194, 0, 0
+	shl_b64 r196, 0, 0
+	shl_b64 r198, 0, 0
+	shl_b64 r200, 0, 0
+	bra_cmsks LBB6_30
+; %bb.29:                               ; %for.body518.us.preheader.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 764 21 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:764:21
+	add_co_u32 r194, r22, s14
+	mov_b32 r186, s15
+	addc_co_u32 r195, r23, r186
+	add_co_u32 r186, 0x200080, r194
+	addc_co_u32 r187, r195, 0
+	add_co_u32 r190, 0x280080, r194
+	addc_co_u32 r191, r195, 0
+	add_co_u32 r196, 0x300080, r194
+	addc_co_u32 r197, r195, 0
+	add_co_u32 r198, 0x380080, r194
+	addc_co_u32 r199, r195, 0
+	ldg_b128 r186, r186, 0x0
+	ldg_b128 r190, r190, 0x0
+	ldg_b128 r194, r196, 0x0
+	ldg_b128 r198, r198, 0x0
+LBB6_30:                                ; %for.cond.cleanup517.1
+                                        ;   in Loop: Header=BB6_10 Depth=1
+	.loc	2 768 364                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:768:364
+	arrive gvmcnt(3)
+	sts_b128 r5, 0x0, r186
+	add_i32 r186, 0x1000, r5
+	arrive gvmcnt(2)
+	snop 0
+	sts_b128 r186, 0x0, r190
+	add_i32 r186, 0x2000, r5
+	arrive gvmcnt(1)
+	snop 0
+	sts_b128 r186, 0x0, r194
+	add_i32 r186, 0x3000, r5
+	arrive gvmcnt(0)
+	snop 0
+	sts_b128 r186, 0x0, r198
+.Ltmp541:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+.Ltmp542:
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r186, r6, 0x0
+	lds_b128 r190, r7, 0x0
+	lds_b128 r194, r8, 0x0
+	.loc	2 802 16                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:802:16
+	scmp_eq_u64 0x3f00, s14
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r148, r186, r178, r148
+	mma_16x16x16f16 r116, r186, r170, r116
+	mma_16x16x16f16 r148, r188, r180, r148
+	mma_16x16x16f16 r116, r188, r172, r116
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r186, r9, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r144, r190, r178, r144
+	mma_16x16x16f16 r112, r190, r170, r112
+	mma_16x16x16f16 r144, r192, r180, r144
+	mma_16x16x16f16 r112, r192, r172, r112
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r190, r10, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r140, r194, r178, r140
+	mma_16x16x16f16 r108, r194, r170, r108
+	mma_16x16x16f16 r140, r196, r180, r140
+	mma_16x16x16f16 r108, r196, r172, r108
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r194, r11, 0x0
+	lds_b128 r198, r12, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r136, r186, r178, r136
+	mma_16x16x16f16 r104, r186, r170, r104
+	mma_16x16x16f16 r136, r188, r180, r136
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	add_i32 r186, 0x4000, r6
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r104, r188, r172, r104
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r132, r190, r178, r132
+	mma_16x16x16f16 r100, r190, r170, r100
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r188, r13, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r132, r192, r180, r132
+	mma_16x16x16f16 r100, r192, r172, r100
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r128, r194, r178, r128
+	mma_16x16x16f16 r96, r194, r170, r96
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r7
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r128, r196, r180, r128
+	mma_16x16x16f16 r96, r196, r172, r96
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r124, r198, r178, r124
+	mma_16x16x16f16 r92, r198, r170, r92
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r8
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r124, r200, r180, r124
+	mma_16x16x16f16 r92, r200, r172, r92
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r120, r188, r178, r120
+	mma_16x16x16f16 r88, r188, r170, r88
+	mma_16x16x16f16 r120, r190, r180, r120
+	mma_16x16x16f16 r88, r190, r172, r88
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r9
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r84, r192, r178, r84
+	mma_16x16x16f16 r52, r192, r170, r52
+	mma_16x16x16f16 r84, r194, r180, r84
+	mma_16x16x16f16 r52, r194, r172, r52
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r10
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r80, r196, r178, r80
+	mma_16x16x16f16 r48, r196, r170, r48
+	mma_16x16x16f16 r80, r198, r180, r80
+	mma_16x16x16f16 r48, r198, r172, r48
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r11
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r76, r188, r178, r76
+	mma_16x16x16f16 r44, r188, r170, r44
+	mma_16x16x16f16 r76, r190, r180, r76
+	mma_16x16x16f16 r44, r190, r172, r44
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r12
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r72, r192, r178, r72
+	mma_16x16x16f16 r40, r192, r170, r40
+	mma_16x16x16f16 r72, r194, r180, r72
+	mma_16x16x16f16 r40, r194, r172, r40
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r13
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r68, r196, r178, r68
+	mma_16x16x16f16 r36, r196, r170, r36
+	mma_16x16x16f16 r68, r198, r180, r68
+	mma_16x16x16f16 r36, r198, r172, r36
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r196, r186, 0x0
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r64, r188, r178, r64
+	mma_16x16x16f16 r32, r188, r170, r32
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r186, r14, 0x0
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	mma_16x16x16f16 r64, r190, r180, r64
+	mma_16x16x16f16 r32, r190, r172, r32
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r60, r192, r178, r60
+	mma_16x16x16f16 r28, r192, r170, r28
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r190, r15, 0x0
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	mma_16x16x16f16 r60, r194, r180, r60
+	mma_16x16x16f16 r28, r194, r172, r28
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r56, r196, r178, r56
+	mma_16x16x16f16 r24, r196, r170, r24
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r194, r16, 0x0
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	mma_16x16x16f16 r56, r198, r180, r56
+	mma_16x16x16f16 r24, r198, r172, r24
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r148, r186, r174, r148
+	mma_16x16x16f16 r116, r186, r182, r116
+	mma_16x16x16f16 r148, r188, r176, r148
+	mma_16x16x16f16 r116, r188, r184, r116
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r186, r17, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r144, r190, r174, r144
+	mma_16x16x16f16 r112, r190, r182, r112
+	mma_16x16x16f16 r144, r192, r176, r144
+	mma_16x16x16f16 r112, r192, r184, r112
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r190, r18, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r140, r194, r174, r140
+	mma_16x16x16f16 r108, r194, r182, r108
+	mma_16x16x16f16 r140, r196, r176, r140
+	mma_16x16x16f16 r108, r196, r184, r108
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r194, r19, 0x0
+	lds_b128 r198, r20, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	arrive bsmcnt(3)
+	mma_16x16x16f16 r136, r186, r174, r136
+	mma_16x16x16f16 r104, r186, r182, r104
+	mma_16x16x16f16 r136, r188, r176, r136
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	add_i32 r186, 0x4000, r14
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r104, r188, r184, r104
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r132, r190, r174, r132
+	mma_16x16x16f16 r100, r190, r182, r100
+	.loc	2 774 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:774:43
+	lds_b128 r188, r21, 0x0
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r132, r192, r176, r132
+	mma_16x16x16f16 r100, r192, r184, r100
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r128, r194, r174, r128
+	mma_16x16x16f16 r96, r194, r182, r96
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r15
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r128, r196, r176, r128
+	mma_16x16x16f16 r96, r196, r184, r96
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r124, r198, r174, r124
+	mma_16x16x16f16 r92, r198, r182, r92
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r16
+	.loc	2 780 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:780:58
+	mma_16x16x16f16 r124, r200, r176, r124
+	mma_16x16x16f16 r92, r200, r184, r92
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r120, r188, r174, r120
+	mma_16x16x16f16 r88, r188, r182, r88
+	mma_16x16x16f16 r120, r190, r176, r120
+	mma_16x16x16f16 r88, r190, r184, r88
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r17
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r84, r192, r174, r84
+	mma_16x16x16f16 r52, r192, r182, r52
+	mma_16x16x16f16 r84, r194, r176, r84
+	mma_16x16x16f16 r52, r194, r184, r52
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r18
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r80, r196, r174, r80
+	mma_16x16x16f16 r48, r196, r182, r48
+	mma_16x16x16f16 r80, r198, r176, r80
+	mma_16x16x16f16 r48, r198, r184, r48
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r196, r186, 0x0
+	add_i32 r186, 0x4000, r19
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r76, r188, r174, r76
+	mma_16x16x16f16 r44, r188, r182, r44
+	mma_16x16x16f16 r76, r190, r176, r76
+	mma_16x16x16f16 r44, r190, r184, r44
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r188, r186, 0x0
+	add_i32 r186, 0x4000, r20
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r72, r192, r174, r72
+	mma_16x16x16f16 r40, r192, r182, r40
+	mma_16x16x16f16 r72, r194, r176, r72
+	mma_16x16x16f16 r40, r194, r184, r40
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r192, r186, 0x0
+	add_i32 r186, 0x4000, r21
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r68, r196, r174, r68
+	mma_16x16x16f16 r36, r196, r182, r36
+	mma_16x16x16f16 r68, r198, r176, r68
+	mma_16x16x16f16 r36, r198, r184, r36
+	.loc	2 788 43                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:788:43
+	lds_b128 r196, r186, 0x0
+	.loc	2 794 58                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:794:58
+	arrive bsmcnt(2)
+	mma_16x16x16f16 r64, r188, r174, r64
+	mma_16x16x16f16 r32, r188, r182, r32
+	mma_16x16x16f16 r64, r190, r176, r64
+	mma_16x16x16f16 r32, r190, r184, r32
+	arrive bsmcnt(1)
+	mma_16x16x16f16 r60, r192, r174, r60
+	mma_16x16x16f16 r28, r192, r182, r28
+	mma_16x16x16f16 r60, r194, r176, r60
+	mma_16x16x16f16 r28, r194, r184, r28
+	arrive bsmcnt(0)
+	mma_16x16x16f16 r56, r196, r174, r56
+	mma_16x16x16f16 r24, r196, r182, r24
+	mma_16x16x16f16 r56, r198, r176, r56
+	mma_16x16x16f16 r24, r198, r184, r24
+	.loc	2 802 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:802:9
+	bra_smsks LBB6_9
+; %bb.31:                               ; %if.then800
+                                        ;   in Loop: Header=BB6_10 Depth=1
+.Ltmp543:
+	.loc	3 60 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:60:3
+	arrive bsmcnt(0)
+	.loc	3 61 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:61:3
+	barrier
+	.loc	3 62 3                          ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:62:3
+	arrive bsmcnt(0)
+	bra LBB6_9
+.Ltmp544:
+LBB6_32:                                ; %for.cond805.preheader
+	.loc	3 0 3 is_stmt 0                 ; /opt/maca-3.7.1/mxgpu_llvm/lib/clang/19/include/__clang_maca_device_functions.h:0:3
+	and_b32 r4, r0, 15
+	smov_b32 s3, 0x1e0
+	and_or_b32 r6, r3, s3, r4
+	sshl_b32 s3, 7, s6
+	ssub_co_i32 s2, s2, s3
+	sadd_co_i32 s14, s2, s0
+	sadd_co_i32 s2, s1, s3
+	add_u32 r5, s2, r6
+	sashr_i32 s2, 31, s1
+	mov_b32 r11, s2
+	mov_b32 r10, s1
+	mov_b32 r8, 0x80
+	mad_u32 r8, s6, r8, r10
+	add_co_u32 r8, r8, r6
+	.loc	2 808 92 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:808:92
+	cmp_lt_i32 s2, r6, s14
+	sashr_i32 s1, 31, s0
+	mov_b32 r4, s0
+	addc_co_u32 r9, r9, 0
+	sub_co_u32 r8, r8, r4
+	mov_b32 r7, s1
+	mov_b32 r3, 0
+	subb_co_u32 r9, r9, r7
+	sashr_i32 s15, 31, s14
+	mov_b32 r4, 0
+	.loc	2 808 9 is_stmt 0               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:808:9
+	and_xmsk s18, s2
+	snop 0
+	bra_xmskz LBB6_36
+; %bb.33:                               ; %if.then822
+	.loc	2 0 9                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sub_u32 r4, r5, s0
+	cmp_gt_i32 s22, 0x8e0, r4
+	.loc	2 810 15 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:810:15
+	cmp_ge_i32 s20, r5, s0
+	mov_b32 r4, 0
+	.loc	2 810 148 is_stmt 0             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:810:148
+	snop 2
+	sand_b64 s22, s20, s22
+	and_xmsk s20, s22
+	snop 0
+	bra_xmskz LBB6_35
+; %bb.34:                               ; %if.then850
+	.loc	2 0 148                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:148
+	shl_b64 r10, 2, r8
+	add_co_u32 r10, s12, r10
+	mov_b32 r4, s13
+	addc_co_u32 r11, r4, r11
+	.loc	2 811 21 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:811:21
+	snop 1
+	ldg_b32 r4, r10, 0x0
+LBB6_35:                                ; %Flow910
+	.loc	2 0 21 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:21
+	sor_b64 xmsk, xmsk, s20
+LBB6_36:                                ; %for.inc875
+	sor_b64 xmsk, xmsk, s18
+	.loc	2 808 63 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:808:63
+	mov_b32 r11, r3
+	or_b32 r10, r6, 16
+	.loc	2 808 92 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:808:92
+	cmp_lt_i64 s20, r10, s14
+	.loc	2 0 0                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:0
+	mov_b32 r3, 0
+	.loc	2 808 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:808:9
+	snop 2
+	and_xmsk s18, s20
+	snop 0
+	bra_xmskz LBB6_40
+; %bb.37:                               ; %if.then822.1
+	.loc	2 810 102 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:810:102
+	add_u32 r3, r5, 16
+	.loc	2 810 15 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:810:15
+	cmp_ge_i32 s20, r3, s0
+	sub_u32 r3, r3, s0
+	cmp_gt_i32 s0, 0x8e0, r3
+	mov_b32 r3, 0
+	.loc	2 810 148                       ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:810:148
+	snop 2
+	sand_b64 s20, s20, s0
+	and_xmsk s0, s20
+	snop 0
+	bra_xmskz LBB6_39
+; %bb.38:                               ; %if.then850.1
+	.loc	2 0 148                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:148
+	shl_b64 r8, 2, r8
+	add_co_u32 r8, s12, r8
+	mov_b32 r3, s13
+	addc_co_u32 r9, r3, r9
+	.loc	2 811 21 is_stmt 1              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:811:21
+	snop 1
+	ldg_b32 r3, r8, 0x40
+LBB6_39:                                ; %Flow
+	.loc	2 0 21 is_stmt 0                ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:21
+	sor_b64 xmsk, xmsk, s0
+LBB6_40:                                ; %for.inc875.1
+	sor_b64 xmsk, xmsk, s18
+	shl_b32 r0, 11, r0
+	sand_b64 s0, s8, s4
+	sshl_b32 s4, 18, s6
+	and_b32 r1, 0xf0000, r1
+	and_b32 r0, 0x7800, r0
+	sshl_b32 s5, 8, s16
+	and_b32 r2, r2, 12
+	or3_b32 r0, r0, r1, r2
+	sadd_co_i32 s4, s4, s5
+	add_u32 r0, s4, r0
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_106
+; %bb.41:                               ; %if.end952
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_107
+LBB6_42:                                ; %for.inc991
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_108
+LBB6_43:                                ; %if.end952.1
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_109
+LBB6_44:                                ; %for.inc991.1
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_110
+LBB6_45:                                ; %if.end952.2
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_111
+LBB6_46:                                ; %for.inc991.2
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_112
+LBB6_47:                                ; %if.end952.3
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_113
+LBB6_48:                                ; %for.inc991.3
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_114
+LBB6_49:                                ; %if.end952.4
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_115
+LBB6_50:                                ; %for.inc991.4
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_116
+LBB6_51:                                ; %if.end952.5
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_117
+LBB6_52:                                ; %for.inc991.5
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_118
+LBB6_53:                                ; %if.end952.6
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_119
+LBB6_54:                                ; %for.inc991.6
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r8, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmsks LBB6_120
+LBB6_55:                                ; %if.end952.7
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s4
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_57
+LBB6_56:                                ; %if.then960.7
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, 0x70, r0
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+LBB6_57:                                ; %for.inc991.7
+	.loc	2 820 65                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:65
+	or_b32 r1, r6, 16
+	.loc	2 820 94 is_stmt 0              ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:94
+	cmp_lt_i32 s4, r1, s14
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	snop 2
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_121
+; %bb.58:                               ; %if.end952.8
+	.loc	2 0 9                           ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_122
+LBB6_59:                                ; %for.inc991.8
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_123
+LBB6_60:                                ; %if.end952.9
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_124
+LBB6_61:                                ; %for.inc991.9
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_125
+LBB6_62:                                ; %if.end952.10
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_126
+LBB6_63:                                ; %for.inc991.10
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_127
+LBB6_64:                                ; %if.end952.11
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_128
+LBB6_65:                                ; %for.inc991.11
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_129
+LBB6_66:                                ; %if.end952.12
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_130
+LBB6_67:                                ; %for.inc991.12
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_131
+LBB6_68:                                ; %if.end952.13
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_132
+LBB6_69:                                ; %for.inc991.13
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_133
+LBB6_70:                                ; %if.end952.14
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_134
+LBB6_71:                                ; %for.inc991.14
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 820 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmsks LBB6_135
+LBB6_72:                                ; %if.end952.15
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_136
+LBB6_73:                                ; %for.inc991.15
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_137
+LBB6_74:                                ; %if.end1072
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_138
+LBB6_75:                                ; %for.inc1112
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_139
+LBB6_76:                                ; %if.end1072.1
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_140
+LBB6_77:                                ; %for.inc1112.1
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_141
+LBB6_78:                                ; %if.end1072.2
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_142
+LBB6_79:                                ; %for.inc1112.2
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_143
+LBB6_80:                                ; %if.end1072.3
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_144
+LBB6_81:                                ; %for.inc1112.3
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_145
+LBB6_82:                                ; %if.end1072.4
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_146
+LBB6_83:                                ; %for.inc1112.4
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_147
+LBB6_84:                                ; %if.end1072.5
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_148
+LBB6_85:                                ; %for.inc1112.5
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_149
+LBB6_86:                                ; %if.end1072.6
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_150
+LBB6_87:                                ; %for.inc1112.6
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r6, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmsks LBB6_151
+LBB6_88:                                ; %if.end1072.7
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s6
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_152
+LBB6_89:                                ; %for.inc1112.7
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	arrive gvmcnt(0)
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_153
+LBB6_90:                                ; %if.end1072.8
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_154
+LBB6_91:                                ; %for.inc1112.8
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_155
+LBB6_92:                                ; %if.end1072.9
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_156
+LBB6_93:                                ; %for.inc1112.9
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_157
+LBB6_94:                                ; %if.end1072.10
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_158
+LBB6_95:                                ; %for.inc1112.10
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_159
+LBB6_96:                                ; %if.end1072.11
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_160
+LBB6_97:                                ; %for.inc1112.11
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_161
+LBB6_98:                                ; %if.end1072.12
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_162
+LBB6_99:                                ; %for.inc1112.12
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_163
+LBB6_100:                               ; %if.end1072.13
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_164
+LBB6_101:                               ; %for.inc1112.13
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_165
+LBB6_102:                               ; %if.end1072.14
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_166
+LBB6_103:                               ; %for.inc1112.14
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	shl_b64 r4, 0, 0
+	.loc	2 848 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmsks LBB6_167
+LBB6_104:                               ; %if.end1072.15
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	sor_b64 xmsk, xmsk, s2
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_168
+LBB6_105:                               ; %for.inc1112.15
+	.loc	2 874 1                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:874:1
+	snop 1
+	endk
+LBB6_106:                               ; %if.then895
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r148, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r149, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r150, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r151, r4
+.Ltmp545:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp546:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp547:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp548:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp549:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_42
+LBB6_107:                               ; %if.then960
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	mad_i32 r10, r0, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_43
+LBB6_108:                               ; %if.then895.1
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r144, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r145, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r146, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r147, r4
+.Ltmp550:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp551:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp552:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp553:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp554:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_44
+LBB6_109:                               ; %if.then960.1
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 16
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_45
+LBB6_110:                               ; %if.then895.2
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r140, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r141, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r142, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r143, r4
+.Ltmp555:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp556:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp557:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp558:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp559:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_46
+LBB6_111:                               ; %if.then960.2
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 32
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_47
+LBB6_112:                               ; %if.then895.3
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r136, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r137, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r138, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r139, r4
+.Ltmp560:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp561:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp562:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp563:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp564:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_48
+LBB6_113:                               ; %if.then960.3
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 48
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_49
+LBB6_114:                               ; %if.then895.4
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r132, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r133, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r134, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r135, r4
+.Ltmp565:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp566:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp567:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp568:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp569:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_50
+LBB6_115:                               ; %if.then960.4
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 64
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_51
+LBB6_116:                               ; %if.then895.5
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r128, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r129, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r130, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r131, r4
+.Ltmp570:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp571:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp572:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp573:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp574:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_52
+LBB6_117:                               ; %if.then960.5
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, 0x50, r0
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_53
+LBB6_118:                               ; %if.then895.6
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r124, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r125, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r126, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r127, r4
+.Ltmp575:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp576:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp577:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp578:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp579:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_54
+LBB6_119:                               ; %if.then960.6
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, 0x60, r0
+	mad_i32 r10, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r10, 0x0, r8 devc
+	shl_b64 r8, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s4, s2
+	snop 0
+	bra_xmskz LBB6_55
+LBB6_120:                               ; %if.then895.7
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r120, r4
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r121, r4
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r122, r4
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r7, r123, r4
+.Ltmp580:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp581:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r8_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp582:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp583:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r9_hi, r7
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s4
+.Ltmp584:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmskz LBB6_56
+	bra LBB6_57
+LBB6_121:                               ; %if.then895.8
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r116, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r117, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r118, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r119, r3
+.Ltmp585:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp586:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp587:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp588:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp589:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_59
+LBB6_122:                               ; %if.then960.8
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8000, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_60
+LBB6_123:                               ; %if.then895.9
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r112, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r113, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r114, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r115, r3
+.Ltmp590:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp591:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp592:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp593:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp594:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_61
+LBB6_124:                               ; %if.then960.9
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8010, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_62
+LBB6_125:                               ; %if.then895.10
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r108, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r109, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r110, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r111, r3
+.Ltmp595:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp596:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp597:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp598:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp599:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_63
+LBB6_126:                               ; %if.then960.10
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8020, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_64
+LBB6_127:                               ; %if.then895.11
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r104, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r105, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r106, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r107, r3
+.Ltmp600:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp601:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp602:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp603:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp604:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_65
+LBB6_128:                               ; %if.then960.11
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8030, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_66
+LBB6_129:                               ; %if.then895.12
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r100, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r101, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r102, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r103, r3
+.Ltmp605:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp606:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp607:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp608:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp609:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_67
+LBB6_130:                               ; %if.then960.12
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8040, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_68
+LBB6_131:                               ; %if.then895.13
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r96, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r97, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r98, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r99, r3
+.Ltmp610:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp611:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp612:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp613:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp614:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_69
+LBB6_132:                               ; %if.then960.13
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8050, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_70
+LBB6_133:                               ; %if.then895.14
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r92, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r93, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r94, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r95, r3
+.Ltmp615:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp616:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp617:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp618:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp619:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_71
+LBB6_134:                               ; %if.then960.14
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8060, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 820 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:820:9
+	and_xmsk s6, s4
+	snop 0
+	bra_xmskz LBB6_72
+LBB6_135:                               ; %if.then895.15
+	.loc	2 825 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:825:22
+	arrive gvmcnt(0)
+	mul_f32 r1, r88, r3
+	.loc	2 826 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:826:22
+	mul_f32 r2, r89, r3
+	.loc	2 827 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:827:22
+	mul_f32 r5, r90, r3
+	.loc	2 828 22                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:828:22
+	mul_f32 r8, r91, r3
+.Ltmp620:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp621:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp622:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp623:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp624:
+	.loc	2 836 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:836:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_73
+LBB6_136:                               ; %if.then960.15
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8070, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 840 230 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:840:230
+	snop 1
+	stg_b64 r8, 0x0, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_74
+LBB6_137:                               ; %if.then1011
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r84, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r85, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r86, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r87, r4
+.Ltmp625:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp626:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp627:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp628:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp629:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_75
+LBB6_138:                               ; %if.then1080
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	mad_i32 r8, r0, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_76
+LBB6_139:                               ; %if.then1011.1
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r80, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r81, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r82, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r83, r4
+.Ltmp630:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp631:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp632:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp633:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp634:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_77
+LBB6_140:                               ; %if.then1080.1
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 16
+	mad_i32 r8, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_78
+LBB6_141:                               ; %if.then1011.2
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r76, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r77, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r78, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r79, r4
+.Ltmp635:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp636:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp637:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp638:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp639:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_79
+LBB6_142:                               ; %if.then1080.2
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 32
+	mad_i32 r8, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_80
+LBB6_143:                               ; %if.then1011.3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r72, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r73, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r74, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r75, r4
+.Ltmp640:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp641:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp642:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp643:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp644:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_81
+LBB6_144:                               ; %if.then1080.3
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 48
+	mad_i32 r8, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_82
+LBB6_145:                               ; %if.then1011.4
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r68, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r69, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r70, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r71, r4
+.Ltmp645:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp646:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp647:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp648:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp649:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_83
+LBB6_146:                               ; %if.then1080.4
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, r0, 64
+	mad_i32 r8, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_84
+LBB6_147:                               ; %if.then1011.5
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r64, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r65, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r66, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r67, r4
+.Ltmp650:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp651:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp652:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp653:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp654:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_85
+LBB6_148:                               ; %if.then1080.5
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, 0x50, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_86
+LBB6_149:                               ; %if.then1011.6
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r60, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r61, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r62, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r8, r63, r4
+.Ltmp655:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp656:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp657:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+.Ltmp658:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s8, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r8
+	set_hwreg hwregid(mode) & offset(2) & size(2), s8
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp659:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_87
+LBB6_150:                               ; %if.then1080.6
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, 0x60, r0
+	mad_i32 r8, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r8, 0x100, r6 devc
+	shl_b64 r6, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s6, s2
+	snop 0
+	bra_xmskz LBB6_88
+LBB6_151:                               ; %if.then1011.7
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	arrive gvmcnt(0)
+	mul_f32 r1, r56, r4
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r57, r4
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r58, r4
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r4, r59, r4
+.Ltmp660:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s2, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s2
+.Ltmp661:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s2, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r6_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s2
+.Ltmp662:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s2, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s2
+.Ltmp663:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s2, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r7_hi, r4
+	set_hwreg hwregid(mode) & offset(2) & size(2), s2
+	snop 0
+	sor_b64 xmsk, xmsk, s6
+.Ltmp664:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_89
+LBB6_152:                               ; %if.then1080.7
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	or_b32 r1, 0x70, r0
+	arrive gvmcnt(0)
+	mad_i32 r4, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r4, 0x100, r6 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_90
+LBB6_153:                               ; %if.then1011.8
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r54, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r52, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r53, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r55, r3
+.Ltmp665:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp666:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp667:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp668:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp669:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_91
+LBB6_154:                               ; %if.then1080.8
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8000, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_92
+LBB6_155:                               ; %if.then1011.9
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r50, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r48, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r49, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r51, r3
+.Ltmp670:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp671:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp672:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp673:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp674:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_93
+LBB6_156:                               ; %if.then1080.9
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8010, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_94
+LBB6_157:                               ; %if.then1011.10
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r46, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r44, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r45, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r47, r3
+.Ltmp675:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp676:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp677:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp678:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp679:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_95
+LBB6_158:                               ; %if.then1080.10
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8020, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_96
+LBB6_159:                               ; %if.then1011.11
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r42, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r40, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r41, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r43, r3
+.Ltmp680:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp681:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp682:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp683:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp684:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_97
+LBB6_160:                               ; %if.then1080.11
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8030, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_98
+LBB6_161:                               ; %if.then1011.12
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r38, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r36, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r37, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r39, r3
+.Ltmp685:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp686:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp687:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp688:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp689:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_99
+LBB6_162:                               ; %if.then1080.12
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8040, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_100
+LBB6_163:                               ; %if.then1011.13
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r34, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r32, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r33, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r35, r3
+.Ltmp690:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp691:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp692:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp693:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp694:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_101
+LBB6_164:                               ; %if.then1080.13
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8050, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_102
+LBB6_165:                               ; %if.then1011.14
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r30, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r28, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r29, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r6, r31, r3
+.Ltmp695:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp696:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp697:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+.Ltmp698:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s6, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r6
+	set_hwreg hwregid(mode) & offset(2) & size(2), s6
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp699:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_103
+LBB6_166:                               ; %if.then1080.14
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r1, 0x8060, r0
+	mad_i32 r6, r1, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r6, 0x100, r4 devc
+	shl_b64 r4, 0, 0
+	.loc	2 848 9                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:848:9
+	and_xmsk s2, s4
+	snop 0
+	bra_xmskz LBB6_104
+LBB6_167:                               ; %if.then1011.15
+	.loc	2 855 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:855:24
+	mul_f32 r5, r26, r3
+	.loc	2 853 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:853:24
+	mul_f32 r1, r24, r3
+	.loc	2 854 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:854:24
+	mul_f32 r2, r25, r3
+	.loc	2 856 24                        ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:856:24
+	mul_f32 r3, r27, r3
+.Ltmp700:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	get_hwreg s4, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_lo, r1
+	set_hwreg hwregid(mode) & offset(2) & size(2), s4
+.Ltmp701:
+	.loc	4 1007 10 is_stmt 0             ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s4, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r4_hi, r2
+	set_hwreg hwregid(mode) & offset(2) & size(2), s4
+.Ltmp702:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s4, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_lo, r5
+	set_hwreg hwregid(mode) & offset(2) & size(2), s4
+.Ltmp703:
+	.loc	4 1007 10                       ; /opt/maca-3.7.1/include/common/maca_fp16.hpp:1007:10
+	snop 1
+	get_hwreg s4, hwregid(mode) & offset(2) & size(2)
+	set_hwreg hwregid(mode) & offset(2) & size(2), 0
+	snop 0
+	cvt_f32tof16 r5_hi, r3
+	set_hwreg hwregid(mode) & offset(2) & size(2), s4
+	snop 0
+	sor_b64 xmsk, xmsk, s2
+.Ltmp704:
+	.loc	2 864 9 is_stmt 1               ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:864:9
+	sandn_b64 cmsk, xmsk, s0
+	snop 0
+	bra_cmsks LBB6_105
+LBB6_168:                               ; %if.then1080.15
+	.loc	2 0 9 is_stmt 0                 ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:0:9
+	add_u32 r0, 0x8070, r0
+	mad_i32 r0, r0, 2, s10
+	.loc	2 868 238 is_stmt 1             ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:868:238
+	snop 1
+	stg_b64 r0, 0x100, r4 devc
+	.loc	2 874 1                         ; moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp:874:1
+	snop 2
+	endk
+.Ltmp705:
+	.section	.rodata,#alloc
+	.p2align	6, 0x0
+	.macahca_kernel kernel_kernel_4
+		.macahca_mtreg_size 26
+		.macahca_streg_size 4
+		.macahca_priority 0
+		.macahca_float_mode 240
+		.macahca_privilege 0
+		.macahca_debug_mode 0
+		.macahca_ieee_mode 1
+		.macahca_bulky_mode 0
+		.macahca_fp16_overflow_mode 0
+		.macahca_perf_on 0
+		.macahca_priv_segm_on 0
+		.macahca_user_streg_count 4
+		.macahca_user_trap_handler_on 0
+		.macahca_streg_block_id_x_on 1
+		.macahca_streg_block_id_y_on 1
+		.macahca_streg_block_id_z_on 0
+		.macahca_streg_block_info_on 0
+		.macahca_enable_mtreg_thread_id 0
+		.macahca_exception_address_watch_on 0
+		.macahca_exception_memory_violation_on 0
+		.macahca_bsm_size 0
+		.macahca_exception_on 0
+		.macahca_streg_kernarg_segm_ptr_on 1
+		.macahca_streg_dispatch_ptr_on 0
+		.macahca_streg_prvt_init_on 0
+		.macahca_streg_prvt_segm_size_on 0
+		.macahca_unorder_dispatch_on 0
+		.macahca_warps_per_dpc 416
+		.macahca_blocks_per_ap 16
+	.end_macahca_kernel
+	.text
+	.fill 4, 8, 0x2320
+	.p2align 8
+.Lfunc_end6:
+	.size	kernel_kernel_4, .Lfunc_end6-kernel_kernel_4
+                                        ; -- End function
+	.section	.MetaXGPU.csdata
+; Function info:
+; codeLenInByte = 20424
+; NumMTRegsForWarps/PEU: 202
+; NumSTRegsForWarps/PEU: 52
+; MaxWarpsPerPEU: 2
+	.protected	short_copy_shared
+	.protected	copy_shared
+	.protected	weight_shared
+	.protected	down_shared
+	.protected	mcDeviceMemoryInfo      ; @mcDeviceMemoryInfo
+	.type	mcDeviceMemoryInfo,@object
+	.section	.bss,#alloc,#write
+	.weak	mcDeviceMemoryInfo
+	.p2align	3, 0x0
+mcDeviceMemoryInfo:
+	.zero	16
+	.size	mcDeviceMemoryInfo, 16
+
+	.section	.debug_abbrev
+	.byte	1                               ; Abbreviation Code
+	.byte	17                              ; DW_TAG_compile_unit
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	37                              ; DW_AT_producer
+	.byte	14                              ; DW_FORM_strp
+	.byte	19                              ; DW_AT_language
+	.byte	5                               ; DW_FORM_data2
+	.byte	3                               ; DW_AT_name
+	.byte	14                              ; DW_FORM_strp
+	.byte	16                              ; DW_AT_stmt_list
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	27                              ; DW_AT_comp_dir
+	.byte	14                              ; DW_FORM_strp
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	2                               ; Abbreviation Code
+	.byte	46                              ; DW_TAG_subprogram
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	3                               ; DW_AT_name
+	.byte	14                              ; DW_FORM_strp
+	.byte	32                              ; DW_AT_inline
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	3                               ; Abbreviation Code
+	.byte	46                              ; DW_TAG_subprogram
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	3                               ; DW_AT_name
+	.byte	14                              ; DW_FORM_strp
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	4                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	11                              ; DW_FORM_data1
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	5                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	11                              ; DW_FORM_data1
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	6                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	85                              ; DW_AT_ranges
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	11                              ; DW_FORM_data1
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	7                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	85                              ; DW_AT_ranges
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	11                              ; DW_FORM_data1
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	8                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	5                               ; DW_FORM_data2
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	9                               ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	6                               ; DW_FORM_data4
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	10                              ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	85                              ; DW_AT_ranges
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	5                               ; DW_FORM_data2
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	11                              ; Abbreviation Code
+	.byte	29                              ; DW_TAG_inlined_subroutine
+	.byte	1                               ; DW_CHILDREN_yes
+	.byte	49                              ; DW_AT_abstract_origin
+	.byte	19                              ; DW_FORM_ref4
+	.byte	85                              ; DW_AT_ranges
+	.byte	23                              ; DW_FORM_sec_offset
+	.byte	88                              ; DW_AT_call_file
+	.byte	11                              ; DW_FORM_data1
+	.byte	89                              ; DW_AT_call_line
+	.byte	5                               ; DW_FORM_data2
+	.byte	87                              ; DW_AT_call_column
+	.byte	11                              ; DW_FORM_data1
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	0                               ; EOM(3)
+	.section	.debug_info
+.Lcu_begin0:
+	.long	.Ldebug_info_end0-.Ldebug_info_start0 ; Length of Unit
+.Ldebug_info_start0:
+	.short	4                               ; DWARF version number
+	.long	.debug_abbrev                   ; Offset Into Abbrev. Section
+	.byte	8                               ; Address Size (in bytes)
+	.byte	1                               ; Abbrev [1] 0xb:0x5a6 DW_TAG_compile_unit
+	.long	.Linfo_string0                  ; DW_AT_producer
+	.short	33                              ; DW_AT_language
+	.long	.Linfo_string1                  ; DW_AT_name
+	.long	.Lline_table_start0             ; DW_AT_stmt_list
+	.long	.Linfo_string2                  ; DW_AT_comp_dir
+	.quad	.Lfunc_begin0                   ; DW_AT_low_pc
+	.long	.Lfunc_end6-.Lfunc_begin0       ; DW_AT_high_pc
+	.byte	2                               ; Abbrev [2] 0x2a:0x6 DW_TAG_subprogram
+	.long	.Linfo_string3                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	2                               ; Abbrev [2] 0x30:0x6 DW_TAG_subprogram
+	.long	.Linfo_string4                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	3                               ; Abbrev [3] 0x36:0x3b DW_TAG_subprogram
+	.quad	.Lfunc_begin3                   ; DW_AT_low_pc
+	.long	.Lfunc_end3-.Lfunc_begin3       ; DW_AT_high_pc
+	.long	.Linfo_string10                 ; DW_AT_name
+	.byte	4                               ; Abbrev [4] 0x47:0x29 DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp7                          ; DW_AT_low_pc
+	.long	.Ltmp8-.Ltmp7                   ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.byte	65                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x5b:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp7                          ; DW_AT_low_pc
+	.long	.Ltmp8-.Ltmp7                   ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	3                               ; Abbrev [3] 0x71:0x44 DW_TAG_subprogram
+	.quad	.Lfunc_begin4                   ; DW_AT_low_pc
+	.long	.Lfunc_end4-.Lfunc_begin4       ; DW_AT_high_pc
+	.long	.Linfo_string11                 ; DW_AT_name
+	.byte	6                               ; Abbrev [6] 0x82:0x19 DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges0                 ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.byte	107                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	7                               ; Abbrev [7] 0x8e:0xc DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges1                 ; DW_AT_ranges
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	6                               ; Abbrev [6] 0x9b:0x19 DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges2                 ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.byte	116                             ; DW_AT_call_line
+	.byte	9                               ; DW_AT_call_column
+	.byte	7                               ; Abbrev [7] 0xa7:0xc DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges3                 ; DW_AT_ranges
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	2                               ; Abbrev [2] 0xb5:0x6 DW_TAG_subprogram
+	.long	.Linfo_string5                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	2                               ; Abbrev [2] 0xbb:0x6 DW_TAG_subprogram
+	.long	.Linfo_string6                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	2                               ; Abbrev [2] 0xc1:0x6 DW_TAG_subprogram
+	.long	.Linfo_string7                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	2                               ; Abbrev [2] 0xc7:0x6 DW_TAG_subprogram
+	.long	.Linfo_string8                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	2                               ; Abbrev [2] 0xcd:0x6 DW_TAG_subprogram
+	.long	.Linfo_string9                  ; DW_AT_name
+	.byte	1                               ; DW_AT_inline
+	.byte	3                               ; Abbrev [3] 0xd3:0x34b DW_TAG_subprogram
+	.quad	.Lfunc_begin5                   ; DW_AT_low_pc
+	.long	.Lfunc_end5-.Lfunc_begin5       ; DW_AT_high_pc
+	.long	.Linfo_string12                 ; DW_AT_name
+	.byte	8                               ; Abbrev [8] 0xe4:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp27                         ; DW_AT_low_pc
+	.long	.Ltmp28-.Ltmp27                 ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	430                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0xf9:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp27                         ; DW_AT_low_pc
+	.long	.Ltmp28-.Ltmp27                 ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x10e:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp29                         ; DW_AT_low_pc
+	.long	.Ltmp30-.Ltmp29                 ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	463                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x123:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp29                         ; DW_AT_low_pc
+	.long	.Ltmp30-.Ltmp29                 ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x138:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp31                         ; DW_AT_low_pc
+	.long	.Ltmp32-.Ltmp31                 ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	479                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x14d:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp31                         ; DW_AT_low_pc
+	.long	.Ltmp32-.Ltmp31                 ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x162:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp33                         ; DW_AT_low_pc
+	.long	.Ltmp34-.Ltmp33                 ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	513                             ; DW_AT_call_line
+	.byte	9                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x177:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp33                         ; DW_AT_low_pc
+	.long	.Ltmp34-.Ltmp33                 ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	9                               ; Abbrev [9] 0x18c:0x44 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.quad	.Ltmp35                         ; DW_AT_low_pc
+	.long	.Ltmp39-.Ltmp35                 ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.byte	0                               ; DW_AT_call_line
+	.byte	8                               ; Abbrev [8] 0x19f:0x30 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.quad	.Ltmp35                         ; DW_AT_low_pc
+	.long	.Ltmp39-.Ltmp35                 ; DW_AT_high_pc
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x1b4:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges4                 ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x1c1:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges5                 ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	10                              ; Abbrev [10] 0x1d0:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges6                 ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	526                             ; DW_AT_call_line
+	.byte	20                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x1dd:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges7                 ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	527                             ; DW_AT_call_line
+	.byte	20                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x1ea:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges8                 ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	528                             ; DW_AT_call_line
+	.byte	20                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x1f7:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges9                 ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	525                             ; DW_AT_call_line
+	.byte	20                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x204:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges10                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	529                             ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x211:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges11                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	530                             ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x21e:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges12                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	531                             ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x22b:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges13                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	532                             ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x238:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges14                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	623                             ; DW_AT_call_line
+	.byte	36                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x245:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges15                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x252:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges16                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x25f:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges17                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	11                              ; Abbrev [11] 0x26e:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges18                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	624                             ; DW_AT_call_line
+	.byte	36                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x27b:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges19                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x288:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges20                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x295:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges21                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	4                               ; Abbrev [4] 0x2a4:0x29 DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp255                        ; DW_AT_low_pc
+	.long	.Ltmp256-.Ltmp255               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.byte	186                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x2b8:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp255                        ; DW_AT_low_pc
+	.long	.Ltmp256-.Ltmp255               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	4                               ; Abbrev [4] 0x2cd:0x29 DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp257                        ; DW_AT_low_pc
+	.long	.Ltmp258-.Ltmp257               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.byte	219                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x2e1:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp257                        ; DW_AT_low_pc
+	.long	.Ltmp258-.Ltmp257               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	4                               ; Abbrev [4] 0x2f6:0x29 DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp259                        ; DW_AT_low_pc
+	.long	.Ltmp260-.Ltmp259               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.byte	243                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x30a:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp259                        ; DW_AT_low_pc
+	.long	.Ltmp260-.Ltmp259               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x31f:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp261                        ; DW_AT_low_pc
+	.long	.Ltmp262-.Ltmp261               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	277                             ; DW_AT_call_line
+	.byte	9                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x334:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp261                        ; DW_AT_low_pc
+	.long	.Ltmp262-.Ltmp261               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	10                              ; Abbrev [10] 0x349:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges22                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	292                             ; DW_AT_call_line
+	.byte	19                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x356:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges23                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	296                             ; DW_AT_call_line
+	.byte	17                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x363:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges24                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	291                             ; DW_AT_call_line
+	.byte	19                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x370:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges25                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	295                             ; DW_AT_call_line
+	.byte	17                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x37d:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges26                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	290                             ; DW_AT_call_line
+	.byte	19                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x38a:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges27                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	294                             ; DW_AT_call_line
+	.byte	17                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x397:0xd DW_TAG_inlined_subroutine
+	.long	199                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges28                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	289                             ; DW_AT_call_line
+	.byte	19                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x3a4:0xd DW_TAG_inlined_subroutine
+	.long	205                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges29                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	293                             ; DW_AT_call_line
+	.byte	17                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x3b1:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges30                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	387                             ; DW_AT_call_line
+	.byte	36                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x3be:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges31                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x3cb:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges32                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x3d8:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges33                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	11                              ; Abbrev [11] 0x3e7:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges34                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	388                             ; DW_AT_call_line
+	.byte	36                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x3f4:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges35                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x401:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges36                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x40e:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges37                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	3                               ; Abbrev [3] 0x41e:0x192 DW_TAG_subprogram
+	.quad	.Lfunc_begin6                   ; DW_AT_low_pc
+	.long	.Lfunc_end6-.Lfunc_begin6       ; DW_AT_high_pc
+	.long	.Linfo_string13                 ; DW_AT_name
+	.byte	8                               ; Abbrev [8] 0x42f:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp537                        ; DW_AT_low_pc
+	.long	.Ltmp538-.Ltmp537               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	711                             ; DW_AT_call_line
+	.byte	5                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x444:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp537                        ; DW_AT_low_pc
+	.long	.Ltmp538-.Ltmp537               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x459:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp539                        ; DW_AT_low_pc
+	.long	.Ltmp540-.Ltmp539               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	742                             ; DW_AT_call_line
+	.byte	5                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x46e:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp539                        ; DW_AT_low_pc
+	.long	.Ltmp540-.Ltmp539               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x483:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp541                        ; DW_AT_low_pc
+	.long	.Ltmp542-.Ltmp541               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	771                             ; DW_AT_call_line
+	.byte	5                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x498:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp541                        ; DW_AT_low_pc
+	.long	.Ltmp542-.Ltmp541               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	8                               ; Abbrev [8] 0x4ad:0x2a DW_TAG_inlined_subroutine
+	.long	48                              ; DW_AT_abstract_origin
+	.quad	.Ltmp543                        ; DW_AT_low_pc
+	.long	.Ltmp544-.Ltmp543               ; DW_AT_high_pc
+	.byte	2                               ; DW_AT_call_file
+	.short	803                             ; DW_AT_call_line
+	.byte	7                               ; DW_AT_call_column
+	.byte	5                               ; Abbrev [5] 0x4c2:0x14 DW_TAG_inlined_subroutine
+	.long	42                              ; DW_AT_abstract_origin
+	.quad	.Ltmp543                        ; DW_AT_low_pc
+	.long	.Ltmp544-.Ltmp543               ; DW_AT_high_pc
+	.byte	3                               ; DW_AT_call_file
+	.byte	74                              ; DW_AT_call_line
+	.byte	3                               ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	11                              ; Abbrev [11] 0x4d7:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges38                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	829                             ; DW_AT_call_line
+	.byte	29                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x4e4:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges39                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x4f1:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges40                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x4fe:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges41                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	11                              ; Abbrev [11] 0x50d:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges42                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	830                             ; DW_AT_call_line
+	.byte	29                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x51a:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges43                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x527:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges44                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x534:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges45                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	11                              ; Abbrev [11] 0x543:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges46                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	857                             ; DW_AT_call_line
+	.byte	29                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x550:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges47                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x55d:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges48                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x56a:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges49                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	11                              ; Abbrev [11] 0x579:0x36 DW_TAG_inlined_subroutine
+	.long	193                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges50                ; DW_AT_ranges
+	.byte	2                               ; DW_AT_call_file
+	.short	858                             ; DW_AT_call_line
+	.byte	29                              ; DW_AT_call_column
+	.byte	11                              ; Abbrev [11] 0x586:0x28 DW_TAG_inlined_subroutine
+	.long	187                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges51                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1295                            ; DW_AT_call_line
+	.byte	23                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x593:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges52                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	18                              ; DW_AT_call_column
+	.byte	10                              ; Abbrev [10] 0x5a0:0xd DW_TAG_inlined_subroutine
+	.long	181                             ; DW_AT_abstract_origin
+	.long	.Ldebug_ranges53                ; DW_AT_ranges
+	.byte	4                               ; DW_AT_call_file
+	.short	1077                            ; DW_AT_call_line
+	.byte	38                              ; DW_AT_call_column
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+	.byte	0                               ; End Of Children Mark
+.Ldebug_info_end0:
+	.section	.debug_ranges
+.Ldebug_ranges0:
+	.quad	.Ltmp11-.Lfunc_begin0
+	.quad	.Ltmp12-.Lfunc_begin0
+	.quad	.Ltmp15-.Lfunc_begin0
+	.quad	.Ltmp16-.Lfunc_begin0
+	.quad	.Ltmp19-.Lfunc_begin0
+	.quad	.Ltmp20-.Lfunc_begin0
+	.quad	.Ltmp23-.Lfunc_begin0
+	.quad	.Ltmp24-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges1:
+	.quad	.Ltmp11-.Lfunc_begin0
+	.quad	.Ltmp12-.Lfunc_begin0
+	.quad	.Ltmp15-.Lfunc_begin0
+	.quad	.Ltmp16-.Lfunc_begin0
+	.quad	.Ltmp19-.Lfunc_begin0
+	.quad	.Ltmp20-.Lfunc_begin0
+	.quad	.Ltmp23-.Lfunc_begin0
+	.quad	.Ltmp24-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges2:
+	.quad	.Ltmp13-.Lfunc_begin0
+	.quad	.Ltmp14-.Lfunc_begin0
+	.quad	.Ltmp17-.Lfunc_begin0
+	.quad	.Ltmp18-.Lfunc_begin0
+	.quad	.Ltmp21-.Lfunc_begin0
+	.quad	.Ltmp22-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges3:
+	.quad	.Ltmp13-.Lfunc_begin0
+	.quad	.Ltmp14-.Lfunc_begin0
+	.quad	.Ltmp17-.Lfunc_begin0
+	.quad	.Ltmp18-.Lfunc_begin0
+	.quad	.Ltmp21-.Lfunc_begin0
+	.quad	.Ltmp22-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges4:
+	.quad	.Ltmp35-.Lfunc_begin0
+	.quad	.Ltmp36-.Lfunc_begin0
+	.quad	.Ltmp37-.Lfunc_begin0
+	.quad	.Ltmp38-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges5:
+	.quad	.Ltmp36-.Lfunc_begin0
+	.quad	.Ltmp37-.Lfunc_begin0
+	.quad	.Ltmp38-.Lfunc_begin0
+	.quad	.Ltmp39-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges6:
+	.quad	.Ltmp40-.Lfunc_begin0
+	.quad	.Ltmp41-.Lfunc_begin0
+	.quad	.Ltmp44-.Lfunc_begin0
+	.quad	.Ltmp45-.Lfunc_begin0
+	.quad	.Ltmp58-.Lfunc_begin0
+	.quad	.Ltmp59-.Lfunc_begin0
+	.quad	.Ltmp62-.Lfunc_begin0
+	.quad	.Ltmp63-.Lfunc_begin0
+	.quad	.Ltmp76-.Lfunc_begin0
+	.quad	.Ltmp77-.Lfunc_begin0
+	.quad	.Ltmp80-.Lfunc_begin0
+	.quad	.Ltmp81-.Lfunc_begin0
+	.quad	.Ltmp94-.Lfunc_begin0
+	.quad	.Ltmp95-.Lfunc_begin0
+	.quad	.Ltmp98-.Lfunc_begin0
+	.quad	.Ltmp99-.Lfunc_begin0
+	.quad	.Ltmp112-.Lfunc_begin0
+	.quad	.Ltmp113-.Lfunc_begin0
+	.quad	.Ltmp116-.Lfunc_begin0
+	.quad	.Ltmp117-.Lfunc_begin0
+	.quad	.Ltmp130-.Lfunc_begin0
+	.quad	.Ltmp131-.Lfunc_begin0
+	.quad	.Ltmp134-.Lfunc_begin0
+	.quad	.Ltmp135-.Lfunc_begin0
+	.quad	.Ltmp148-.Lfunc_begin0
+	.quad	.Ltmp149-.Lfunc_begin0
+	.quad	.Ltmp152-.Lfunc_begin0
+	.quad	.Ltmp153-.Lfunc_begin0
+	.quad	.Ltmp166-.Lfunc_begin0
+	.quad	.Ltmp167-.Lfunc_begin0
+	.quad	.Ltmp170-.Lfunc_begin0
+	.quad	.Ltmp171-.Lfunc_begin0
+	.quad	.Ltmp184-.Lfunc_begin0
+	.quad	.Ltmp185-.Lfunc_begin0
+	.quad	.Ltmp188-.Lfunc_begin0
+	.quad	.Ltmp189-.Lfunc_begin0
+	.quad	.Ltmp202-.Lfunc_begin0
+	.quad	.Ltmp203-.Lfunc_begin0
+	.quad	.Ltmp206-.Lfunc_begin0
+	.quad	.Ltmp207-.Lfunc_begin0
+	.quad	.Ltmp220-.Lfunc_begin0
+	.quad	.Ltmp221-.Lfunc_begin0
+	.quad	.Ltmp224-.Lfunc_begin0
+	.quad	.Ltmp225-.Lfunc_begin0
+	.quad	.Ltmp238-.Lfunc_begin0
+	.quad	.Ltmp239-.Lfunc_begin0
+	.quad	.Ltmp242-.Lfunc_begin0
+	.quad	.Ltmp243-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges7:
+	.quad	.Ltmp41-.Lfunc_begin0
+	.quad	.Ltmp42-.Lfunc_begin0
+	.quad	.Ltmp45-.Lfunc_begin0
+	.quad	.Ltmp46-.Lfunc_begin0
+	.quad	.Ltmp59-.Lfunc_begin0
+	.quad	.Ltmp60-.Lfunc_begin0
+	.quad	.Ltmp63-.Lfunc_begin0
+	.quad	.Ltmp64-.Lfunc_begin0
+	.quad	.Ltmp77-.Lfunc_begin0
+	.quad	.Ltmp78-.Lfunc_begin0
+	.quad	.Ltmp81-.Lfunc_begin0
+	.quad	.Ltmp82-.Lfunc_begin0
+	.quad	.Ltmp95-.Lfunc_begin0
+	.quad	.Ltmp96-.Lfunc_begin0
+	.quad	.Ltmp99-.Lfunc_begin0
+	.quad	.Ltmp100-.Lfunc_begin0
+	.quad	.Ltmp113-.Lfunc_begin0
+	.quad	.Ltmp114-.Lfunc_begin0
+	.quad	.Ltmp117-.Lfunc_begin0
+	.quad	.Ltmp118-.Lfunc_begin0
+	.quad	.Ltmp131-.Lfunc_begin0
+	.quad	.Ltmp132-.Lfunc_begin0
+	.quad	.Ltmp135-.Lfunc_begin0
+	.quad	.Ltmp136-.Lfunc_begin0
+	.quad	.Ltmp149-.Lfunc_begin0
+	.quad	.Ltmp150-.Lfunc_begin0
+	.quad	.Ltmp153-.Lfunc_begin0
+	.quad	.Ltmp154-.Lfunc_begin0
+	.quad	.Ltmp167-.Lfunc_begin0
+	.quad	.Ltmp168-.Lfunc_begin0
+	.quad	.Ltmp171-.Lfunc_begin0
+	.quad	.Ltmp172-.Lfunc_begin0
+	.quad	.Ltmp185-.Lfunc_begin0
+	.quad	.Ltmp186-.Lfunc_begin0
+	.quad	.Ltmp189-.Lfunc_begin0
+	.quad	.Ltmp190-.Lfunc_begin0
+	.quad	.Ltmp203-.Lfunc_begin0
+	.quad	.Ltmp204-.Lfunc_begin0
+	.quad	.Ltmp207-.Lfunc_begin0
+	.quad	.Ltmp208-.Lfunc_begin0
+	.quad	.Ltmp221-.Lfunc_begin0
+	.quad	.Ltmp222-.Lfunc_begin0
+	.quad	.Ltmp225-.Lfunc_begin0
+	.quad	.Ltmp226-.Lfunc_begin0
+	.quad	.Ltmp239-.Lfunc_begin0
+	.quad	.Ltmp240-.Lfunc_begin0
+	.quad	.Ltmp243-.Lfunc_begin0
+	.quad	.Ltmp244-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges8:
+	.quad	.Ltmp42-.Lfunc_begin0
+	.quad	.Ltmp43-.Lfunc_begin0
+	.quad	.Ltmp46-.Lfunc_begin0
+	.quad	.Ltmp47-.Lfunc_begin0
+	.quad	.Ltmp60-.Lfunc_begin0
+	.quad	.Ltmp61-.Lfunc_begin0
+	.quad	.Ltmp64-.Lfunc_begin0
+	.quad	.Ltmp65-.Lfunc_begin0
+	.quad	.Ltmp78-.Lfunc_begin0
+	.quad	.Ltmp79-.Lfunc_begin0
+	.quad	.Ltmp82-.Lfunc_begin0
+	.quad	.Ltmp83-.Lfunc_begin0
+	.quad	.Ltmp96-.Lfunc_begin0
+	.quad	.Ltmp97-.Lfunc_begin0
+	.quad	.Ltmp100-.Lfunc_begin0
+	.quad	.Ltmp101-.Lfunc_begin0
+	.quad	.Ltmp114-.Lfunc_begin0
+	.quad	.Ltmp115-.Lfunc_begin0
+	.quad	.Ltmp118-.Lfunc_begin0
+	.quad	.Ltmp119-.Lfunc_begin0
+	.quad	.Ltmp132-.Lfunc_begin0
+	.quad	.Ltmp133-.Lfunc_begin0
+	.quad	.Ltmp136-.Lfunc_begin0
+	.quad	.Ltmp137-.Lfunc_begin0
+	.quad	.Ltmp150-.Lfunc_begin0
+	.quad	.Ltmp151-.Lfunc_begin0
+	.quad	.Ltmp154-.Lfunc_begin0
+	.quad	.Ltmp155-.Lfunc_begin0
+	.quad	.Ltmp168-.Lfunc_begin0
+	.quad	.Ltmp169-.Lfunc_begin0
+	.quad	.Ltmp172-.Lfunc_begin0
+	.quad	.Ltmp173-.Lfunc_begin0
+	.quad	.Ltmp186-.Lfunc_begin0
+	.quad	.Ltmp187-.Lfunc_begin0
+	.quad	.Ltmp190-.Lfunc_begin0
+	.quad	.Ltmp191-.Lfunc_begin0
+	.quad	.Ltmp204-.Lfunc_begin0
+	.quad	.Ltmp205-.Lfunc_begin0
+	.quad	.Ltmp208-.Lfunc_begin0
+	.quad	.Ltmp209-.Lfunc_begin0
+	.quad	.Ltmp222-.Lfunc_begin0
+	.quad	.Ltmp223-.Lfunc_begin0
+	.quad	.Ltmp226-.Lfunc_begin0
+	.quad	.Ltmp227-.Lfunc_begin0
+	.quad	.Ltmp240-.Lfunc_begin0
+	.quad	.Ltmp241-.Lfunc_begin0
+	.quad	.Ltmp244-.Lfunc_begin0
+	.quad	.Ltmp245-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges9:
+	.quad	.Ltmp43-.Lfunc_begin0
+	.quad	.Ltmp44-.Lfunc_begin0
+	.quad	.Ltmp57-.Lfunc_begin0
+	.quad	.Ltmp58-.Lfunc_begin0
+	.quad	.Ltmp61-.Lfunc_begin0
+	.quad	.Ltmp62-.Lfunc_begin0
+	.quad	.Ltmp75-.Lfunc_begin0
+	.quad	.Ltmp76-.Lfunc_begin0
+	.quad	.Ltmp79-.Lfunc_begin0
+	.quad	.Ltmp80-.Lfunc_begin0
+	.quad	.Ltmp93-.Lfunc_begin0
+	.quad	.Ltmp94-.Lfunc_begin0
+	.quad	.Ltmp97-.Lfunc_begin0
+	.quad	.Ltmp98-.Lfunc_begin0
+	.quad	.Ltmp111-.Lfunc_begin0
+	.quad	.Ltmp112-.Lfunc_begin0
+	.quad	.Ltmp115-.Lfunc_begin0
+	.quad	.Ltmp116-.Lfunc_begin0
+	.quad	.Ltmp129-.Lfunc_begin0
+	.quad	.Ltmp130-.Lfunc_begin0
+	.quad	.Ltmp133-.Lfunc_begin0
+	.quad	.Ltmp134-.Lfunc_begin0
+	.quad	.Ltmp147-.Lfunc_begin0
+	.quad	.Ltmp148-.Lfunc_begin0
+	.quad	.Ltmp151-.Lfunc_begin0
+	.quad	.Ltmp152-.Lfunc_begin0
+	.quad	.Ltmp165-.Lfunc_begin0
+	.quad	.Ltmp166-.Lfunc_begin0
+	.quad	.Ltmp169-.Lfunc_begin0
+	.quad	.Ltmp170-.Lfunc_begin0
+	.quad	.Ltmp183-.Lfunc_begin0
+	.quad	.Ltmp184-.Lfunc_begin0
+	.quad	.Ltmp187-.Lfunc_begin0
+	.quad	.Ltmp188-.Lfunc_begin0
+	.quad	.Ltmp201-.Lfunc_begin0
+	.quad	.Ltmp202-.Lfunc_begin0
+	.quad	.Ltmp205-.Lfunc_begin0
+	.quad	.Ltmp206-.Lfunc_begin0
+	.quad	.Ltmp219-.Lfunc_begin0
+	.quad	.Ltmp220-.Lfunc_begin0
+	.quad	.Ltmp223-.Lfunc_begin0
+	.quad	.Ltmp224-.Lfunc_begin0
+	.quad	.Ltmp237-.Lfunc_begin0
+	.quad	.Ltmp238-.Lfunc_begin0
+	.quad	.Ltmp241-.Lfunc_begin0
+	.quad	.Ltmp242-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges10:
+	.quad	.Ltmp47-.Lfunc_begin0
+	.quad	.Ltmp48-.Lfunc_begin0
+	.quad	.Ltmp65-.Lfunc_begin0
+	.quad	.Ltmp66-.Lfunc_begin0
+	.quad	.Ltmp83-.Lfunc_begin0
+	.quad	.Ltmp84-.Lfunc_begin0
+	.quad	.Ltmp101-.Lfunc_begin0
+	.quad	.Ltmp102-.Lfunc_begin0
+	.quad	.Ltmp119-.Lfunc_begin0
+	.quad	.Ltmp120-.Lfunc_begin0
+	.quad	.Ltmp137-.Lfunc_begin0
+	.quad	.Ltmp138-.Lfunc_begin0
+	.quad	.Ltmp155-.Lfunc_begin0
+	.quad	.Ltmp156-.Lfunc_begin0
+	.quad	.Ltmp173-.Lfunc_begin0
+	.quad	.Ltmp174-.Lfunc_begin0
+	.quad	.Ltmp191-.Lfunc_begin0
+	.quad	.Ltmp192-.Lfunc_begin0
+	.quad	.Ltmp209-.Lfunc_begin0
+	.quad	.Ltmp210-.Lfunc_begin0
+	.quad	.Ltmp227-.Lfunc_begin0
+	.quad	.Ltmp228-.Lfunc_begin0
+	.quad	.Ltmp245-.Lfunc_begin0
+	.quad	.Ltmp246-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges11:
+	.quad	.Ltmp48-.Lfunc_begin0
+	.quad	.Ltmp49-.Lfunc_begin0
+	.quad	.Ltmp66-.Lfunc_begin0
+	.quad	.Ltmp67-.Lfunc_begin0
+	.quad	.Ltmp84-.Lfunc_begin0
+	.quad	.Ltmp85-.Lfunc_begin0
+	.quad	.Ltmp102-.Lfunc_begin0
+	.quad	.Ltmp103-.Lfunc_begin0
+	.quad	.Ltmp120-.Lfunc_begin0
+	.quad	.Ltmp121-.Lfunc_begin0
+	.quad	.Ltmp138-.Lfunc_begin0
+	.quad	.Ltmp139-.Lfunc_begin0
+	.quad	.Ltmp156-.Lfunc_begin0
+	.quad	.Ltmp157-.Lfunc_begin0
+	.quad	.Ltmp174-.Lfunc_begin0
+	.quad	.Ltmp175-.Lfunc_begin0
+	.quad	.Ltmp192-.Lfunc_begin0
+	.quad	.Ltmp193-.Lfunc_begin0
+	.quad	.Ltmp210-.Lfunc_begin0
+	.quad	.Ltmp211-.Lfunc_begin0
+	.quad	.Ltmp228-.Lfunc_begin0
+	.quad	.Ltmp229-.Lfunc_begin0
+	.quad	.Ltmp246-.Lfunc_begin0
+	.quad	.Ltmp247-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges12:
+	.quad	.Ltmp49-.Lfunc_begin0
+	.quad	.Ltmp50-.Lfunc_begin0
+	.quad	.Ltmp67-.Lfunc_begin0
+	.quad	.Ltmp68-.Lfunc_begin0
+	.quad	.Ltmp85-.Lfunc_begin0
+	.quad	.Ltmp86-.Lfunc_begin0
+	.quad	.Ltmp103-.Lfunc_begin0
+	.quad	.Ltmp104-.Lfunc_begin0
+	.quad	.Ltmp121-.Lfunc_begin0
+	.quad	.Ltmp122-.Lfunc_begin0
+	.quad	.Ltmp139-.Lfunc_begin0
+	.quad	.Ltmp140-.Lfunc_begin0
+	.quad	.Ltmp157-.Lfunc_begin0
+	.quad	.Ltmp158-.Lfunc_begin0
+	.quad	.Ltmp175-.Lfunc_begin0
+	.quad	.Ltmp176-.Lfunc_begin0
+	.quad	.Ltmp193-.Lfunc_begin0
+	.quad	.Ltmp194-.Lfunc_begin0
+	.quad	.Ltmp211-.Lfunc_begin0
+	.quad	.Ltmp212-.Lfunc_begin0
+	.quad	.Ltmp229-.Lfunc_begin0
+	.quad	.Ltmp230-.Lfunc_begin0
+	.quad	.Ltmp247-.Lfunc_begin0
+	.quad	.Ltmp248-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges13:
+	.quad	.Ltmp50-.Lfunc_begin0
+	.quad	.Ltmp51-.Lfunc_begin0
+	.quad	.Ltmp68-.Lfunc_begin0
+	.quad	.Ltmp69-.Lfunc_begin0
+	.quad	.Ltmp86-.Lfunc_begin0
+	.quad	.Ltmp87-.Lfunc_begin0
+	.quad	.Ltmp104-.Lfunc_begin0
+	.quad	.Ltmp105-.Lfunc_begin0
+	.quad	.Ltmp122-.Lfunc_begin0
+	.quad	.Ltmp123-.Lfunc_begin0
+	.quad	.Ltmp140-.Lfunc_begin0
+	.quad	.Ltmp141-.Lfunc_begin0
+	.quad	.Ltmp158-.Lfunc_begin0
+	.quad	.Ltmp159-.Lfunc_begin0
+	.quad	.Ltmp176-.Lfunc_begin0
+	.quad	.Ltmp177-.Lfunc_begin0
+	.quad	.Ltmp194-.Lfunc_begin0
+	.quad	.Ltmp195-.Lfunc_begin0
+	.quad	.Ltmp212-.Lfunc_begin0
+	.quad	.Ltmp213-.Lfunc_begin0
+	.quad	.Ltmp230-.Lfunc_begin0
+	.quad	.Ltmp231-.Lfunc_begin0
+	.quad	.Ltmp248-.Lfunc_begin0
+	.quad	.Ltmp249-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges14:
+	.quad	.Ltmp52-.Lfunc_begin0
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp70-.Lfunc_begin0
+	.quad	.Ltmp72-.Lfunc_begin0
+	.quad	.Ltmp88-.Lfunc_begin0
+	.quad	.Ltmp90-.Lfunc_begin0
+	.quad	.Ltmp106-.Lfunc_begin0
+	.quad	.Ltmp108-.Lfunc_begin0
+	.quad	.Ltmp124-.Lfunc_begin0
+	.quad	.Ltmp126-.Lfunc_begin0
+	.quad	.Ltmp142-.Lfunc_begin0
+	.quad	.Ltmp144-.Lfunc_begin0
+	.quad	.Ltmp160-.Lfunc_begin0
+	.quad	.Ltmp162-.Lfunc_begin0
+	.quad	.Ltmp178-.Lfunc_begin0
+	.quad	.Ltmp180-.Lfunc_begin0
+	.quad	.Ltmp196-.Lfunc_begin0
+	.quad	.Ltmp198-.Lfunc_begin0
+	.quad	.Ltmp214-.Lfunc_begin0
+	.quad	.Ltmp216-.Lfunc_begin0
+	.quad	.Ltmp232-.Lfunc_begin0
+	.quad	.Ltmp234-.Lfunc_begin0
+	.quad	.Ltmp250-.Lfunc_begin0
+	.quad	.Ltmp252-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges15:
+	.quad	.Ltmp52-.Lfunc_begin0
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp70-.Lfunc_begin0
+	.quad	.Ltmp72-.Lfunc_begin0
+	.quad	.Ltmp88-.Lfunc_begin0
+	.quad	.Ltmp90-.Lfunc_begin0
+	.quad	.Ltmp106-.Lfunc_begin0
+	.quad	.Ltmp108-.Lfunc_begin0
+	.quad	.Ltmp124-.Lfunc_begin0
+	.quad	.Ltmp126-.Lfunc_begin0
+	.quad	.Ltmp142-.Lfunc_begin0
+	.quad	.Ltmp144-.Lfunc_begin0
+	.quad	.Ltmp160-.Lfunc_begin0
+	.quad	.Ltmp162-.Lfunc_begin0
+	.quad	.Ltmp178-.Lfunc_begin0
+	.quad	.Ltmp180-.Lfunc_begin0
+	.quad	.Ltmp196-.Lfunc_begin0
+	.quad	.Ltmp198-.Lfunc_begin0
+	.quad	.Ltmp214-.Lfunc_begin0
+	.quad	.Ltmp216-.Lfunc_begin0
+	.quad	.Ltmp232-.Lfunc_begin0
+	.quad	.Ltmp234-.Lfunc_begin0
+	.quad	.Ltmp250-.Lfunc_begin0
+	.quad	.Ltmp252-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges16:
+	.quad	.Ltmp52-.Lfunc_begin0
+	.quad	.Ltmp53-.Lfunc_begin0
+	.quad	.Ltmp70-.Lfunc_begin0
+	.quad	.Ltmp71-.Lfunc_begin0
+	.quad	.Ltmp88-.Lfunc_begin0
+	.quad	.Ltmp89-.Lfunc_begin0
+	.quad	.Ltmp106-.Lfunc_begin0
+	.quad	.Ltmp107-.Lfunc_begin0
+	.quad	.Ltmp124-.Lfunc_begin0
+	.quad	.Ltmp125-.Lfunc_begin0
+	.quad	.Ltmp142-.Lfunc_begin0
+	.quad	.Ltmp143-.Lfunc_begin0
+	.quad	.Ltmp160-.Lfunc_begin0
+	.quad	.Ltmp161-.Lfunc_begin0
+	.quad	.Ltmp178-.Lfunc_begin0
+	.quad	.Ltmp179-.Lfunc_begin0
+	.quad	.Ltmp196-.Lfunc_begin0
+	.quad	.Ltmp197-.Lfunc_begin0
+	.quad	.Ltmp214-.Lfunc_begin0
+	.quad	.Ltmp215-.Lfunc_begin0
+	.quad	.Ltmp232-.Lfunc_begin0
+	.quad	.Ltmp233-.Lfunc_begin0
+	.quad	.Ltmp250-.Lfunc_begin0
+	.quad	.Ltmp251-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges17:
+	.quad	.Ltmp53-.Lfunc_begin0
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp71-.Lfunc_begin0
+	.quad	.Ltmp72-.Lfunc_begin0
+	.quad	.Ltmp89-.Lfunc_begin0
+	.quad	.Ltmp90-.Lfunc_begin0
+	.quad	.Ltmp107-.Lfunc_begin0
+	.quad	.Ltmp108-.Lfunc_begin0
+	.quad	.Ltmp125-.Lfunc_begin0
+	.quad	.Ltmp126-.Lfunc_begin0
+	.quad	.Ltmp143-.Lfunc_begin0
+	.quad	.Ltmp144-.Lfunc_begin0
+	.quad	.Ltmp161-.Lfunc_begin0
+	.quad	.Ltmp162-.Lfunc_begin0
+	.quad	.Ltmp179-.Lfunc_begin0
+	.quad	.Ltmp180-.Lfunc_begin0
+	.quad	.Ltmp197-.Lfunc_begin0
+	.quad	.Ltmp198-.Lfunc_begin0
+	.quad	.Ltmp215-.Lfunc_begin0
+	.quad	.Ltmp216-.Lfunc_begin0
+	.quad	.Ltmp233-.Lfunc_begin0
+	.quad	.Ltmp234-.Lfunc_begin0
+	.quad	.Ltmp251-.Lfunc_begin0
+	.quad	.Ltmp252-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges18:
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp56-.Lfunc_begin0
+	.quad	.Ltmp72-.Lfunc_begin0
+	.quad	.Ltmp74-.Lfunc_begin0
+	.quad	.Ltmp90-.Lfunc_begin0
+	.quad	.Ltmp92-.Lfunc_begin0
+	.quad	.Ltmp108-.Lfunc_begin0
+	.quad	.Ltmp110-.Lfunc_begin0
+	.quad	.Ltmp126-.Lfunc_begin0
+	.quad	.Ltmp128-.Lfunc_begin0
+	.quad	.Ltmp144-.Lfunc_begin0
+	.quad	.Ltmp146-.Lfunc_begin0
+	.quad	.Ltmp162-.Lfunc_begin0
+	.quad	.Ltmp164-.Lfunc_begin0
+	.quad	.Ltmp180-.Lfunc_begin0
+	.quad	.Ltmp182-.Lfunc_begin0
+	.quad	.Ltmp198-.Lfunc_begin0
+	.quad	.Ltmp200-.Lfunc_begin0
+	.quad	.Ltmp216-.Lfunc_begin0
+	.quad	.Ltmp218-.Lfunc_begin0
+	.quad	.Ltmp234-.Lfunc_begin0
+	.quad	.Ltmp236-.Lfunc_begin0
+	.quad	.Ltmp252-.Lfunc_begin0
+	.quad	.Ltmp254-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges19:
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp56-.Lfunc_begin0
+	.quad	.Ltmp72-.Lfunc_begin0
+	.quad	.Ltmp74-.Lfunc_begin0
+	.quad	.Ltmp90-.Lfunc_begin0
+	.quad	.Ltmp92-.Lfunc_begin0
+	.quad	.Ltmp108-.Lfunc_begin0
+	.quad	.Ltmp110-.Lfunc_begin0
+	.quad	.Ltmp126-.Lfunc_begin0
+	.quad	.Ltmp128-.Lfunc_begin0
+	.quad	.Ltmp144-.Lfunc_begin0
+	.quad	.Ltmp146-.Lfunc_begin0
+	.quad	.Ltmp162-.Lfunc_begin0
+	.quad	.Ltmp164-.Lfunc_begin0
+	.quad	.Ltmp180-.Lfunc_begin0
+	.quad	.Ltmp182-.Lfunc_begin0
+	.quad	.Ltmp198-.Lfunc_begin0
+	.quad	.Ltmp200-.Lfunc_begin0
+	.quad	.Ltmp216-.Lfunc_begin0
+	.quad	.Ltmp218-.Lfunc_begin0
+	.quad	.Ltmp234-.Lfunc_begin0
+	.quad	.Ltmp236-.Lfunc_begin0
+	.quad	.Ltmp252-.Lfunc_begin0
+	.quad	.Ltmp254-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges20:
+	.quad	.Ltmp54-.Lfunc_begin0
+	.quad	.Ltmp55-.Lfunc_begin0
+	.quad	.Ltmp72-.Lfunc_begin0
+	.quad	.Ltmp73-.Lfunc_begin0
+	.quad	.Ltmp90-.Lfunc_begin0
+	.quad	.Ltmp91-.Lfunc_begin0
+	.quad	.Ltmp108-.Lfunc_begin0
+	.quad	.Ltmp109-.Lfunc_begin0
+	.quad	.Ltmp126-.Lfunc_begin0
+	.quad	.Ltmp127-.Lfunc_begin0
+	.quad	.Ltmp144-.Lfunc_begin0
+	.quad	.Ltmp145-.Lfunc_begin0
+	.quad	.Ltmp162-.Lfunc_begin0
+	.quad	.Ltmp163-.Lfunc_begin0
+	.quad	.Ltmp180-.Lfunc_begin0
+	.quad	.Ltmp181-.Lfunc_begin0
+	.quad	.Ltmp198-.Lfunc_begin0
+	.quad	.Ltmp199-.Lfunc_begin0
+	.quad	.Ltmp216-.Lfunc_begin0
+	.quad	.Ltmp217-.Lfunc_begin0
+	.quad	.Ltmp234-.Lfunc_begin0
+	.quad	.Ltmp235-.Lfunc_begin0
+	.quad	.Ltmp252-.Lfunc_begin0
+	.quad	.Ltmp253-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges21:
+	.quad	.Ltmp55-.Lfunc_begin0
+	.quad	.Ltmp56-.Lfunc_begin0
+	.quad	.Ltmp73-.Lfunc_begin0
+	.quad	.Ltmp74-.Lfunc_begin0
+	.quad	.Ltmp91-.Lfunc_begin0
+	.quad	.Ltmp92-.Lfunc_begin0
+	.quad	.Ltmp109-.Lfunc_begin0
+	.quad	.Ltmp110-.Lfunc_begin0
+	.quad	.Ltmp127-.Lfunc_begin0
+	.quad	.Ltmp128-.Lfunc_begin0
+	.quad	.Ltmp145-.Lfunc_begin0
+	.quad	.Ltmp146-.Lfunc_begin0
+	.quad	.Ltmp163-.Lfunc_begin0
+	.quad	.Ltmp164-.Lfunc_begin0
+	.quad	.Ltmp181-.Lfunc_begin0
+	.quad	.Ltmp182-.Lfunc_begin0
+	.quad	.Ltmp199-.Lfunc_begin0
+	.quad	.Ltmp200-.Lfunc_begin0
+	.quad	.Ltmp217-.Lfunc_begin0
+	.quad	.Ltmp218-.Lfunc_begin0
+	.quad	.Ltmp235-.Lfunc_begin0
+	.quad	.Ltmp236-.Lfunc_begin0
+	.quad	.Ltmp253-.Lfunc_begin0
+	.quad	.Ltmp254-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges22:
+	.quad	.Ltmp263-.Lfunc_begin0
+	.quad	.Ltmp264-.Lfunc_begin0
+	.quad	.Ltmp280-.Lfunc_begin0
+	.quad	.Ltmp281-.Lfunc_begin0
+	.quad	.Ltmp297-.Lfunc_begin0
+	.quad	.Ltmp298-.Lfunc_begin0
+	.quad	.Ltmp314-.Lfunc_begin0
+	.quad	.Ltmp315-.Lfunc_begin0
+	.quad	.Ltmp331-.Lfunc_begin0
+	.quad	.Ltmp332-.Lfunc_begin0
+	.quad	.Ltmp348-.Lfunc_begin0
+	.quad	.Ltmp349-.Lfunc_begin0
+	.quad	.Ltmp365-.Lfunc_begin0
+	.quad	.Ltmp366-.Lfunc_begin0
+	.quad	.Ltmp382-.Lfunc_begin0
+	.quad	.Ltmp383-.Lfunc_begin0
+	.quad	.Ltmp399-.Lfunc_begin0
+	.quad	.Ltmp400-.Lfunc_begin0
+	.quad	.Ltmp416-.Lfunc_begin0
+	.quad	.Ltmp417-.Lfunc_begin0
+	.quad	.Ltmp433-.Lfunc_begin0
+	.quad	.Ltmp434-.Lfunc_begin0
+	.quad	.Ltmp450-.Lfunc_begin0
+	.quad	.Ltmp451-.Lfunc_begin0
+	.quad	.Ltmp467-.Lfunc_begin0
+	.quad	.Ltmp468-.Lfunc_begin0
+	.quad	.Ltmp484-.Lfunc_begin0
+	.quad	.Ltmp485-.Lfunc_begin0
+	.quad	.Ltmp501-.Lfunc_begin0
+	.quad	.Ltmp502-.Lfunc_begin0
+	.quad	.Ltmp518-.Lfunc_begin0
+	.quad	.Ltmp519-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges23:
+	.quad	.Ltmp264-.Lfunc_begin0
+	.quad	.Ltmp265-.Lfunc_begin0
+	.quad	.Ltmp281-.Lfunc_begin0
+	.quad	.Ltmp282-.Lfunc_begin0
+	.quad	.Ltmp298-.Lfunc_begin0
+	.quad	.Ltmp299-.Lfunc_begin0
+	.quad	.Ltmp315-.Lfunc_begin0
+	.quad	.Ltmp316-.Lfunc_begin0
+	.quad	.Ltmp332-.Lfunc_begin0
+	.quad	.Ltmp333-.Lfunc_begin0
+	.quad	.Ltmp349-.Lfunc_begin0
+	.quad	.Ltmp350-.Lfunc_begin0
+	.quad	.Ltmp366-.Lfunc_begin0
+	.quad	.Ltmp367-.Lfunc_begin0
+	.quad	.Ltmp383-.Lfunc_begin0
+	.quad	.Ltmp384-.Lfunc_begin0
+	.quad	.Ltmp400-.Lfunc_begin0
+	.quad	.Ltmp401-.Lfunc_begin0
+	.quad	.Ltmp417-.Lfunc_begin0
+	.quad	.Ltmp418-.Lfunc_begin0
+	.quad	.Ltmp434-.Lfunc_begin0
+	.quad	.Ltmp435-.Lfunc_begin0
+	.quad	.Ltmp451-.Lfunc_begin0
+	.quad	.Ltmp452-.Lfunc_begin0
+	.quad	.Ltmp468-.Lfunc_begin0
+	.quad	.Ltmp469-.Lfunc_begin0
+	.quad	.Ltmp485-.Lfunc_begin0
+	.quad	.Ltmp486-.Lfunc_begin0
+	.quad	.Ltmp502-.Lfunc_begin0
+	.quad	.Ltmp503-.Lfunc_begin0
+	.quad	.Ltmp519-.Lfunc_begin0
+	.quad	.Ltmp520-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges24:
+	.quad	.Ltmp266-.Lfunc_begin0
+	.quad	.Ltmp267-.Lfunc_begin0
+	.quad	.Ltmp283-.Lfunc_begin0
+	.quad	.Ltmp284-.Lfunc_begin0
+	.quad	.Ltmp300-.Lfunc_begin0
+	.quad	.Ltmp301-.Lfunc_begin0
+	.quad	.Ltmp317-.Lfunc_begin0
+	.quad	.Ltmp318-.Lfunc_begin0
+	.quad	.Ltmp334-.Lfunc_begin0
+	.quad	.Ltmp335-.Lfunc_begin0
+	.quad	.Ltmp351-.Lfunc_begin0
+	.quad	.Ltmp352-.Lfunc_begin0
+	.quad	.Ltmp368-.Lfunc_begin0
+	.quad	.Ltmp369-.Lfunc_begin0
+	.quad	.Ltmp385-.Lfunc_begin0
+	.quad	.Ltmp386-.Lfunc_begin0
+	.quad	.Ltmp402-.Lfunc_begin0
+	.quad	.Ltmp403-.Lfunc_begin0
+	.quad	.Ltmp419-.Lfunc_begin0
+	.quad	.Ltmp420-.Lfunc_begin0
+	.quad	.Ltmp436-.Lfunc_begin0
+	.quad	.Ltmp437-.Lfunc_begin0
+	.quad	.Ltmp453-.Lfunc_begin0
+	.quad	.Ltmp454-.Lfunc_begin0
+	.quad	.Ltmp470-.Lfunc_begin0
+	.quad	.Ltmp471-.Lfunc_begin0
+	.quad	.Ltmp487-.Lfunc_begin0
+	.quad	.Ltmp488-.Lfunc_begin0
+	.quad	.Ltmp504-.Lfunc_begin0
+	.quad	.Ltmp505-.Lfunc_begin0
+	.quad	.Ltmp521-.Lfunc_begin0
+	.quad	.Ltmp522-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges25:
+	.quad	.Ltmp267-.Lfunc_begin0
+	.quad	.Ltmp268-.Lfunc_begin0
+	.quad	.Ltmp284-.Lfunc_begin0
+	.quad	.Ltmp285-.Lfunc_begin0
+	.quad	.Ltmp301-.Lfunc_begin0
+	.quad	.Ltmp302-.Lfunc_begin0
+	.quad	.Ltmp318-.Lfunc_begin0
+	.quad	.Ltmp319-.Lfunc_begin0
+	.quad	.Ltmp335-.Lfunc_begin0
+	.quad	.Ltmp336-.Lfunc_begin0
+	.quad	.Ltmp352-.Lfunc_begin0
+	.quad	.Ltmp353-.Lfunc_begin0
+	.quad	.Ltmp369-.Lfunc_begin0
+	.quad	.Ltmp370-.Lfunc_begin0
+	.quad	.Ltmp386-.Lfunc_begin0
+	.quad	.Ltmp387-.Lfunc_begin0
+	.quad	.Ltmp403-.Lfunc_begin0
+	.quad	.Ltmp404-.Lfunc_begin0
+	.quad	.Ltmp420-.Lfunc_begin0
+	.quad	.Ltmp421-.Lfunc_begin0
+	.quad	.Ltmp437-.Lfunc_begin0
+	.quad	.Ltmp438-.Lfunc_begin0
+	.quad	.Ltmp454-.Lfunc_begin0
+	.quad	.Ltmp455-.Lfunc_begin0
+	.quad	.Ltmp471-.Lfunc_begin0
+	.quad	.Ltmp472-.Lfunc_begin0
+	.quad	.Ltmp488-.Lfunc_begin0
+	.quad	.Ltmp489-.Lfunc_begin0
+	.quad	.Ltmp505-.Lfunc_begin0
+	.quad	.Ltmp506-.Lfunc_begin0
+	.quad	.Ltmp522-.Lfunc_begin0
+	.quad	.Ltmp523-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges26:
+	.quad	.Ltmp269-.Lfunc_begin0
+	.quad	.Ltmp270-.Lfunc_begin0
+	.quad	.Ltmp286-.Lfunc_begin0
+	.quad	.Ltmp287-.Lfunc_begin0
+	.quad	.Ltmp303-.Lfunc_begin0
+	.quad	.Ltmp304-.Lfunc_begin0
+	.quad	.Ltmp320-.Lfunc_begin0
+	.quad	.Ltmp321-.Lfunc_begin0
+	.quad	.Ltmp337-.Lfunc_begin0
+	.quad	.Ltmp338-.Lfunc_begin0
+	.quad	.Ltmp354-.Lfunc_begin0
+	.quad	.Ltmp355-.Lfunc_begin0
+	.quad	.Ltmp371-.Lfunc_begin0
+	.quad	.Ltmp372-.Lfunc_begin0
+	.quad	.Ltmp388-.Lfunc_begin0
+	.quad	.Ltmp389-.Lfunc_begin0
+	.quad	.Ltmp405-.Lfunc_begin0
+	.quad	.Ltmp406-.Lfunc_begin0
+	.quad	.Ltmp422-.Lfunc_begin0
+	.quad	.Ltmp423-.Lfunc_begin0
+	.quad	.Ltmp439-.Lfunc_begin0
+	.quad	.Ltmp440-.Lfunc_begin0
+	.quad	.Ltmp456-.Lfunc_begin0
+	.quad	.Ltmp457-.Lfunc_begin0
+	.quad	.Ltmp473-.Lfunc_begin0
+	.quad	.Ltmp474-.Lfunc_begin0
+	.quad	.Ltmp490-.Lfunc_begin0
+	.quad	.Ltmp491-.Lfunc_begin0
+	.quad	.Ltmp507-.Lfunc_begin0
+	.quad	.Ltmp508-.Lfunc_begin0
+	.quad	.Ltmp524-.Lfunc_begin0
+	.quad	.Ltmp525-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges27:
+	.quad	.Ltmp270-.Lfunc_begin0
+	.quad	.Ltmp271-.Lfunc_begin0
+	.quad	.Ltmp287-.Lfunc_begin0
+	.quad	.Ltmp288-.Lfunc_begin0
+	.quad	.Ltmp304-.Lfunc_begin0
+	.quad	.Ltmp305-.Lfunc_begin0
+	.quad	.Ltmp321-.Lfunc_begin0
+	.quad	.Ltmp322-.Lfunc_begin0
+	.quad	.Ltmp338-.Lfunc_begin0
+	.quad	.Ltmp339-.Lfunc_begin0
+	.quad	.Ltmp355-.Lfunc_begin0
+	.quad	.Ltmp356-.Lfunc_begin0
+	.quad	.Ltmp372-.Lfunc_begin0
+	.quad	.Ltmp373-.Lfunc_begin0
+	.quad	.Ltmp389-.Lfunc_begin0
+	.quad	.Ltmp390-.Lfunc_begin0
+	.quad	.Ltmp406-.Lfunc_begin0
+	.quad	.Ltmp407-.Lfunc_begin0
+	.quad	.Ltmp423-.Lfunc_begin0
+	.quad	.Ltmp424-.Lfunc_begin0
+	.quad	.Ltmp440-.Lfunc_begin0
+	.quad	.Ltmp441-.Lfunc_begin0
+	.quad	.Ltmp457-.Lfunc_begin0
+	.quad	.Ltmp458-.Lfunc_begin0
+	.quad	.Ltmp474-.Lfunc_begin0
+	.quad	.Ltmp475-.Lfunc_begin0
+	.quad	.Ltmp491-.Lfunc_begin0
+	.quad	.Ltmp492-.Lfunc_begin0
+	.quad	.Ltmp508-.Lfunc_begin0
+	.quad	.Ltmp509-.Lfunc_begin0
+	.quad	.Ltmp525-.Lfunc_begin0
+	.quad	.Ltmp526-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges28:
+	.quad	.Ltmp272-.Lfunc_begin0
+	.quad	.Ltmp273-.Lfunc_begin0
+	.quad	.Ltmp289-.Lfunc_begin0
+	.quad	.Ltmp290-.Lfunc_begin0
+	.quad	.Ltmp306-.Lfunc_begin0
+	.quad	.Ltmp307-.Lfunc_begin0
+	.quad	.Ltmp323-.Lfunc_begin0
+	.quad	.Ltmp324-.Lfunc_begin0
+	.quad	.Ltmp340-.Lfunc_begin0
+	.quad	.Ltmp341-.Lfunc_begin0
+	.quad	.Ltmp357-.Lfunc_begin0
+	.quad	.Ltmp358-.Lfunc_begin0
+	.quad	.Ltmp374-.Lfunc_begin0
+	.quad	.Ltmp375-.Lfunc_begin0
+	.quad	.Ltmp391-.Lfunc_begin0
+	.quad	.Ltmp392-.Lfunc_begin0
+	.quad	.Ltmp408-.Lfunc_begin0
+	.quad	.Ltmp409-.Lfunc_begin0
+	.quad	.Ltmp425-.Lfunc_begin0
+	.quad	.Ltmp426-.Lfunc_begin0
+	.quad	.Ltmp442-.Lfunc_begin0
+	.quad	.Ltmp443-.Lfunc_begin0
+	.quad	.Ltmp459-.Lfunc_begin0
+	.quad	.Ltmp460-.Lfunc_begin0
+	.quad	.Ltmp476-.Lfunc_begin0
+	.quad	.Ltmp477-.Lfunc_begin0
+	.quad	.Ltmp493-.Lfunc_begin0
+	.quad	.Ltmp494-.Lfunc_begin0
+	.quad	.Ltmp510-.Lfunc_begin0
+	.quad	.Ltmp511-.Lfunc_begin0
+	.quad	.Ltmp527-.Lfunc_begin0
+	.quad	.Ltmp528-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges29:
+	.quad	.Ltmp273-.Lfunc_begin0
+	.quad	.Ltmp274-.Lfunc_begin0
+	.quad	.Ltmp290-.Lfunc_begin0
+	.quad	.Ltmp291-.Lfunc_begin0
+	.quad	.Ltmp307-.Lfunc_begin0
+	.quad	.Ltmp308-.Lfunc_begin0
+	.quad	.Ltmp324-.Lfunc_begin0
+	.quad	.Ltmp325-.Lfunc_begin0
+	.quad	.Ltmp341-.Lfunc_begin0
+	.quad	.Ltmp342-.Lfunc_begin0
+	.quad	.Ltmp358-.Lfunc_begin0
+	.quad	.Ltmp359-.Lfunc_begin0
+	.quad	.Ltmp375-.Lfunc_begin0
+	.quad	.Ltmp376-.Lfunc_begin0
+	.quad	.Ltmp392-.Lfunc_begin0
+	.quad	.Ltmp393-.Lfunc_begin0
+	.quad	.Ltmp409-.Lfunc_begin0
+	.quad	.Ltmp410-.Lfunc_begin0
+	.quad	.Ltmp426-.Lfunc_begin0
+	.quad	.Ltmp427-.Lfunc_begin0
+	.quad	.Ltmp443-.Lfunc_begin0
+	.quad	.Ltmp444-.Lfunc_begin0
+	.quad	.Ltmp460-.Lfunc_begin0
+	.quad	.Ltmp461-.Lfunc_begin0
+	.quad	.Ltmp477-.Lfunc_begin0
+	.quad	.Ltmp478-.Lfunc_begin0
+	.quad	.Ltmp494-.Lfunc_begin0
+	.quad	.Ltmp495-.Lfunc_begin0
+	.quad	.Ltmp511-.Lfunc_begin0
+	.quad	.Ltmp512-.Lfunc_begin0
+	.quad	.Ltmp528-.Lfunc_begin0
+	.quad	.Ltmp529-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges30:
+	.quad	.Ltmp275-.Lfunc_begin0
+	.quad	.Ltmp277-.Lfunc_begin0
+	.quad	.Ltmp292-.Lfunc_begin0
+	.quad	.Ltmp294-.Lfunc_begin0
+	.quad	.Ltmp309-.Lfunc_begin0
+	.quad	.Ltmp311-.Lfunc_begin0
+	.quad	.Ltmp326-.Lfunc_begin0
+	.quad	.Ltmp328-.Lfunc_begin0
+	.quad	.Ltmp343-.Lfunc_begin0
+	.quad	.Ltmp345-.Lfunc_begin0
+	.quad	.Ltmp360-.Lfunc_begin0
+	.quad	.Ltmp362-.Lfunc_begin0
+	.quad	.Ltmp377-.Lfunc_begin0
+	.quad	.Ltmp379-.Lfunc_begin0
+	.quad	.Ltmp394-.Lfunc_begin0
+	.quad	.Ltmp396-.Lfunc_begin0
+	.quad	.Ltmp411-.Lfunc_begin0
+	.quad	.Ltmp413-.Lfunc_begin0
+	.quad	.Ltmp428-.Lfunc_begin0
+	.quad	.Ltmp430-.Lfunc_begin0
+	.quad	.Ltmp445-.Lfunc_begin0
+	.quad	.Ltmp447-.Lfunc_begin0
+	.quad	.Ltmp462-.Lfunc_begin0
+	.quad	.Ltmp464-.Lfunc_begin0
+	.quad	.Ltmp479-.Lfunc_begin0
+	.quad	.Ltmp481-.Lfunc_begin0
+	.quad	.Ltmp496-.Lfunc_begin0
+	.quad	.Ltmp498-.Lfunc_begin0
+	.quad	.Ltmp513-.Lfunc_begin0
+	.quad	.Ltmp515-.Lfunc_begin0
+	.quad	.Ltmp530-.Lfunc_begin0
+	.quad	.Ltmp532-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges31:
+	.quad	.Ltmp275-.Lfunc_begin0
+	.quad	.Ltmp277-.Lfunc_begin0
+	.quad	.Ltmp292-.Lfunc_begin0
+	.quad	.Ltmp294-.Lfunc_begin0
+	.quad	.Ltmp309-.Lfunc_begin0
+	.quad	.Ltmp311-.Lfunc_begin0
+	.quad	.Ltmp326-.Lfunc_begin0
+	.quad	.Ltmp328-.Lfunc_begin0
+	.quad	.Ltmp343-.Lfunc_begin0
+	.quad	.Ltmp345-.Lfunc_begin0
+	.quad	.Ltmp360-.Lfunc_begin0
+	.quad	.Ltmp362-.Lfunc_begin0
+	.quad	.Ltmp377-.Lfunc_begin0
+	.quad	.Ltmp379-.Lfunc_begin0
+	.quad	.Ltmp394-.Lfunc_begin0
+	.quad	.Ltmp396-.Lfunc_begin0
+	.quad	.Ltmp411-.Lfunc_begin0
+	.quad	.Ltmp413-.Lfunc_begin0
+	.quad	.Ltmp428-.Lfunc_begin0
+	.quad	.Ltmp430-.Lfunc_begin0
+	.quad	.Ltmp445-.Lfunc_begin0
+	.quad	.Ltmp447-.Lfunc_begin0
+	.quad	.Ltmp462-.Lfunc_begin0
+	.quad	.Ltmp464-.Lfunc_begin0
+	.quad	.Ltmp479-.Lfunc_begin0
+	.quad	.Ltmp481-.Lfunc_begin0
+	.quad	.Ltmp496-.Lfunc_begin0
+	.quad	.Ltmp498-.Lfunc_begin0
+	.quad	.Ltmp513-.Lfunc_begin0
+	.quad	.Ltmp515-.Lfunc_begin0
+	.quad	.Ltmp530-.Lfunc_begin0
+	.quad	.Ltmp532-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges32:
+	.quad	.Ltmp275-.Lfunc_begin0
+	.quad	.Ltmp276-.Lfunc_begin0
+	.quad	.Ltmp292-.Lfunc_begin0
+	.quad	.Ltmp293-.Lfunc_begin0
+	.quad	.Ltmp309-.Lfunc_begin0
+	.quad	.Ltmp310-.Lfunc_begin0
+	.quad	.Ltmp326-.Lfunc_begin0
+	.quad	.Ltmp327-.Lfunc_begin0
+	.quad	.Ltmp343-.Lfunc_begin0
+	.quad	.Ltmp344-.Lfunc_begin0
+	.quad	.Ltmp360-.Lfunc_begin0
+	.quad	.Ltmp361-.Lfunc_begin0
+	.quad	.Ltmp377-.Lfunc_begin0
+	.quad	.Ltmp378-.Lfunc_begin0
+	.quad	.Ltmp394-.Lfunc_begin0
+	.quad	.Ltmp395-.Lfunc_begin0
+	.quad	.Ltmp411-.Lfunc_begin0
+	.quad	.Ltmp412-.Lfunc_begin0
+	.quad	.Ltmp428-.Lfunc_begin0
+	.quad	.Ltmp429-.Lfunc_begin0
+	.quad	.Ltmp445-.Lfunc_begin0
+	.quad	.Ltmp446-.Lfunc_begin0
+	.quad	.Ltmp462-.Lfunc_begin0
+	.quad	.Ltmp463-.Lfunc_begin0
+	.quad	.Ltmp479-.Lfunc_begin0
+	.quad	.Ltmp480-.Lfunc_begin0
+	.quad	.Ltmp496-.Lfunc_begin0
+	.quad	.Ltmp497-.Lfunc_begin0
+	.quad	.Ltmp513-.Lfunc_begin0
+	.quad	.Ltmp514-.Lfunc_begin0
+	.quad	.Ltmp530-.Lfunc_begin0
+	.quad	.Ltmp531-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges33:
+	.quad	.Ltmp276-.Lfunc_begin0
+	.quad	.Ltmp277-.Lfunc_begin0
+	.quad	.Ltmp293-.Lfunc_begin0
+	.quad	.Ltmp294-.Lfunc_begin0
+	.quad	.Ltmp310-.Lfunc_begin0
+	.quad	.Ltmp311-.Lfunc_begin0
+	.quad	.Ltmp327-.Lfunc_begin0
+	.quad	.Ltmp328-.Lfunc_begin0
+	.quad	.Ltmp344-.Lfunc_begin0
+	.quad	.Ltmp345-.Lfunc_begin0
+	.quad	.Ltmp361-.Lfunc_begin0
+	.quad	.Ltmp362-.Lfunc_begin0
+	.quad	.Ltmp378-.Lfunc_begin0
+	.quad	.Ltmp379-.Lfunc_begin0
+	.quad	.Ltmp395-.Lfunc_begin0
+	.quad	.Ltmp396-.Lfunc_begin0
+	.quad	.Ltmp412-.Lfunc_begin0
+	.quad	.Ltmp413-.Lfunc_begin0
+	.quad	.Ltmp429-.Lfunc_begin0
+	.quad	.Ltmp430-.Lfunc_begin0
+	.quad	.Ltmp446-.Lfunc_begin0
+	.quad	.Ltmp447-.Lfunc_begin0
+	.quad	.Ltmp463-.Lfunc_begin0
+	.quad	.Ltmp464-.Lfunc_begin0
+	.quad	.Ltmp480-.Lfunc_begin0
+	.quad	.Ltmp481-.Lfunc_begin0
+	.quad	.Ltmp497-.Lfunc_begin0
+	.quad	.Ltmp498-.Lfunc_begin0
+	.quad	.Ltmp514-.Lfunc_begin0
+	.quad	.Ltmp515-.Lfunc_begin0
+	.quad	.Ltmp531-.Lfunc_begin0
+	.quad	.Ltmp532-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges34:
+	.quad	.Ltmp277-.Lfunc_begin0
+	.quad	.Ltmp279-.Lfunc_begin0
+	.quad	.Ltmp294-.Lfunc_begin0
+	.quad	.Ltmp296-.Lfunc_begin0
+	.quad	.Ltmp311-.Lfunc_begin0
+	.quad	.Ltmp313-.Lfunc_begin0
+	.quad	.Ltmp328-.Lfunc_begin0
+	.quad	.Ltmp330-.Lfunc_begin0
+	.quad	.Ltmp345-.Lfunc_begin0
+	.quad	.Ltmp347-.Lfunc_begin0
+	.quad	.Ltmp362-.Lfunc_begin0
+	.quad	.Ltmp364-.Lfunc_begin0
+	.quad	.Ltmp379-.Lfunc_begin0
+	.quad	.Ltmp381-.Lfunc_begin0
+	.quad	.Ltmp396-.Lfunc_begin0
+	.quad	.Ltmp398-.Lfunc_begin0
+	.quad	.Ltmp413-.Lfunc_begin0
+	.quad	.Ltmp415-.Lfunc_begin0
+	.quad	.Ltmp430-.Lfunc_begin0
+	.quad	.Ltmp432-.Lfunc_begin0
+	.quad	.Ltmp447-.Lfunc_begin0
+	.quad	.Ltmp449-.Lfunc_begin0
+	.quad	.Ltmp464-.Lfunc_begin0
+	.quad	.Ltmp466-.Lfunc_begin0
+	.quad	.Ltmp481-.Lfunc_begin0
+	.quad	.Ltmp483-.Lfunc_begin0
+	.quad	.Ltmp498-.Lfunc_begin0
+	.quad	.Ltmp500-.Lfunc_begin0
+	.quad	.Ltmp515-.Lfunc_begin0
+	.quad	.Ltmp517-.Lfunc_begin0
+	.quad	.Ltmp532-.Lfunc_begin0
+	.quad	.Ltmp534-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges35:
+	.quad	.Ltmp277-.Lfunc_begin0
+	.quad	.Ltmp279-.Lfunc_begin0
+	.quad	.Ltmp294-.Lfunc_begin0
+	.quad	.Ltmp296-.Lfunc_begin0
+	.quad	.Ltmp311-.Lfunc_begin0
+	.quad	.Ltmp313-.Lfunc_begin0
+	.quad	.Ltmp328-.Lfunc_begin0
+	.quad	.Ltmp330-.Lfunc_begin0
+	.quad	.Ltmp345-.Lfunc_begin0
+	.quad	.Ltmp347-.Lfunc_begin0
+	.quad	.Ltmp362-.Lfunc_begin0
+	.quad	.Ltmp364-.Lfunc_begin0
+	.quad	.Ltmp379-.Lfunc_begin0
+	.quad	.Ltmp381-.Lfunc_begin0
+	.quad	.Ltmp396-.Lfunc_begin0
+	.quad	.Ltmp398-.Lfunc_begin0
+	.quad	.Ltmp413-.Lfunc_begin0
+	.quad	.Ltmp415-.Lfunc_begin0
+	.quad	.Ltmp430-.Lfunc_begin0
+	.quad	.Ltmp432-.Lfunc_begin0
+	.quad	.Ltmp447-.Lfunc_begin0
+	.quad	.Ltmp449-.Lfunc_begin0
+	.quad	.Ltmp464-.Lfunc_begin0
+	.quad	.Ltmp466-.Lfunc_begin0
+	.quad	.Ltmp481-.Lfunc_begin0
+	.quad	.Ltmp483-.Lfunc_begin0
+	.quad	.Ltmp498-.Lfunc_begin0
+	.quad	.Ltmp500-.Lfunc_begin0
+	.quad	.Ltmp515-.Lfunc_begin0
+	.quad	.Ltmp517-.Lfunc_begin0
+	.quad	.Ltmp532-.Lfunc_begin0
+	.quad	.Ltmp534-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges36:
+	.quad	.Ltmp277-.Lfunc_begin0
+	.quad	.Ltmp278-.Lfunc_begin0
+	.quad	.Ltmp294-.Lfunc_begin0
+	.quad	.Ltmp295-.Lfunc_begin0
+	.quad	.Ltmp311-.Lfunc_begin0
+	.quad	.Ltmp312-.Lfunc_begin0
+	.quad	.Ltmp328-.Lfunc_begin0
+	.quad	.Ltmp329-.Lfunc_begin0
+	.quad	.Ltmp345-.Lfunc_begin0
+	.quad	.Ltmp346-.Lfunc_begin0
+	.quad	.Ltmp362-.Lfunc_begin0
+	.quad	.Ltmp363-.Lfunc_begin0
+	.quad	.Ltmp379-.Lfunc_begin0
+	.quad	.Ltmp380-.Lfunc_begin0
+	.quad	.Ltmp396-.Lfunc_begin0
+	.quad	.Ltmp397-.Lfunc_begin0
+	.quad	.Ltmp413-.Lfunc_begin0
+	.quad	.Ltmp414-.Lfunc_begin0
+	.quad	.Ltmp430-.Lfunc_begin0
+	.quad	.Ltmp431-.Lfunc_begin0
+	.quad	.Ltmp447-.Lfunc_begin0
+	.quad	.Ltmp448-.Lfunc_begin0
+	.quad	.Ltmp464-.Lfunc_begin0
+	.quad	.Ltmp465-.Lfunc_begin0
+	.quad	.Ltmp481-.Lfunc_begin0
+	.quad	.Ltmp482-.Lfunc_begin0
+	.quad	.Ltmp498-.Lfunc_begin0
+	.quad	.Ltmp499-.Lfunc_begin0
+	.quad	.Ltmp515-.Lfunc_begin0
+	.quad	.Ltmp516-.Lfunc_begin0
+	.quad	.Ltmp532-.Lfunc_begin0
+	.quad	.Ltmp533-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges37:
+	.quad	.Ltmp278-.Lfunc_begin0
+	.quad	.Ltmp279-.Lfunc_begin0
+	.quad	.Ltmp295-.Lfunc_begin0
+	.quad	.Ltmp296-.Lfunc_begin0
+	.quad	.Ltmp312-.Lfunc_begin0
+	.quad	.Ltmp313-.Lfunc_begin0
+	.quad	.Ltmp329-.Lfunc_begin0
+	.quad	.Ltmp330-.Lfunc_begin0
+	.quad	.Ltmp346-.Lfunc_begin0
+	.quad	.Ltmp347-.Lfunc_begin0
+	.quad	.Ltmp363-.Lfunc_begin0
+	.quad	.Ltmp364-.Lfunc_begin0
+	.quad	.Ltmp380-.Lfunc_begin0
+	.quad	.Ltmp381-.Lfunc_begin0
+	.quad	.Ltmp397-.Lfunc_begin0
+	.quad	.Ltmp398-.Lfunc_begin0
+	.quad	.Ltmp414-.Lfunc_begin0
+	.quad	.Ltmp415-.Lfunc_begin0
+	.quad	.Ltmp431-.Lfunc_begin0
+	.quad	.Ltmp432-.Lfunc_begin0
+	.quad	.Ltmp448-.Lfunc_begin0
+	.quad	.Ltmp449-.Lfunc_begin0
+	.quad	.Ltmp465-.Lfunc_begin0
+	.quad	.Ltmp466-.Lfunc_begin0
+	.quad	.Ltmp482-.Lfunc_begin0
+	.quad	.Ltmp483-.Lfunc_begin0
+	.quad	.Ltmp499-.Lfunc_begin0
+	.quad	.Ltmp500-.Lfunc_begin0
+	.quad	.Ltmp516-.Lfunc_begin0
+	.quad	.Ltmp517-.Lfunc_begin0
+	.quad	.Ltmp533-.Lfunc_begin0
+	.quad	.Ltmp534-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges38:
+	.quad	.Ltmp545-.Lfunc_begin0
+	.quad	.Ltmp547-.Lfunc_begin0
+	.quad	.Ltmp550-.Lfunc_begin0
+	.quad	.Ltmp552-.Lfunc_begin0
+	.quad	.Ltmp555-.Lfunc_begin0
+	.quad	.Ltmp557-.Lfunc_begin0
+	.quad	.Ltmp560-.Lfunc_begin0
+	.quad	.Ltmp562-.Lfunc_begin0
+	.quad	.Ltmp565-.Lfunc_begin0
+	.quad	.Ltmp567-.Lfunc_begin0
+	.quad	.Ltmp570-.Lfunc_begin0
+	.quad	.Ltmp572-.Lfunc_begin0
+	.quad	.Ltmp575-.Lfunc_begin0
+	.quad	.Ltmp577-.Lfunc_begin0
+	.quad	.Ltmp580-.Lfunc_begin0
+	.quad	.Ltmp582-.Lfunc_begin0
+	.quad	.Ltmp585-.Lfunc_begin0
+	.quad	.Ltmp587-.Lfunc_begin0
+	.quad	.Ltmp590-.Lfunc_begin0
+	.quad	.Ltmp592-.Lfunc_begin0
+	.quad	.Ltmp595-.Lfunc_begin0
+	.quad	.Ltmp597-.Lfunc_begin0
+	.quad	.Ltmp600-.Lfunc_begin0
+	.quad	.Ltmp602-.Lfunc_begin0
+	.quad	.Ltmp605-.Lfunc_begin0
+	.quad	.Ltmp607-.Lfunc_begin0
+	.quad	.Ltmp610-.Lfunc_begin0
+	.quad	.Ltmp612-.Lfunc_begin0
+	.quad	.Ltmp615-.Lfunc_begin0
+	.quad	.Ltmp617-.Lfunc_begin0
+	.quad	.Ltmp620-.Lfunc_begin0
+	.quad	.Ltmp622-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges39:
+	.quad	.Ltmp545-.Lfunc_begin0
+	.quad	.Ltmp547-.Lfunc_begin0
+	.quad	.Ltmp550-.Lfunc_begin0
+	.quad	.Ltmp552-.Lfunc_begin0
+	.quad	.Ltmp555-.Lfunc_begin0
+	.quad	.Ltmp557-.Lfunc_begin0
+	.quad	.Ltmp560-.Lfunc_begin0
+	.quad	.Ltmp562-.Lfunc_begin0
+	.quad	.Ltmp565-.Lfunc_begin0
+	.quad	.Ltmp567-.Lfunc_begin0
+	.quad	.Ltmp570-.Lfunc_begin0
+	.quad	.Ltmp572-.Lfunc_begin0
+	.quad	.Ltmp575-.Lfunc_begin0
+	.quad	.Ltmp577-.Lfunc_begin0
+	.quad	.Ltmp580-.Lfunc_begin0
+	.quad	.Ltmp582-.Lfunc_begin0
+	.quad	.Ltmp585-.Lfunc_begin0
+	.quad	.Ltmp587-.Lfunc_begin0
+	.quad	.Ltmp590-.Lfunc_begin0
+	.quad	.Ltmp592-.Lfunc_begin0
+	.quad	.Ltmp595-.Lfunc_begin0
+	.quad	.Ltmp597-.Lfunc_begin0
+	.quad	.Ltmp600-.Lfunc_begin0
+	.quad	.Ltmp602-.Lfunc_begin0
+	.quad	.Ltmp605-.Lfunc_begin0
+	.quad	.Ltmp607-.Lfunc_begin0
+	.quad	.Ltmp610-.Lfunc_begin0
+	.quad	.Ltmp612-.Lfunc_begin0
+	.quad	.Ltmp615-.Lfunc_begin0
+	.quad	.Ltmp617-.Lfunc_begin0
+	.quad	.Ltmp620-.Lfunc_begin0
+	.quad	.Ltmp622-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges40:
+	.quad	.Ltmp545-.Lfunc_begin0
+	.quad	.Ltmp546-.Lfunc_begin0
+	.quad	.Ltmp550-.Lfunc_begin0
+	.quad	.Ltmp551-.Lfunc_begin0
+	.quad	.Ltmp555-.Lfunc_begin0
+	.quad	.Ltmp556-.Lfunc_begin0
+	.quad	.Ltmp560-.Lfunc_begin0
+	.quad	.Ltmp561-.Lfunc_begin0
+	.quad	.Ltmp565-.Lfunc_begin0
+	.quad	.Ltmp566-.Lfunc_begin0
+	.quad	.Ltmp570-.Lfunc_begin0
+	.quad	.Ltmp571-.Lfunc_begin0
+	.quad	.Ltmp575-.Lfunc_begin0
+	.quad	.Ltmp576-.Lfunc_begin0
+	.quad	.Ltmp580-.Lfunc_begin0
+	.quad	.Ltmp581-.Lfunc_begin0
+	.quad	.Ltmp585-.Lfunc_begin0
+	.quad	.Ltmp586-.Lfunc_begin0
+	.quad	.Ltmp590-.Lfunc_begin0
+	.quad	.Ltmp591-.Lfunc_begin0
+	.quad	.Ltmp595-.Lfunc_begin0
+	.quad	.Ltmp596-.Lfunc_begin0
+	.quad	.Ltmp600-.Lfunc_begin0
+	.quad	.Ltmp601-.Lfunc_begin0
+	.quad	.Ltmp605-.Lfunc_begin0
+	.quad	.Ltmp606-.Lfunc_begin0
+	.quad	.Ltmp610-.Lfunc_begin0
+	.quad	.Ltmp611-.Lfunc_begin0
+	.quad	.Ltmp615-.Lfunc_begin0
+	.quad	.Ltmp616-.Lfunc_begin0
+	.quad	.Ltmp620-.Lfunc_begin0
+	.quad	.Ltmp621-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges41:
+	.quad	.Ltmp546-.Lfunc_begin0
+	.quad	.Ltmp547-.Lfunc_begin0
+	.quad	.Ltmp551-.Lfunc_begin0
+	.quad	.Ltmp552-.Lfunc_begin0
+	.quad	.Ltmp556-.Lfunc_begin0
+	.quad	.Ltmp557-.Lfunc_begin0
+	.quad	.Ltmp561-.Lfunc_begin0
+	.quad	.Ltmp562-.Lfunc_begin0
+	.quad	.Ltmp566-.Lfunc_begin0
+	.quad	.Ltmp567-.Lfunc_begin0
+	.quad	.Ltmp571-.Lfunc_begin0
+	.quad	.Ltmp572-.Lfunc_begin0
+	.quad	.Ltmp576-.Lfunc_begin0
+	.quad	.Ltmp577-.Lfunc_begin0
+	.quad	.Ltmp581-.Lfunc_begin0
+	.quad	.Ltmp582-.Lfunc_begin0
+	.quad	.Ltmp586-.Lfunc_begin0
+	.quad	.Ltmp587-.Lfunc_begin0
+	.quad	.Ltmp591-.Lfunc_begin0
+	.quad	.Ltmp592-.Lfunc_begin0
+	.quad	.Ltmp596-.Lfunc_begin0
+	.quad	.Ltmp597-.Lfunc_begin0
+	.quad	.Ltmp601-.Lfunc_begin0
+	.quad	.Ltmp602-.Lfunc_begin0
+	.quad	.Ltmp606-.Lfunc_begin0
+	.quad	.Ltmp607-.Lfunc_begin0
+	.quad	.Ltmp611-.Lfunc_begin0
+	.quad	.Ltmp612-.Lfunc_begin0
+	.quad	.Ltmp616-.Lfunc_begin0
+	.quad	.Ltmp617-.Lfunc_begin0
+	.quad	.Ltmp621-.Lfunc_begin0
+	.quad	.Ltmp622-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges42:
+	.quad	.Ltmp547-.Lfunc_begin0
+	.quad	.Ltmp549-.Lfunc_begin0
+	.quad	.Ltmp552-.Lfunc_begin0
+	.quad	.Ltmp554-.Lfunc_begin0
+	.quad	.Ltmp557-.Lfunc_begin0
+	.quad	.Ltmp559-.Lfunc_begin0
+	.quad	.Ltmp562-.Lfunc_begin0
+	.quad	.Ltmp564-.Lfunc_begin0
+	.quad	.Ltmp567-.Lfunc_begin0
+	.quad	.Ltmp569-.Lfunc_begin0
+	.quad	.Ltmp572-.Lfunc_begin0
+	.quad	.Ltmp574-.Lfunc_begin0
+	.quad	.Ltmp577-.Lfunc_begin0
+	.quad	.Ltmp579-.Lfunc_begin0
+	.quad	.Ltmp582-.Lfunc_begin0
+	.quad	.Ltmp584-.Lfunc_begin0
+	.quad	.Ltmp587-.Lfunc_begin0
+	.quad	.Ltmp589-.Lfunc_begin0
+	.quad	.Ltmp592-.Lfunc_begin0
+	.quad	.Ltmp594-.Lfunc_begin0
+	.quad	.Ltmp597-.Lfunc_begin0
+	.quad	.Ltmp599-.Lfunc_begin0
+	.quad	.Ltmp602-.Lfunc_begin0
+	.quad	.Ltmp604-.Lfunc_begin0
+	.quad	.Ltmp607-.Lfunc_begin0
+	.quad	.Ltmp609-.Lfunc_begin0
+	.quad	.Ltmp612-.Lfunc_begin0
+	.quad	.Ltmp614-.Lfunc_begin0
+	.quad	.Ltmp617-.Lfunc_begin0
+	.quad	.Ltmp619-.Lfunc_begin0
+	.quad	.Ltmp622-.Lfunc_begin0
+	.quad	.Ltmp624-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges43:
+	.quad	.Ltmp547-.Lfunc_begin0
+	.quad	.Ltmp549-.Lfunc_begin0
+	.quad	.Ltmp552-.Lfunc_begin0
+	.quad	.Ltmp554-.Lfunc_begin0
+	.quad	.Ltmp557-.Lfunc_begin0
+	.quad	.Ltmp559-.Lfunc_begin0
+	.quad	.Ltmp562-.Lfunc_begin0
+	.quad	.Ltmp564-.Lfunc_begin0
+	.quad	.Ltmp567-.Lfunc_begin0
+	.quad	.Ltmp569-.Lfunc_begin0
+	.quad	.Ltmp572-.Lfunc_begin0
+	.quad	.Ltmp574-.Lfunc_begin0
+	.quad	.Ltmp577-.Lfunc_begin0
+	.quad	.Ltmp579-.Lfunc_begin0
+	.quad	.Ltmp582-.Lfunc_begin0
+	.quad	.Ltmp584-.Lfunc_begin0
+	.quad	.Ltmp587-.Lfunc_begin0
+	.quad	.Ltmp589-.Lfunc_begin0
+	.quad	.Ltmp592-.Lfunc_begin0
+	.quad	.Ltmp594-.Lfunc_begin0
+	.quad	.Ltmp597-.Lfunc_begin0
+	.quad	.Ltmp599-.Lfunc_begin0
+	.quad	.Ltmp602-.Lfunc_begin0
+	.quad	.Ltmp604-.Lfunc_begin0
+	.quad	.Ltmp607-.Lfunc_begin0
+	.quad	.Ltmp609-.Lfunc_begin0
+	.quad	.Ltmp612-.Lfunc_begin0
+	.quad	.Ltmp614-.Lfunc_begin0
+	.quad	.Ltmp617-.Lfunc_begin0
+	.quad	.Ltmp619-.Lfunc_begin0
+	.quad	.Ltmp622-.Lfunc_begin0
+	.quad	.Ltmp624-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges44:
+	.quad	.Ltmp547-.Lfunc_begin0
+	.quad	.Ltmp548-.Lfunc_begin0
+	.quad	.Ltmp552-.Lfunc_begin0
+	.quad	.Ltmp553-.Lfunc_begin0
+	.quad	.Ltmp557-.Lfunc_begin0
+	.quad	.Ltmp558-.Lfunc_begin0
+	.quad	.Ltmp562-.Lfunc_begin0
+	.quad	.Ltmp563-.Lfunc_begin0
+	.quad	.Ltmp567-.Lfunc_begin0
+	.quad	.Ltmp568-.Lfunc_begin0
+	.quad	.Ltmp572-.Lfunc_begin0
+	.quad	.Ltmp573-.Lfunc_begin0
+	.quad	.Ltmp577-.Lfunc_begin0
+	.quad	.Ltmp578-.Lfunc_begin0
+	.quad	.Ltmp582-.Lfunc_begin0
+	.quad	.Ltmp583-.Lfunc_begin0
+	.quad	.Ltmp587-.Lfunc_begin0
+	.quad	.Ltmp588-.Lfunc_begin0
+	.quad	.Ltmp592-.Lfunc_begin0
+	.quad	.Ltmp593-.Lfunc_begin0
+	.quad	.Ltmp597-.Lfunc_begin0
+	.quad	.Ltmp598-.Lfunc_begin0
+	.quad	.Ltmp602-.Lfunc_begin0
+	.quad	.Ltmp603-.Lfunc_begin0
+	.quad	.Ltmp607-.Lfunc_begin0
+	.quad	.Ltmp608-.Lfunc_begin0
+	.quad	.Ltmp612-.Lfunc_begin0
+	.quad	.Ltmp613-.Lfunc_begin0
+	.quad	.Ltmp617-.Lfunc_begin0
+	.quad	.Ltmp618-.Lfunc_begin0
+	.quad	.Ltmp622-.Lfunc_begin0
+	.quad	.Ltmp623-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges45:
+	.quad	.Ltmp548-.Lfunc_begin0
+	.quad	.Ltmp549-.Lfunc_begin0
+	.quad	.Ltmp553-.Lfunc_begin0
+	.quad	.Ltmp554-.Lfunc_begin0
+	.quad	.Ltmp558-.Lfunc_begin0
+	.quad	.Ltmp559-.Lfunc_begin0
+	.quad	.Ltmp563-.Lfunc_begin0
+	.quad	.Ltmp564-.Lfunc_begin0
+	.quad	.Ltmp568-.Lfunc_begin0
+	.quad	.Ltmp569-.Lfunc_begin0
+	.quad	.Ltmp573-.Lfunc_begin0
+	.quad	.Ltmp574-.Lfunc_begin0
+	.quad	.Ltmp578-.Lfunc_begin0
+	.quad	.Ltmp579-.Lfunc_begin0
+	.quad	.Ltmp583-.Lfunc_begin0
+	.quad	.Ltmp584-.Lfunc_begin0
+	.quad	.Ltmp588-.Lfunc_begin0
+	.quad	.Ltmp589-.Lfunc_begin0
+	.quad	.Ltmp593-.Lfunc_begin0
+	.quad	.Ltmp594-.Lfunc_begin0
+	.quad	.Ltmp598-.Lfunc_begin0
+	.quad	.Ltmp599-.Lfunc_begin0
+	.quad	.Ltmp603-.Lfunc_begin0
+	.quad	.Ltmp604-.Lfunc_begin0
+	.quad	.Ltmp608-.Lfunc_begin0
+	.quad	.Ltmp609-.Lfunc_begin0
+	.quad	.Ltmp613-.Lfunc_begin0
+	.quad	.Ltmp614-.Lfunc_begin0
+	.quad	.Ltmp618-.Lfunc_begin0
+	.quad	.Ltmp619-.Lfunc_begin0
+	.quad	.Ltmp623-.Lfunc_begin0
+	.quad	.Ltmp624-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges46:
+	.quad	.Ltmp625-.Lfunc_begin0
+	.quad	.Ltmp627-.Lfunc_begin0
+	.quad	.Ltmp630-.Lfunc_begin0
+	.quad	.Ltmp632-.Lfunc_begin0
+	.quad	.Ltmp635-.Lfunc_begin0
+	.quad	.Ltmp637-.Lfunc_begin0
+	.quad	.Ltmp640-.Lfunc_begin0
+	.quad	.Ltmp642-.Lfunc_begin0
+	.quad	.Ltmp645-.Lfunc_begin0
+	.quad	.Ltmp647-.Lfunc_begin0
+	.quad	.Ltmp650-.Lfunc_begin0
+	.quad	.Ltmp652-.Lfunc_begin0
+	.quad	.Ltmp655-.Lfunc_begin0
+	.quad	.Ltmp657-.Lfunc_begin0
+	.quad	.Ltmp660-.Lfunc_begin0
+	.quad	.Ltmp662-.Lfunc_begin0
+	.quad	.Ltmp665-.Lfunc_begin0
+	.quad	.Ltmp667-.Lfunc_begin0
+	.quad	.Ltmp670-.Lfunc_begin0
+	.quad	.Ltmp672-.Lfunc_begin0
+	.quad	.Ltmp675-.Lfunc_begin0
+	.quad	.Ltmp677-.Lfunc_begin0
+	.quad	.Ltmp680-.Lfunc_begin0
+	.quad	.Ltmp682-.Lfunc_begin0
+	.quad	.Ltmp685-.Lfunc_begin0
+	.quad	.Ltmp687-.Lfunc_begin0
+	.quad	.Ltmp690-.Lfunc_begin0
+	.quad	.Ltmp692-.Lfunc_begin0
+	.quad	.Ltmp695-.Lfunc_begin0
+	.quad	.Ltmp697-.Lfunc_begin0
+	.quad	.Ltmp700-.Lfunc_begin0
+	.quad	.Ltmp702-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges47:
+	.quad	.Ltmp625-.Lfunc_begin0
+	.quad	.Ltmp627-.Lfunc_begin0
+	.quad	.Ltmp630-.Lfunc_begin0
+	.quad	.Ltmp632-.Lfunc_begin0
+	.quad	.Ltmp635-.Lfunc_begin0
+	.quad	.Ltmp637-.Lfunc_begin0
+	.quad	.Ltmp640-.Lfunc_begin0
+	.quad	.Ltmp642-.Lfunc_begin0
+	.quad	.Ltmp645-.Lfunc_begin0
+	.quad	.Ltmp647-.Lfunc_begin0
+	.quad	.Ltmp650-.Lfunc_begin0
+	.quad	.Ltmp652-.Lfunc_begin0
+	.quad	.Ltmp655-.Lfunc_begin0
+	.quad	.Ltmp657-.Lfunc_begin0
+	.quad	.Ltmp660-.Lfunc_begin0
+	.quad	.Ltmp662-.Lfunc_begin0
+	.quad	.Ltmp665-.Lfunc_begin0
+	.quad	.Ltmp667-.Lfunc_begin0
+	.quad	.Ltmp670-.Lfunc_begin0
+	.quad	.Ltmp672-.Lfunc_begin0
+	.quad	.Ltmp675-.Lfunc_begin0
+	.quad	.Ltmp677-.Lfunc_begin0
+	.quad	.Ltmp680-.Lfunc_begin0
+	.quad	.Ltmp682-.Lfunc_begin0
+	.quad	.Ltmp685-.Lfunc_begin0
+	.quad	.Ltmp687-.Lfunc_begin0
+	.quad	.Ltmp690-.Lfunc_begin0
+	.quad	.Ltmp692-.Lfunc_begin0
+	.quad	.Ltmp695-.Lfunc_begin0
+	.quad	.Ltmp697-.Lfunc_begin0
+	.quad	.Ltmp700-.Lfunc_begin0
+	.quad	.Ltmp702-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges48:
+	.quad	.Ltmp625-.Lfunc_begin0
+	.quad	.Ltmp626-.Lfunc_begin0
+	.quad	.Ltmp630-.Lfunc_begin0
+	.quad	.Ltmp631-.Lfunc_begin0
+	.quad	.Ltmp635-.Lfunc_begin0
+	.quad	.Ltmp636-.Lfunc_begin0
+	.quad	.Ltmp640-.Lfunc_begin0
+	.quad	.Ltmp641-.Lfunc_begin0
+	.quad	.Ltmp645-.Lfunc_begin0
+	.quad	.Ltmp646-.Lfunc_begin0
+	.quad	.Ltmp650-.Lfunc_begin0
+	.quad	.Ltmp651-.Lfunc_begin0
+	.quad	.Ltmp655-.Lfunc_begin0
+	.quad	.Ltmp656-.Lfunc_begin0
+	.quad	.Ltmp660-.Lfunc_begin0
+	.quad	.Ltmp661-.Lfunc_begin0
+	.quad	.Ltmp665-.Lfunc_begin0
+	.quad	.Ltmp666-.Lfunc_begin0
+	.quad	.Ltmp670-.Lfunc_begin0
+	.quad	.Ltmp671-.Lfunc_begin0
+	.quad	.Ltmp675-.Lfunc_begin0
+	.quad	.Ltmp676-.Lfunc_begin0
+	.quad	.Ltmp680-.Lfunc_begin0
+	.quad	.Ltmp681-.Lfunc_begin0
+	.quad	.Ltmp685-.Lfunc_begin0
+	.quad	.Ltmp686-.Lfunc_begin0
+	.quad	.Ltmp690-.Lfunc_begin0
+	.quad	.Ltmp691-.Lfunc_begin0
+	.quad	.Ltmp695-.Lfunc_begin0
+	.quad	.Ltmp696-.Lfunc_begin0
+	.quad	.Ltmp700-.Lfunc_begin0
+	.quad	.Ltmp701-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges49:
+	.quad	.Ltmp626-.Lfunc_begin0
+	.quad	.Ltmp627-.Lfunc_begin0
+	.quad	.Ltmp631-.Lfunc_begin0
+	.quad	.Ltmp632-.Lfunc_begin0
+	.quad	.Ltmp636-.Lfunc_begin0
+	.quad	.Ltmp637-.Lfunc_begin0
+	.quad	.Ltmp641-.Lfunc_begin0
+	.quad	.Ltmp642-.Lfunc_begin0
+	.quad	.Ltmp646-.Lfunc_begin0
+	.quad	.Ltmp647-.Lfunc_begin0
+	.quad	.Ltmp651-.Lfunc_begin0
+	.quad	.Ltmp652-.Lfunc_begin0
+	.quad	.Ltmp656-.Lfunc_begin0
+	.quad	.Ltmp657-.Lfunc_begin0
+	.quad	.Ltmp661-.Lfunc_begin0
+	.quad	.Ltmp662-.Lfunc_begin0
+	.quad	.Ltmp666-.Lfunc_begin0
+	.quad	.Ltmp667-.Lfunc_begin0
+	.quad	.Ltmp671-.Lfunc_begin0
+	.quad	.Ltmp672-.Lfunc_begin0
+	.quad	.Ltmp676-.Lfunc_begin0
+	.quad	.Ltmp677-.Lfunc_begin0
+	.quad	.Ltmp681-.Lfunc_begin0
+	.quad	.Ltmp682-.Lfunc_begin0
+	.quad	.Ltmp686-.Lfunc_begin0
+	.quad	.Ltmp687-.Lfunc_begin0
+	.quad	.Ltmp691-.Lfunc_begin0
+	.quad	.Ltmp692-.Lfunc_begin0
+	.quad	.Ltmp696-.Lfunc_begin0
+	.quad	.Ltmp697-.Lfunc_begin0
+	.quad	.Ltmp701-.Lfunc_begin0
+	.quad	.Ltmp702-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges50:
+	.quad	.Ltmp627-.Lfunc_begin0
+	.quad	.Ltmp629-.Lfunc_begin0
+	.quad	.Ltmp632-.Lfunc_begin0
+	.quad	.Ltmp634-.Lfunc_begin0
+	.quad	.Ltmp637-.Lfunc_begin0
+	.quad	.Ltmp639-.Lfunc_begin0
+	.quad	.Ltmp642-.Lfunc_begin0
+	.quad	.Ltmp644-.Lfunc_begin0
+	.quad	.Ltmp647-.Lfunc_begin0
+	.quad	.Ltmp649-.Lfunc_begin0
+	.quad	.Ltmp652-.Lfunc_begin0
+	.quad	.Ltmp654-.Lfunc_begin0
+	.quad	.Ltmp657-.Lfunc_begin0
+	.quad	.Ltmp659-.Lfunc_begin0
+	.quad	.Ltmp662-.Lfunc_begin0
+	.quad	.Ltmp664-.Lfunc_begin0
+	.quad	.Ltmp667-.Lfunc_begin0
+	.quad	.Ltmp669-.Lfunc_begin0
+	.quad	.Ltmp672-.Lfunc_begin0
+	.quad	.Ltmp674-.Lfunc_begin0
+	.quad	.Ltmp677-.Lfunc_begin0
+	.quad	.Ltmp679-.Lfunc_begin0
+	.quad	.Ltmp682-.Lfunc_begin0
+	.quad	.Ltmp684-.Lfunc_begin0
+	.quad	.Ltmp687-.Lfunc_begin0
+	.quad	.Ltmp689-.Lfunc_begin0
+	.quad	.Ltmp692-.Lfunc_begin0
+	.quad	.Ltmp694-.Lfunc_begin0
+	.quad	.Ltmp697-.Lfunc_begin0
+	.quad	.Ltmp699-.Lfunc_begin0
+	.quad	.Ltmp702-.Lfunc_begin0
+	.quad	.Ltmp704-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges51:
+	.quad	.Ltmp627-.Lfunc_begin0
+	.quad	.Ltmp629-.Lfunc_begin0
+	.quad	.Ltmp632-.Lfunc_begin0
+	.quad	.Ltmp634-.Lfunc_begin0
+	.quad	.Ltmp637-.Lfunc_begin0
+	.quad	.Ltmp639-.Lfunc_begin0
+	.quad	.Ltmp642-.Lfunc_begin0
+	.quad	.Ltmp644-.Lfunc_begin0
+	.quad	.Ltmp647-.Lfunc_begin0
+	.quad	.Ltmp649-.Lfunc_begin0
+	.quad	.Ltmp652-.Lfunc_begin0
+	.quad	.Ltmp654-.Lfunc_begin0
+	.quad	.Ltmp657-.Lfunc_begin0
+	.quad	.Ltmp659-.Lfunc_begin0
+	.quad	.Ltmp662-.Lfunc_begin0
+	.quad	.Ltmp664-.Lfunc_begin0
+	.quad	.Ltmp667-.Lfunc_begin0
+	.quad	.Ltmp669-.Lfunc_begin0
+	.quad	.Ltmp672-.Lfunc_begin0
+	.quad	.Ltmp674-.Lfunc_begin0
+	.quad	.Ltmp677-.Lfunc_begin0
+	.quad	.Ltmp679-.Lfunc_begin0
+	.quad	.Ltmp682-.Lfunc_begin0
+	.quad	.Ltmp684-.Lfunc_begin0
+	.quad	.Ltmp687-.Lfunc_begin0
+	.quad	.Ltmp689-.Lfunc_begin0
+	.quad	.Ltmp692-.Lfunc_begin0
+	.quad	.Ltmp694-.Lfunc_begin0
+	.quad	.Ltmp697-.Lfunc_begin0
+	.quad	.Ltmp699-.Lfunc_begin0
+	.quad	.Ltmp702-.Lfunc_begin0
+	.quad	.Ltmp704-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges52:
+	.quad	.Ltmp627-.Lfunc_begin0
+	.quad	.Ltmp628-.Lfunc_begin0
+	.quad	.Ltmp632-.Lfunc_begin0
+	.quad	.Ltmp633-.Lfunc_begin0
+	.quad	.Ltmp637-.Lfunc_begin0
+	.quad	.Ltmp638-.Lfunc_begin0
+	.quad	.Ltmp642-.Lfunc_begin0
+	.quad	.Ltmp643-.Lfunc_begin0
+	.quad	.Ltmp647-.Lfunc_begin0
+	.quad	.Ltmp648-.Lfunc_begin0
+	.quad	.Ltmp652-.Lfunc_begin0
+	.quad	.Ltmp653-.Lfunc_begin0
+	.quad	.Ltmp657-.Lfunc_begin0
+	.quad	.Ltmp658-.Lfunc_begin0
+	.quad	.Ltmp662-.Lfunc_begin0
+	.quad	.Ltmp663-.Lfunc_begin0
+	.quad	.Ltmp667-.Lfunc_begin0
+	.quad	.Ltmp668-.Lfunc_begin0
+	.quad	.Ltmp672-.Lfunc_begin0
+	.quad	.Ltmp673-.Lfunc_begin0
+	.quad	.Ltmp677-.Lfunc_begin0
+	.quad	.Ltmp678-.Lfunc_begin0
+	.quad	.Ltmp682-.Lfunc_begin0
+	.quad	.Ltmp683-.Lfunc_begin0
+	.quad	.Ltmp687-.Lfunc_begin0
+	.quad	.Ltmp688-.Lfunc_begin0
+	.quad	.Ltmp692-.Lfunc_begin0
+	.quad	.Ltmp693-.Lfunc_begin0
+	.quad	.Ltmp697-.Lfunc_begin0
+	.quad	.Ltmp698-.Lfunc_begin0
+	.quad	.Ltmp702-.Lfunc_begin0
+	.quad	.Ltmp703-.Lfunc_begin0
+	.quad	0
+	.quad	0
+.Ldebug_ranges53:
+	.quad	.Ltmp628-.Lfunc_begin0
+	.quad	.Ltmp629-.Lfunc_begin0
+	.quad	.Ltmp633-.Lfunc_begin0
+	.quad	.Ltmp634-.Lfunc_begin0
+	.quad	.Ltmp638-.Lfunc_begin0
+	.quad	.Ltmp639-.Lfunc_begin0
+	.quad	.Ltmp643-.Lfunc_begin0
+	.quad	.Ltmp644-.Lfunc_begin0
+	.quad	.Ltmp648-.Lfunc_begin0
+	.quad	.Ltmp649-.Lfunc_begin0
+	.quad	.Ltmp653-.Lfunc_begin0
+	.quad	.Ltmp654-.Lfunc_begin0
+	.quad	.Ltmp658-.Lfunc_begin0
+	.quad	.Ltmp659-.Lfunc_begin0
+	.quad	.Ltmp663-.Lfunc_begin0
+	.quad	.Ltmp664-.Lfunc_begin0
+	.quad	.Ltmp668-.Lfunc_begin0
+	.quad	.Ltmp669-.Lfunc_begin0
+	.quad	.Ltmp673-.Lfunc_begin0
+	.quad	.Ltmp674-.Lfunc_begin0
+	.quad	.Ltmp678-.Lfunc_begin0
+	.quad	.Ltmp679-.Lfunc_begin0
+	.quad	.Ltmp683-.Lfunc_begin0
+	.quad	.Ltmp684-.Lfunc_begin0
+	.quad	.Ltmp688-.Lfunc_begin0
+	.quad	.Ltmp689-.Lfunc_begin0
+	.quad	.Ltmp693-.Lfunc_begin0
+	.quad	.Ltmp694-.Lfunc_begin0
+	.quad	.Ltmp698-.Lfunc_begin0
+	.quad	.Ltmp699-.Lfunc_begin0
+	.quad	.Ltmp703-.Lfunc_begin0
+	.quad	.Ltmp704-.Lfunc_begin0
+	.quad	0
+	.quad	0
+	.section	.debug_str,"MS",@progbits,1
+.Linfo_string0:
+	.asciz	"mxcc version 1.0.0 (d9102a1572)" ; string offset=0
+.Linfo_string1:
+	.asciz	"/root/moe_runs/v204_case1_codegen_20260830/v204_restore_case1_generated_device.cpp" ; string offset=32
+.Linfo_string2:
+	.asciz	"/root/tilelang-metax"          ; string offset=115
+.Linfo_string3:
+	.asciz	"__barrier"                     ; string offset=136
+.Linfo_string4:
+	.asciz	"__syncthreads"                 ; string offset=146
+.Linfo_string5:
+	.asciz	"__float2half_rn"               ; string offset=160
+.Linfo_string6:
+	.asciz	"__floats2half2_rn"             ; string offset=176
+.Linfo_string7:
+	.asciz	"__float22half2_rn"             ; string offset=194
+.Linfo_string8:
+	.asciz	"min"                           ; string offset=212
+.Linfo_string9:
+	.asciz	"max"                           ; string offset=216
+.Linfo_string10:
+	.asciz	"kernel_kernel_1"               ; string offset=220
+.Linfo_string11:
+	.asciz	"kernel_kernel_2"               ; string offset=236
+.Linfo_string12:
+	.asciz	"kernel_kernel_3"               ; string offset=252
+.Linfo_string13:
+	.asciz	"kernel_kernel_4"               ; string offset=268
+	.section	".note.GNU-stack"
+	.metaxgpu_metadata
+---
+macahca.kernels:
+  - .args:
+      - .arg_name:       expert_rank.coerce
+        .arg_offset_bytes: 0
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_sizes.coerce
+        .arg_offset_bytes: 8
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 16
+        .arg_param_pass: hidden_global_offset_x
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 24
+        .arg_param_pass: hidden_global_offset_y
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 32
+        .arg_param_pass: hidden_global_offset_z
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 40
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 48
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 56
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 64
+        .arg_param_pass: hidden_multigrid_sync_arg
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 72
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 80
+        .arg_param_pass: hidden_gridsync
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 88
+        .arg_param_pass: hidden_device_runtime_info_addr
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 96
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 104
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 112
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 120
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 128
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+    .dcompcapab:     8
+    .kd_symbol:      kernel_kernel.kd
+    .kernarg_align_bytes: 8
+    .kernarg_size_bytes: 96
+    .max_block_size: 64
+    .mtreg_count:    4
+    .name:           kernel_kernel
+    .private_memory_size: 0
+    .share_memory_size: 0
+    .streg_count:    18
+  - .args:
+      - .access:         read_only
+        .arg_name:       expert_rank.coerce
+        .arg_offset_bytes: 0
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_padded_offsets.coerce
+        .arg_offset_bytes: 8
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       input_original.coerce
+        .arg_offset_bytes: 16
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_name:       short_input.coerce
+        .arg_offset_bytes: 24
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 32
+        .arg_param_pass: hidden_global_offset_x
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 40
+        .arg_param_pass: hidden_global_offset_y
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 48
+        .arg_param_pass: hidden_global_offset_z
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 56
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 64
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 72
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 80
+        .arg_param_pass: hidden_multigrid_sync_arg
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 88
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 96
+        .arg_param_pass: hidden_gridsync
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 104
+        .arg_param_pass: hidden_device_runtime_info_addr
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 112
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 120
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 128
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 136
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 144
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+    .dcompcapab:     8
+    .kd_symbol:      kernel_kernel_1.kd
+    .kernarg_align_bytes: 8
+    .kernarg_size_bytes: 112
+    .max_block_size: 256
+    .mtreg_count:    18
+    .name:           kernel_kernel_1
+    .private_memory_size: 0
+    .share_memory_size: 0
+    .streg_count:    20
+  - .args:
+      - .access:         read_only
+        .arg_name:       expert_rank.coerce
+        .arg_offset_bytes: 0
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_padded_offsets.coerce
+        .arg_offset_bytes: 8
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_sizes.coerce
+        .arg_offset_bytes: 16
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_name:       input.coerce
+        .arg_offset_bytes: 24
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       input_original.coerce
+        .arg_offset_bytes: 32
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 40
+        .arg_param_pass: hidden_global_offset_x
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 48
+        .arg_param_pass: hidden_global_offset_y
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 56
+        .arg_param_pass: hidden_global_offset_z
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 64
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 72
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 80
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 88
+        .arg_param_pass: hidden_multigrid_sync_arg
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 96
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 104
+        .arg_param_pass: hidden_gridsync
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 112
+        .arg_param_pass: hidden_device_runtime_info_addr
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 120
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 128
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 136
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 144
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 152
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+    .dcompcapab:     8
+    .kd_symbol:      kernel_kernel_2.kd
+    .kernarg_align_bytes: 8
+    .kernarg_size_bytes: 120
+    .max_block_size: 512
+    .mtreg_count:    26
+    .name:           kernel_kernel_2
+    .private_memory_size: 0
+    .share_memory_size: 0
+    .streg_count:    36
+  - .args:
+      - .access:         read_only
+        .arg_name:       expert_rank.coerce
+        .arg_offset_bytes: 0
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       gate.coerce
+        .arg_offset_bytes: 8
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_padded_offsets.coerce
+        .arg_offset_bytes: 16
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_sizes.coerce
+        .arg_offset_bytes: 24
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       input.coerce
+        .arg_offset_bytes: 32
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       short_input.coerce
+        .arg_offset_bytes: 40
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       up.coerce
+        .arg_offset_bytes: 48
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_name:       up_logits.coerce
+        .arg_offset_bytes: 56
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 64
+        .arg_param_pass: hidden_global_offset_x
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 72
+        .arg_param_pass: hidden_global_offset_y
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 80
+        .arg_param_pass: hidden_global_offset_z
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 88
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 96
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 104
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 112
+        .arg_param_pass: hidden_multigrid_sync_arg
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 120
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 128
+        .arg_param_pass: hidden_gridsync
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 136
+        .arg_param_pass: hidden_device_runtime_info_addr
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 144
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 152
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 160
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 168
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 176
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+    .dcompcapab:     8
+    .kd_symbol:      kernel_kernel_3.kd
+    .kernarg_align_bytes: 8
+    .kernarg_size_bytes: 144
+    .max_block_size: 256
+    .mtreg_count:    226
+    .name:           kernel_kernel_3
+    .private_memory_size: 0
+    .share_memory_size: 0
+    .streg_count:    46
+  - .args:
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       down.coerce
+        .arg_offset_bytes: 0
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_idx_for_bx.coerce
+        .arg_offset_bytes: 8
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_offsets.coerce
+        .arg_offset_bytes: 16
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_padded_offsets.coerce
+        .arg_offset_bytes: 24
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       group_sizes.coerce
+        .arg_offset_bytes: 32
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_name:       output.coerce
+        .arg_offset_bytes: 40
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_name:       routed_weights.coerce
+        .arg_offset_bytes: 48
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .access:         read_only
+        .arg_attribute:  is_constant
+        .arg_name:       up_logits.coerce
+        .arg_offset_bytes: 56
+        .arg_param_pass: global_buffer
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 64
+        .arg_param_pass: hidden_global_offset_x
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 72
+        .arg_param_pass: hidden_global_offset_y
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 80
+        .arg_param_pass: hidden_global_offset_z
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 88
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 96
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 104
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 112
+        .arg_param_pass: hidden_multigrid_sync_arg
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 120
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 128
+        .arg_param_pass: hidden_gridsync
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 136
+        .arg_param_pass: hidden_device_runtime_info_addr
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 144
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 152
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 160
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 168
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+      - .arg_offset_bytes: 176
+        .arg_param_pass: hidden_none
+        .arg_size_bytes: 8
+    .dcompcapab:     8
+    .kd_symbol:      kernel_kernel_4.kd
+    .kernarg_align_bytes: 8
+    .kernarg_size_bytes: 144
+    .max_block_size: 256
+    .mtreg_count:    202
+    .name:           kernel_kernel_4
+    .private_memory_size: 0
+    .share_memory_size: 0
+    .streg_count:    52
+macahca.version:
+  - 1
+  - 0
+...
+
+	.end_metaxgpu_metadata
+	.section	.debug_line
+.Lline_table_start0:
