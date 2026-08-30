@@ -1,0 +1,20 @@
+--- /tmp/v190_case2_unified_prepack64_sc-16g_candidate_submission.py	2026-08-30 13:58:17.439370527 +0800
++++ /tmp/v191_case23_unified_prepack64_sc-16g_probe.py	2026-08-30 14:15:53.115366802 +0800
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v190
+-# PARENT: v166 external-OJ SOTA / SHA256 02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a
+-# PRIMARY_CHANGE: use two M64 phases for short experts and three M64 phases for long experts in the unified Case2 prepack
++# GENERATED EXPERIMENT: v191
++# PARENT: v190 local candidate / SHA256 65bc8a14f1aef0fc7ed53be25eb48a4ff10d29a5344a917fd4b71b8d145dbc11
++# PRIMARY_CHANGE: extend the two/three-M64 unified physical-expert prepack from Case2 to Case3 while preserving Case1
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -274,6 +274,7 @@
+                 and total_valid == 9088
+                 and num_blocks_m == 96
+             )
++            use_physical_expert_prepack = use_case3_hybrid_m192n64
+         if use_case3_hybrid_m192n64:
+             step1_block_token = 192
+             step1_num_blocks_m = num_experts // 2
