@@ -1,0 +1,80 @@
+--- /tmp/v191_case23_unified_prepack64_sc-16g_probe.py	2026-08-30 14:15:53.115366802 +0800
++++ /tmp/v202_case23_linear_rank_builder_sc-16g_probe.py	2026-08-30 15:40:39.871371544 +0800
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v191
+-# PARENT: v190 local candidate / SHA256 65bc8a14f1aef0fc7ed53be25eb48a4ff10d29a5344a917fd4b71b8d145dbc11
+-# PRIMARY_CHANGE: extend the two/three-M64 unified physical-expert prepack from Case2 to Case3 while preserving Case1
++# GENERATED EXPERIMENT: v202
++# PARENT: v191 local candidate / SHA256 f4cf60816c8b56a683e1325d477645563ed1add4b5f83668a0c8785275ab982a
++# PRIMARY_CHANGE: replace per-expert rank prefix scans with one linear rank builder inside the unified Case2/3 prepack
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -3425,30 +3425,19 @@
+                             if (
+                                 use_physical_expert_prepack
+                                 and copy_col == 0
++                                and copy_row == 0
+                                 and copy_thread == 0
+                             ):
+-                                prepack_rank = T.alloc_local((1,), dtype=T.int32)
+-                                prepack_rank[0] = 0
+-                                if copy_group_size <= block_token:
+-                                    for prepack_expert in T.serial(num_experts):
+-                                        if (
+-                                            prepack_expert < copy_expert
+-                                            and group_sizes[prepack_expert]
+-                                            <= block_token
+-                                        ):
+-                                            prepack_rank[0] = prepack_rank[0] + 1
+-                                    expert_rank[prepack_rank[0]] = copy_expert
+-                                else:
+-                                    for prepack_expert in T.serial(num_experts):
+-                                        if (
+-                                            prepack_expert < copy_expert
+-                                            and group_sizes[prepack_expert]
+-                                            > block_token
+-                                        ):
+-                                            prepack_rank[0] = prepack_rank[0] + 1
+-                                    expert_rank[
+-                                        num_experts // 2 + prepack_rank[0]
+-                                    ] = copy_expert
++                                prepack_ranks = T.alloc_local((2,), dtype=T.int32)
++                                prepack_ranks[0] = 0
++                                prepack_ranks[1] = num_experts // 2
++                                for prepack_expert in T.serial(num_experts):
++                                    if group_sizes[prepack_expert] <= block_token:
++                                        expert_rank[prepack_ranks[0]] = prepack_expert
++                                        prepack_ranks[0] = prepack_ranks[0] + 1
++                                    else:
++                                        expert_rank[prepack_ranks[1]] = prepack_expert
++                                        prepack_ranks[1] = prepack_ranks[1] + 1
+                             copy_input_row = (
+                                 copy_expert
+                                 if use_physical_expert_prepack
+@@ -4263,14 +4252,14 @@
+                                         row_offset=block_dhidden_step2,
+                                     )
+                                     step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
+-
++
+                         tx = T.get_thread_binding()
+                         for row_slot in T.serial(2):
+                             routed_row = (tx // 64) * 32 + row_slot * 16 + tx % 16
+                             routed_weight_local[row_slot] = 0.0
+                             if routed_row < actual_rows:
+                                 routed_weight_local[row_slot] = routed_weights[raw_start + token_offset + routed_row]
+-
++
+                         for i, j in T.Parallel(block_token, block_dhidden_step2):
+                             if i < actual_rows:
+                                 output[block_start + i, by * step2_output_tile + j] = (
+@@ -4285,7 +4274,7 @@
+                                 )
+                             else:
+                                 output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = 0.0
+-
++
+                     # CASE2_MIXEDSLOT_GENERIC_END
+                 if use_step2_dynamic_m192n128:
+                     with T.Kernel(
