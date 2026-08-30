@@ -39,6 +39,26 @@ Final v203 Case3 mcTracer means over four launches:
 
 The v202 producer mean was `0.228800 ms`, so the producer improves by about `4.14%`. Generated Case3 resources are producer `74 MT / 48 ST / 6 waves`, Step1 `226 / 46 / 2`, and Step2 `220 / 56 / 2`; codegen contains 13 MMA sites, 16 sync sites, and zero async-copy sites.
 
+## Fresh re-profile after producer follow-up closure
+
+After three rejected v203 producer/rank follow-ups, the incumbent was re-profiled on 2026-08-30 before changing direction. `mcProfiler` was functional when launched from its installation root, `/opt/mcProfiler-ubuntu18.04`; the earlier `UNAVAILABLE.md` records the original collection attempt and is retained rather than overwritten.
+
+Fresh Case3 mcTracer means over four launches were producer `0.209664 ms`, Step1 `4.075712 ms`, and Step2 `2.276480 ms`. This independently reproduces the original stage split: the producer is only about 3.2% of the device kernel sum, while Step1 and Step2 account for about 62.1% and 34.7%.
+
+| Metric | Step1 | Step2 |
+|:--|--:|--:|
+| Workgroups / waves | `1,536 / 6,144` | `2,688 / 10,752` |
+| Average wave life | `145,514.28` | `48,391.90` |
+| AP MMA duty | `63.43%` | `55.90%` |
+| AP MTE duty | `5.90%` | `9.04%` |
+| AP STE duty | `2.57%` | `5.57%` |
+| WSM stall cycles | `29,981,288` | `14,791,817` |
+| VLS pipeline stall cycles | `167,348,881` | `57,328,319` |
+
+Step1 memory replay measured `4,184,887,872 B` global reads, `37,224,768 B` global writes, `269.72`-cycle DNOC read latency, `87.45%` VL1 hit, `42.30%` L2 hit and `32.82%` L2C duty. Per the documented C500 counter semantics, `vls_pipeline_stall` is global-request FIFO backpressure, not a shared-memory bank-conflict counter. Combined with the generated 128-bit lane loads and historical closure data, this rejects further ordinary request-window, dual-B, shared-swizzle and synchronous prefetch variants.
+
+Step2 has lower MMA duty, but exact-v166/v203 Step2 is unchanged and its measured bytes are already within about 0.5% of compulsory Down plus `up_logits` traffic. Historical four-read windows were sub-floor and register-prefetch, M192xN256 shared-A, output pre-zero and synchronous issue-order variants regressed. No new source is created from those noise-level mechanisms.
+
 ## 决策 / Decision
 
 Stage v203 under `restart-experiments` only. Do not modify v166, `restart-submission`, or SOTA metadata until external OJ reports all three official cases. Promotion still requires no OJ case regression and at least one strict score improvement.
