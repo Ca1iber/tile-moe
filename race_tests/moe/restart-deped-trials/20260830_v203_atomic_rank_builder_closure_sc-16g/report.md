@@ -6,7 +6,9 @@ Rejected.  Replacing the designated producer CTA's per-expert stable prefix
 scan with two CTA-local atomic counters preserves correctness but does not
 improve the endpoint.  The refined static-index implementation measures
 `-0.0321%` versus exact v203 on official Case2, which is noise and far below
-the mandatory `1.2%` promotion floor.
+the mandatory `1.2%` promotion floor.  A subsequent loop-free stable mapping
+derived directly from padded offsets measures `+0.0299%`, independently
+confirming that rank construction has no remaining endpoint leverage.
 
 ## Identity and hypothesis
 
@@ -29,6 +31,7 @@ correctness (`rtol=atol=1e-2`).  Positive change means regression.
 |:--|:--|:--|--:|:--|
 | initial | dynamic `rank_counters[is_long]` | 1x10 | `+0.3458%` | reject; compiler inserted index guards |
 | refined | two static counter-index branches | 1x20 | `-0.0321%` | noise / reject |
+| offset rank | `long_rank = padded_offset / 128 - expert_id` | 1x20 | `+0.0299%` | noise / reject |
 
 Refined Case2 generated resources are producer `76 MT / 48 ST / 6 waves`,
 Step1 `226 / 46 / 2`, and Step2 `220 / 56 / 2`.  Relative to v203, the producer
@@ -43,3 +46,8 @@ bottleneck.  Reducing it to O(E) atomic work cannot repay the extra shared
 counter/barrier and leaves whole-operator time unchanged.  Do not number,
 stack, submit, or promote this mechanism.  v203 remains the local OJ-pending
 candidate; v166 remains the external-OJ SOTA.
+
+The offset-rank refinement preserves v203's exact producer tier (`74 MT / 48
+ST / 6 waves`) while deleting the prefix loop.  The unchanged endpoint proves
+that neither the dynamic instruction count nor the loop's one-CTA execution is
+visible after the existing unified-prepack improvement.
