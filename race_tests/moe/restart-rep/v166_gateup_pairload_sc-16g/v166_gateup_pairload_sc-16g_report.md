@@ -139,3 +139,17 @@ Case1/2 编译均出现相同的 `verify_parallel_loop` potential-race warning�
 | 2026-08-29 recheck | `3.922981 ms` | `3.439744 ms` | `-12.3181%` | `3.437681–3.441741 ms` | `0.0398 pp` |
 
 复测全有效行正确性 PASS。两次本地 v166 均值仅相差约 `0.065%`，而 OJ `5.549 ms` 比本次本地均值慢约 `61.32%`，因此 OJ 低分无法在当前机器复现。该证据支持“本地性能稳定”，但不能自行把 OJ 样本判无效；promotion 状态继续保持 `partial-regressing-recheck-requested`，必须由 exact 文件的 OJ 复测裁决。
+
+## 2026-08-30 external OJ SOTA promotion
+
+仓库所有者重新提交 exact SHA256 `02210032640e4644a032e5620210d42e621c45ebb8fb5a644f72d3d6a1c8d33a`，三个官方 Case 全部 AC：
+
+| Case | Baseline ms | v166 ms | Speedup | Score ratio | Display | v148 Display |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | `11.251` | `2.015` | `5.584x` | `0.848108` | `84` | `83` |
+| 2 | `18.610` | `3.546` | `5.248x` | `0.839953` | `83` | `82` |
+| 3 | `35.875` | `6.876` | `5.217x` | `0.839162` | `83` | `82` |
+
+按完整可比的 OJ `display_score` 向量，v166 `[84,83,83]` 相对 incumbent v148 `[83,82,82]` 三 Case 均不回退且三项严格提高。因此 v166 状态更新为 `accepted`，exact bytes 晋级 `restart-submission/v166_gateup_pairload_sc-16g/submission.py`，并成为新的全局 OJ SOTA。
+
+同一 SHA 在较早时间窗口曾出现 Case2/3 异常低分；原始回执继续保留，不覆盖。promotion 采用仓库所有者提供的 2026-08-30 完整三 Case AC 回执，后续候选必须相对本次 `[84,83,83]` 比较。
