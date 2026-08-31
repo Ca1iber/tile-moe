@@ -1,0 +1,982 @@
+
+===== create isolated directory =====
+$ mkdir -p /root/codex-d211-v198-20260831-091218
+
+[exit=0, elapsed=0.2s]
+
+===== environment and profiler availability =====
+$ hostname; /opt/conda/bin/python -c 'import torch, tilelang; print("torch", torch.__version__); print("tilelang", getattr(tilelang, "__version__", "unknown")); print("device", torch.cuda.get_device_name(0)); print("memory", torch.cuda.get_device_properties(0).total_memory)' ; command -v mcTracer; mcTracer --help 2>&1 | head -n 120
+31887538ba5f
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+torch 2.8.0+metax3.7.1.3
+tilelang 0.1.10+cuda.gitf549117c
+device MetaX C500
+memory 16341008384
+bash: line 1: mcTracer: command not found
+
+[exit=0, elapsed=34.6s]
+
+===== source hashes and static gates =====
+$ sha256sum v197.py v198.py; /opt/conda/bin/python check_pure_tilelang_submission.py v198.py; /opt/conda/bin/python check_no_async_copy.py v198.py; /opt/conda/bin/python check_submission_contract.py v198.py; /opt/conda/bin/python -m py_compile v197.py v198.py d211_v197_v198_case2_pair.py d211_case2_trace_driver.py
+d76d6b4efb61fa2fcc6f64e40ef1a280069d6ffddf601ea962bedca37cdc47b5  v197.py
+4937697b55da06db449e6a0591f6e3a0292f9e23fad9d9abbdb7b3b89754e59e  v198.py
+[PASS] Pure TileLang source (no import/call injection): v198.py
+[PASS] No forbidden async-copy token: v198.py
+Traceback (most recent call last):
+  File "/root/codex-d211-v198-20260831-091218/check_submission_contract.py", line 138, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/codex-d211-v198-20260831-091218/check_submission_contract.py", line 120, in main
+    parser.add_argument("submission", nargs="?", type=Path, default=default_submission())
+                                                                    ^^^^^^^^^^^^^^^^^^^^
+  File "/root/codex-d211-v198-20260831-091218/check_submission_contract.py", line 29, in default_submission
+    Path(__file__).resolve().parents[4]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/conda/lib/python3.12/pathlib.py", line 282, in __getitem__
+    raise IndexError(idx)
+IndexError: 4
+
+[exit=0, elapsed=0.5s]
+
+===== v197 Case1 codegen =====
+$ /opt/conda/bin/python c500_codegen_audit.py --submission v197.py --output-dir codegen_v197_c1 --case 1 --compile-only
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+In file included from /tmp/tmprpugxt6c/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:6:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/common.h:6:
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:179:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  179 | TL_DEVICE inline void AtomicMax(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:192:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  192 | TL_DEVICE inline float AtomicMaxRet(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:206:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  206 | TL_DEVICE inline void AtomicMin(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:219:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  219 | TL_DEVICE inline float AtomicMinRet(float *address, float val,
+      |           ^
+In file included from /tmp/tmprpugxt6c/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:7:
+In file included from /opt/maca/include/cute/tensor.hpp:956:
+In file included from /opt/maca/include/cute/algorithm/gemm.hpp:40:
+In file included from /opt/maca/include/cute/atom/mma_atom.hpp:1060:
+In file included from /opt/maca/include/cute/atom/mma_traits_sm80.hpp:33:
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:50: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:14: note: initialize the variable 'cc0' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:55: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:19: note: initialize the variable 'cc1' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:60: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:24: note: initialize the variable 'cc2' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:65: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:29: note: initialize the variable 'cc3' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:50: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:14: note: initialize the variable 'cc0' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:55: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:19: note: initialize the variable 'cc1' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:60: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:24: note: initialize the variable 'cc2' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:65: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:29: note: initialize the variable 'cc3' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/tmp/tmprpugxt6c/tvm_kernels.maca:14:50: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   14 | extern "C" __global__ void __launch_bounds__(64, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_sizes) {
+      |                                                  ^
+/tmp/tmprpugxt6c/tvm_kernels.maca:44:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   44 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const half_t* __restrict__ input_original, half_t* __restrict__ short_input) {
+      |                                                   ^
+/tmp/tmprpugxt6c/tvm_kernels.maca:73:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   73 | extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel_2(const int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+      |                                                   ^
+/tmp/tmprpugxt6c/tvm_kernels.maca:128:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+  128 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_3(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+      |                                                   ^
+/tmp/tmprpugxt6c/tvm_kernels.maca:1903:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+ 1903 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_4(const half_t* __restrict__ down, const int* __restrict__ expert_rank, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+      |                                                   ^
+17 warnings generated when compiling for xcore1000.
+
+artifact: codegen_v197_c1/tvm_kernels.maca (141697 bytes)
+artifact: codegen_v197_c1/tvm_kernels.mcbin (485032 bytes)
+
+[exit=0, elapsed=40.8s]
+
+===== v198 Case1 codegen =====
+$ /opt/conda/bin/python c500_codegen_audit.py --submission v198.py --output-dir codegen_v198_c1 --case 1 --compile-only
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+In file included from /tmp/tmpy607qf1p/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:6:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/common.h:6:
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:179:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  179 | TL_DEVICE inline void AtomicMax(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:192:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  192 | TL_DEVICE inline float AtomicMaxRet(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:206:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  206 | TL_DEVICE inline void AtomicMin(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:219:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  219 | TL_DEVICE inline float AtomicMinRet(float *address, float val,
+      |           ^
+In file included from /tmp/tmpy607qf1p/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:7:
+In file included from /opt/maca/include/cute/tensor.hpp:956:
+In file included from /opt/maca/include/cute/algorithm/gemm.hpp:40:
+In file included from /opt/maca/include/cute/atom/mma_atom.hpp:1060:
+In file included from /opt/maca/include/cute/atom/mma_traits_sm80.hpp:33:
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:50: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:14: note: initialize the variable 'cc0' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:55: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:19: note: initialize the variable 'cc1' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:60: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:24: note: initialize the variable 'cc2' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:65: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:29: note: initialize the variable 'cc3' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:50: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:14: note: initialize the variable 'cc0' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:55: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:19: note: initialize the variable 'cc1' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:60: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:24: note: initialize the variable 'cc2' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:65: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:29: note: initialize the variable 'cc3' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/tmp/tmpy607qf1p/tvm_kernels.maca:14:50: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   14 | extern "C" __global__ void __launch_bounds__(64, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_sizes) {
+      |                                                  ^
+/tmp/tmpy607qf1p/tvm_kernels.maca:44:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   44 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const half_t* __restrict__ input_original, half_t* __restrict__ short_input) {
+      |                                                   ^
+/tmp/tmpy607qf1p/tvm_kernels.maca:73:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   73 | extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel_2(const int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+      |                                                   ^
+/tmp/tmpy607qf1p/tvm_kernels.maca:128:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+  128 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_3(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+      |                                                   ^
+/tmp/tmpy607qf1p/tvm_kernels.maca:1903:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+ 1903 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_4(const half_t* __restrict__ down, const int* __restrict__ expert_rank, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+      |                                                   ^
+17 warnings generated when compiling for xcore1000.
+
+artifact: codegen_v198_c1/tvm_kernels.maca (141697 bytes)
+artifact: codegen_v198_c1/tvm_kernels.mcbin (485032 bytes)
+
+[exit=0, elapsed=40.5s]
+
+===== v197 Case2 codegen =====
+$ /opt/conda/bin/python c500_codegen_audit.py --submission v197.py --output-dir codegen_v197_c2 --case 2 --compile-only
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+In file included from /tmp/tmp6cq4k37i/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:6:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/common.h:6:
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:179:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  179 | TL_DEVICE inline void AtomicMax(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:192:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  192 | TL_DEVICE inline float AtomicMaxRet(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:206:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  206 | TL_DEVICE inline void AtomicMin(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:219:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  219 | TL_DEVICE inline float AtomicMinRet(float *address, float val,
+      |           ^
+In file included from /tmp/tmp6cq4k37i/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:7:
+In file included from /opt/maca/include/cute/tensor.hpp:956:
+In file included from /opt/maca/include/cute/algorithm/gemm.hpp:40:
+In file included from /opt/maca/include/cute/atom/mma_atom.hpp:1060:
+In file included from /opt/maca/include/cute/atom/mma_traits_sm80.hpp:33:
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:50: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:14: note: initialize the variable 'cc0' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:55: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:19: note: initialize the variable 'cc1' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:60: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:24: note: initialize the variable 'cc2' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:65: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:29: note: initialize the variable 'cc3' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:50: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:14: note: initialize the variable 'cc0' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:55: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:19: note: initialize the variable 'cc1' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:60: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:24: note: initialize the variable 'cc2' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:65: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:29: note: initialize the variable 'cc3' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/tmp/tmp6cq4k37i/tvm_kernels.maca:12:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   12 | extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+      |                                                   ^
+/tmp/tmp6cq4k37i/tvm_kernels.maca:93:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   93 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+      |                                                   ^
+/tmp/tmp6cq4k37i/tvm_kernels.maca:1868:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+ 1868 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_2(const half_t* __restrict__ down, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+      |                                                   ^
+15 warnings generated when compiling for xcore1000.
+
+artifact: codegen_v197_c2/tvm_kernels.maca (136197 bytes)
+artifact: codegen_v197_c2/tvm_kernels.mcbin (397504 bytes)
+
+[exit=0, elapsed=40.5s]
+
+===== v198 Case2 codegen =====
+$ /opt/conda/bin/python c500_codegen_audit.py --submission v198.py --output-dir codegen_v198_c2 --case 2 --compile-only
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+2026-08-31 01:15:44  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:129): TileLang begins to compile kernel `kernel` with `out_idx=None`
+[01:15:44] /opt/tilelang-metax-v0.1.10/src/transform/verify_parallel_loop.cc:73: Warning: Data race detected: `up_logits(short_block_start // 128, short_intermediate_col // 64, short_native_vec, short_intermediate_owner_thread, short_native_col % 8)`is written by multiple threads in loop (short_i, short_j), Example:
+  by = 0
+  short_actual_rows = 2
+  short_block_start = 0
+  short_by = 0
+  short_i = 0
+  short_i_OTHER_ = 1
+  short_intermediate_col = 0
+  short_intermediate_owner_thread = 0
+  short_j = 0
+  short_j_OTHER_ = 1
+  short_native_col = 0
+  short_native_vec = 0
+  thread_binding = 0
+If you believe this is a false positive, pass `PassKey.TL_DISABLE_DATA_RACE_CHECK` to pass key to disable this check.
+[01:15:44] /opt/tilelang-metax-v0.1.10/src/transform/verify_parallel_loop.cc:73: Warning: Data race detected: `up_logits(native_output_block, intermediate_col // 64, native_vec, intermediate_owner_thread, native_col % 8)`is written by multiple threads in loop (i, j), Example:
+  actual_rows = 2
+  by = 16
+  i = 0
+  i_OTHER_ = 1
+  intermediate_col = 0
+  intermediate_owner_thread = 0
+  j = 1
+  j_OTHER_ = 0
+  native_col = 0
+  native_output_block = 0
+  native_vec = 0
+  short_by = 0
+  thread_binding = 0
+If you believe this is a false positive, pass `PassKey.TL_DISABLE_DATA_RACE_CHECK` to pass key to disable this check.
+2026-08-31 01:15:56  [TileLang:tilelang.jit.kernel:INFO] (kernel.py:137): TileLang completes to compile kernel `kernel`
+In file included from /tmp/tmpzijos1mo/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:6:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/common.h:6:
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:179:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  179 | TL_DEVICE inline void AtomicMax(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:192:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  192 | TL_DEVICE inline float AtomicMaxRet(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:206:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  206 | TL_DEVICE inline void AtomicMin(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:219:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  219 | TL_DEVICE inline float AtomicMinRet(float *address, float val,
+      |           ^
+In file included from /tmp/tmpzijos1mo/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:7:
+In file included from /opt/maca/include/cute/tensor.hpp:956:
+In file included from /opt/maca/include/cute/algorithm/gemm.hpp:40:
+In file included from /opt/maca/include/cute/atom/mma_atom.hpp:1060:
+In file included from /opt/maca/include/cute/atom/mma_traits_sm80.hpp:33:
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:50: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:14: note: initialize the variable 'cc0' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:55: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:19: note: initialize the variable 'cc1' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:60: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:24: note: initialize the variable 'cc2' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:65: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:29: note: initialize the variable 'cc3' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:50: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:14: note: initialize the variable 'cc0' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:55: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:19: note: initialize the variable 'cc1' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:60: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:24: note: initialize the variable 'cc2' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:65: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:29: note: initialize the variable 'cc3' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/tmp/tmpzijos1mo/tvm_kernels.maca:12:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   12 | extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+      |                                                   ^
+/tmp/tmpzijos1mo/tvm_kernels.maca:93:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   93 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+      |                                                   ^
+/tmp/tmpzijos1mo/tvm_kernels.maca:1868:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+ 1868 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_2(const half_t* __restrict__ down, const int* __restrict__ expert_rank, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+      |                                                   ^
+15 warnings generated when compiling for xcore1000.
+
+artifact: codegen_v198_c2/tvm_kernels.maca (140227 bytes)
+artifact: codegen_v198_c2/tvm_kernels.mcbin (445272 bytes)
+
+[exit=0, elapsed=53.5s]
+
+===== v197 Case3 codegen =====
+$ /opt/conda/bin/python c500_codegen_audit.py --submission v197.py --output-dir codegen_v197_c3 --case 3 --compile-only
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+In file included from /tmp/tmpm1yr2lf3/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:6:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/common.h:6:
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:179:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  179 | TL_DEVICE inline void AtomicMax(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:192:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  192 | TL_DEVICE inline float AtomicMaxRet(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:206:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  206 | TL_DEVICE inline void AtomicMin(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:219:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  219 | TL_DEVICE inline float AtomicMinRet(float *address, float val,
+      |           ^
+In file included from /tmp/tmpm1yr2lf3/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:7:
+In file included from /opt/maca/include/cute/tensor.hpp:956:
+In file included from /opt/maca/include/cute/algorithm/gemm.hpp:40:
+In file included from /opt/maca/include/cute/atom/mma_atom.hpp:1060:
+In file included from /opt/maca/include/cute/atom/mma_traits_sm80.hpp:33:
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:50: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:14: note: initialize the variable 'cc0' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:55: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:19: note: initialize the variable 'cc1' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:60: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:24: note: initialize the variable 'cc2' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:65: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:29: note: initialize the variable 'cc3' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:50: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:14: note: initialize the variable 'cc0' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:55: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:19: note: initialize the variable 'cc1' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:60: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:24: note: initialize the variable 'cc2' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:65: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:29: note: initialize the variable 'cc3' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/tmp/tmpm1yr2lf3/tvm_kernels.maca:12:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   12 | extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+      |                                                   ^
+/tmp/tmpm1yr2lf3/tvm_kernels.maca:93:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   93 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+      |                                                   ^
+/tmp/tmpm1yr2lf3/tvm_kernels.maca:1868:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+ 1868 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_2(const half_t* __restrict__ down, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+      |                                                   ^
+15 warnings generated when compiling for xcore1000.
+
+artifact: codegen_v197_c3/tvm_kernels.maca (136201 bytes)
+artifact: codegen_v197_c3/tvm_kernels.mcbin (399008 bytes)
+
+[exit=0, elapsed=41.0s]
+
+===== v198 Case3 codegen =====
+$ /opt/conda/bin/python c500_codegen_audit.py --submission v198.py --output-dir codegen_v198_c3 --case 3 --compile-only
+Loading tilelang libs from dev root: /opt/tilelang-metax-v0.1.10/build
+In file included from /tmp/tmp0dx7ijih/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:6:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/common.h:6:
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:179:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  179 | TL_DEVICE inline void AtomicMax(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:192:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  192 | TL_DEVICE inline float AtomicMaxRet(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:206:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  206 | TL_DEVICE inline void AtomicMin(float *address, float val,
+      |           ^
+/opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/atomic.h:219:11: warning: duplicate 'inline' declaration specifier [-Wduplicate-decl-specifier]
+  219 | TL_DEVICE inline float AtomicMinRet(float *address, float val,
+      |           ^
+In file included from /tmp/tmp0dx7ijih/tvm_kernels.maca:1:
+In file included from /opt/tilelang-metax-v0.1.10/3rdparty/../src/tl_templates/maca/gemm.h:7:
+In file included from /opt/maca/include/cute/tensor.hpp:956:
+In file included from /opt/maca/include/cute/algorithm/gemm.hpp:40:
+In file included from /opt/maca/include/cute/atom/mma_atom.hpp:1060:
+In file included from /opt/maca/include/cute/atom/mma_traits_sm80.hpp:33:
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:50: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:14: note: initialize the variable 'cc0' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:55: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:19: note: initialize the variable 'cc1' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:60: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:24: note: initialize the variable 'cc2' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  334 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:352:65: note: uninitialized use occurs here
+  352 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:334:12: note: remove the 'if' if its condition is always true
+  334 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:321:29: note: initialize the variable 'cc3' to silence this warning
+  321 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc0' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:50: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                  ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:14: note: initialize the variable 'cc0' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |              ^
+      |               = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc1' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:55: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                       ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:19: note: initialize the variable 'cc1' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                   ^
+      |                    = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc2' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:60: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                            ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:24: note: initialize the variable 'cc2' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                        ^
+      |                         = 0.0
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:16: warning: variable 'cc3' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  608 |     } else if (lane_id < 64) {
+      |                ^~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:626:65: note: uninitialized use occurs here
+  626 |                                                 {cc0, cc1, cc2, cc3});
+      |                                                                 ^~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:608:12: note: remove the 'if' if its condition is always true
+  608 |     } else if (lane_id < 64) {
+      |            ^~~~~~~~~~~~~~~~~
+/opt/maca/include/cute/arch/mma_sm80.hpp:595:29: note: initialize the variable 'cc3' to silence this warning
+  595 |     float cc0, cc1, cc2, cc3;
+      |                             ^
+      |                              = 0.0
+/tmp/tmp0dx7ijih/tvm_kernels.maca:12:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   12 | extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+      |                                                   ^
+/tmp/tmp0dx7ijih/tvm_kernels.maca:93:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+   93 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+      |                                                   ^
+/tmp/tmp0dx7ijih/tvm_kernels.maca:1868:51: warning: set minimum blocks' number is illegal in Maca and the value will be ignored [-Wmaca-min-blocks-per-multiprocessor]
+ 1868 | extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_2(const half_t* __restrict__ down, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+      |                                                   ^
+15 warnings generated when compiling for xcore1000.
+
+artifact: codegen_v198_c3/tvm_kernels.maca (136201 bytes)
+artifact: codegen_v198_c3/tvm_kernels.mcbin (399008 bytes)
+
+[exit=0, elapsed=41.0s]
+
+===== generated artifacts and resource gate =====
+$ /opt/conda/bin/python check_no_async_copy.py codegen_v197_c1/tvm_kernels.maca && /opt/conda/bin/python check_no_async_copy.py codegen_v197_c1/tvm_kernels.mcbin && /opt/conda/bin/python check_no_async_copy.py codegen_v198_c1/tvm_kernels.maca && /opt/conda/bin/python check_no_async_copy.py codegen_v198_c1/tvm_kernels.mcbin && /opt/conda/bin/python check_no_async_copy.py codegen_v197_c2/tvm_kernels.maca && /opt/conda/bin/python check_no_async_copy.py codegen_v197_c2/tvm_kernels.mcbin && /opt/conda/bin/python check_no_async_copy.py codegen_v198_c2/tvm_kernels.maca && /opt/conda/bin/python check_no_async_copy.py codegen_v198_c2/tvm_kernels.mcbin && /opt/conda/bin/python check_no_async_copy.py codegen_v197_c3/tvm_kernels.maca && /opt/conda/bin/python check_no_async_copy.py codegen_v197_c3/tvm_kernels.mcbin && /opt/conda/bin/python check_no_async_copy.py codegen_v198_c3/tvm_kernels.maca && /opt/conda/bin/python check_no_async_copy.py codegen_v198_c3/tvm_kernels.mcbin && /opt/conda/bin/python d211_resource_gate.py codegen_v197_c1/tvm_kernels.mcbin codegen_v198_c1/tvm_kernels.mcbin codegen_v197_c2/tvm_kernels.mcbin codegen_v198_c2/tvm_kernels.mcbin codegen_v197_c3/tvm_kernels.mcbin codegen_v198_c3/tvm_kernels.mcbin && /opt/conda/bin/python inspect_mcbin_metadata.py --all codegen_v197_c1/tvm_kernels.mcbin codegen_v198_c1/tvm_kernels.mcbin codegen_v197_c2/tvm_kernels.mcbin codegen_v198_c2/tvm_kernels.mcbin codegen_v197_c3/tvm_kernels.mcbin codegen_v198_c3/tvm_kernels.mcbin
+[PASS] No forbidden async-copy token: codegen_v197_c1/tvm_kernels.maca
+[PASS] No forbidden async-copy token: codegen_v197_c1/tvm_kernels.mcbin
+[PASS] No forbidden async-copy token: codegen_v198_c1/tvm_kernels.maca
+[PASS] No forbidden async-copy token: codegen_v198_c1/tvm_kernels.mcbin
+[PASS] No forbidden async-copy token: codegen_v197_c2/tvm_kernels.maca
+[PASS] No forbidden async-copy token: codegen_v197_c2/tvm_kernels.mcbin
+[PASS] No forbidden async-copy token: codegen_v198_c2/tvm_kernels.maca
+[PASS] No forbidden async-copy token: codegen_v198_c2/tvm_kernels.mcbin
+[PASS] No forbidden async-copy token: codegen_v197_c3/tvm_kernels.maca
+[PASS] No forbidden async-copy token: codegen_v197_c3/tvm_kernels.mcbin
+[PASS] No forbidden async-copy token: codegen_v198_c3/tvm_kernels.maca
+[PASS] No forbidden async-copy token: codegen_v198_c3/tvm_kernels.mcbin
+resource_gate=PASS path=codegen_v197_c1/tvm_kernels.mcbin kernels=5 private_memory=[0, 0, 0, 0, 0] mtreg=[4, 18, 28, 226, 220] shared=[]
+resource_gate=PASS path=codegen_v198_c1/tvm_kernels.mcbin kernels=5 private_memory=[0, 0, 0, 0, 0] mtreg=[4, 18, 28, 226, 220] shared=[]
+resource_gate=PASS path=codegen_v197_c2/tvm_kernels.mcbin kernels=3 private_memory=[0, 0, 0] mtreg=[92, 226, 220] shared=[]
+resource_gate=PASS path=codegen_v198_c2/tvm_kernels.mcbin kernels=3 private_memory=[0, 0, 0] mtreg=[92, 226, 222] shared=[]
+resource_gate=PASS path=codegen_v197_c3/tvm_kernels.mcbin kernels=3 private_memory=[0, 0, 0] mtreg=[92, 226, 220] shared=[]
+resource_gate=PASS path=codegen_v198_c3/tvm_kernels.mcbin kernels=3 private_memory=[0, 0, 0] mtreg=[92, 226, 220] shared=[]
+{"max_block_size": [64, 256, 512, 256, 256], "mtreg_count": [4, 18, 28, 226, 220], "path": "codegen_v197_c1/tvm_kernels.mcbin", "private_memory_size": [0, 0, 0, 0, 0], "shared_memory_size": [], "streg_count": [18, 20, 42, 46, 52]}
+{"max_block_size": [64, 256, 512, 256, 256], "mtreg_count": [4, 18, 28, 226, 220], "path": "codegen_v198_c1/tvm_kernels.mcbin", "private_memory_size": [0, 0, 0, 0, 0], "shared_memory_size": [], "streg_count": [18, 20, 42, 46, 52]}
+{"max_block_size": [512, 256, 256], "mtreg_count": [92, 226, 220], "path": "codegen_v197_c2/tvm_kernels.mcbin", "private_memory_size": [0, 0, 0], "shared_memory_size": [], "streg_count": [44, 46, 56]}
+{"max_block_size": [512, 256, 256], "mtreg_count": [92, 226, 222], "path": "codegen_v198_c2/tvm_kernels.mcbin", "private_memory_size": [0, 0, 0], "shared_memory_size": [], "streg_count": [44, 46, 52]}
+{"max_block_size": [512, 256, 256], "mtreg_count": [92, 226, 220], "path": "codegen_v197_c3/tvm_kernels.mcbin", "private_memory_size": [0, 0, 0], "shared_memory_size": [], "streg_count": [44, 46, 56]}
+{"max_block_size": [512, 256, 256], "mtreg_count": [92, 226, 220], "path": "codegen_v198_c3/tvm_kernels.mcbin", "private_memory_size": [0, 0, 0], "shared_memory_size": [], "streg_count": [44, 46, 56]}
+
+[exit=0, elapsed=1.7s]
+
+===== unchanged-case machine-code identity =====
+$ cmp -s codegen_v197_c1/tvm_kernels.maca codegen_v198_c1/tvm_kernels.maca || exit 3; echo CASE1_MACA_IDENTICAL=YES; cmp -s codegen_v197_c1/tvm_kernels.mcbin codegen_v198_c1/tvm_kernels.mcbin || exit 4; echo CASE1_MCBIN_IDENTICAL=YES; cmp -s codegen_v197_c3/tvm_kernels.maca codegen_v198_c3/tvm_kernels.maca || exit 5; echo CASE3_MACA_IDENTICAL=YES; cmp -s codegen_v197_c3/tvm_kernels.mcbin codegen_v198_c3/tvm_kernels.mcbin || exit 6; echo CASE3_MCBIN_IDENTICAL=YES; if cmp -s codegen_v197_c2/tvm_kernels.mcbin codegen_v198_c2/tvm_kernels.mcbin; then echo CASE2_MCBIN_UNEXPECTEDLY_IDENTICAL; exit 7; else echo CASE2_MCBIN_DIFFERENT=YES; fi
+CASE1_MACA_IDENTICAL=YES
+
+[exit=4, elapsed=0.1s]

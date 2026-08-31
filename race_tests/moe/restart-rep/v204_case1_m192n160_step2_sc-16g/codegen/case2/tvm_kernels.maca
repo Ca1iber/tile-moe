@@ -1,0 +1,2167 @@
+#include <tl_templates/maca/gemm.h>
+#include <tl_templates/maca/copy.h>
+#include <tl_templates/maca/reduce.h>
+#include <tl_templates/maca/intrin.h>
+#include <tl_templates/maca/atomic.h>
+#include <tl_templates/maca/threadblock_swizzle.h>
+#include <tl_templates/maca/debug.h>
+
+extern "C" __global__ void kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original);
+extern "C" __global__ void kernel_kernel_1(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits);
+extern "C" __global__ void kernel_kernel_2(const half_t* __restrict__ down, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits);
+extern "C" __global__ void __launch_bounds__(512, 1) kernel_kernel(int* __restrict__ expert_rank, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ input, const half_t* __restrict__ input_original) {
+  int prepack_rank[1];
+  extern __shared__ __align__(1024) half_t copy_shared[];
+  int copy_padded_start = group_padded_offsets[((int)blockIdx.y)];
+  int copy_group_size = group_sizes[((int)blockIdx.y)];
+  if ((((int)blockIdx.x) == 0) && (((int)threadIdx.x) == 0)) {
+    prepack_rank[0] = 0;
+    if (copy_group_size <= 128) {
+      for (int prepack_expert = 0; prepack_expert < 32; ++prepack_expert) {
+        if ((prepack_expert < ((int)blockIdx.y)) && (group_sizes[prepack_expert] <= 128)) {
+          prepack_rank[0] = (prepack_rank[0] + 1);
+        }
+      }
+      if (0 <= prepack_rank[0]) {
+        if (prepack_rank[0] < 32) {
+          expert_rank[prepack_rank[(int64_t)0]] = ((int)blockIdx.y);
+        }
+      }
+    } else {
+      for (int prepack_expert_1 = 0; prepack_expert_1 < 32; ++prepack_expert_1) {
+        if ((prepack_expert_1 < ((int)blockIdx.y)) && (128 < group_sizes[prepack_expert_1])) {
+          prepack_rank[0] = (prepack_rank[0] + 1);
+        }
+      }
+      if (-16 <= prepack_rank[0]) {
+        if (prepack_rank[0] < 16) {
+          expert_rank[(((int64_t)prepack_rank[(int64_t)0]) + (int64_t)16)] = ((int)blockIdx.y);
+        }
+      }
+    }
+  }
+  for (int copy_panel = 0; copy_panel < 2; ++copy_panel) {
+    int condval;
+    if ((copy_group_size <= 128)) {
+      condval = 2;
+    } else {
+      condval = 3;
+    }
+    for (int copy_phase = 0; copy_phase < condval; ++copy_phase) {
+      for (int copy_vec = 0; copy_vec < 2; ++copy_vec) {
+        if (((copy_phase * 64) + (((int)threadIdx.x) >> 3)) < copy_group_size) {
+          half_t broadcast_var = half_t(0x0p+0f/*0.000000e+00*/);
+          uint4 condval_1;
+          if (((0 <= (((copy_phase * 64) + (((int)threadIdx.x) >> 3)) + copy_padded_start)) && (((((((int)threadIdx.x) >> 3) + copy_padded_start) >> 6) + copy_phase) < 96))) {
+            condval_1 = *(uint4*)(input_original + (((((((((int64_t)copy_phase) * (int64_t)458752) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)3) * (int64_t)7168)) + (((int64_t)copy_padded_start) * (int64_t)7168)) + (((int64_t)((int)blockIdx.x)) * (int64_t)256)) + (((int64_t)copy_panel) * (int64_t)128)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)7) * (int64_t)16)) + (((int64_t)copy_vec) * (int64_t)8)));
+          } else {
+            condval_1 = make_uint4(__pack_half2(broadcast_var, broadcast_var), __pack_half2(broadcast_var, broadcast_var), __pack_half2(broadcast_var, broadcast_var), __pack_half2(broadcast_var, broadcast_var));
+          }
+          *(uint4*)(copy_shared + ((((int)threadIdx.x) * 16) + (copy_vec * 8))) = condval_1;
+        } else {
+          half_t broadcast_var_1 = half_t(0x0p+0f/*0.000000e+00*/);
+          *(uint4*)(copy_shared + ((((int)threadIdx.x) * 16) + (copy_vec * 8))) = make_uint4(__pack_half2(broadcast_var_1, broadcast_var_1), __pack_half2(broadcast_var_1, broadcast_var_1), __pack_half2(broadcast_var_1, broadcast_var_1), __pack_half2(broadcast_var_1, broadcast_var_1));
+        }
+      }
+      __syncthreads();
+      for (int copy_k_sub = 0; copy_k_sub < 2; ++copy_k_sub) {
+        for (int native_vec = 0; native_vec < 6; ++native_vec) {
+          if (copy_group_size <= 128) {
+            if (((((int)threadIdx.x) < 256) && (native_vec < 4)) && (copy_phase == (((int)threadIdx.x) >> 7))) {
+              *(uint4*)(input + ((((((((int)blockIdx.y) * 1376256) + (((int)blockIdx.x) * 49152)) + (copy_panel * 24576)) + (copy_k_sub * 12288)) + (native_vec * 2048)) + (((int)threadIdx.x) * 8))) = *(uint4*)(copy_shared + ((((((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)4096) + ((((int64_t)native_vec) & (int64_t)1) * (int64_t)2048)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)128)) + (((int64_t)copy_k_sub) * (int64_t)64)) + ((((int64_t)native_vec) >> (int64_t)1) * (int64_t)32)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)4) * (int64_t)8)) - (((int64_t)copy_phase) * (int64_t)8192)));
+            }
+          } else {
+            if ((((int)threadIdx.x) < 256) && (copy_phase == ((((((int)threadIdx.x) >> 6) * 3) + (native_vec % 3)) >> 2))) {
+              *(uint4*)(input + ((((((((int)blockIdx.y) * 1376256) + (((int)blockIdx.x) * 49152)) + (copy_panel * 24576)) + (copy_k_sub * 12288)) + (native_vec * 2048)) + (((int)threadIdx.x) * 8))) = *(uint4*)(copy_shared + ((((((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)6144) + ((((int64_t)native_vec) % (int64_t)3) * (int64_t)2048)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)128)) + (((int64_t)copy_k_sub) * (int64_t)64)) + ((((int64_t)native_vec) / (int64_t)3) * (int64_t)32)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)4) * (int64_t)8)) - (((int64_t)copy_phase) * (int64_t)8192)));
+            }
+          }
+        }
+      }
+      int condval_2;
+      if ((copy_group_size <= 128)) {
+        condval_2 = 2;
+      } else {
+        condval_2 = 3;
+      }
+      if (((copy_phase + 1) < condval_2) || (copy_panel < 1)) {
+        __syncthreads();
+      }
+    }
+  }
+}
+
+extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_1(const int* __restrict__ expert_rank, const half_t* __restrict__ gate, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, const half_t* __restrict__ input, const half_t* __restrict__ short_input, const half_t* __restrict__ up, half_t* __restrict__ up_logits) {
+  float short_gate_local[64];
+  float short_up_local[64];
+  half_t short_input_prefetch[32];
+  half_t short_input_shared[32];
+  extern __shared__ __align__(1024) half_t weight_shared[];
+  float gate_local[48];
+  float up_local[48];
+  half_t input_prefetch[48];
+  half_t input_shared[48];
+  half_t short_weight_local[64];
+  half_t gate_vec[8];
+  half_t up_vec[8];
+  half_t gate_vec_1[8];
+  half_t up_vec_1[8];
+  half_t weight_local[32];
+  half_t gate_vec_2[8];
+  half_t up_vec_2[8];
+  half_t gate_vec_3[8];
+  half_t up_vec_3[8];
+  if (((int)blockIdx.y) < 16) {
+    int short_expert_id = expert_rank[((int)blockIdx.y)];
+    int short_group_size = group_sizes[short_expert_id];
+    int short_block_start = group_padded_offsets[short_expert_id];
+    #pragma unroll
+    for (int i = 0; i < 16; ++i) {
+      float broadcast_var = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(short_gate_local + (i * 4)) = make_float4(broadcast_var, broadcast_var, broadcast_var, broadcast_var);
+    }
+    #pragma unroll
+    for (int i_1 = 0; i_1 < 16; ++i_1) {
+      float broadcast_var_1 = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(short_up_local + (i_1 * 4)) = make_float4(broadcast_var_1, broadcast_var_1, broadcast_var_1, broadcast_var_1);
+    }
+    #pragma unroll
+    for (int i_2 = 0; i_2 < 8; ++i_2) {
+      half_t broadcast_var_2 = half_t(0x0p+0f/*0.000000e+00*/);
+      *(uint2*)(short_input_prefetch + (i_2 * 4)) = make_uint2(__pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2));
+    }
+    for (int short_native_vec = 0; short_native_vec < 4; ++short_native_vec) {
+      *(uint4*)(short_input_shared + (short_native_vec * 8)) = *(uint4*)(short_input + (((short_expert_id * 1376256) + (short_native_vec * 2048)) + (((int)threadIdx.x) * 8)));
+    }
+    for (int short_k_pair = 0; short_k_pair < 56; ++short_k_pair) {
+      for (int short_native_vec_1 = 0; short_native_vec_1 < 4; ++short_native_vec_1) {
+        if (((((((int)threadIdx.x) >> 6) * 32) + ((short_native_vec_1 & 1) * 16)) + (((int)threadIdx.x) & 15)) < short_group_size) {
+          *(uint4*)(short_input_prefetch + (short_native_vec_1 * 8)) = *(uint4*)(short_input + (((((short_expert_id * 1376256) + (short_k_pair * 24576)) + (short_native_vec_1 * 2048)) + (((int)threadIdx.x) * 8)) + 12288));
+        }
+      }
+      #pragma unroll
+      for (int i_3 = 0; i_3 < 2; ++i_3) {
+        *(uint4*)(weight_shared + (((((i_3 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = *(uint4*)(gate + ((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_3 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)));
+      }
+      #pragma unroll
+      for (int i_4 = 0; i_4 < 2; ++i_4) {
+        *(uint4*)(weight_shared + ((((((i_4 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 4096)) = *(uint4*)(gate + (((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_4 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 458752));
+      }
+      #pragma unroll
+      for (int i_5 = 0; i_5 < 2; ++i_5) {
+        *(uint4*)(weight_shared + ((((((i_5 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192)) = *(uint4*)(up + ((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_5 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)));
+      }
+      #pragma unroll
+      for (int i_6 = 0; i_6 < 2; ++i_6) {
+        *(uint4*)(weight_shared + ((((((i_6 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 12288)) = *(uint4*)(up + (((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_6 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 458752));
+      }
+      __syncthreads();
+      if (((((int)threadIdx.x) >> 6) * 32) < short_group_size) {
+        for (int ki = 0; ki < 2; ++ki) {
+          for (int j = 0; j < 8; ++j) {
+            *(uint4*)(short_weight_local + (j * 8)) = *(uint4*)(weight_shared + (((((j * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+          }
+          for (int kp = 0; kp < 2; ++kp) {
+            for (int i_7 = 0; i_7 < 2; ++i_7) {
+              for (int j_1 = 0; j_1 < 8; ++j_1) {
+                {
+      *(((float32x4*)short_gate_local) + ((i_7 * 8) + j_1)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)short_weight_local) + ((j_1 * 2) + kp)),
+                    *(((float16x4*)short_input_shared) + (((ki * 4) + (i_7 * 2)) + kp)),
+                    *(((float32x4*)short_gate_local) + ((i_7 * 8) + j_1)));
+    };
+              }
+            }
+          }
+          for (int j_2 = 0; j_2 < 8; ++j_2) {
+            *(uint4*)(short_weight_local + (j_2 * 8)) = *(uint4*)(weight_shared + ((((((j_2 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192));
+          }
+          for (int kp_1 = 0; kp_1 < 2; ++kp_1) {
+            for (int i_8 = 0; i_8 < 2; ++i_8) {
+              for (int j_3 = 0; j_3 < 8; ++j_3) {
+                {
+      *(((float32x4*)short_up_local) + ((i_8 * 8) + j_3)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)short_weight_local) + ((j_3 * 2) + kp_1)),
+                    *(((float16x4*)short_input_shared) + (((ki * 4) + (i_8 * 2)) + kp_1)),
+                    *(((float32x4*)short_up_local) + ((i_8 * 8) + j_3)));
+    };
+              }
+            }
+          }
+        }
+      }
+      __syncthreads();
+      if (short_k_pair < 55) {
+        for (int short_native_vec_2 = 0; short_native_vec_2 < 4; ++short_native_vec_2) {
+          if (((((((int)threadIdx.x) >> 6) * 32) + ((short_native_vec_2 & 1) * 16)) + (((int)threadIdx.x) & 15)) < short_group_size) {
+            *(uint4*)(short_input_shared + (short_native_vec_2 * 8)) = *(uint4*)(short_input + (((((short_expert_id * 1376256) + (short_k_pair * 24576)) + (short_native_vec_2 * 2048)) + (((int)threadIdx.x) * 8)) + 24576));
+          }
+        }
+      }
+      #pragma unroll
+      for (int i_9 = 0; i_9 < 2; ++i_9) {
+        *(uint4*)(weight_shared + (((((i_9 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = *(uint4*)(gate + (((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_9 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 64));
+      }
+      #pragma unroll
+      for (int i_10 = 0; i_10 < 2; ++i_10) {
+        *(uint4*)(weight_shared + ((((((i_10 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 4096)) = *(uint4*)(gate + (((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_10 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 458816));
+      }
+      #pragma unroll
+      for (int i_11 = 0; i_11 < 2; ++i_11) {
+        *(uint4*)(weight_shared + ((((((i_11 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192)) = *(uint4*)(up + (((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_11 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 64));
+      }
+      #pragma unroll
+      for (int i_12 = 0; i_12 < 2; ++i_12) {
+        *(uint4*)(weight_shared + ((((((i_12 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 12288)) = *(uint4*)(up + (((((((short_expert_id * 14680064) + (((int)blockIdx.x) * 917504)) + (i_12 * 229376)) + ((((int)threadIdx.x) >> 3) * 7168)) + (short_k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 458816));
+      }
+      __syncthreads();
+      if (((((int)threadIdx.x) >> 6) * 32) < short_group_size) {
+        for (int ki_1 = 0; ki_1 < 2; ++ki_1) {
+          for (int j_4 = 0; j_4 < 8; ++j_4) {
+            *(uint4*)(short_weight_local + (j_4 * 8)) = *(uint4*)(weight_shared + (((((j_4 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_1) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+          }
+          for (int kp_2 = 0; kp_2 < 2; ++kp_2) {
+            for (int i_13 = 0; i_13 < 2; ++i_13) {
+              for (int j_5 = 0; j_5 < 8; ++j_5) {
+                {
+      *(((float32x4*)short_gate_local) + ((i_13 * 8) + j_5)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)short_weight_local) + ((j_5 * 2) + kp_2)),
+                    *(((float16x4*)short_input_prefetch) + (((ki_1 * 4) + (i_13 * 2)) + kp_2)),
+                    *(((float32x4*)short_gate_local) + ((i_13 * 8) + j_5)));
+    };
+              }
+            }
+          }
+          for (int j_6 = 0; j_6 < 8; ++j_6) {
+            *(uint4*)(short_weight_local + (j_6 * 8)) = *(uint4*)(weight_shared + ((((((j_6 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_1) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192));
+          }
+          for (int kp_3 = 0; kp_3 < 2; ++kp_3) {
+            for (int i_14 = 0; i_14 < 2; ++i_14) {
+              for (int j_7 = 0; j_7 < 8; ++j_7) {
+                {
+      *(((float32x4*)short_up_local) + ((i_14 * 8) + j_7)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)short_weight_local) + ((j_7 * 2) + kp_3)),
+                    *(((float16x4*)short_input_prefetch) + (((ki_1 * 4) + (i_14 * 2)) + kp_3)),
+                    *(((float32x4*)short_up_local) + ((i_14 * 8) + j_7)));
+    };
+              }
+            }
+          }
+        }
+      }
+      if (short_k_pair < 55) {
+        __syncthreads();
+      }
+    }
+    #pragma unroll
+    for (int i_15 = 0; i_15 < 16; ++i_15) {
+      float4 short_silu_x = *(float4*)(short_gate_local + (i_15 * 4));
+      float broadcast_var_3 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_4 = 0x1.6p+2f/*5.500000e+00*/;
+      float4 __1;
+        float4 v_ = make_float4(broadcast_var_3, broadcast_var_3, broadcast_var_3, broadcast_var_3);
+        float4 __2;
+          float4 v__1 = make_float4(broadcast_var_4, broadcast_var_4, broadcast_var_4, broadcast_var_4);
+          __2.x = min(v__1.x, short_silu_x.x);
+          __2.y = min(v__1.y, short_silu_x.y);
+          __2.z = min(v__1.z, short_silu_x.z);
+          __2.w = min(v__1.w, short_silu_x.w);
+        __1.x = max(v_.x, __2.x);
+        __1.y = max(v_.y, __2.y);
+        __1.z = max(v_.z, __2.z);
+        __1.w = max(v_.w, __2.w);
+      float4 short_silu_clamped = __1;
+      float broadcast_var_5 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_6 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_7 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_8 = 0x1.6p+2f/*5.500000e+00*/;
+      float4 __3;
+        float4 __4;
+          float4 v__2 = make_float4(broadcast_var_5, broadcast_var_5, broadcast_var_5, broadcast_var_5);
+          float4 __5;
+            float4 v__3 = make_float4(broadcast_var_6, broadcast_var_6, broadcast_var_6, broadcast_var_6);
+            __5.x = min(v__3.x, short_silu_x.x);
+            __5.y = min(v__3.y, short_silu_x.y);
+            __5.z = min(v__3.z, short_silu_x.z);
+            __5.w = min(v__3.w, short_silu_x.w);
+          __4.x = max(v__2.x, __5.x);
+          __4.y = max(v__2.y, __5.y);
+          __4.z = max(v__2.z, __5.z);
+          __4.w = max(v__2.w, __5.w);
+        float4 __6;
+          float4 v__4 = make_float4(broadcast_var_7, broadcast_var_7, broadcast_var_7, broadcast_var_7);
+          float4 __7;
+            float4 v__5 = make_float4(broadcast_var_8, broadcast_var_8, broadcast_var_8, broadcast_var_8);
+            __7.x = min(v__5.x, short_silu_x.x);
+            __7.y = min(v__5.y, short_silu_x.y);
+            __7.z = min(v__5.z, short_silu_x.z);
+            __7.w = min(v__5.w, short_silu_x.w);
+          __6.x = max(v__4.x, __7.x);
+          __6.y = max(v__4.y, __7.y);
+          __6.z = max(v__4.z, __7.z);
+          __6.w = max(v__4.w, __7.w);
+        __3.x = (__4.x*__6.x);
+        __3.y = (__4.y*__6.y);
+        __3.z = (__4.z*__6.z);
+        __3.w = (__4.w*__6.w);
+      float4 short_silu_z = __3;
+      float broadcast_var_9 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_10 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_11 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_12 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_13 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_14 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __8;
+        float4 v__6 = make_float4(broadcast_var_9, broadcast_var_9, broadcast_var_9, broadcast_var_9);
+        float4 __9;
+          float4 __10;
+            float4 __11;
+              float4 v__7 = make_float4(broadcast_var_10, broadcast_var_10, broadcast_var_10, broadcast_var_10);
+              float4 __12;
+                float4 v__8 = make_float4(broadcast_var_11, broadcast_var_11, broadcast_var_11, broadcast_var_11);
+                __12.x = min(v__8.x, short_silu_x.x);
+                __12.y = min(v__8.y, short_silu_x.y);
+                __12.z = min(v__8.z, short_silu_x.z);
+                __12.w = min(v__8.w, short_silu_x.w);
+              __11.x = max(v__7.x, __12.x);
+              __11.y = max(v__7.y, __12.y);
+              __11.z = max(v__7.z, __12.z);
+              __11.w = max(v__7.w, __12.w);
+            float4 __13;
+              float4 v__9 = make_float4(broadcast_var_12, broadcast_var_12, broadcast_var_12, broadcast_var_12);
+              float4 __14;
+                float4 v__10 = make_float4(broadcast_var_13, broadcast_var_13, broadcast_var_13, broadcast_var_13);
+                __14.x = min(v__10.x, short_silu_x.x);
+                __14.y = min(v__10.y, short_silu_x.y);
+                __14.z = min(v__10.z, short_silu_x.z);
+                __14.w = min(v__10.w, short_silu_x.w);
+              __13.x = max(v__9.x, __14.x);
+              __13.y = max(v__9.y, __14.y);
+              __13.z = max(v__9.z, __14.z);
+              __13.w = max(v__9.w, __14.w);
+            __10.x = (__11.x*__13.x);
+            __10.y = (__11.y*__13.y);
+            __10.z = (__11.z*__13.z);
+            __10.w = (__11.w*__13.w);
+          float4 v__11 = make_float4(broadcast_var_14, broadcast_var_14, broadcast_var_14, broadcast_var_14);
+          __9.x = (__10.x*v__11.x);
+          __9.y = (__10.y*v__11.y);
+          __9.z = (__10.z*v__11.z);
+          __9.w = (__10.w*v__11.w);
+        __8.x = (v__6.x+__9.x);
+        __8.y = (v__6.y+__9.y);
+        __8.z = (v__6.z+__9.z);
+        __8.w = (v__6.w+__9.w);
+      float4 short_silu_p7 = __8;
+      float broadcast_var_15 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_16 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_17 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_18 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_19 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_20 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_21 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_22 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_23 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_24 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_25 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __15;
+        float4 v__12 = make_float4(broadcast_var_15, broadcast_var_15, broadcast_var_15, broadcast_var_15);
+        float4 __16;
+          float4 __17;
+            float4 __18;
+              float4 v__13 = make_float4(broadcast_var_16, broadcast_var_16, broadcast_var_16, broadcast_var_16);
+              float4 __19;
+                float4 v__14 = make_float4(broadcast_var_17, broadcast_var_17, broadcast_var_17, broadcast_var_17);
+                __19.x = min(v__14.x, short_silu_x.x);
+                __19.y = min(v__14.y, short_silu_x.y);
+                __19.z = min(v__14.z, short_silu_x.z);
+                __19.w = min(v__14.w, short_silu_x.w);
+              __18.x = max(v__13.x, __19.x);
+              __18.y = max(v__13.y, __19.y);
+              __18.z = max(v__13.z, __19.z);
+              __18.w = max(v__13.w, __19.w);
+            float4 __20;
+              float4 v__15 = make_float4(broadcast_var_18, broadcast_var_18, broadcast_var_18, broadcast_var_18);
+              float4 __21;
+                float4 v__16 = make_float4(broadcast_var_19, broadcast_var_19, broadcast_var_19, broadcast_var_19);
+                __21.x = min(v__16.x, short_silu_x.x);
+                __21.y = min(v__16.y, short_silu_x.y);
+                __21.z = min(v__16.z, short_silu_x.z);
+                __21.w = min(v__16.w, short_silu_x.w);
+              __20.x = max(v__15.x, __21.x);
+              __20.y = max(v__15.y, __21.y);
+              __20.z = max(v__15.z, __21.z);
+              __20.w = max(v__15.w, __21.w);
+            __17.x = (__18.x*__20.x);
+            __17.y = (__18.y*__20.y);
+            __17.z = (__18.z*__20.z);
+            __17.w = (__18.w*__20.w);
+          float4 __22;
+            float4 v__17 = make_float4(broadcast_var_20, broadcast_var_20, broadcast_var_20, broadcast_var_20);
+            float4 __23;
+              float4 __24;
+                float4 __25;
+                  float4 v__18 = make_float4(broadcast_var_21, broadcast_var_21, broadcast_var_21, broadcast_var_21);
+                  float4 __26;
+                    float4 v__19 = make_float4(broadcast_var_22, broadcast_var_22, broadcast_var_22, broadcast_var_22);
+                    __26.x = min(v__19.x, short_silu_x.x);
+                    __26.y = min(v__19.y, short_silu_x.y);
+                    __26.z = min(v__19.z, short_silu_x.z);
+                    __26.w = min(v__19.w, short_silu_x.w);
+                  __25.x = max(v__18.x, __26.x);
+                  __25.y = max(v__18.y, __26.y);
+                  __25.z = max(v__18.z, __26.z);
+                  __25.w = max(v__18.w, __26.w);
+                float4 __27;
+                  float4 v__20 = make_float4(broadcast_var_23, broadcast_var_23, broadcast_var_23, broadcast_var_23);
+                  float4 __28;
+                    float4 v__21 = make_float4(broadcast_var_24, broadcast_var_24, broadcast_var_24, broadcast_var_24);
+                    __28.x = min(v__21.x, short_silu_x.x);
+                    __28.y = min(v__21.y, short_silu_x.y);
+                    __28.z = min(v__21.z, short_silu_x.z);
+                    __28.w = min(v__21.w, short_silu_x.w);
+                  __27.x = max(v__20.x, __28.x);
+                  __27.y = max(v__20.y, __28.y);
+                  __27.z = max(v__20.z, __28.z);
+                  __27.w = max(v__20.w, __28.w);
+                __24.x = (__25.x*__27.x);
+                __24.y = (__25.y*__27.y);
+                __24.z = (__25.z*__27.z);
+                __24.w = (__25.w*__27.w);
+              float4 v__22 = make_float4(broadcast_var_25, broadcast_var_25, broadcast_var_25, broadcast_var_25);
+              __23.x = (__24.x*v__22.x);
+              __23.y = (__24.y*v__22.y);
+              __23.z = (__24.z*v__22.z);
+              __23.w = (__24.w*v__22.w);
+            __22.x = (v__17.x+__23.x);
+            __22.y = (v__17.y+__23.y);
+            __22.z = (v__17.z+__23.z);
+            __22.w = (v__17.w+__23.w);
+          __16.x = (__17.x*__22.x);
+          __16.y = (__17.y*__22.y);
+          __16.z = (__17.z*__22.z);
+          __16.w = (__17.w*__22.w);
+        __15.x = (v__12.x+__16.x);
+        __15.y = (v__12.y+__16.y);
+        __15.z = (v__12.z+__16.z);
+        __15.w = (v__12.w+__16.w);
+      float4 short_silu_p5 = __15;
+      float broadcast_var_26 = -0x1.134dd8c26a9efp-6f/*-1.680323e-02*/;
+      float broadcast_var_27 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_28 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_29 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_30 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_31 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_32 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_33 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_34 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_35 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_36 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_37 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_38 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_39 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_40 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_41 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __29;
+        float4 v__23 = make_float4(broadcast_var_26, broadcast_var_26, broadcast_var_26, broadcast_var_26);
+        float4 __30;
+          float4 __31;
+            float4 __32;
+              float4 v__24 = make_float4(broadcast_var_27, broadcast_var_27, broadcast_var_27, broadcast_var_27);
+              float4 __33;
+                float4 v__25 = make_float4(broadcast_var_28, broadcast_var_28, broadcast_var_28, broadcast_var_28);
+                __33.x = min(v__25.x, short_silu_x.x);
+                __33.y = min(v__25.y, short_silu_x.y);
+                __33.z = min(v__25.z, short_silu_x.z);
+                __33.w = min(v__25.w, short_silu_x.w);
+              __32.x = max(v__24.x, __33.x);
+              __32.y = max(v__24.y, __33.y);
+              __32.z = max(v__24.z, __33.z);
+              __32.w = max(v__24.w, __33.w);
+            float4 __34;
+              float4 v__26 = make_float4(broadcast_var_29, broadcast_var_29, broadcast_var_29, broadcast_var_29);
+              float4 __35;
+                float4 v__27 = make_float4(broadcast_var_30, broadcast_var_30, broadcast_var_30, broadcast_var_30);
+                __35.x = min(v__27.x, short_silu_x.x);
+                __35.y = min(v__27.y, short_silu_x.y);
+                __35.z = min(v__27.z, short_silu_x.z);
+                __35.w = min(v__27.w, short_silu_x.w);
+              __34.x = max(v__26.x, __35.x);
+              __34.y = max(v__26.y, __35.y);
+              __34.z = max(v__26.z, __35.z);
+              __34.w = max(v__26.w, __35.w);
+            __31.x = (__32.x*__34.x);
+            __31.y = (__32.y*__34.y);
+            __31.z = (__32.z*__34.z);
+            __31.w = (__32.w*__34.w);
+          float4 __36;
+            float4 v__28 = make_float4(broadcast_var_31, broadcast_var_31, broadcast_var_31, broadcast_var_31);
+            float4 __37;
+              float4 __38;
+                float4 __39;
+                  float4 v__29 = make_float4(broadcast_var_32, broadcast_var_32, broadcast_var_32, broadcast_var_32);
+                  float4 __40;
+                    float4 v__30 = make_float4(broadcast_var_33, broadcast_var_33, broadcast_var_33, broadcast_var_33);
+                    __40.x = min(v__30.x, short_silu_x.x);
+                    __40.y = min(v__30.y, short_silu_x.y);
+                    __40.z = min(v__30.z, short_silu_x.z);
+                    __40.w = min(v__30.w, short_silu_x.w);
+                  __39.x = max(v__29.x, __40.x);
+                  __39.y = max(v__29.y, __40.y);
+                  __39.z = max(v__29.z, __40.z);
+                  __39.w = max(v__29.w, __40.w);
+                float4 __41;
+                  float4 v__31 = make_float4(broadcast_var_34, broadcast_var_34, broadcast_var_34, broadcast_var_34);
+                  float4 __42;
+                    float4 v__32 = make_float4(broadcast_var_35, broadcast_var_35, broadcast_var_35, broadcast_var_35);
+                    __42.x = min(v__32.x, short_silu_x.x);
+                    __42.y = min(v__32.y, short_silu_x.y);
+                    __42.z = min(v__32.z, short_silu_x.z);
+                    __42.w = min(v__32.w, short_silu_x.w);
+                  __41.x = max(v__31.x, __42.x);
+                  __41.y = max(v__31.y, __42.y);
+                  __41.z = max(v__31.z, __42.z);
+                  __41.w = max(v__31.w, __42.w);
+                __38.x = (__39.x*__41.x);
+                __38.y = (__39.y*__41.y);
+                __38.z = (__39.z*__41.z);
+                __38.w = (__39.w*__41.w);
+              float4 __43;
+                float4 v__33 = make_float4(broadcast_var_36, broadcast_var_36, broadcast_var_36, broadcast_var_36);
+                float4 __44;
+                  float4 __45;
+                    float4 __46;
+                      float4 v__34 = make_float4(broadcast_var_37, broadcast_var_37, broadcast_var_37, broadcast_var_37);
+                      float4 __47;
+                        float4 v__35 = make_float4(broadcast_var_38, broadcast_var_38, broadcast_var_38, broadcast_var_38);
+                        __47.x = min(v__35.x, short_silu_x.x);
+                        __47.y = min(v__35.y, short_silu_x.y);
+                        __47.z = min(v__35.z, short_silu_x.z);
+                        __47.w = min(v__35.w, short_silu_x.w);
+                      __46.x = max(v__34.x, __47.x);
+                      __46.y = max(v__34.y, __47.y);
+                      __46.z = max(v__34.z, __47.z);
+                      __46.w = max(v__34.w, __47.w);
+                    float4 __48;
+                      float4 v__36 = make_float4(broadcast_var_39, broadcast_var_39, broadcast_var_39, broadcast_var_39);
+                      float4 __49;
+                        float4 v__37 = make_float4(broadcast_var_40, broadcast_var_40, broadcast_var_40, broadcast_var_40);
+                        __49.x = min(v__37.x, short_silu_x.x);
+                        __49.y = min(v__37.y, short_silu_x.y);
+                        __49.z = min(v__37.z, short_silu_x.z);
+                        __49.w = min(v__37.w, short_silu_x.w);
+                      __48.x = max(v__36.x, __49.x);
+                      __48.y = max(v__36.y, __49.y);
+                      __48.z = max(v__36.z, __49.z);
+                      __48.w = max(v__36.w, __49.w);
+                    __45.x = (__46.x*__48.x);
+                    __45.y = (__46.y*__48.y);
+                    __45.z = (__46.z*__48.z);
+                    __45.w = (__46.w*__48.w);
+                  float4 v__38 = make_float4(broadcast_var_41, broadcast_var_41, broadcast_var_41, broadcast_var_41);
+                  __44.x = (__45.x*v__38.x);
+                  __44.y = (__45.y*v__38.y);
+                  __44.z = (__45.z*v__38.z);
+                  __44.w = (__45.w*v__38.w);
+                __43.x = (v__33.x+__44.x);
+                __43.y = (v__33.y+__44.y);
+                __43.z = (v__33.z+__44.z);
+                __43.w = (v__33.w+__44.w);
+              __37.x = (__38.x*__43.x);
+              __37.y = (__38.y*__43.y);
+              __37.z = (__38.z*__43.z);
+              __37.w = (__38.w*__43.w);
+            __36.x = (v__28.x+__37.x);
+            __36.y = (v__28.y+__37.y);
+            __36.z = (v__28.z+__37.z);
+            __36.w = (v__28.w+__37.w);
+          __30.x = (__31.x*__36.x);
+          __30.y = (__31.y*__36.y);
+          __30.z = (__31.z*__36.z);
+          __30.w = (__31.w*__36.w);
+        __29.x = (v__23.x+__30.x);
+        __29.y = (v__23.y+__30.y);
+        __29.z = (v__23.z+__30.z);
+        __29.w = (v__23.w+__30.w);
+      float4 short_silu_p3 = __29;
+      float broadcast_var_42 = 0x1.f6e65882d1e5ep-3f/*2.455565e-01*/;
+      float broadcast_var_43 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_44 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_45 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_46 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_47 = -0x1.134dd8c26a9efp-6f/*-1.680323e-02*/;
+      float broadcast_var_48 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_49 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_50 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_51 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_52 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_53 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_54 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_55 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_56 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_57 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_58 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_59 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_60 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_61 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_62 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __50;
+        float4 v__39 = make_float4(broadcast_var_42, broadcast_var_42, broadcast_var_42, broadcast_var_42);
+        float4 __51;
+          float4 __52;
+            float4 __53;
+              float4 v__40 = make_float4(broadcast_var_43, broadcast_var_43, broadcast_var_43, broadcast_var_43);
+              float4 __54;
+                float4 v__41 = make_float4(broadcast_var_44, broadcast_var_44, broadcast_var_44, broadcast_var_44);
+                __54.x = min(v__41.x, short_silu_x.x);
+                __54.y = min(v__41.y, short_silu_x.y);
+                __54.z = min(v__41.z, short_silu_x.z);
+                __54.w = min(v__41.w, short_silu_x.w);
+              __53.x = max(v__40.x, __54.x);
+              __53.y = max(v__40.y, __54.y);
+              __53.z = max(v__40.z, __54.z);
+              __53.w = max(v__40.w, __54.w);
+            float4 __55;
+              float4 v__42 = make_float4(broadcast_var_45, broadcast_var_45, broadcast_var_45, broadcast_var_45);
+              float4 __56;
+                float4 v__43 = make_float4(broadcast_var_46, broadcast_var_46, broadcast_var_46, broadcast_var_46);
+                __56.x = min(v__43.x, short_silu_x.x);
+                __56.y = min(v__43.y, short_silu_x.y);
+                __56.z = min(v__43.z, short_silu_x.z);
+                __56.w = min(v__43.w, short_silu_x.w);
+              __55.x = max(v__42.x, __56.x);
+              __55.y = max(v__42.y, __56.y);
+              __55.z = max(v__42.z, __56.z);
+              __55.w = max(v__42.w, __56.w);
+            __52.x = (__53.x*__55.x);
+            __52.y = (__53.y*__55.y);
+            __52.z = (__53.z*__55.z);
+            __52.w = (__53.w*__55.w);
+          float4 __57;
+            float4 v__44 = make_float4(broadcast_var_47, broadcast_var_47, broadcast_var_47, broadcast_var_47);
+            float4 __58;
+              float4 __59;
+                float4 __60;
+                  float4 v__45 = make_float4(broadcast_var_48, broadcast_var_48, broadcast_var_48, broadcast_var_48);
+                  float4 __61;
+                    float4 v__46 = make_float4(broadcast_var_49, broadcast_var_49, broadcast_var_49, broadcast_var_49);
+                    __61.x = min(v__46.x, short_silu_x.x);
+                    __61.y = min(v__46.y, short_silu_x.y);
+                    __61.z = min(v__46.z, short_silu_x.z);
+                    __61.w = min(v__46.w, short_silu_x.w);
+                  __60.x = max(v__45.x, __61.x);
+                  __60.y = max(v__45.y, __61.y);
+                  __60.z = max(v__45.z, __61.z);
+                  __60.w = max(v__45.w, __61.w);
+                float4 __62;
+                  float4 v__47 = make_float4(broadcast_var_50, broadcast_var_50, broadcast_var_50, broadcast_var_50);
+                  float4 __63;
+                    float4 v__48 = make_float4(broadcast_var_51, broadcast_var_51, broadcast_var_51, broadcast_var_51);
+                    __63.x = min(v__48.x, short_silu_x.x);
+                    __63.y = min(v__48.y, short_silu_x.y);
+                    __63.z = min(v__48.z, short_silu_x.z);
+                    __63.w = min(v__48.w, short_silu_x.w);
+                  __62.x = max(v__47.x, __63.x);
+                  __62.y = max(v__47.y, __63.y);
+                  __62.z = max(v__47.z, __63.z);
+                  __62.w = max(v__47.w, __63.w);
+                __59.x = (__60.x*__62.x);
+                __59.y = (__60.y*__62.y);
+                __59.z = (__60.z*__62.z);
+                __59.w = (__60.w*__62.w);
+              float4 __64;
+                float4 v__49 = make_float4(broadcast_var_52, broadcast_var_52, broadcast_var_52, broadcast_var_52);
+                float4 __65;
+                  float4 __66;
+                    float4 __67;
+                      float4 v__50 = make_float4(broadcast_var_53, broadcast_var_53, broadcast_var_53, broadcast_var_53);
+                      float4 __68;
+                        float4 v__51 = make_float4(broadcast_var_54, broadcast_var_54, broadcast_var_54, broadcast_var_54);
+                        __68.x = min(v__51.x, short_silu_x.x);
+                        __68.y = min(v__51.y, short_silu_x.y);
+                        __68.z = min(v__51.z, short_silu_x.z);
+                        __68.w = min(v__51.w, short_silu_x.w);
+                      __67.x = max(v__50.x, __68.x);
+                      __67.y = max(v__50.y, __68.y);
+                      __67.z = max(v__50.z, __68.z);
+                      __67.w = max(v__50.w, __68.w);
+                    float4 __69;
+                      float4 v__52 = make_float4(broadcast_var_55, broadcast_var_55, broadcast_var_55, broadcast_var_55);
+                      float4 __70;
+                        float4 v__53 = make_float4(broadcast_var_56, broadcast_var_56, broadcast_var_56, broadcast_var_56);
+                        __70.x = min(v__53.x, short_silu_x.x);
+                        __70.y = min(v__53.y, short_silu_x.y);
+                        __70.z = min(v__53.z, short_silu_x.z);
+                        __70.w = min(v__53.w, short_silu_x.w);
+                      __69.x = max(v__52.x, __70.x);
+                      __69.y = max(v__52.y, __70.y);
+                      __69.z = max(v__52.z, __70.z);
+                      __69.w = max(v__52.w, __70.w);
+                    __66.x = (__67.x*__69.x);
+                    __66.y = (__67.y*__69.y);
+                    __66.z = (__67.z*__69.z);
+                    __66.w = (__67.w*__69.w);
+                  float4 __71;
+                    float4 v__54 = make_float4(broadcast_var_57, broadcast_var_57, broadcast_var_57, broadcast_var_57);
+                    float4 __72;
+                      float4 __73;
+                        float4 __74;
+                          float4 v__55 = make_float4(broadcast_var_58, broadcast_var_58, broadcast_var_58, broadcast_var_58);
+                          float4 __75;
+                            float4 v__56 = make_float4(broadcast_var_59, broadcast_var_59, broadcast_var_59, broadcast_var_59);
+                            __75.x = min(v__56.x, short_silu_x.x);
+                            __75.y = min(v__56.y, short_silu_x.y);
+                            __75.z = min(v__56.z, short_silu_x.z);
+                            __75.w = min(v__56.w, short_silu_x.w);
+                          __74.x = max(v__55.x, __75.x);
+                          __74.y = max(v__55.y, __75.y);
+                          __74.z = max(v__55.z, __75.z);
+                          __74.w = max(v__55.w, __75.w);
+                        float4 __76;
+                          float4 v__57 = make_float4(broadcast_var_60, broadcast_var_60, broadcast_var_60, broadcast_var_60);
+                          float4 __77;
+                            float4 v__58 = make_float4(broadcast_var_61, broadcast_var_61, broadcast_var_61, broadcast_var_61);
+                            __77.x = min(v__58.x, short_silu_x.x);
+                            __77.y = min(v__58.y, short_silu_x.y);
+                            __77.z = min(v__58.z, short_silu_x.z);
+                            __77.w = min(v__58.w, short_silu_x.w);
+                          __76.x = max(v__57.x, __77.x);
+                          __76.y = max(v__57.y, __77.y);
+                          __76.z = max(v__57.z, __77.z);
+                          __76.w = max(v__57.w, __77.w);
+                        __73.x = (__74.x*__76.x);
+                        __73.y = (__74.y*__76.y);
+                        __73.z = (__74.z*__76.z);
+                        __73.w = (__74.w*__76.w);
+                      float4 v__59 = make_float4(broadcast_var_62, broadcast_var_62, broadcast_var_62, broadcast_var_62);
+                      __72.x = (__73.x*v__59.x);
+                      __72.y = (__73.y*v__59.y);
+                      __72.z = (__73.z*v__59.z);
+                      __72.w = (__73.w*v__59.w);
+                    __71.x = (v__54.x+__72.x);
+                    __71.y = (v__54.y+__72.y);
+                    __71.z = (v__54.z+__72.z);
+                    __71.w = (v__54.w+__72.w);
+                  __65.x = (__66.x*__71.x);
+                  __65.y = (__66.y*__71.y);
+                  __65.z = (__66.z*__71.z);
+                  __65.w = (__66.w*__71.w);
+                __64.x = (v__49.x+__65.x);
+                __64.y = (v__49.y+__65.y);
+                __64.z = (v__49.z+__65.z);
+                __64.w = (v__49.w+__65.w);
+              __58.x = (__59.x*__64.x);
+              __58.y = (__59.y*__64.y);
+              __58.z = (__59.z*__64.z);
+              __58.w = (__59.w*__64.w);
+            __57.x = (v__44.x+__58.x);
+            __57.y = (v__44.y+__58.y);
+            __57.z = (v__44.z+__58.z);
+            __57.w = (v__44.w+__58.w);
+          __51.x = (__52.x*__57.x);
+          __51.y = (__52.y*__57.y);
+          __51.z = (__52.z*__57.z);
+          __51.w = (__52.w*__57.w);
+        __50.x = (v__39.x+__51.x);
+        __50.y = (v__39.y+__51.y);
+        __50.z = (v__39.z+__51.z);
+        __50.w = (v__39.w+__51.w);
+      float4 short_silu_p1 = __50;
+      float broadcast_var_63 = 0x1p-1f/*5.000000e-01*/;
+      float broadcast_var_64 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_65 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_66 = 0x1.f6e65882d1e5ep-3f/*2.455565e-01*/;
+      float broadcast_var_67 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_68 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_69 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_70 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_71 = -0x1.134dd8c26a9efp-6f/*-1.680323e-02*/;
+      float broadcast_var_72 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_73 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_74 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_75 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_76 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_77 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_78 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_79 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_80 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_81 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_82 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_83 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_84 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_85 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_86 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __78;
+        float4 __79;
+          float4 v__60 = make_float4(broadcast_var_63, broadcast_var_63, broadcast_var_63, broadcast_var_63);
+          float4 __80;
+            float4 __81;
+              float4 v__61 = make_float4(broadcast_var_64, broadcast_var_64, broadcast_var_64, broadcast_var_64);
+              float4 __82;
+                float4 v__62 = make_float4(broadcast_var_65, broadcast_var_65, broadcast_var_65, broadcast_var_65);
+                __82.x = min(v__62.x, short_silu_x.x);
+                __82.y = min(v__62.y, short_silu_x.y);
+                __82.z = min(v__62.z, short_silu_x.z);
+                __82.w = min(v__62.w, short_silu_x.w);
+              __81.x = max(v__61.x, __82.x);
+              __81.y = max(v__61.y, __82.y);
+              __81.z = max(v__61.z, __82.z);
+              __81.w = max(v__61.w, __82.w);
+            float4 __83;
+              float4 v__63 = make_float4(broadcast_var_66, broadcast_var_66, broadcast_var_66, broadcast_var_66);
+              float4 __84;
+                float4 __85;
+                  float4 __86;
+                    float4 v__64 = make_float4(broadcast_var_67, broadcast_var_67, broadcast_var_67, broadcast_var_67);
+                    float4 __87;
+                      float4 v__65 = make_float4(broadcast_var_68, broadcast_var_68, broadcast_var_68, broadcast_var_68);
+                      __87.x = min(v__65.x, short_silu_x.x);
+                      __87.y = min(v__65.y, short_silu_x.y);
+                      __87.z = min(v__65.z, short_silu_x.z);
+                      __87.w = min(v__65.w, short_silu_x.w);
+                    __86.x = max(v__64.x, __87.x);
+                    __86.y = max(v__64.y, __87.y);
+                    __86.z = max(v__64.z, __87.z);
+                    __86.w = max(v__64.w, __87.w);
+                  float4 __88;
+                    float4 v__66 = make_float4(broadcast_var_69, broadcast_var_69, broadcast_var_69, broadcast_var_69);
+                    float4 __89;
+                      float4 v__67 = make_float4(broadcast_var_70, broadcast_var_70, broadcast_var_70, broadcast_var_70);
+                      __89.x = min(v__67.x, short_silu_x.x);
+                      __89.y = min(v__67.y, short_silu_x.y);
+                      __89.z = min(v__67.z, short_silu_x.z);
+                      __89.w = min(v__67.w, short_silu_x.w);
+                    __88.x = max(v__66.x, __89.x);
+                    __88.y = max(v__66.y, __89.y);
+                    __88.z = max(v__66.z, __89.z);
+                    __88.w = max(v__66.w, __89.w);
+                  __85.x = (__86.x*__88.x);
+                  __85.y = (__86.y*__88.y);
+                  __85.z = (__86.z*__88.z);
+                  __85.w = (__86.w*__88.w);
+                float4 __90;
+                  float4 v__68 = make_float4(broadcast_var_71, broadcast_var_71, broadcast_var_71, broadcast_var_71);
+                  float4 __91;
+                    float4 __92;
+                      float4 __93;
+                        float4 v__69 = make_float4(broadcast_var_72, broadcast_var_72, broadcast_var_72, broadcast_var_72);
+                        float4 __94;
+                          float4 v__70 = make_float4(broadcast_var_73, broadcast_var_73, broadcast_var_73, broadcast_var_73);
+                          __94.x = min(v__70.x, short_silu_x.x);
+                          __94.y = min(v__70.y, short_silu_x.y);
+                          __94.z = min(v__70.z, short_silu_x.z);
+                          __94.w = min(v__70.w, short_silu_x.w);
+                        __93.x = max(v__69.x, __94.x);
+                        __93.y = max(v__69.y, __94.y);
+                        __93.z = max(v__69.z, __94.z);
+                        __93.w = max(v__69.w, __94.w);
+                      float4 __95;
+                        float4 v__71 = make_float4(broadcast_var_74, broadcast_var_74, broadcast_var_74, broadcast_var_74);
+                        float4 __96;
+                          float4 v__72 = make_float4(broadcast_var_75, broadcast_var_75, broadcast_var_75, broadcast_var_75);
+                          __96.x = min(v__72.x, short_silu_x.x);
+                          __96.y = min(v__72.y, short_silu_x.y);
+                          __96.z = min(v__72.z, short_silu_x.z);
+                          __96.w = min(v__72.w, short_silu_x.w);
+                        __95.x = max(v__71.x, __96.x);
+                        __95.y = max(v__71.y, __96.y);
+                        __95.z = max(v__71.z, __96.z);
+                        __95.w = max(v__71.w, __96.w);
+                      __92.x = (__93.x*__95.x);
+                      __92.y = (__93.y*__95.y);
+                      __92.z = (__93.z*__95.z);
+                      __92.w = (__93.w*__95.w);
+                    float4 __97;
+                      float4 v__73 = make_float4(broadcast_var_76, broadcast_var_76, broadcast_var_76, broadcast_var_76);
+                      float4 __98;
+                        float4 __99;
+                          float4 __100;
+                            float4 v__74 = make_float4(broadcast_var_77, broadcast_var_77, broadcast_var_77, broadcast_var_77);
+                            float4 __101;
+                              float4 v__75 = make_float4(broadcast_var_78, broadcast_var_78, broadcast_var_78, broadcast_var_78);
+                              __101.x = min(v__75.x, short_silu_x.x);
+                              __101.y = min(v__75.y, short_silu_x.y);
+                              __101.z = min(v__75.z, short_silu_x.z);
+                              __101.w = min(v__75.w, short_silu_x.w);
+                            __100.x = max(v__74.x, __101.x);
+                            __100.y = max(v__74.y, __101.y);
+                            __100.z = max(v__74.z, __101.z);
+                            __100.w = max(v__74.w, __101.w);
+                          float4 __102;
+                            float4 v__76 = make_float4(broadcast_var_79, broadcast_var_79, broadcast_var_79, broadcast_var_79);
+                            float4 __103;
+                              float4 v__77 = make_float4(broadcast_var_80, broadcast_var_80, broadcast_var_80, broadcast_var_80);
+                              __103.x = min(v__77.x, short_silu_x.x);
+                              __103.y = min(v__77.y, short_silu_x.y);
+                              __103.z = min(v__77.z, short_silu_x.z);
+                              __103.w = min(v__77.w, short_silu_x.w);
+                            __102.x = max(v__76.x, __103.x);
+                            __102.y = max(v__76.y, __103.y);
+                            __102.z = max(v__76.z, __103.z);
+                            __102.w = max(v__76.w, __103.w);
+                          __99.x = (__100.x*__102.x);
+                          __99.y = (__100.y*__102.y);
+                          __99.z = (__100.z*__102.z);
+                          __99.w = (__100.w*__102.w);
+                        float4 __104;
+                          float4 v__78 = make_float4(broadcast_var_81, broadcast_var_81, broadcast_var_81, broadcast_var_81);
+                          float4 __105;
+                            float4 __106;
+                              float4 __107;
+                                float4 v__79 = make_float4(broadcast_var_82, broadcast_var_82, broadcast_var_82, broadcast_var_82);
+                                float4 __108;
+                                  float4 v__80 = make_float4(broadcast_var_83, broadcast_var_83, broadcast_var_83, broadcast_var_83);
+                                  __108.x = min(v__80.x, short_silu_x.x);
+                                  __108.y = min(v__80.y, short_silu_x.y);
+                                  __108.z = min(v__80.z, short_silu_x.z);
+                                  __108.w = min(v__80.w, short_silu_x.w);
+                                __107.x = max(v__79.x, __108.x);
+                                __107.y = max(v__79.y, __108.y);
+                                __107.z = max(v__79.z, __108.z);
+                                __107.w = max(v__79.w, __108.w);
+                              float4 __109;
+                                float4 v__81 = make_float4(broadcast_var_84, broadcast_var_84, broadcast_var_84, broadcast_var_84);
+                                float4 __110;
+                                  float4 v__82 = make_float4(broadcast_var_85, broadcast_var_85, broadcast_var_85, broadcast_var_85);
+                                  __110.x = min(v__82.x, short_silu_x.x);
+                                  __110.y = min(v__82.y, short_silu_x.y);
+                                  __110.z = min(v__82.z, short_silu_x.z);
+                                  __110.w = min(v__82.w, short_silu_x.w);
+                                __109.x = max(v__81.x, __110.x);
+                                __109.y = max(v__81.y, __110.y);
+                                __109.z = max(v__81.z, __110.z);
+                                __109.w = max(v__81.w, __110.w);
+                              __106.x = (__107.x*__109.x);
+                              __106.y = (__107.y*__109.y);
+                              __106.z = (__107.z*__109.z);
+                              __106.w = (__107.w*__109.w);
+                            float4 v__83 = make_float4(broadcast_var_86, broadcast_var_86, broadcast_var_86, broadcast_var_86);
+                            __105.x = (__106.x*v__83.x);
+                            __105.y = (__106.y*v__83.y);
+                            __105.z = (__106.z*v__83.z);
+                            __105.w = (__106.w*v__83.w);
+                          __104.x = (v__78.x+__105.x);
+                          __104.y = (v__78.y+__105.y);
+                          __104.z = (v__78.z+__105.z);
+                          __104.w = (v__78.w+__105.w);
+                        __98.x = (__99.x*__104.x);
+                        __98.y = (__99.y*__104.y);
+                        __98.z = (__99.z*__104.z);
+                        __98.w = (__99.w*__104.w);
+                      __97.x = (v__73.x+__98.x);
+                      __97.y = (v__73.y+__98.y);
+                      __97.z = (v__73.z+__98.z);
+                      __97.w = (v__73.w+__98.w);
+                    __91.x = (__92.x*__97.x);
+                    __91.y = (__92.y*__97.y);
+                    __91.z = (__92.z*__97.z);
+                    __91.w = (__92.w*__97.w);
+                  __90.x = (v__68.x+__91.x);
+                  __90.y = (v__68.y+__91.y);
+                  __90.z = (v__68.z+__91.z);
+                  __90.w = (v__68.w+__91.w);
+                __84.x = (__85.x*__90.x);
+                __84.y = (__85.y*__90.y);
+                __84.z = (__85.z*__90.z);
+                __84.w = (__85.w*__90.w);
+              __83.x = (v__63.x+__84.x);
+              __83.y = (v__63.y+__84.y);
+              __83.z = (v__63.z+__84.z);
+              __83.w = (v__63.w+__84.w);
+            __80.x = (__81.x*__83.x);
+            __80.y = (__81.y*__83.y);
+            __80.z = (__81.z*__83.z);
+            __80.w = (__81.w*__83.w);
+          __79.x = (v__60.x+__80.x);
+          __79.y = (v__60.y+__80.y);
+          __79.z = (v__60.z+__80.z);
+          __79.w = (v__60.w+__80.w);
+        __78.x = (short_silu_x.x*__79.x);
+        __78.y = (short_silu_x.y*__79.y);
+        __78.z = (short_silu_x.z*__79.z);
+        __78.w = (short_silu_x.w*__79.w);
+      *(float4*)(short_gate_local + (i_15 * 4)) = __78;
+      if (((((((int)threadIdx.x) >> 6) * 32) + ((i_15 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < short_group_size) {
+        if (0 <= short_block_start) {
+          if (short_block_start < 6144) {
+            uint2 __111;
+            float4 __112;
+              float4 v__84 = *(float4*)(short_up_local + (i_15 * 4));
+              float4 v__85 = *(float4*)(short_gate_local + (i_15 * 4));
+              __112.x = (v__84.x*v__85.x);
+              __112.y = (v__84.y*v__85.y);
+              __112.z = (v__84.z*v__85.z);
+              __112.w = (v__84.w*v__85.w);
+            ((half2*)(&__111))[0] = __float22half2_rn(((float2*)(&__112))[0]);
+            ((half2*)(&__111))[1] = __float22half2_rn(((float2*)(&__112))[1]);
+            *(uint2*)(up_logits + ((((((((((short_block_start >> 7) * 262144) + (((int)blockIdx.x) * 16384)) + (((i_15 & 7) >> 1) * 4096)) + ((i_15 >> 3) * 2048)) + ((((int)threadIdx.x) >> 6) * 512)) + ((i_15 & 1) * 256)) + (((((int)threadIdx.x) & 63) >> 5) * 128)) + ((((int)threadIdx.x) & 15) * 8)) + (((((int)threadIdx.x) & 31) >> 4) * 4))) = __111;
+          }
+        }
+      }
+    }
+  } else {
+    int copy_expert = expert_rank[((((int)blockIdx.y) >> 1) + 8)];
+    int group_size = group_sizes[copy_expert];
+    int block_start = group_padded_offsets[copy_expert];
+    #pragma unroll
+    for (int i_16 = 0; i_16 < 12; ++i_16) {
+      float broadcast_var_87 = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(gate_local + (i_16 * 4)) = make_float4(broadcast_var_87, broadcast_var_87, broadcast_var_87, broadcast_var_87);
+    }
+    #pragma unroll
+    for (int i_17 = 0; i_17 < 12; ++i_17) {
+      float broadcast_var_88 = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(up_local + (i_17 * 4)) = make_float4(broadcast_var_88, broadcast_var_88, broadcast_var_88, broadcast_var_88);
+    }
+    #pragma unroll
+    for (int i_18 = 0; i_18 < 12; ++i_18) {
+      half_t broadcast_var_89 = half_t(0x0p+0f/*0.000000e+00*/);
+      *(uint2*)(input_prefetch + (i_18 * 4)) = make_uint2(__pack_half2(broadcast_var_89, broadcast_var_89), __pack_half2(broadcast_var_89, broadcast_var_89));
+    }
+    for (int native_vec = 0; native_vec < 6; ++native_vec) {
+      *(uint4*)(input_shared + (native_vec * 8)) = *(uint4*)(input + (((copy_expert * 1376256) + (native_vec * 2048)) + (((int)threadIdx.x) * 8)));
+    }
+    for (int k_pair = 0; k_pair < 56; ++k_pair) {
+      for (int native_vec_1 = 0; native_vec_1 < 6; ++native_vec_1) {
+        if (((((((int)threadIdx.x) >> 6) * 48) + ((native_vec_1 % 3) * 16)) + (((int)threadIdx.x) & 15)) < group_size) {
+          *(uint4*)(input_prefetch + (native_vec_1 * 8)) = *(uint4*)(input + (((((copy_expert * 1376256) + (k_pair * 24576)) + (native_vec_1 * 2048)) + (((int)threadIdx.x) * 8)) + 12288));
+        }
+      }
+      *(uint4*)(gate_vec + 0) = *(uint4*)(gate + ((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)));
+      *(uint4*)(up_vec + 0) = *(uint4*)(up + ((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)));
+      *(uint4*)(weight_shared + (((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = *(uint4*)(gate_vec + 0);
+      *(uint4*)(weight_shared + ((((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192)) = *(uint4*)(up_vec + 0);
+      *(uint4*)(gate_vec_1 + 0) = *(uint4*)(gate + (((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 229376));
+      *(uint4*)(up_vec_1 + 0) = *(uint4*)(up + (((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 229376));
+      *(uint4*)(weight_shared + ((((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 2048)) = *(uint4*)(gate_vec_1 + 0);
+      *(uint4*)(weight_shared + ((((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 10240)) = *(uint4*)(up_vec_1 + 0);
+      __syncthreads();
+      if (((((int)threadIdx.x) >> 6) * 48) < group_size) {
+        for (int ki_2 = 0; ki_2 < 2; ++ki_2) {
+          for (int j_8 = 0; j_8 < 4; ++j_8) {
+            *(uint4*)(weight_local + (j_8 * 8)) = *(uint4*)(weight_shared + (((((j_8 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_2) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+          }
+          for (int kp_4 = 0; kp_4 < 2; ++kp_4) {
+            for (int i_19 = 0; i_19 < 3; ++i_19) {
+              for (int j_9 = 0; j_9 < 4; ++j_9) {
+                {
+      *(((float32x4*)gate_local) + ((i_19 * 4) + j_9)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)weight_local) + ((j_9 * 2) + kp_4)),
+                    *(((float16x4*)input_shared) + (((ki_2 * 6) + (i_19 * 2)) + kp_4)),
+                    *(((float32x4*)gate_local) + ((i_19 * 4) + j_9)));
+    };
+              }
+            }
+          }
+          for (int j_10 = 0; j_10 < 4; ++j_10) {
+            *(uint4*)(weight_local + (j_10 * 8)) = *(uint4*)(weight_shared + ((((((j_10 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_2) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192));
+          }
+          for (int kp_5 = 0; kp_5 < 2; ++kp_5) {
+            for (int i_20 = 0; i_20 < 3; ++i_20) {
+              for (int j_11 = 0; j_11 < 4; ++j_11) {
+                {
+      *(((float32x4*)up_local) + ((i_20 * 4) + j_11)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)weight_local) + ((j_11 * 2) + kp_5)),
+                    *(((float16x4*)input_shared) + (((ki_2 * 6) + (i_20 * 2)) + kp_5)),
+                    *(((float32x4*)up_local) + ((i_20 * 4) + j_11)));
+    };
+              }
+            }
+          }
+        }
+      }
+      __syncthreads();
+      if (k_pair < 55) {
+        for (int native_vec_2 = 0; native_vec_2 < 6; ++native_vec_2) {
+          if (((((((int)threadIdx.x) >> 6) * 48) + ((native_vec_2 % 3) * 16)) + (((int)threadIdx.x) & 15)) < group_size) {
+            *(uint4*)(input_shared + (native_vec_2 * 8)) = *(uint4*)(input + (((((copy_expert * 1376256) + (k_pair * 24576)) + (native_vec_2 * 2048)) + (((int)threadIdx.x) * 8)) + 24576));
+          }
+        }
+      }
+      *(uint4*)(gate_vec_2 + 0) = *(uint4*)(gate + (((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 64));
+      *(uint4*)(up_vec_2 + 0) = *(uint4*)(up + (((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 64));
+      *(uint4*)(weight_shared + (((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = *(uint4*)(gate_vec_2 + 0);
+      *(uint4*)(weight_shared + ((((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192)) = *(uint4*)(up_vec_2 + 0);
+      *(uint4*)(gate_vec_3 + 0) = *(uint4*)(gate + (((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 229440));
+      *(uint4*)(up_vec_3 + 0) = *(uint4*)(up + (((((((copy_expert * 14680064) + (((int)blockIdx.x) * 917504)) + ((((int)blockIdx.y) & 1) * 458752)) + ((((int)threadIdx.x) >> 3) * 7168)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 229440));
+      *(uint4*)(weight_shared + ((((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 2048)) = *(uint4*)(gate_vec_3 + 0);
+      *(uint4*)(weight_shared + ((((((((int)threadIdx.x) >> 3) * 64) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 10240)) = *(uint4*)(up_vec_3 + 0);
+      __syncthreads();
+      if (((((int)threadIdx.x) >> 6) * 48) < group_size) {
+        for (int ki_3 = 0; ki_3 < 2; ++ki_3) {
+          for (int j_12 = 0; j_12 < 4; ++j_12) {
+            *(uint4*)(weight_local + (j_12 * 8)) = *(uint4*)(weight_shared + (((((j_12 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_3) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+          }
+          for (int kp_6 = 0; kp_6 < 2; ++kp_6) {
+            for (int i_21 = 0; i_21 < 3; ++i_21) {
+              for (int j_13 = 0; j_13 < 4; ++j_13) {
+                {
+      *(((float32x4*)gate_local) + ((i_21 * 4) + j_13)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)weight_local) + ((j_13 * 2) + kp_6)),
+                    *(((float16x4*)input_prefetch) + (((ki_3 * 6) + (i_21 * 2)) + kp_6)),
+                    *(((float32x4*)gate_local) + ((i_21 * 4) + j_13)));
+    };
+              }
+            }
+          }
+          for (int j_14 = 0; j_14 < 4; ++j_14) {
+            *(uint4*)(weight_local + (j_14 * 8)) = *(uint4*)(weight_shared + ((((((j_14 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_3) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192));
+          }
+          for (int kp_7 = 0; kp_7 < 2; ++kp_7) {
+            for (int i_22 = 0; i_22 < 3; ++i_22) {
+              for (int j_15 = 0; j_15 < 4; ++j_15) {
+                {
+      *(((float32x4*)up_local) + ((i_22 * 4) + j_15)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)weight_local) + ((j_15 * 2) + kp_7)),
+                    *(((float16x4*)input_prefetch) + (((ki_3 * 6) + (i_22 * 2)) + kp_7)),
+                    *(((float32x4*)up_local) + ((i_22 * 4) + j_15)));
+    };
+              }
+            }
+          }
+        }
+      }
+      if (k_pair < 55) {
+        __syncthreads();
+      }
+    }
+    #pragma unroll
+    for (int i_23 = 0; i_23 < 12; ++i_23) {
+      float4 silu_x = *(float4*)(gate_local + (i_23 * 4));
+      float broadcast_var_90 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_91 = 0x1.6p+2f/*5.500000e+00*/;
+      float4 __113;
+        float4 v__86 = make_float4(broadcast_var_90, broadcast_var_90, broadcast_var_90, broadcast_var_90);
+        float4 __114;
+          float4 v__87 = make_float4(broadcast_var_91, broadcast_var_91, broadcast_var_91, broadcast_var_91);
+          __114.x = min(v__87.x, silu_x.x);
+          __114.y = min(v__87.y, silu_x.y);
+          __114.z = min(v__87.z, silu_x.z);
+          __114.w = min(v__87.w, silu_x.w);
+        __113.x = max(v__86.x, __114.x);
+        __113.y = max(v__86.y, __114.y);
+        __113.z = max(v__86.z, __114.z);
+        __113.w = max(v__86.w, __114.w);
+      float4 silu_clamped = __113;
+      float broadcast_var_92 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_93 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_94 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_95 = 0x1.6p+2f/*5.500000e+00*/;
+      float4 __115;
+        float4 __116;
+          float4 v__88 = make_float4(broadcast_var_92, broadcast_var_92, broadcast_var_92, broadcast_var_92);
+          float4 __117;
+            float4 v__89 = make_float4(broadcast_var_93, broadcast_var_93, broadcast_var_93, broadcast_var_93);
+            __117.x = min(v__89.x, silu_x.x);
+            __117.y = min(v__89.y, silu_x.y);
+            __117.z = min(v__89.z, silu_x.z);
+            __117.w = min(v__89.w, silu_x.w);
+          __116.x = max(v__88.x, __117.x);
+          __116.y = max(v__88.y, __117.y);
+          __116.z = max(v__88.z, __117.z);
+          __116.w = max(v__88.w, __117.w);
+        float4 __118;
+          float4 v__90 = make_float4(broadcast_var_94, broadcast_var_94, broadcast_var_94, broadcast_var_94);
+          float4 __119;
+            float4 v__91 = make_float4(broadcast_var_95, broadcast_var_95, broadcast_var_95, broadcast_var_95);
+            __119.x = min(v__91.x, silu_x.x);
+            __119.y = min(v__91.y, silu_x.y);
+            __119.z = min(v__91.z, silu_x.z);
+            __119.w = min(v__91.w, silu_x.w);
+          __118.x = max(v__90.x, __119.x);
+          __118.y = max(v__90.y, __119.y);
+          __118.z = max(v__90.z, __119.z);
+          __118.w = max(v__90.w, __119.w);
+        __115.x = (__116.x*__118.x);
+        __115.y = (__116.y*__118.y);
+        __115.z = (__116.z*__118.z);
+        __115.w = (__116.w*__118.w);
+      float4 silu_z = __115;
+      float broadcast_var_96 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_97 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_98 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_99 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_100 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_101 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __120;
+        float4 v__92 = make_float4(broadcast_var_96, broadcast_var_96, broadcast_var_96, broadcast_var_96);
+        float4 __121;
+          float4 __122;
+            float4 __123;
+              float4 v__93 = make_float4(broadcast_var_97, broadcast_var_97, broadcast_var_97, broadcast_var_97);
+              float4 __124;
+                float4 v__94 = make_float4(broadcast_var_98, broadcast_var_98, broadcast_var_98, broadcast_var_98);
+                __124.x = min(v__94.x, silu_x.x);
+                __124.y = min(v__94.y, silu_x.y);
+                __124.z = min(v__94.z, silu_x.z);
+                __124.w = min(v__94.w, silu_x.w);
+              __123.x = max(v__93.x, __124.x);
+              __123.y = max(v__93.y, __124.y);
+              __123.z = max(v__93.z, __124.z);
+              __123.w = max(v__93.w, __124.w);
+            float4 __125;
+              float4 v__95 = make_float4(broadcast_var_99, broadcast_var_99, broadcast_var_99, broadcast_var_99);
+              float4 __126;
+                float4 v__96 = make_float4(broadcast_var_100, broadcast_var_100, broadcast_var_100, broadcast_var_100);
+                __126.x = min(v__96.x, silu_x.x);
+                __126.y = min(v__96.y, silu_x.y);
+                __126.z = min(v__96.z, silu_x.z);
+                __126.w = min(v__96.w, silu_x.w);
+              __125.x = max(v__95.x, __126.x);
+              __125.y = max(v__95.y, __126.y);
+              __125.z = max(v__95.z, __126.z);
+              __125.w = max(v__95.w, __126.w);
+            __122.x = (__123.x*__125.x);
+            __122.y = (__123.y*__125.y);
+            __122.z = (__123.z*__125.z);
+            __122.w = (__123.w*__125.w);
+          float4 v__97 = make_float4(broadcast_var_101, broadcast_var_101, broadcast_var_101, broadcast_var_101);
+          __121.x = (__122.x*v__97.x);
+          __121.y = (__122.y*v__97.y);
+          __121.z = (__122.z*v__97.z);
+          __121.w = (__122.w*v__97.w);
+        __120.x = (v__92.x+__121.x);
+        __120.y = (v__92.y+__121.y);
+        __120.z = (v__92.z+__121.z);
+        __120.w = (v__92.w+__121.w);
+      float4 silu_p7 = __120;
+      float broadcast_var_102 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_103 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_104 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_105 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_106 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_107 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_108 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_109 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_110 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_111 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_112 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __127;
+        float4 v__98 = make_float4(broadcast_var_102, broadcast_var_102, broadcast_var_102, broadcast_var_102);
+        float4 __128;
+          float4 __129;
+            float4 __130;
+              float4 v__99 = make_float4(broadcast_var_103, broadcast_var_103, broadcast_var_103, broadcast_var_103);
+              float4 __131;
+                float4 v__100 = make_float4(broadcast_var_104, broadcast_var_104, broadcast_var_104, broadcast_var_104);
+                __131.x = min(v__100.x, silu_x.x);
+                __131.y = min(v__100.y, silu_x.y);
+                __131.z = min(v__100.z, silu_x.z);
+                __131.w = min(v__100.w, silu_x.w);
+              __130.x = max(v__99.x, __131.x);
+              __130.y = max(v__99.y, __131.y);
+              __130.z = max(v__99.z, __131.z);
+              __130.w = max(v__99.w, __131.w);
+            float4 __132;
+              float4 v__101 = make_float4(broadcast_var_105, broadcast_var_105, broadcast_var_105, broadcast_var_105);
+              float4 __133;
+                float4 v__102 = make_float4(broadcast_var_106, broadcast_var_106, broadcast_var_106, broadcast_var_106);
+                __133.x = min(v__102.x, silu_x.x);
+                __133.y = min(v__102.y, silu_x.y);
+                __133.z = min(v__102.z, silu_x.z);
+                __133.w = min(v__102.w, silu_x.w);
+              __132.x = max(v__101.x, __133.x);
+              __132.y = max(v__101.y, __133.y);
+              __132.z = max(v__101.z, __133.z);
+              __132.w = max(v__101.w, __133.w);
+            __129.x = (__130.x*__132.x);
+            __129.y = (__130.y*__132.y);
+            __129.z = (__130.z*__132.z);
+            __129.w = (__130.w*__132.w);
+          float4 __134;
+            float4 v__103 = make_float4(broadcast_var_107, broadcast_var_107, broadcast_var_107, broadcast_var_107);
+            float4 __135;
+              float4 __136;
+                float4 __137;
+                  float4 v__104 = make_float4(broadcast_var_108, broadcast_var_108, broadcast_var_108, broadcast_var_108);
+                  float4 __138;
+                    float4 v__105 = make_float4(broadcast_var_109, broadcast_var_109, broadcast_var_109, broadcast_var_109);
+                    __138.x = min(v__105.x, silu_x.x);
+                    __138.y = min(v__105.y, silu_x.y);
+                    __138.z = min(v__105.z, silu_x.z);
+                    __138.w = min(v__105.w, silu_x.w);
+                  __137.x = max(v__104.x, __138.x);
+                  __137.y = max(v__104.y, __138.y);
+                  __137.z = max(v__104.z, __138.z);
+                  __137.w = max(v__104.w, __138.w);
+                float4 __139;
+                  float4 v__106 = make_float4(broadcast_var_110, broadcast_var_110, broadcast_var_110, broadcast_var_110);
+                  float4 __140;
+                    float4 v__107 = make_float4(broadcast_var_111, broadcast_var_111, broadcast_var_111, broadcast_var_111);
+                    __140.x = min(v__107.x, silu_x.x);
+                    __140.y = min(v__107.y, silu_x.y);
+                    __140.z = min(v__107.z, silu_x.z);
+                    __140.w = min(v__107.w, silu_x.w);
+                  __139.x = max(v__106.x, __140.x);
+                  __139.y = max(v__106.y, __140.y);
+                  __139.z = max(v__106.z, __140.z);
+                  __139.w = max(v__106.w, __140.w);
+                __136.x = (__137.x*__139.x);
+                __136.y = (__137.y*__139.y);
+                __136.z = (__137.z*__139.z);
+                __136.w = (__137.w*__139.w);
+              float4 v__108 = make_float4(broadcast_var_112, broadcast_var_112, broadcast_var_112, broadcast_var_112);
+              __135.x = (__136.x*v__108.x);
+              __135.y = (__136.y*v__108.y);
+              __135.z = (__136.z*v__108.z);
+              __135.w = (__136.w*v__108.w);
+            __134.x = (v__103.x+__135.x);
+            __134.y = (v__103.y+__135.y);
+            __134.z = (v__103.z+__135.z);
+            __134.w = (v__103.w+__135.w);
+          __128.x = (__129.x*__134.x);
+          __128.y = (__129.y*__134.y);
+          __128.z = (__129.z*__134.z);
+          __128.w = (__129.w*__134.w);
+        __127.x = (v__98.x+__128.x);
+        __127.y = (v__98.y+__128.y);
+        __127.z = (v__98.z+__128.z);
+        __127.w = (v__98.w+__128.w);
+      float4 silu_p5 = __127;
+      float broadcast_var_113 = -0x1.134dd8c26a9efp-6f/*-1.680323e-02*/;
+      float broadcast_var_114 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_115 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_116 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_117 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_118 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_119 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_120 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_121 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_122 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_123 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_124 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_125 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_126 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_127 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_128 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __141;
+        float4 v__109 = make_float4(broadcast_var_113, broadcast_var_113, broadcast_var_113, broadcast_var_113);
+        float4 __142;
+          float4 __143;
+            float4 __144;
+              float4 v__110 = make_float4(broadcast_var_114, broadcast_var_114, broadcast_var_114, broadcast_var_114);
+              float4 __145;
+                float4 v__111 = make_float4(broadcast_var_115, broadcast_var_115, broadcast_var_115, broadcast_var_115);
+                __145.x = min(v__111.x, silu_x.x);
+                __145.y = min(v__111.y, silu_x.y);
+                __145.z = min(v__111.z, silu_x.z);
+                __145.w = min(v__111.w, silu_x.w);
+              __144.x = max(v__110.x, __145.x);
+              __144.y = max(v__110.y, __145.y);
+              __144.z = max(v__110.z, __145.z);
+              __144.w = max(v__110.w, __145.w);
+            float4 __146;
+              float4 v__112 = make_float4(broadcast_var_116, broadcast_var_116, broadcast_var_116, broadcast_var_116);
+              float4 __147;
+                float4 v__113 = make_float4(broadcast_var_117, broadcast_var_117, broadcast_var_117, broadcast_var_117);
+                __147.x = min(v__113.x, silu_x.x);
+                __147.y = min(v__113.y, silu_x.y);
+                __147.z = min(v__113.z, silu_x.z);
+                __147.w = min(v__113.w, silu_x.w);
+              __146.x = max(v__112.x, __147.x);
+              __146.y = max(v__112.y, __147.y);
+              __146.z = max(v__112.z, __147.z);
+              __146.w = max(v__112.w, __147.w);
+            __143.x = (__144.x*__146.x);
+            __143.y = (__144.y*__146.y);
+            __143.z = (__144.z*__146.z);
+            __143.w = (__144.w*__146.w);
+          float4 __148;
+            float4 v__114 = make_float4(broadcast_var_118, broadcast_var_118, broadcast_var_118, broadcast_var_118);
+            float4 __149;
+              float4 __150;
+                float4 __151;
+                  float4 v__115 = make_float4(broadcast_var_119, broadcast_var_119, broadcast_var_119, broadcast_var_119);
+                  float4 __152;
+                    float4 v__116 = make_float4(broadcast_var_120, broadcast_var_120, broadcast_var_120, broadcast_var_120);
+                    __152.x = min(v__116.x, silu_x.x);
+                    __152.y = min(v__116.y, silu_x.y);
+                    __152.z = min(v__116.z, silu_x.z);
+                    __152.w = min(v__116.w, silu_x.w);
+                  __151.x = max(v__115.x, __152.x);
+                  __151.y = max(v__115.y, __152.y);
+                  __151.z = max(v__115.z, __152.z);
+                  __151.w = max(v__115.w, __152.w);
+                float4 __153;
+                  float4 v__117 = make_float4(broadcast_var_121, broadcast_var_121, broadcast_var_121, broadcast_var_121);
+                  float4 __154;
+                    float4 v__118 = make_float4(broadcast_var_122, broadcast_var_122, broadcast_var_122, broadcast_var_122);
+                    __154.x = min(v__118.x, silu_x.x);
+                    __154.y = min(v__118.y, silu_x.y);
+                    __154.z = min(v__118.z, silu_x.z);
+                    __154.w = min(v__118.w, silu_x.w);
+                  __153.x = max(v__117.x, __154.x);
+                  __153.y = max(v__117.y, __154.y);
+                  __153.z = max(v__117.z, __154.z);
+                  __153.w = max(v__117.w, __154.w);
+                __150.x = (__151.x*__153.x);
+                __150.y = (__151.y*__153.y);
+                __150.z = (__151.z*__153.z);
+                __150.w = (__151.w*__153.w);
+              float4 __155;
+                float4 v__119 = make_float4(broadcast_var_123, broadcast_var_123, broadcast_var_123, broadcast_var_123);
+                float4 __156;
+                  float4 __157;
+                    float4 __158;
+                      float4 v__120 = make_float4(broadcast_var_124, broadcast_var_124, broadcast_var_124, broadcast_var_124);
+                      float4 __159;
+                        float4 v__121 = make_float4(broadcast_var_125, broadcast_var_125, broadcast_var_125, broadcast_var_125);
+                        __159.x = min(v__121.x, silu_x.x);
+                        __159.y = min(v__121.y, silu_x.y);
+                        __159.z = min(v__121.z, silu_x.z);
+                        __159.w = min(v__121.w, silu_x.w);
+                      __158.x = max(v__120.x, __159.x);
+                      __158.y = max(v__120.y, __159.y);
+                      __158.z = max(v__120.z, __159.z);
+                      __158.w = max(v__120.w, __159.w);
+                    float4 __160;
+                      float4 v__122 = make_float4(broadcast_var_126, broadcast_var_126, broadcast_var_126, broadcast_var_126);
+                      float4 __161;
+                        float4 v__123 = make_float4(broadcast_var_127, broadcast_var_127, broadcast_var_127, broadcast_var_127);
+                        __161.x = min(v__123.x, silu_x.x);
+                        __161.y = min(v__123.y, silu_x.y);
+                        __161.z = min(v__123.z, silu_x.z);
+                        __161.w = min(v__123.w, silu_x.w);
+                      __160.x = max(v__122.x, __161.x);
+                      __160.y = max(v__122.y, __161.y);
+                      __160.z = max(v__122.z, __161.z);
+                      __160.w = max(v__122.w, __161.w);
+                    __157.x = (__158.x*__160.x);
+                    __157.y = (__158.y*__160.y);
+                    __157.z = (__158.z*__160.z);
+                    __157.w = (__158.w*__160.w);
+                  float4 v__124 = make_float4(broadcast_var_128, broadcast_var_128, broadcast_var_128, broadcast_var_128);
+                  __156.x = (__157.x*v__124.x);
+                  __156.y = (__157.y*v__124.y);
+                  __156.z = (__157.z*v__124.z);
+                  __156.w = (__157.w*v__124.w);
+                __155.x = (v__119.x+__156.x);
+                __155.y = (v__119.y+__156.y);
+                __155.z = (v__119.z+__156.z);
+                __155.w = (v__119.w+__156.w);
+              __149.x = (__150.x*__155.x);
+              __149.y = (__150.y*__155.y);
+              __149.z = (__150.z*__155.z);
+              __149.w = (__150.w*__155.w);
+            __148.x = (v__114.x+__149.x);
+            __148.y = (v__114.y+__149.y);
+            __148.z = (v__114.z+__149.z);
+            __148.w = (v__114.w+__149.w);
+          __142.x = (__143.x*__148.x);
+          __142.y = (__143.y*__148.y);
+          __142.z = (__143.z*__148.z);
+          __142.w = (__143.w*__148.w);
+        __141.x = (v__109.x+__142.x);
+        __141.y = (v__109.y+__142.y);
+        __141.z = (v__109.z+__142.z);
+        __141.w = (v__109.w+__142.w);
+      float4 silu_p3 = __141;
+      float broadcast_var_129 = 0x1.f6e65882d1e5ep-3f/*2.455565e-01*/;
+      float broadcast_var_130 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_131 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_132 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_133 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_134 = -0x1.134dd8c26a9efp-6f/*-1.680323e-02*/;
+      float broadcast_var_135 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_136 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_137 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_138 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_139 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_140 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_141 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_142 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_143 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_144 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_145 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_146 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_147 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_148 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_149 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __162;
+        float4 v__125 = make_float4(broadcast_var_129, broadcast_var_129, broadcast_var_129, broadcast_var_129);
+        float4 __163;
+          float4 __164;
+            float4 __165;
+              float4 v__126 = make_float4(broadcast_var_130, broadcast_var_130, broadcast_var_130, broadcast_var_130);
+              float4 __166;
+                float4 v__127 = make_float4(broadcast_var_131, broadcast_var_131, broadcast_var_131, broadcast_var_131);
+                __166.x = min(v__127.x, silu_x.x);
+                __166.y = min(v__127.y, silu_x.y);
+                __166.z = min(v__127.z, silu_x.z);
+                __166.w = min(v__127.w, silu_x.w);
+              __165.x = max(v__126.x, __166.x);
+              __165.y = max(v__126.y, __166.y);
+              __165.z = max(v__126.z, __166.z);
+              __165.w = max(v__126.w, __166.w);
+            float4 __167;
+              float4 v__128 = make_float4(broadcast_var_132, broadcast_var_132, broadcast_var_132, broadcast_var_132);
+              float4 __168;
+                float4 v__129 = make_float4(broadcast_var_133, broadcast_var_133, broadcast_var_133, broadcast_var_133);
+                __168.x = min(v__129.x, silu_x.x);
+                __168.y = min(v__129.y, silu_x.y);
+                __168.z = min(v__129.z, silu_x.z);
+                __168.w = min(v__129.w, silu_x.w);
+              __167.x = max(v__128.x, __168.x);
+              __167.y = max(v__128.y, __168.y);
+              __167.z = max(v__128.z, __168.z);
+              __167.w = max(v__128.w, __168.w);
+            __164.x = (__165.x*__167.x);
+            __164.y = (__165.y*__167.y);
+            __164.z = (__165.z*__167.z);
+            __164.w = (__165.w*__167.w);
+          float4 __169;
+            float4 v__130 = make_float4(broadcast_var_134, broadcast_var_134, broadcast_var_134, broadcast_var_134);
+            float4 __170;
+              float4 __171;
+                float4 __172;
+                  float4 v__131 = make_float4(broadcast_var_135, broadcast_var_135, broadcast_var_135, broadcast_var_135);
+                  float4 __173;
+                    float4 v__132 = make_float4(broadcast_var_136, broadcast_var_136, broadcast_var_136, broadcast_var_136);
+                    __173.x = min(v__132.x, silu_x.x);
+                    __173.y = min(v__132.y, silu_x.y);
+                    __173.z = min(v__132.z, silu_x.z);
+                    __173.w = min(v__132.w, silu_x.w);
+                  __172.x = max(v__131.x, __173.x);
+                  __172.y = max(v__131.y, __173.y);
+                  __172.z = max(v__131.z, __173.z);
+                  __172.w = max(v__131.w, __173.w);
+                float4 __174;
+                  float4 v__133 = make_float4(broadcast_var_137, broadcast_var_137, broadcast_var_137, broadcast_var_137);
+                  float4 __175;
+                    float4 v__134 = make_float4(broadcast_var_138, broadcast_var_138, broadcast_var_138, broadcast_var_138);
+                    __175.x = min(v__134.x, silu_x.x);
+                    __175.y = min(v__134.y, silu_x.y);
+                    __175.z = min(v__134.z, silu_x.z);
+                    __175.w = min(v__134.w, silu_x.w);
+                  __174.x = max(v__133.x, __175.x);
+                  __174.y = max(v__133.y, __175.y);
+                  __174.z = max(v__133.z, __175.z);
+                  __174.w = max(v__133.w, __175.w);
+                __171.x = (__172.x*__174.x);
+                __171.y = (__172.y*__174.y);
+                __171.z = (__172.z*__174.z);
+                __171.w = (__172.w*__174.w);
+              float4 __176;
+                float4 v__135 = make_float4(broadcast_var_139, broadcast_var_139, broadcast_var_139, broadcast_var_139);
+                float4 __177;
+                  float4 __178;
+                    float4 __179;
+                      float4 v__136 = make_float4(broadcast_var_140, broadcast_var_140, broadcast_var_140, broadcast_var_140);
+                      float4 __180;
+                        float4 v__137 = make_float4(broadcast_var_141, broadcast_var_141, broadcast_var_141, broadcast_var_141);
+                        __180.x = min(v__137.x, silu_x.x);
+                        __180.y = min(v__137.y, silu_x.y);
+                        __180.z = min(v__137.z, silu_x.z);
+                        __180.w = min(v__137.w, silu_x.w);
+                      __179.x = max(v__136.x, __180.x);
+                      __179.y = max(v__136.y, __180.y);
+                      __179.z = max(v__136.z, __180.z);
+                      __179.w = max(v__136.w, __180.w);
+                    float4 __181;
+                      float4 v__138 = make_float4(broadcast_var_142, broadcast_var_142, broadcast_var_142, broadcast_var_142);
+                      float4 __182;
+                        float4 v__139 = make_float4(broadcast_var_143, broadcast_var_143, broadcast_var_143, broadcast_var_143);
+                        __182.x = min(v__139.x, silu_x.x);
+                        __182.y = min(v__139.y, silu_x.y);
+                        __182.z = min(v__139.z, silu_x.z);
+                        __182.w = min(v__139.w, silu_x.w);
+                      __181.x = max(v__138.x, __182.x);
+                      __181.y = max(v__138.y, __182.y);
+                      __181.z = max(v__138.z, __182.z);
+                      __181.w = max(v__138.w, __182.w);
+                    __178.x = (__179.x*__181.x);
+                    __178.y = (__179.y*__181.y);
+                    __178.z = (__179.z*__181.z);
+                    __178.w = (__179.w*__181.w);
+                  float4 __183;
+                    float4 v__140 = make_float4(broadcast_var_144, broadcast_var_144, broadcast_var_144, broadcast_var_144);
+                    float4 __184;
+                      float4 __185;
+                        float4 __186;
+                          float4 v__141 = make_float4(broadcast_var_145, broadcast_var_145, broadcast_var_145, broadcast_var_145);
+                          float4 __187;
+                            float4 v__142 = make_float4(broadcast_var_146, broadcast_var_146, broadcast_var_146, broadcast_var_146);
+                            __187.x = min(v__142.x, silu_x.x);
+                            __187.y = min(v__142.y, silu_x.y);
+                            __187.z = min(v__142.z, silu_x.z);
+                            __187.w = min(v__142.w, silu_x.w);
+                          __186.x = max(v__141.x, __187.x);
+                          __186.y = max(v__141.y, __187.y);
+                          __186.z = max(v__141.z, __187.z);
+                          __186.w = max(v__141.w, __187.w);
+                        float4 __188;
+                          float4 v__143 = make_float4(broadcast_var_147, broadcast_var_147, broadcast_var_147, broadcast_var_147);
+                          float4 __189;
+                            float4 v__144 = make_float4(broadcast_var_148, broadcast_var_148, broadcast_var_148, broadcast_var_148);
+                            __189.x = min(v__144.x, silu_x.x);
+                            __189.y = min(v__144.y, silu_x.y);
+                            __189.z = min(v__144.z, silu_x.z);
+                            __189.w = min(v__144.w, silu_x.w);
+                          __188.x = max(v__143.x, __189.x);
+                          __188.y = max(v__143.y, __189.y);
+                          __188.z = max(v__143.z, __189.z);
+                          __188.w = max(v__143.w, __189.w);
+                        __185.x = (__186.x*__188.x);
+                        __185.y = (__186.y*__188.y);
+                        __185.z = (__186.z*__188.z);
+                        __185.w = (__186.w*__188.w);
+                      float4 v__145 = make_float4(broadcast_var_149, broadcast_var_149, broadcast_var_149, broadcast_var_149);
+                      __184.x = (__185.x*v__145.x);
+                      __184.y = (__185.y*v__145.y);
+                      __184.z = (__185.z*v__145.z);
+                      __184.w = (__185.w*v__145.w);
+                    __183.x = (v__140.x+__184.x);
+                    __183.y = (v__140.y+__184.y);
+                    __183.z = (v__140.z+__184.z);
+                    __183.w = (v__140.w+__184.w);
+                  __177.x = (__178.x*__183.x);
+                  __177.y = (__178.y*__183.y);
+                  __177.z = (__178.z*__183.z);
+                  __177.w = (__178.w*__183.w);
+                __176.x = (v__135.x+__177.x);
+                __176.y = (v__135.y+__177.y);
+                __176.z = (v__135.z+__177.z);
+                __176.w = (v__135.w+__177.w);
+              __170.x = (__171.x*__176.x);
+              __170.y = (__171.y*__176.y);
+              __170.z = (__171.z*__176.z);
+              __170.w = (__171.w*__176.w);
+            __169.x = (v__130.x+__170.x);
+            __169.y = (v__130.y+__170.y);
+            __169.z = (v__130.z+__170.z);
+            __169.w = (v__130.w+__170.w);
+          __163.x = (__164.x*__169.x);
+          __163.y = (__164.y*__169.y);
+          __163.z = (__164.z*__169.z);
+          __163.w = (__164.w*__169.w);
+        __162.x = (v__125.x+__163.x);
+        __162.y = (v__125.y+__163.y);
+        __162.z = (v__125.z+__163.z);
+        __162.w = (v__125.w+__163.w);
+      float4 silu_p1 = __162;
+      float broadcast_var_150 = 0x1p-1f/*5.000000e-01*/;
+      float broadcast_var_151 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_152 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_153 = 0x1.f6e65882d1e5ep-3f/*2.455565e-01*/;
+      float broadcast_var_154 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_155 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_156 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_157 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_158 = -0x1.134dd8c26a9efp-6f/*-1.680323e-02*/;
+      float broadcast_var_159 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_160 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_161 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_162 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_163 = 0x1.db9f0a6c59536p-11f/*9.071755e-04*/;
+      float broadcast_var_164 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_165 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_166 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_167 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_168 = -0x1.bbde26027afb1p-16f/*-2.645658e-05*/;
+      float broadcast_var_169 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_170 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_171 = -0x1.6p+2f/*-5.500000e+00*/;
+      float broadcast_var_172 = 0x1.6p+2f/*5.500000e+00*/;
+      float broadcast_var_173 = 0x1.4816990b6e8e4p-22f/*3.055560e-07*/;
+      float4 __190;
+        float4 __191;
+          float4 v__146 = make_float4(broadcast_var_150, broadcast_var_150, broadcast_var_150, broadcast_var_150);
+          float4 __192;
+            float4 __193;
+              float4 v__147 = make_float4(broadcast_var_151, broadcast_var_151, broadcast_var_151, broadcast_var_151);
+              float4 __194;
+                float4 v__148 = make_float4(broadcast_var_152, broadcast_var_152, broadcast_var_152, broadcast_var_152);
+                __194.x = min(v__148.x, silu_x.x);
+                __194.y = min(v__148.y, silu_x.y);
+                __194.z = min(v__148.z, silu_x.z);
+                __194.w = min(v__148.w, silu_x.w);
+              __193.x = max(v__147.x, __194.x);
+              __193.y = max(v__147.y, __194.y);
+              __193.z = max(v__147.z, __194.z);
+              __193.w = max(v__147.w, __194.w);
+            float4 __195;
+              float4 v__149 = make_float4(broadcast_var_153, broadcast_var_153, broadcast_var_153, broadcast_var_153);
+              float4 __196;
+                float4 __197;
+                  float4 __198;
+                    float4 v__150 = make_float4(broadcast_var_154, broadcast_var_154, broadcast_var_154, broadcast_var_154);
+                    float4 __199;
+                      float4 v__151 = make_float4(broadcast_var_155, broadcast_var_155, broadcast_var_155, broadcast_var_155);
+                      __199.x = min(v__151.x, silu_x.x);
+                      __199.y = min(v__151.y, silu_x.y);
+                      __199.z = min(v__151.z, silu_x.z);
+                      __199.w = min(v__151.w, silu_x.w);
+                    __198.x = max(v__150.x, __199.x);
+                    __198.y = max(v__150.y, __199.y);
+                    __198.z = max(v__150.z, __199.z);
+                    __198.w = max(v__150.w, __199.w);
+                  float4 __200;
+                    float4 v__152 = make_float4(broadcast_var_156, broadcast_var_156, broadcast_var_156, broadcast_var_156);
+                    float4 __201;
+                      float4 v__153 = make_float4(broadcast_var_157, broadcast_var_157, broadcast_var_157, broadcast_var_157);
+                      __201.x = min(v__153.x, silu_x.x);
+                      __201.y = min(v__153.y, silu_x.y);
+                      __201.z = min(v__153.z, silu_x.z);
+                      __201.w = min(v__153.w, silu_x.w);
+                    __200.x = max(v__152.x, __201.x);
+                    __200.y = max(v__152.y, __201.y);
+                    __200.z = max(v__152.z, __201.z);
+                    __200.w = max(v__152.w, __201.w);
+                  __197.x = (__198.x*__200.x);
+                  __197.y = (__198.y*__200.y);
+                  __197.z = (__198.z*__200.z);
+                  __197.w = (__198.w*__200.w);
+                float4 __202;
+                  float4 v__154 = make_float4(broadcast_var_158, broadcast_var_158, broadcast_var_158, broadcast_var_158);
+                  float4 __203;
+                    float4 __204;
+                      float4 __205;
+                        float4 v__155 = make_float4(broadcast_var_159, broadcast_var_159, broadcast_var_159, broadcast_var_159);
+                        float4 __206;
+                          float4 v__156 = make_float4(broadcast_var_160, broadcast_var_160, broadcast_var_160, broadcast_var_160);
+                          __206.x = min(v__156.x, silu_x.x);
+                          __206.y = min(v__156.y, silu_x.y);
+                          __206.z = min(v__156.z, silu_x.z);
+                          __206.w = min(v__156.w, silu_x.w);
+                        __205.x = max(v__155.x, __206.x);
+                        __205.y = max(v__155.y, __206.y);
+                        __205.z = max(v__155.z, __206.z);
+                        __205.w = max(v__155.w, __206.w);
+                      float4 __207;
+                        float4 v__157 = make_float4(broadcast_var_161, broadcast_var_161, broadcast_var_161, broadcast_var_161);
+                        float4 __208;
+                          float4 v__158 = make_float4(broadcast_var_162, broadcast_var_162, broadcast_var_162, broadcast_var_162);
+                          __208.x = min(v__158.x, silu_x.x);
+                          __208.y = min(v__158.y, silu_x.y);
+                          __208.z = min(v__158.z, silu_x.z);
+                          __208.w = min(v__158.w, silu_x.w);
+                        __207.x = max(v__157.x, __208.x);
+                        __207.y = max(v__157.y, __208.y);
+                        __207.z = max(v__157.z, __208.z);
+                        __207.w = max(v__157.w, __208.w);
+                      __204.x = (__205.x*__207.x);
+                      __204.y = (__205.y*__207.y);
+                      __204.z = (__205.z*__207.z);
+                      __204.w = (__205.w*__207.w);
+                    float4 __209;
+                      float4 v__159 = make_float4(broadcast_var_163, broadcast_var_163, broadcast_var_163, broadcast_var_163);
+                      float4 __210;
+                        float4 __211;
+                          float4 __212;
+                            float4 v__160 = make_float4(broadcast_var_164, broadcast_var_164, broadcast_var_164, broadcast_var_164);
+                            float4 __213;
+                              float4 v__161 = make_float4(broadcast_var_165, broadcast_var_165, broadcast_var_165, broadcast_var_165);
+                              __213.x = min(v__161.x, silu_x.x);
+                              __213.y = min(v__161.y, silu_x.y);
+                              __213.z = min(v__161.z, silu_x.z);
+                              __213.w = min(v__161.w, silu_x.w);
+                            __212.x = max(v__160.x, __213.x);
+                            __212.y = max(v__160.y, __213.y);
+                            __212.z = max(v__160.z, __213.z);
+                            __212.w = max(v__160.w, __213.w);
+                          float4 __214;
+                            float4 v__162 = make_float4(broadcast_var_166, broadcast_var_166, broadcast_var_166, broadcast_var_166);
+                            float4 __215;
+                              float4 v__163 = make_float4(broadcast_var_167, broadcast_var_167, broadcast_var_167, broadcast_var_167);
+                              __215.x = min(v__163.x, silu_x.x);
+                              __215.y = min(v__163.y, silu_x.y);
+                              __215.z = min(v__163.z, silu_x.z);
+                              __215.w = min(v__163.w, silu_x.w);
+                            __214.x = max(v__162.x, __215.x);
+                            __214.y = max(v__162.y, __215.y);
+                            __214.z = max(v__162.z, __215.z);
+                            __214.w = max(v__162.w, __215.w);
+                          __211.x = (__212.x*__214.x);
+                          __211.y = (__212.y*__214.y);
+                          __211.z = (__212.z*__214.z);
+                          __211.w = (__212.w*__214.w);
+                        float4 __216;
+                          float4 v__164 = make_float4(broadcast_var_168, broadcast_var_168, broadcast_var_168, broadcast_var_168);
+                          float4 __217;
+                            float4 __218;
+                              float4 __219;
+                                float4 v__165 = make_float4(broadcast_var_169, broadcast_var_169, broadcast_var_169, broadcast_var_169);
+                                float4 __220;
+                                  float4 v__166 = make_float4(broadcast_var_170, broadcast_var_170, broadcast_var_170, broadcast_var_170);
+                                  __220.x = min(v__166.x, silu_x.x);
+                                  __220.y = min(v__166.y, silu_x.y);
+                                  __220.z = min(v__166.z, silu_x.z);
+                                  __220.w = min(v__166.w, silu_x.w);
+                                __219.x = max(v__165.x, __220.x);
+                                __219.y = max(v__165.y, __220.y);
+                                __219.z = max(v__165.z, __220.z);
+                                __219.w = max(v__165.w, __220.w);
+                              float4 __221;
+                                float4 v__167 = make_float4(broadcast_var_171, broadcast_var_171, broadcast_var_171, broadcast_var_171);
+                                float4 __222;
+                                  float4 v__168 = make_float4(broadcast_var_172, broadcast_var_172, broadcast_var_172, broadcast_var_172);
+                                  __222.x = min(v__168.x, silu_x.x);
+                                  __222.y = min(v__168.y, silu_x.y);
+                                  __222.z = min(v__168.z, silu_x.z);
+                                  __222.w = min(v__168.w, silu_x.w);
+                                __221.x = max(v__167.x, __222.x);
+                                __221.y = max(v__167.y, __222.y);
+                                __221.z = max(v__167.z, __222.z);
+                                __221.w = max(v__167.w, __222.w);
+                              __218.x = (__219.x*__221.x);
+                              __218.y = (__219.y*__221.y);
+                              __218.z = (__219.z*__221.z);
+                              __218.w = (__219.w*__221.w);
+                            float4 v__169 = make_float4(broadcast_var_173, broadcast_var_173, broadcast_var_173, broadcast_var_173);
+                            __217.x = (__218.x*v__169.x);
+                            __217.y = (__218.y*v__169.y);
+                            __217.z = (__218.z*v__169.z);
+                            __217.w = (__218.w*v__169.w);
+                          __216.x = (v__164.x+__217.x);
+                          __216.y = (v__164.y+__217.y);
+                          __216.z = (v__164.z+__217.z);
+                          __216.w = (v__164.w+__217.w);
+                        __210.x = (__211.x*__216.x);
+                        __210.y = (__211.y*__216.y);
+                        __210.z = (__211.z*__216.z);
+                        __210.w = (__211.w*__216.w);
+                      __209.x = (v__159.x+__210.x);
+                      __209.y = (v__159.y+__210.y);
+                      __209.z = (v__159.z+__210.z);
+                      __209.w = (v__159.w+__210.w);
+                    __203.x = (__204.x*__209.x);
+                    __203.y = (__204.y*__209.y);
+                    __203.z = (__204.z*__209.z);
+                    __203.w = (__204.w*__209.w);
+                  __202.x = (v__154.x+__203.x);
+                  __202.y = (v__154.y+__203.y);
+                  __202.z = (v__154.z+__203.z);
+                  __202.w = (v__154.w+__203.w);
+                __196.x = (__197.x*__202.x);
+                __196.y = (__197.y*__202.y);
+                __196.z = (__197.z*__202.z);
+                __196.w = (__197.w*__202.w);
+              __195.x = (v__149.x+__196.x);
+              __195.y = (v__149.y+__196.y);
+              __195.z = (v__149.z+__196.z);
+              __195.w = (v__149.w+__196.w);
+            __192.x = (__193.x*__195.x);
+            __192.y = (__193.y*__195.y);
+            __192.z = (__193.z*__195.z);
+            __192.w = (__193.w*__195.w);
+          __191.x = (v__146.x+__192.x);
+          __191.y = (v__146.y+__192.y);
+          __191.z = (v__146.z+__192.z);
+          __191.w = (v__146.w+__192.w);
+        __190.x = (silu_x.x*__191.x);
+        __190.y = (silu_x.y*__191.y);
+        __190.z = (silu_x.z*__191.z);
+        __190.w = (silu_x.w*__191.w);
+      *(float4*)(gate_local + (i_23 * 4)) = __190;
+      if (((((((int)threadIdx.x) >> 6) * 48) + ((i_23 >> 2) * 16)) + (((int)threadIdx.x) & 15)) < group_size) {
+        if (0 <= ((block_start >> 7) + ((((((int)threadIdx.x) >> 6) * 3) + (i_23 >> 2)) >> 3))) {
+          if (((block_start >> 7) + ((((((int)threadIdx.x) >> 6) * 3) + (i_23 >> 2)) >> 3)) < 48) {
+            uint2 __223;
+            float4 __224;
+              float4 v__170 = *(float4*)(up_local + (i_23 * 4));
+              float4 v__171 = *(float4*)(gate_local + (i_23 * 4));
+              __224.x = (v__170.x*v__171.x);
+              __224.y = (v__170.y*v__171.y);
+              __224.z = (v__170.z*v__171.z);
+              __224.w = (v__170.w*v__171.w);
+            ((half2*)(&__223))[0] = __float22half2_rn(((float2*)(&__224))[0]);
+            ((half2*)(&__223))[1] = __float22half2_rn(((float2*)(&__224))[1]);
+            *(uint2*)(up_logits + ((((((((((((((int64_t)block_start) >> (int64_t)7) * (int64_t)262144) + (((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)3) + (((int64_t)i_23) >> (int64_t)2)) >> (int64_t)3) * (int64_t)262144)) + (((int64_t)((int)blockIdx.x)) * (int64_t)16384)) + ((((int64_t)((int)blockIdx.y)) & (int64_t)1) * (int64_t)8192)) + (((((int64_t)i_23) & (int64_t)3) >> (int64_t)1) * (int64_t)4096)) + (((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)3) + (((int64_t)i_23) >> (int64_t)2)) & (int64_t)1) * (int64_t)2048)) + ((((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)3) + (((int64_t)i_23) >> (int64_t)2)) & (int64_t)7) >> (int64_t)1) * (int64_t)512)) + ((((int64_t)i_23) & (int64_t)1) * (int64_t)256)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)5) * (int64_t)128)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)8)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)31) >> (int64_t)4) * (int64_t)4))) = __223;
+          }
+        }
+      }
+    }
+  }
+}
+
+extern "C" __global__ void __launch_bounds__(256, 1) kernel_kernel_2(const half_t* __restrict__ down, const int* __restrict__ group_idx_for_bx, const int* __restrict__ group_offsets, const int* __restrict__ group_padded_offsets, const int* __restrict__ group_sizes, half_t* __restrict__ output, const float* __restrict__ routed_weights, const half_t* __restrict__ up_logits) {
+  float out_long[96];
+  extern __shared__ __align__(1024) half_t down_shared[];
+  float routed_long[3];
+  float out_local_0[64];
+  float out_local_1[64];
+  half_t up_logits_shared[32];
+  float routed_weight_local[2];
+  half_t up_long[48];
+  half_t down_long_local[64];
+  half_t output_local_cast[4];
+  half_t up_logits_prefetch[32];
+  half_t down_local[64];
+  half_t output_local_cast_1[4];
+  half_t output_local_cast_2[4];
+  int expert_id = group_idx_for_bx[((int)blockIdx.y)];
+  int group_size = group_sizes[expert_id];
+  int raw_start = group_offsets[expert_id];
+  int padded_start = group_padded_offsets[expert_id];
+  if (128 < group_size) {
+    #pragma unroll
+    for (int i = 0; i < 24; ++i) {
+      float broadcast_var = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(out_long + (i * 4)) = make_float4(broadcast_var, broadcast_var, broadcast_var, broadcast_var);
+    }
+    for (int long_k = 0; long_k < 32; ++long_k) {
+      #pragma unroll
+      for (int i_1 = 0; i_1 < 6; ++i_1) {
+        if (((((((int)threadIdx.x) >> 6) * 48) + ((i_1 % 3) * 16)) + (((int)threadIdx.x) & 15)) < group_size) {
+          half_t broadcast_var_1 = half_t(0x0p+0f/*0.000000e+00*/);
+          uint4 condval;
+          if (((0 <= ((padded_start >> 7) + ((((((int)threadIdx.x) >> 6) * 3) + (i_1 % 3)) >> 3))) && (((padded_start >> 7) + ((((((int)threadIdx.x) >> 6) * 3) + (i_1 % 3)) >> 3)) < 48))) {
+            condval = *(uint4*)(up_logits + ((((((((((int64_t)padded_start) >> (int64_t)7) * (int64_t)262144) + (((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)3) + (((int64_t)i_1) % (int64_t)3)) >> (int64_t)3) * (int64_t)262144)) + (((int64_t)long_k) * (int64_t)8192)) + ((((int64_t)i_1) / (int64_t)3) * (int64_t)4096)) + (((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)3) + (((int64_t)i_1) % (int64_t)3)) & (int64_t)1) * (int64_t)2048)) + ((((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)3) + (((int64_t)i_1) % (int64_t)3)) & (int64_t)7) >> (int64_t)1) * (int64_t)512)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)63) * (int64_t)8)));
+          } else {
+            condval = make_uint4(__pack_half2(broadcast_var_1, broadcast_var_1), __pack_half2(broadcast_var_1, broadcast_var_1), __pack_half2(broadcast_var_1, broadcast_var_1), __pack_half2(broadcast_var_1, broadcast_var_1));
+          }
+          *(uint4*)(up_long + (i_1 * 8)) = condval;
+        } else {
+          half_t broadcast_var_2 = half_t(0x0p+0f/*0.000000e+00*/);
+          *(uint4*)(up_long + (i_1 * 8)) = make_uint4(__pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2), __pack_half2(broadcast_var_2, broadcast_var_2));
+        }
+      }
+      #pragma unroll
+      for (int i_2 = 0; i_2 < 4; ++i_2) {
+        half_t broadcast_var_3 = half_t(0x0p+0f/*0.000000e+00*/);
+        uint4 condval_1;
+        if ((((((((0 - padded_start) >> 7) + ((int)blockIdx.y)) >> 1) + ((int)blockIdx.x)) < 28) && (0 <= (((((int)blockIdx.x) * 2) + ((0 - padded_start) >> 7)) + ((int)blockIdx.y))))) {
+          condval_1 = *(uint4*)(down + ((((((((((int64_t)expert_id) * (int64_t)14680064) + (((int64_t)((int)blockIdx.x)) * (int64_t)524288)) + ((((int64_t)0 - ((int64_t)padded_start)) >> (int64_t)7) * (int64_t)262144)) + (((int64_t)((int)blockIdx.y)) * (int64_t)262144)) + (((int64_t)i_2) * (int64_t)65536)) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)3) * (int64_t)2048)) + (((int64_t)long_k) * (int64_t)64)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)7) * (int64_t)8)));
+        } else {
+          condval_1 = make_uint4(__pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3), __pack_half2(broadcast_var_3, broadcast_var_3));
+        }
+        *(uint4*)(down_shared + (((((i_2 * 2048) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = condval_1;
+      }
+      __syncthreads();
+      for (int ki = 0; ki < 2; ++ki) {
+        for (int j = 0; j < 8; ++j) {
+          *(uint4*)(down_long_local + (j * 8)) = *(uint4*)(down_shared + (((((j * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+        }
+        for (int kp = 0; kp < 2; ++kp) {
+          for (int i_3 = 0; i_3 < 3; ++i_3) {
+            for (int j_1 = 0; j_1 < 8; ++j_1) {
+              {
+      *(((float32x4*)out_long) + ((i_3 * 8) + j_1)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)down_long_local) + ((j_1 * 2) + kp)),
+                    *(((float16x4*)up_long) + (((ki * 6) + (i_3 * 2)) + kp)),
+                    *(((float32x4*)out_long) + ((i_3 * 8) + j_1)));
+    };
+            }
+          }
+        }
+      }
+      if (long_k < 31) {
+        __syncthreads();
+      }
+    }
+    for (int long_slot = 0; long_slot < 3; ++long_slot) {
+      routed_long[long_slot] = 0x0p+0f/*0.000000e+00*/;
+      if (((((((int)threadIdx.x) >> 6) * 48) + (long_slot * 16)) + (((int)threadIdx.x) & 15)) < group_size) {
+        float condval_2;
+        if (((0 <= (((((((int)threadIdx.x) >> 6) * 48) + (long_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15))) && ((((((((int)threadIdx.x) >> 6) * 48) + (long_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) < 4544))) {
+          condval_2 = routed_weights[(((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)48) + (((int64_t)long_slot) * (int64_t)16)) + ((int64_t)raw_start)) + (((int64_t)((int)threadIdx.x)) & (int64_t)15))];
+        } else {
+          condval_2 = 0x0p+0f/*0.000000e+00*/;
+        }
+        routed_long[long_slot] = condval_2;
+      }
+    }
+    #pragma unroll
+    for (int i_4 = 0; i_4 < 24; ++i_4) {
+      if (((((((int)threadIdx.x) >> 6) * 48) + ((i_4 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < group_size) {
+        uint2 __1;
+        float4 __2;
+          float4 v_ = *(float4*)(out_long + (i_4 * 4));
+          float4 v__1 = make_float4(routed_long[(i_4 >> 3)], routed_long[(i_4 >> 3)], routed_long[(i_4 >> 3)], routed_long[(i_4 >> 3)]);
+          __2.x = (v_.x*v__1.x);
+          __2.y = (v_.y*v__1.y);
+          __2.z = (v_.z*v__1.z);
+          __2.w = (v_.w*v__1.w);
+        ((half2*)(&__1))[0] = __float22half2_rn(((float2*)(&__2))[0]);
+        ((half2*)(&__1))[1] = __float22half2_rn(((float2*)(&__2))[1]);
+        *(uint2*)(output_local_cast + 0) = __1;
+      } else {
+        half_t broadcast_var_4 = half_t(0x0p+0f/*0.000000e+00*/);
+        *(uint2*)(output_local_cast + 0) = make_uint2(__pack_half2(broadcast_var_4, broadcast_var_4), __pack_half2(broadcast_var_4, broadcast_var_4));
+      }
+      if (0 <= (((((int)blockIdx.x) * 2) + ((0 - padded_start) >> 7)) + ((int)blockIdx.y))) {
+        if ((((((0 - padded_start) >> 7) + ((int)blockIdx.y)) >> 1) + ((int)blockIdx.x)) < 28) {
+          if (0 <= (((((((int)threadIdx.x) >> 6) * 48) + ((i_4 >> 3) * 16)) + padded_start) + (((int)threadIdx.x) & 15))) {
+            if ((((((((int)threadIdx.x) >> 6) * 48) + ((i_4 >> 3) * 16)) + padded_start) + (((int)threadIdx.x) & 15)) < 6144) {
+              *(uint2*)(output + ((((((((((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)344064) + ((((int64_t)i_4) >> (int64_t)3) * (int64_t)114688)) + (((int64_t)padded_start) * (int64_t)7168)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)7168)) + (((int64_t)((int)blockIdx.x)) * (int64_t)256)) + ((((int64_t)0 - ((int64_t)padded_start)) >> (int64_t)7) * (int64_t)128)) + (((int64_t)((int)blockIdx.y)) * (int64_t)128)) + ((((int64_t)i_4) & (int64_t)7) * (int64_t)16)) + (((((int64_t)((int)threadIdx.x)) & (int64_t)63) >> (int64_t)4) * (int64_t)4))) = *(uint2*)(output_local_cast + 0);
+            }
+          }
+        }
+      }
+    }
+    if (0 <= (((((int)blockIdx.x) * 2) + ((0 - padded_start) >> 7)) + ((int)blockIdx.y))) {
+      #pragma unroll
+      for (int i_5 = 0; i_5 < 4; ++i_5) {
+        if ((((((0 - padded_start) >> 7) + ((int)blockIdx.y)) >> 1) + ((int)blockIdx.x)) < 28) {
+          if (-192 <= (((i_5 * 16) + (((int)threadIdx.x) >> 4)) + padded_start)) {
+            if (((((((int)threadIdx.x) >> 4) + padded_start) >> 4) + i_5) < 372) {
+              half_t broadcast_var_5 = half_t(0x0p+0f/*0.000000e+00*/);
+              *(uint4*)(output + ((((((((((int64_t)i_5) * (int64_t)114688) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)4) * (int64_t)7168)) + (((int64_t)padded_start) * (int64_t)7168)) + (((int64_t)((int)blockIdx.x)) * (int64_t)256)) + ((((int64_t)0 - ((int64_t)padded_start)) >> (int64_t)7) * (int64_t)128)) + (((int64_t)((int)blockIdx.y)) * (int64_t)128)) + ((((int64_t)((int)threadIdx.x)) & (int64_t)15) * (int64_t)8)) + (int64_t)1376256)) = make_uint4(__pack_half2(broadcast_var_5, broadcast_var_5), __pack_half2(broadcast_var_5, broadcast_var_5), __pack_half2(broadcast_var_5, broadcast_var_5), __pack_half2(broadcast_var_5, broadcast_var_5));
+            }
+          }
+        }
+      }
+    }
+  } else {
+    #pragma unroll
+    for (int i_6 = 0; i_6 < 16; ++i_6) {
+      float broadcast_var_6 = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(out_local_0 + (i_6 * 4)) = make_float4(broadcast_var_6, broadcast_var_6, broadcast_var_6, broadcast_var_6);
+    }
+    #pragma unroll
+    for (int i_7 = 0; i_7 < 16; ++i_7) {
+      float broadcast_var_7 = 0x0p+0f/*0.000000e+00*/;
+      *(float4*)(out_local_1 + (i_7 * 4)) = make_float4(broadcast_var_7, broadcast_var_7, broadcast_var_7, broadcast_var_7);
+    }
+    for (int intermediate_vec = 0; intermediate_vec < 4; ++intermediate_vec) {
+      if (((((((int)threadIdx.x) >> 6) * 32) + ((intermediate_vec & 1) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+        *(uint4*)(up_logits_shared + (intermediate_vec * 8)) = *(uint4*)(up_logits + (((((int)blockIdx.y) * 262144) + (intermediate_vec * 2048)) + (((int)threadIdx.x) * 8)));
+      }
+    }
+    for (int k_pair = 0; k_pair < 16; ++k_pair) {
+      #pragma unroll
+      for (int producer_stage = 0; producer_stage < 2; ++producer_stage) {
+        if (producer_stage == (((int)threadIdx.x) >> 7)) {
+          for (int intermediate_vec_1 = 0; intermediate_vec_1 < 4; ++intermediate_vec_1) {
+            if (((((((int)threadIdx.x) >> 6) * 32) + ((intermediate_vec_1 & 1) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+              *(uint4*)(up_logits_prefetch + (intermediate_vec_1 * 8)) = *(uint4*)(up_logits + (((((((int)blockIdx.y) * 262144) + (k_pair * 16384)) + (intermediate_vec_1 * 2048)) + (((int)threadIdx.x) * 8)) + 8192));
+            }
+          }
+        }
+        #pragma unroll
+        for (int i_8 = 0; i_8 < 4; ++i_8) {
+          *(uint4*)(down_shared + ((((((producer_stage * 8192) + (i_8 * 2048)) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = *(uint4*)(down + (((((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (producer_stage * 262144)) + (i_8 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)));
+        }
+      }
+      __syncthreads();
+      if (((((int)threadIdx.x) >> 6) * 32) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+        for (int ki_1 = 0; ki_1 < 2; ++ki_1) {
+          for (int j_2 = 0; j_2 < 8; ++j_2) {
+            *(uint4*)(down_local + (j_2 * 8)) = *(uint4*)(down_shared + (((((j_2 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_1) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+          }
+          for (int kp_1 = 0; kp_1 < 2; ++kp_1) {
+            for (int i_9 = 0; i_9 < 2; ++i_9) {
+              for (int j_3 = 0; j_3 < 8; ++j_3) {
+                {
+      *(((float32x4*)out_local_0) + ((i_9 * 8) + j_3)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)down_local) + ((j_3 * 2) + kp_1)),
+                    *(((float16x4*)up_logits_shared) + (((ki_1 * 4) + (i_9 * 2)) + kp_1)),
+                    *(((float32x4*)out_local_0) + ((i_9 * 8) + j_3)));
+    };
+              }
+            }
+          }
+          for (int j_4 = 0; j_4 < 8; ++j_4) {
+            *(uint4*)(down_local + (j_4 * 8)) = *(uint4*)(down_shared + ((((((j_4 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_1) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192));
+          }
+          for (int kp_2 = 0; kp_2 < 2; ++kp_2) {
+            for (int i_10 = 0; i_10 < 2; ++i_10) {
+              for (int j_5 = 0; j_5 < 8; ++j_5) {
+                {
+      *(((float32x4*)out_local_1) + ((i_10 * 8) + j_5)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)down_local) + ((j_5 * 2) + kp_2)),
+                    *(((float16x4*)up_logits_shared) + (((ki_1 * 4) + (i_10 * 2)) + kp_2)),
+                    *(((float32x4*)out_local_1) + ((i_10 * 8) + j_5)));
+    };
+              }
+            }
+          }
+        }
+      }
+      __syncthreads();
+      #pragma unroll
+      for (int producer_stage_1 = 0; producer_stage_1 < 2; ++producer_stage_1) {
+        if (k_pair < 15) {
+          if (producer_stage_1 == (((int)threadIdx.x) >> 7)) {
+            for (int intermediate_vec_2 = 0; intermediate_vec_2 < 4; ++intermediate_vec_2) {
+              if (((((((int)threadIdx.x) >> 6) * 32) + ((intermediate_vec_2 & 1) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+                *(uint4*)(up_logits_shared + (intermediate_vec_2 * 8)) = *(uint4*)(up_logits + (((((((int)blockIdx.y) * 262144) + (k_pair * 16384)) + (intermediate_vec_2 * 2048)) + (((int)threadIdx.x) * 8)) + 16384));
+              }
+            }
+          }
+        }
+        #pragma unroll
+        for (int i_11 = 0; i_11 < 4; ++i_11) {
+          *(uint4*)(down_shared + ((((((producer_stage_1 * 8192) + (i_11 * 2048)) + ((((int)threadIdx.x) >> 3) * 64)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 7) >> 2)) & 1) * 32)) + (((((((int)threadIdx.x) & 31) >> 4) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 15) >> 3) + (((int)threadIdx.x) & 1)) & 1) * 8))) = *(uint4*)(down + ((((((((expert_id * 14680064) + (((int)blockIdx.x) * 524288)) + (producer_stage_1 * 262144)) + (i_11 * 65536)) + ((((int)threadIdx.x) >> 3) * 2048)) + (k_pair * 128)) + ((((int)threadIdx.x) & 7) * 8)) + 64));
+        }
+      }
+      __syncthreads();
+      if (((((int)threadIdx.x) >> 6) * 32) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+        for (int ki_2 = 0; ki_2 < 2; ++ki_2) {
+          for (int j_6 = 0; j_6 < 8; ++j_6) {
+            *(uint4*)(down_local + (j_6 * 8)) = *(uint4*)(down_shared + (((((j_6 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_2) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)));
+          }
+          for (int kp_3 = 0; kp_3 < 2; ++kp_3) {
+            for (int i_12 = 0; i_12 < 2; ++i_12) {
+              for (int j_7 = 0; j_7 < 8; ++j_7) {
+                {
+      *(((float32x4*)out_local_0) + ((i_12 * 8) + j_7)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)down_local) + ((j_7 * 2) + kp_3)),
+                    *(((float16x4*)up_logits_prefetch) + (((ki_2 * 4) + (i_12 * 2)) + kp_3)),
+                    *(((float32x4*)out_local_0) + ((i_12 * 8) + j_7)));
+    };
+              }
+            }
+          }
+          for (int j_8 = 0; j_8 < 8; ++j_8) {
+            *(uint4*)(down_local + (j_8 * 8)) = *(uint4*)(down_shared + ((((((j_8 * 1024) + ((((int)threadIdx.x) & 15) * 64)) + (((((((int)threadIdx.x) & 7) >> 2) + ki_2) & 1) * 32)) + (((((((int)threadIdx.x) & 63) >> 5) + ((((int)threadIdx.x) & 3) >> 1)) & 1) * 16)) + (((((((int)threadIdx.x) & 31) >> 4) + (((int)threadIdx.x) & 1)) & 1) * 8)) + 8192));
+          }
+          for (int kp_4 = 0; kp_4 < 2; ++kp_4) {
+            for (int i_13 = 0; i_13 < 2; ++i_13) {
+              for (int j_9 = 0; j_9 < 8; ++j_9) {
+                {
+      *(((float32x4*)out_local_1) + ((i_13 * 8) + j_9)) = __builtin_mxc_mma_16x16x16f16(*(((float16x4*)down_local) + ((j_9 * 2) + kp_4)),
+                    *(((float16x4*)up_logits_prefetch) + (((ki_2 * 4) + (i_13 * 2)) + kp_4)),
+                    *(((float32x4*)out_local_1) + ((i_13 * 8) + j_9)));
+    };
+              }
+            }
+          }
+        }
+      }
+      if (k_pair < 15) {
+        __syncthreads();
+      }
+    }
+    for (int row_slot = 0; row_slot < 2; ++row_slot) {
+      routed_weight_local[row_slot] = 0x0p+0f/*0.000000e+00*/;
+      if (((((((int)threadIdx.x) >> 6) * 32) + (row_slot * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+        float condval_3;
+        if (((0 <= ((((((((int)blockIdx.y) * 128) + ((((int)threadIdx.x) >> 6) * 32)) + (row_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) - padded_start)) && (((((((((int)blockIdx.y) * 128) + ((((int)threadIdx.x) >> 6) * 32)) + (row_slot * 16)) + raw_start) + (((int)threadIdx.x) & 15)) - padded_start) < 4544))) {
+          condval_3 = routed_weights[((((((((int64_t)((int)blockIdx.y)) * (int64_t)128) + ((((int64_t)((int)threadIdx.x)) >> (int64_t)6) * (int64_t)32)) + (((int64_t)row_slot) * (int64_t)16)) + ((int64_t)raw_start)) + (((int64_t)((int)threadIdx.x)) & (int64_t)15)) - ((int64_t)padded_start))];
+        } else {
+          condval_3 = 0x0p+0f/*0.000000e+00*/;
+        }
+        routed_weight_local[row_slot] = condval_3;
+      }
+    }
+    #pragma unroll
+    for (int i_14 = 0; i_14 < 16; ++i_14) {
+      if (((((((int)threadIdx.x) >> 6) * 32) + ((i_14 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+        uint2 __3;
+        float4 __4;
+          float4 v__2 = *(float4*)(out_local_0 + (i_14 * 4));
+          float4 v__3 = make_float4(routed_weight_local[(i_14 >> 3)], routed_weight_local[(i_14 >> 3)], routed_weight_local[(i_14 >> 3)], routed_weight_local[(i_14 >> 3)]);
+          __4.x = (v__2.x*v__3.x);
+          __4.y = (v__2.y*v__3.y);
+          __4.z = (v__2.z*v__3.z);
+          __4.w = (v__2.w*v__3.w);
+        ((half2*)(&__3))[0] = __float22half2_rn(((float2*)(&__4))[0]);
+        ((half2*)(&__3))[1] = __float22half2_rn(((float2*)(&__4))[1]);
+        *(uint2*)(output_local_cast_1 + 0) = __3;
+      } else {
+        half_t broadcast_var_8 = half_t(0x0p+0f/*0.000000e+00*/);
+        *(uint2*)(output_local_cast_1 + 0) = make_uint2(__pack_half2(broadcast_var_8, broadcast_var_8), __pack_half2(broadcast_var_8, broadcast_var_8));
+      }
+      *(uint2*)(output + (((((((((int)blockIdx.y) * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_14 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (((int)blockIdx.x) * 256)) + ((i_14 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4))) = *(uint2*)(output_local_cast_1 + 0);
+    }
+    #pragma unroll
+    for (int i_15 = 0; i_15 < 16; ++i_15) {
+      if (((((((int)threadIdx.x) >> 6) * 32) + ((i_15 >> 3) * 16)) + (((int)threadIdx.x) & 15)) < ((group_size + padded_start) - (((int)blockIdx.y) * 128))) {
+        uint2 __5;
+        float4 __6;
+          float4 v__4 = *(float4*)(out_local_1 + (i_15 * 4));
+          float4 v__5 = make_float4(routed_weight_local[(i_15 >> 3)], routed_weight_local[(i_15 >> 3)], routed_weight_local[(i_15 >> 3)], routed_weight_local[(i_15 >> 3)]);
+          __6.x = (v__4.x*v__5.x);
+          __6.y = (v__4.y*v__5.y);
+          __6.z = (v__4.z*v__5.z);
+          __6.w = (v__4.w*v__5.w);
+        ((half2*)(&__5))[0] = __float22half2_rn(((float2*)(&__6))[0]);
+        ((half2*)(&__5))[1] = __float22half2_rn(((float2*)(&__6))[1]);
+        *(uint2*)(output_local_cast_2 + 0) = __5;
+      } else {
+        half_t broadcast_var_9 = half_t(0x0p+0f/*0.000000e+00*/);
+        *(uint2*)(output_local_cast_2 + 0) = make_uint2(__pack_half2(broadcast_var_9, broadcast_var_9), __pack_half2(broadcast_var_9, broadcast_var_9));
+      }
+      *(uint2*)(output + ((((((((((int)blockIdx.y) * 917504) + ((((int)threadIdx.x) >> 6) * 229376)) + ((i_15 >> 3) * 114688)) + ((((int)threadIdx.x) & 15) * 7168)) + (((int)blockIdx.x) * 256)) + ((i_15 & 7) * 16)) + (((((int)threadIdx.x) & 63) >> 4) * 4)) + 128)) = *(uint2*)(output_local_cast_2 + 0);
+    }
+  }
+}
+

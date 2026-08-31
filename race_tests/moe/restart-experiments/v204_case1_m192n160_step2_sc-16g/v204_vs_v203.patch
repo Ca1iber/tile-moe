@@ -1,0 +1,574 @@
+--- v203_case23_parallel_rank_builder_sc-16g/candidate_submission.py
++++ v204_case1_m192n160_step2_sc-16g/candidate_submission.py
+@@ -1,6 +1,6 @@
+-# GENERATED EXPERIMENT: v203
+-# PARENT: v202 local candidate / SHA256 fac648642911ce415dd8a4cef03c59f5e8d23109fde964c21f034744bf1d2404
+-# PRIMARY_CHANGE: build Case2/3 short/long expert ranks in parallel across one producer CTA
++# GENERATED EXPERIMENT: v197
++# PARENT: exact user-supplied v191 / SHA256 EB2D8C4BB19BB3D80E78501EDAFE6AE76D9986B82B993CB49FE3EF92427D4146
++# PRIMARY_CHANGE: Case1 Stage2 long experts use M192xN160 panels with a masked N tail
+ # SAFETY: TileLang primitives only; no async copy, injection, compiler builtins, or cached results
+ import torch
+ import tilelang
+@@ -223,6 +223,7 @@
+     use_unified_m192_sharedreuse_step2 = False
+     use_physical_expert_prepack = False
+     use_physical_step1_mapping = False
++    use_case1_m192n160_step2 = False
+ 
+     if hidden == 3584 and intermediate == 1024:
+         use_grid_transpose_step1 = True
+@@ -237,6 +238,7 @@
+             step1_block_token = 192
+             step1_num_blocks_m = num_experts // 2
+             block_dexpert_step1 = 64
++            use_case1_m192n160_step2 = True
+         use_grid_transpose_step1 = True
+         use_grid_transpose_step2 = True
+         use_step1_expert_grouped_grid = False
+@@ -348,6 +350,7 @@
+         bool(use_unified_m192_sharedreuse_step2),
+         bool(use_physical_expert_prepack),
+         bool(use_physical_step1_mapping),
++        bool(use_case1_m192n160_step2),
+     )
+     kernel = _KERNEL_CACHE.get(key)
+ 
+@@ -619,6 +622,7 @@
+             use_unified_m192_sharedreuse_step2,
+             use_physical_expert_prepack,
+             use_physical_step1_mapping,
++            use_case1_m192n160_step2,
+         ):
+             scale = 1.44269504
+             dtype = T.float16
+@@ -680,6 +684,14 @@
+                 chunk=block_dexpert_step2,
+                 k_pack=2,
+             )
++            case1_long_step2_mma = MinimalMacaMMA(
++                block_row_warps=4,
++                block_col_warps=1,
++                warp_row_tiles=48,
++                warp_col_tiles=160,
++                chunk=block_dexpert_step2,
++                k_pack=2,
++            )
+ 
+             step1_k_tiles = (hidden + block_dhidden_step1 - 1) // block_dhidden_step1
+             input_shape = (total_padded, hidden)
+@@ -748,6 +760,12 @@
+                 if use_step2_dynamic_m192n128
+                 else step2_grid_y
+             )
++            if use_case1_m192n160_step2:
++                step2_grid_x = (
++                    (num_experts // 2) * step2_col_tiles
++                    + (num_experts // 2) * T.ceildiv(hidden, 160)
++                )
++                step2_short_grid_y = 1
+ 
+             @T.macro
+             def copy_step1_weight_half(
+@@ -3425,30 +3443,30 @@
+                             if (
+                                 use_physical_expert_prepack
+                                 and copy_col == 0
+-                                and copy_row == 0
+-                                and copy_thread < num_experts
++                                and copy_thread == 0
+                             ):
+                                 prepack_rank = T.alloc_local((1,), dtype=T.int32)
+                                 prepack_rank[0] = 0
+-                                for prepack_expert in T.serial(num_experts):
+-                                    if (
+-                                        prepack_expert < copy_thread
+-                                        and (
+-                                            group_sizes[prepack_expert]
++                                if copy_group_size <= block_token:
++                                    for prepack_expert in T.serial(num_experts):
++                                        if (
++                                            prepack_expert < copy_expert
++                                            and group_sizes[prepack_expert]
+                                             <= block_token
+-                                        )
+-                                        == (
+-                                            group_sizes[copy_thread]
+-                                            <= block_token
+-                                        )
+-                                    ):
+-                                        prepack_rank[0] = prepack_rank[0] + 1
+-                                if group_sizes[copy_thread] <= block_token:
+-                                    expert_rank[prepack_rank[0]] = copy_thread
++                                        ):
++                                            prepack_rank[0] = prepack_rank[0] + 1
++                                    expert_rank[prepack_rank[0]] = copy_expert
+                                 else:
++                                    for prepack_expert in T.serial(num_experts):
++                                        if (
++                                            prepack_expert < copy_expert
++                                            and group_sizes[prepack_expert]
++                                            > block_token
++                                        ):
++                                            prepack_rank[0] = prepack_rank[0] + 1
+                                     expert_rank[
+                                         num_experts // 2 + prepack_rank[0]
+-                                    ] = copy_thread
++                                    ] = copy_expert
+                             copy_input_row = (
+                                 copy_expert
+                                 if use_physical_expert_prepack
+@@ -3756,7 +3774,26 @@
+                 with T.Kernel(
+                     step2_grid_x, step2_short_grid_y, threads=threads
+                 ) as (pid0, pid1):
+-                    if use_step2_dynamic_m192n128:
++                    if use_case1_m192n160_step2:
++                        case1_step2_rank = T.alloc_local((1,), dtype=T.int32)
++                        case1_step2_panel = T.alloc_local((1,), dtype=T.int32)
++                        case1_short_ctas = (num_experts // 2) * step2_col_tiles
++                        if pid0 < case1_short_ctas:
++                            case1_step2_rank[0] = pid0 // step2_col_tiles
++                            case1_step2_panel[0] = pid0 % step2_col_tiles
++                        else:
++                            case1_step2_rank[0] = (
++                                num_experts // 2
++                                + (pid0 - case1_short_ctas)
++                                // T.ceildiv(hidden, 160)
++                            )
++                            case1_step2_panel[0] = (
++                                pid0 - case1_short_ctas
++                            ) % T.ceildiv(hidden, 160)
++                        case1_step2_expert = expert_rank[case1_step2_rank[0]]
++                        bx = group_padded_offsets[case1_step2_expert] // block_token
++                        by = case1_step2_panel[0]
++                    elif use_step2_dynamic_m192n128:
+                         short_step2_expert = expert_rank[pid1]
+                         bx = group_padded_offsets[short_step2_expert] // block_token
+                         by = pid0
+@@ -3793,135 +3830,275 @@
+                         intermediate_thread = T.get_thread_binding()
+ 
+                     if (
+-                        use_unified_m192_sharedreuse_step2
+-                        and group_size > block_token
+-                    ):
+-                        long_first_bx = padded_start // block_token
+-                        long_n_half = token_offset // block_token
+-                        long_output_col = (
+-                            by * step2_output_tile
+-                            + long_n_half * block_dhidden_step2
++                        (
++                            use_case1_m192n160_step2
++                            and pid0
++                            >= (num_experts // 2) * step2_col_tiles
++                        )
++                        or (
++                            use_unified_m192_sharedreuse_step2
++                            and group_size > block_token
+                         )
+-                        up_long = T.alloc_fragment(
+-                            (192, block_dexpert_step2), dtype=dtype
+-                        )
+-                        out_long = T.alloc_fragment(
+-                            (192, block_dhidden_step2), dtype=accum_dtype
+-                        )
+-                        down_long_local = T.alloc_local(
+-                            (
+-                                long_step2_mma.warp_cols
+-                                * long_step2_mma.k_pack
+-                                * long_step2_mma.local_size_b
+-                            ),
+-                            dtype=dtype,
+-                        )
+-                        routed_long = T.alloc_local((3,), dtype=T.float32)
+-
+-                        T.annotate_layout(
+-                            {
+-                                up_long: long_step2_mma.make_mma_load_layout(
+-                                    up_long, matrix="A"
+-                                ),
+-                                out_long: long_step2_mma.make_mma_store_layout(
+-                                    out_long
++                    ):
++                        if use_case1_m192n160_step2:
++                            case1_long_first_bx = padded_start // block_token
++                            case1_long_output_col = by * 160
++                            case1_up_long = T.alloc_fragment(
++                                (192, block_dexpert_step2), dtype=dtype
++                            )
++                            case1_out_long = T.alloc_fragment(
++                                (192, 160), dtype=accum_dtype
++                            )
++                            case1_down_long_local = T.alloc_local(
++                                (
++                                    case1_long_step2_mma.warp_cols
++                                    * case1_long_step2_mma.k_pack
++                                    * case1_long_step2_mma.local_size_b
+                                 ),
+-                            }
+-                        )
+-                        T.use_swizzle(10, enable=False)
++                                dtype=dtype,
++                            )
++                            case1_routed_long = T.alloc_local((3,), dtype=T.float32)
+ 
+-                        T.clear(out_long)
+-                        for long_k in T.serial(step2_k_tiles):
+-                            for long_i, long_j in T.Parallel(
+-                                192, block_dexpert_step2
+-                            ):
+-                                if long_i < group_size:
+-                                    long_native_row = long_i % block_token
+-                                    long_owner_thread = (
+-                                        (long_native_row // 32) * 64
+-                                        + ((long_j % 32) // 8) * 16
+-                                        + long_native_row % 16
++                            T.annotate_layout(
++                                {
++                                    case1_up_long: case1_long_step2_mma.make_mma_load_layout(
++                                        case1_up_long, matrix="A"
++                                    ),
++                                    case1_out_long: case1_long_step2_mma.make_mma_store_layout(
++                                        case1_out_long
++                                    ),
++                                }
++                            )
++                            T.use_swizzle(10, enable=False)
++                            T.clear(case1_out_long)
++                            for case1_long_k in T.serial(step2_k_tiles):
++                                for case1_long_i, case1_long_j in T.Parallel(
++                                    192, block_dexpert_step2
++                                ):
++                                    if case1_long_i < group_size:
++                                        case1_native_row = case1_long_i % block_token
++                                        case1_owner_thread = (
++                                            (case1_native_row // 32) * 64
++                                            + ((case1_long_j % 32) // 8) * 16
++                                            + case1_native_row % 16
++                                        )
++                                        case1_native_vec = (
++                                            (case1_long_j // 32) * 2
++                                            + (case1_native_row % 32) // 16
++                                        )
++                                        case1_up_long[
++                                            case1_long_i, case1_long_j
++                                        ] = up_logits[
++                                            case1_long_first_bx
++                                            + case1_long_i // block_token,
++                                            case1_long_k,
++                                            case1_native_vec,
++                                            case1_owner_thread,
++                                            case1_long_j % 8,
++                                        ]
++                                    else:
++                                        case1_up_long[
++                                            case1_long_i, case1_long_j
++                                        ] = 0.0
++                                for case1_down_i, case1_down_j in T.Parallel(
++                                    160, block_dexpert_step2
++                                ):
++                                    if case1_long_output_col + case1_down_i < hidden:
++                                        down_shared[
++                                            case1_down_i, case1_down_j
++                                        ] = down[
++                                            expert_id,
++                                            case1_long_output_col + case1_down_i,
++                                            case1_long_k * block_dexpert_step2
++                                            + case1_down_j,
++                                        ]
++                                    else:
++                                        down_shared[
++                                            case1_down_i, case1_down_j
++                                        ] = 0.0
++                                T.sync_threads()
++                                for case1_long_ki in T.serial(
++                                    0, block_dexpert_step2 // 32
++                                ):
++                                    case1_long_step2_mma.ldmatrix_b(
++                                        case1_down_long_local,
++                                        down_shared,
++                                        case1_long_ki,
+                                     )
+-                                    long_native_vec = (
+-                                        (long_j // 32) * 2
+-                                        + (long_native_row % 32) // 16
++                                    case1_long_step2_mma.mma(
++                                        case1_up_long,
++                                        case1_down_long_local,
++                                        case1_out_long,
++                                        case1_long_ki,
+                                     )
+-                                    up_long[long_i, long_j] = up_logits[
+-                                        long_first_bx + long_i // block_token,
+-                                        long_k,
+-                                        long_native_vec,
+-                                        long_owner_thread,
+-                                        long_j % 8,
+-                                    ]
+-                                else:
+-                                    up_long[long_i, long_j] = 0.0
+-                            T.copy(
+-                                down[
+-                                    expert_id,
+-                                    long_output_col : long_output_col
+-                                    + block_dhidden_step2,
+-                                    long_k * block_dexpert_step2 : (long_k + 1)
+-                                    * block_dexpert_step2,
+-                                ],
+-                                down_shared[
+-                                    0:block_dhidden_step2,
+-                                    0:block_dexpert_step2,
+-                                ],
++                                if case1_long_k + 1 < step2_k_tiles:
++                                    T.sync_threads()
++
++                            case1_long_thread = T.get_thread_binding()
++                            for case1_long_slot in T.serial(3):
++                                case1_routed_row = (
++                                    (case1_long_thread // 64) * 48
++                                    + case1_long_slot * 16
++                                    + case1_long_thread % 16
++                                )
++                                case1_routed_long[case1_long_slot] = 0.0
++                                if case1_routed_row < group_size:
++                                    case1_routed_long[
++                                        case1_long_slot
++                                    ] = routed_weights[raw_start + case1_routed_row]
++
++                            for case1_long_i, case1_long_j in T.Parallel(192, 160):
++                                if case1_long_output_col + case1_long_j < hidden:
++                                    if case1_long_i < group_size:
++                                        output[
++                                            padded_start + case1_long_i,
++                                            case1_long_output_col + case1_long_j,
++                                        ] = (
++                                            case1_out_long[
++                                                case1_long_i, case1_long_j
++                                            ]
++                                            * case1_routed_long[
++                                                (case1_long_i // 16) % 3
++                                            ]
++                                        )
++                                    else:
++                                        output[
++                                            padded_start + case1_long_i,
++                                            case1_long_output_col + case1_long_j,
++                                        ] = 0.0
++                            for case1_tail_i, case1_tail_j in T.Parallel(64, 160):
++                                if case1_long_output_col + case1_tail_j < hidden:
++                                    output[
++                                        padded_start + 192 + case1_tail_i,
++                                        case1_long_output_col + case1_tail_j,
++                                    ] = 0.0
++                        else:
++                            long_first_bx = padded_start // block_token
++                            long_n_half = token_offset // block_token
++                            long_output_col = (
++                                by * step2_output_tile
++                                + long_n_half * block_dhidden_step2
++                            )
++                            up_long = T.alloc_fragment(
++                                (192, block_dexpert_step2), dtype=dtype
++                            )
++                            out_long = T.alloc_fragment(
++                                (192, block_dhidden_step2), dtype=accum_dtype
++                            )
++                            down_long_local = T.alloc_local(
++                                (
++                                    long_step2_mma.warp_cols
++                                    * long_step2_mma.k_pack
++                                    * long_step2_mma.local_size_b
++                                ),
++                                dtype=dtype,
+                             )
+-                            T.sync_threads()
+-                            for long_ki in T.serial(
+-                                0, block_dexpert_step2 // 32
+-                            ):
+-                                long_step2_mma.ldmatrix_b(
+-                                    down_long_local,
+-                                    down_shared,
+-                                    long_ki,
+-                                )
+-                                long_step2_mma.mma(
+-                                    up_long,
+-                                    down_long_local,
+-                                    out_long,
+-                                    long_ki,
++                            routed_long = T.alloc_local((3,), dtype=T.float32)
++
++                            T.annotate_layout(
++                                {
++                                    up_long: long_step2_mma.make_mma_load_layout(
++                                        up_long, matrix="A"
++                                    ),
++                                    out_long: long_step2_mma.make_mma_store_layout(
++                                        out_long
++                                    ),
++                                }
++                            )
++                            T.use_swizzle(10, enable=False)
++
++                            T.clear(out_long)
++                            for long_k in T.serial(step2_k_tiles):
++                                for long_i, long_j in T.Parallel(
++                                    192, block_dexpert_step2
++                                ):
++                                    if long_i < group_size:
++                                        long_native_row = long_i % block_token
++                                        long_owner_thread = (
++                                            (long_native_row // 32) * 64
++                                            + ((long_j % 32) // 8) * 16
++                                            + long_native_row % 16
++                                        )
++                                        long_native_vec = (
++                                            (long_j // 32) * 2
++                                            + (long_native_row % 32) // 16
++                                        )
++                                        up_long[long_i, long_j] = up_logits[
++                                            long_first_bx + long_i // block_token,
++                                            long_k,
++                                            long_native_vec,
++                                            long_owner_thread,
++                                            long_j % 8,
++                                        ]
++                                    else:
++                                        up_long[long_i, long_j] = 0.0
++                                T.copy(
++                                    down[
++                                        expert_id,
++                                        long_output_col : long_output_col
++                                        + block_dhidden_step2,
++                                        long_k * block_dexpert_step2 : (long_k + 1)
++                                        * block_dexpert_step2,
++                                    ],
++                                    down_shared[
++                                        0:block_dhidden_step2,
++                                        0:block_dexpert_step2,
++                                    ],
+                                 )
+-                            if long_k + 1 < step2_k_tiles:
+                                 T.sync_threads()
++                                for long_ki in T.serial(
++                                    0, block_dexpert_step2 // 32
++                                ):
++                                    long_step2_mma.ldmatrix_b(
++                                        down_long_local,
++                                        down_shared,
++                                        long_ki,
++                                    )
++                                    long_step2_mma.mma(
++                                        up_long,
++                                        down_long_local,
++                                        out_long,
++                                        long_ki,
++                                    )
++                                if long_k + 1 < step2_k_tiles:
++                                    T.sync_threads()
+ 
+-                        long_thread = T.get_thread_binding()
+-                        for long_slot in T.serial(3):
+-                            routed_row_long = (
+-                                (long_thread // 64) * 48
+-                                + long_slot * 16
+-                                + long_thread % 16
+-                            )
+-                            routed_long[long_slot] = 0.0
+-                            if routed_row_long < group_size:
+-                                routed_long[long_slot] = routed_weights[
+-                                    raw_start + routed_row_long
+-                                ]
++                            long_thread = T.get_thread_binding()
++                            for long_slot in T.serial(3):
++                                routed_row_long = (
++                                    (long_thread // 64) * 48
++                                    + long_slot * 16
++                                    + long_thread % 16
++                                )
++                                routed_long[long_slot] = 0.0
++                                if routed_row_long < group_size:
++                                    routed_long[long_slot] = routed_weights[
++                                        raw_start + routed_row_long
++                                    ]
+ 
+-                        for long_i, long_j in T.Parallel(
+-                            192, block_dhidden_step2
+-                        ):
+-                            if long_i < group_size:
+-                                output[
+-                                    padded_start + long_i,
+-                                    long_output_col + long_j,
+-                                ] = (
+-                                    out_long[long_i, long_j]
+-                                    * routed_long[(long_i // 16) % 3]
+-                                )
+-                            else:
++                            for long_i, long_j in T.Parallel(
++                                192, block_dhidden_step2
++                            ):
++                                if long_i < group_size:
++                                    output[
++                                        padded_start + long_i,
++                                        long_output_col + long_j,
++                                    ] = (
++                                        out_long[long_i, long_j]
++                                        * routed_long[(long_i // 16) % 3]
++                                    )
++                                else:
++                                    output[
++                                        padded_start + long_i,
++                                        long_output_col + long_j,
++                                    ] = 0.0
++                            for long_tail_i, long_tail_j in T.Parallel(
++                                64, block_dhidden_step2
++                            ):
+                                 output[
+-                                    padded_start + long_i,
+-                                    long_output_col + long_j,
++                                    padded_start + 192 + long_tail_i,
++                                    long_output_col + long_tail_j,
+                                 ] = 0.0
+-                        for long_tail_i, long_tail_j in T.Parallel(
+-                            64, block_dhidden_step2
+-                        ):
+-                            output[
+-                                padded_start + 192 + long_tail_i,
+-                                long_output_col + long_tail_j,
+-                            ] = 0.0
+                     else:
+                         # CASE2_MIXEDSLOT_GENERIC_BEGIN
+                         up_logits_shared = T.alloc_fragment(
+@@ -4263,14 +4440,14 @@
+                                         row_offset=block_dhidden_step2,
+                                     )
+                                     step2_mma.mma(up_logits_shared, down_local, out_local_1, ki)
+-
++    
+                         tx = T.get_thread_binding()
+                         for row_slot in T.serial(2):
+                             routed_row = (tx // 64) * 32 + row_slot * 16 + tx % 16
+                             routed_weight_local[row_slot] = 0.0
+                             if routed_row < actual_rows:
+                                 routed_weight_local[row_slot] = routed_weights[raw_start + token_offset + routed_row]
+-
++    
+                         for i, j in T.Parallel(block_token, block_dhidden_step2):
+                             if i < actual_rows:
+                                 output[block_start + i, by * step2_output_tile + j] = (
+@@ -4285,7 +4462,7 @@
+                                 )
+                             else:
+                                 output[block_start + i, by * step2_output_tile + block_dhidden_step2 + j] = 0.0
+-
++    
+                     # CASE2_MIXEDSLOT_GENERIC_END
+                 if use_step2_dynamic_m192n128:
+                     with T.Kernel(
+@@ -4499,4 +4676,4 @@
+         expert_rank,
+         up_logits,
+         out,
+-    )
++    )
+\ No newline at end of file
